@@ -72,6 +72,22 @@ test tokenLength {
     try std.testing.expectEqual(5, tokenLength("Hello world"));
 }
 
+pub fn slice(self: *const Self, token: Token) []const u8 {
+    return self.source[token.start..][0..token.length];
+}
+
+test slice {
+    var tokenizer = Self.init(" Hello World!\n");
+    {
+        const token = tokenizer.next().?;
+        try std.testing.expectEqualStrings("Hello", tokenizer.slice(token));
+    }
+    {
+        const token = tokenizer.next().?;
+        try std.testing.expectEqualStrings("World!", tokenizer.slice(token));
+    }
+}
+
 pub fn next(self: *Self) ?Token {
     self.index += countLeadingWhitespace(self.source[self.index..]);
     if (self.index == self.source.len) return null;
@@ -84,7 +100,7 @@ pub fn next(self: *Self) ?Token {
 
 test next {
     var self = Self.init(" Hello World!\n");
-    try std.testing.expectEqual(Token{.start = 1, .length = 5}, self.next().?);
-    try std.testing.expectEqual(Token{.start = 7, .length = 6}, self.next().?);
+    try std.testing.expectEqual(Token{ .start = 1, .length = 5 }, self.next().?);
+    try std.testing.expectEqual(Token{ .start = 7, .length = 6 }, self.next().?);
     try std.testing.expectEqual(null, self.next());
 }
