@@ -72,6 +72,31 @@ test tokenLength {
     try std.testing.expectEqual(5, tokenLength("Hello world"));
 }
 
+fn isComment(text: []const u8) bool {
+    return std.mem.startsWith(u8, text, "//");
+}
+
+fn commentLength(text: []const u8) usize {
+    if (!isComment(text)) return 0;
+    for (text, 0..) |char, index| {
+        if (char == '\n') return index;
+    }
+    return text.len;
+}
+
+fn leadingFillerLength(text: []const u8) usize {
+    var index: usize = 0;
+
+    while (index < text.len) {
+        const comment_length = commentLength(text[index..]);
+        const whitespace_length = countLeadingWhitespace(text[index..]);
+        const filler_length = comment_length + whitespace_length;
+        if (filler_length == 0) break;
+        index += filler_length;
+    }
+    return index;
+}
+
 pub fn slice(self: *const Self, token: Token) []const u8 {
     return self.source[token.start..][0..token.length];
 }
@@ -89,7 +114,7 @@ test slice {
 }
 
 pub fn next(self: *Self) ?Token {
-    self.index += countLeadingWhitespace(self.source[self.index..]);
+    self.index += leadingFillerLength(self.source[self.index..]);
     if (self.index == self.source.len) return null;
     const start = self.index;
     const length = tokenLength(self.source[self.index..]);
@@ -99,8 +124,8 @@ pub fn next(self: *Self) ?Token {
 }
 
 test next {
-    var self = Self.init(" Hello World!\n");
-    try std.testing.expectEqual(Token{ .start = 1, .length = 5 }, self.next().?);
-    try std.testing.expectEqual(Token{ .start = 7, .length = 6 }, self.next().?);
+    var self = Self.init(" // Say hello. \n // Start program. \n Hello World!\n // Stop program.");
+    try std.testing.expectEqual(Token{ .start = 37, .length = 5 }, self.next().?);
+    try std.testing.expectEqual(Token{ .start = 43, .length = 6 }, self.next().?);
     try std.testing.expectEqual(null, self.next());
 }
