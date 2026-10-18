@@ -1,7 +1,5 @@
 const std = @import("std");
-
 const Self = @This();
-
 const WHITESPACE = [_]u8{
     ' ',
     '\t',
@@ -25,76 +23,55 @@ test init {
 }
 
 fn isWhitespace(char: u8) bool {
-    inline for (WHITESPACE) |needle| if (char == needle) return true;
-    return false;
+    return switch (char) {
+        ' ', '\t', '\r', '\n' => true,
+        else => false,
+    };
 }
 
 test isWhitespace {
     try std.testing.expectEqual(false, isWhitespace('.'));
     try std.testing.expectEqual(true, isWhitespace(' '));
-    try std.testing.expectEqual(true, isWhitespace('\n'));
     try std.testing.expectEqual(true, isWhitespace('\t'));
     try std.testing.expectEqual(true, isWhitespace('\r'));
+    try std.testing.expectEqual(true, isWhitespace('\n'));
 }
 
-fn isToken(char: u8) bool {
-    return !isWhitespace(char);
+fn leadingWhitespaceLength(source: []const u8) usize {
+    for (source, 0..) |char, index| if (!isWhitespace(char)) return index;
+    return source.len;
 }
 
-fn countLeadingWhitespace(text: []const u8) usize {
-    for (text, 0..) |char, index| {
-        if (!isWhitespace(char)) return index;
+fn leadingCommentLength(source: []const u8) usize {
+    if (!std.mem.startsWith(u8, source, "//")) return 0;
+    if (std.mem.findScalar(u8, source, '\n')) |newline| {
+        return newline + 1;
     }
-    return text.len;
+    return source.len;
 }
 
-test countLeadingWhitespace {
-    try std.testing.expectEqual(0, countLeadingWhitespace(""));
-    try std.testing.expectEqual(0, countLeadingWhitespace("1 "));
-    try std.testing.expectEqual(0, countLeadingWhitespace(". "));
-    try std.testing.expectEqual(0, countLeadingWhitespace("A "));
-    try std.testing.expectEqual(0, countLeadingWhitespace("a "));
-    try std.testing.expectEqual(4, countLeadingWhitespace(" \n\t\r"));
-}
-
-fn tokenLength(text: []const u8) usize {
-    for (text, 0..) |char, index| {
-        if (!isToken(char)) return index;
-    }
-    return text.len;
-}
-
-test tokenLength {
-    try std.testing.expectEqual(0, tokenLength(""));
-    try std.testing.expectEqual(0, tokenLength(" \n\t\r"));
-    try std.testing.expectEqual(0, tokenLength(" Hello"));
-    try std.testing.expectEqual(5, tokenLength("Hello"));
-    try std.testing.expectEqual(5, tokenLength("Hello world"));
-}
-
-fn isComment(text: []const u8) bool {
-    return std.mem.startsWith(u8, text, "//");
-}
-
-fn commentLength(text: []const u8) usize {
-    if (!isComment(text)) return 0;
-    for (text, 0..) |char, index| {
-        if (char == '\n') return index;
-    }
-    return text.len;
-}
-
-fn leadingFillerLength(text: []const u8) usize {
+fn leadingFillerLength(source: []const u8) usize {
     var index: usize = 0;
-
-    while (index < text.len) {
-        const comment_length = commentLength(text[index..]);
-        const whitespace_length = countLeadingWhitespace(text[index..]);
-        const filler_length = comment_length + whitespace_length;
-        if (filler_length == 0) break;
-        index += filler_length;
+    while (index < source.len) {
+        var current: usize = 0;
+        current += leadingCommentLength(source[index + current ..]);
+        current += leadingWhitespaceLength(source[index + current ..]);
+        if (current == 0) return index;
+        index += current;
     }
     return index;
+}
+
+test leadingFillerLength {
+    try std.testing.expectEqual(0, leadingFillerLength(""));
+    try std.testing.expectEqual(0, leadingFillerLength("code"));
+    try std.testing.expectEqual(4, leadingFillerLength(" \n\t\r"));
+    try std.testing.expectEqual(4, leadingFillerLength(" \n\t\rcode"));
+    try std.testing.expectEqual(6, leadingFillerLength("// hi\ncode"));
+    try std.testing.expectEqual(7, leadingFillerLength(" // hi\ncode"));
+    try std.testing.expectEqual(8, leadingFillerLength(" // hi\n code"));
+    try std.testing.expectEqual(5, leadingFillerLength("// hi"));
+    try std.testing.expectEqual(0, leadingFillerLength("/ code"));
 }
 
 pub fn slice(self: *const Self, token: Token) []const u8 {
@@ -113,11 +90,24 @@ test slice {
     }
 }
 
+fn leadingTokenLength(text: []const u8) usize {
+    for (text, 0..) |char, index| if (isWhitespace(char)) return index;
+    return text.len;
+}
+
+test leadingTokenLength {
+    try std.testing.expectEqual(0, leadingTokenLength(""));
+    try std.testing.expectEqual(0, leadingTokenLength(" \n\t\r"));
+    try std.testing.expectEqual(0, leadingTokenLength(" Hello"));
+    try std.testing.expectEqual(5, leadingTokenLength("Hello"));
+    try std.testing.expectEqual(5, leadingTokenLength("Hello world"));
+}
+
 pub fn next(self: *Self) ?Token {
     self.index += leadingFillerLength(self.source[self.index..]);
     if (self.index == self.source.len) return null;
     const start = self.index;
-    const length = tokenLength(self.source[self.index..]);
+    const length = leadingTokenLength(self.source[self.index..]);
     const token = Token{ .start = start, .length = length };
     self.index += length;
     return token;
@@ -129,3 +119,4 @@ test next {
     try std.testing.expectEqual(Token{ .start = 43, .length = 6 }, self.next().?);
     try std.testing.expectEqual(null, self.next());
 }
+ 
