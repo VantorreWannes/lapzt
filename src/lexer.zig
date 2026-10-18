@@ -3,7 +3,7 @@ const Tokenizer = @import("tokenizer.zig");
 
 const Self = @This();
 
-pub const Error = error{InvalidVariant};
+pub const VariantError = error{UnknownVariant};
 
 pub const Variant = enum {
     label,
@@ -125,20 +125,7 @@ pub const Variant = enum {
     }
 };
 
-source: []const u8,
-index: usize,
-
-pub fn init(source: []const u8) Self {
-    return .{ .index = 0, .source = source };
-}
-
-test init {
-    const self = Self.init("");
-    try std.testing.expectEqual(0, self.index);
-    try std.testing.expectEqualStrings("", self.source);
-}
-
-fn variant(text: []const u8) !Variant {
+pub fn variant(text: []const u8) VariantError!Variant {
     if (Variant.isBit(text)) return Variant.bit;
     if (Variant.isNand(text)) return Variant.nand;
     if (Variant.isBranch(text)) return Variant.branch;
@@ -154,5 +141,5 @@ fn variant(text: []const u8) !Variant {
     if (Variant.isLeftBrace(text)) return Variant.left_brace;
     if (Variant.isRightBrace(text)) return Variant.right_brace;
     if (Variant.isLabel(text)) return Variant.label;
-    return Error.InvalidVariant;
+    return VariantError.UnknownVariant;
 }

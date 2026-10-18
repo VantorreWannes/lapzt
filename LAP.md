@@ -61,7 +61,7 @@ A reference may be a destructuring target.
 
 Constants, logic, arithmetic, numeric types, and control structures are library code. The language gains nothing when a library gains a capability.
 
-Library code reaches native speed because a compiler recognizes it, not because the language grows. 
+Library code reaches native speed because a compiler recognizes it, not because the language grows.
 
 The logic operators derive from `NAND`:
 
@@ -157,7 +157,7 @@ Statement      ::= Binding | Expression
 
 Binding        ::= Target "=" (Expression | FunctionDef)
 Target         ::= TypedIdent
-                 | "*" Label
+                 | "*" TypedIdent
                  | "[" Target ("," Target)* "]"
 
 TypedIdent     ::= Label (":" Type)?
@@ -173,7 +173,7 @@ Primary        ::= Label | "*" Label | "BIT"
 
 NandExpr       ::= "NAND" "(" Expression "," Expression ")"
 BranchExpr     ::= "BRANCH" "(" Expression ")" Block Block
-ExternExpr     ::= "EXTERN" "(" Expression ("," Expression)* ")"
+ExternExpr     ::= "EXTERN" "(" (Expression ("," Expression)*)? ")"
 CollectionExpr ::= "[" (Expression ("," Expression)*)? "]"
 CallExpr       ::= Label "(" (Expression ("," Expression)*)? ")"
 
@@ -186,7 +186,8 @@ Type           ::= "BIT"
                  | "[" (Type ("," Type)*)? "]"
 
 Block          ::= "{" Statement* Expression? "}"
-Label          ::= [a-zA-Z0-9]+ ( ("_" | ".") [a-zA-Z0-9]+ )*
+Label          ::= LabelSegment ("." LabelSegment)*
+LabelSegment   ::= [a-zA-Z0-9_]* [a-zA-Z0-9] [a-zA-Z0-9_]*
 Keyword        ::= "BIT" | "NAND" | "BRANCH" | "EXTERN"
 Comment        ::= "//" [^\n]*
 ```

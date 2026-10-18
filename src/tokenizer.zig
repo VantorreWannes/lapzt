@@ -103,14 +103,27 @@ test leadingTokenLength {
     try std.testing.expectEqual(5, leadingTokenLength("Hello world"));
 }
 
+pub fn seek(self: *Self, index: usize) void {
+    self.index = index;
+}
+
+pub fn reset(self: *Self) void {
+    self.index = 0;
+}
+
+pub fn peek(self: *const Self) ?Token {
+    const start = self.index + leadingFillerLength(self.source[self.index..]);
+    const length = leadingTokenLength(self.source[start..]);
+    if (length == 0) return null;
+    return Token{ .start = start, .length = length };
+}
+
 pub fn next(self: *Self) ?Token {
-    self.index += leadingFillerLength(self.source[self.index..]);
-    if (self.index == self.source.len) return null;
-    const start = self.index;
-    const length = leadingTokenLength(self.source[self.index..]);
-    const token = Token{ .start = start, .length = length };
-    self.index += length;
-    return token;
+    if (self.peek()) |token| {
+        self.index = token.start + token.length;
+        return token;
+    }
+    return null;
 }
 
 test next {
@@ -119,4 +132,12 @@ test next {
     try std.testing.expectEqual(Token{ .start = 43, .length = 6 }, self.next().?);
     try std.testing.expectEqual(null, self.next());
 }
- 
+
+pub fn isEmpty(self: *Self) bool {
+    return self.peek() == null;
+}
+
+
+pub fn skip(self: *Self) void {
+    _ = self.next();
+}
