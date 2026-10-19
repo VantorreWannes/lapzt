@@ -1,0 +1,20 @@
+liblapzt.option.none: [BIT, liblapzt.u64] = [liblapzt.bool.false, liblapzt.u64.zero]
+
+liblapzt.option.some = (value: liblapzt.u64) [BIT, liblapzt.u64] {
+    [liblapzt.bool.true, value]
+}
+
+liblapzt.option.is.some = (option: [BIT, liblapzt.u64]) liblapzt.bool {
+    [status, value] = option
+    status
+}
+
+liblapzt.option.is.none = (option: [BIT, liblapzt.u64]) liblapzt.bool {
+    [status, value] = option
+    liblapzt.bool.not(status)
+}
+
+liblapzt.option.unwrap = (option: [BIT, liblapzt.u64]) liblapzt.u64 {
+    [status, value] = option
+    value
+}

@@ -1,0 +1,283 @@
+liblapzt.i32.erased = [liblapzt.i16.erased, liblapzt.i16.erased]
+
+liblapzt.i32 = liblapzt.i32.erased
+
+liblapzt.i32.zero.erased: liblapzt.i32.erased = [liblapzt.i16.zero.erased, liblapzt.i16.zero.erased]
+liblapzt.i32.one.erased: liblapzt.i32.erased = [liblapzt.i16.one.erased, liblapzt.i16.zero.erased]
+liblapzt.i32.minimum.erased: liblapzt.i32.erased = [liblapzt.i16.zero.erased, liblapzt.i16.minimum.erased]
+liblapzt.i32.maximum.erased: liblapzt.i32.erased = [liblapzt.u16.maximum.erased, liblapzt.i16.maximum.erased]
+
+liblapzt.i32.zero: liblapzt.i32 = liblapzt.i32.zero.erased
+liblapzt.i32.one: liblapzt.i32 = liblapzt.i32.one.erased
+liblapzt.i32.minimum: liblapzt.i32 = liblapzt.i32.minimum.erased
+liblapzt.i32.maximum: liblapzt.i32 = liblapzt.i32.maximum.erased
+
+liblapzt.i32.to.u32 = (a: liblapzt.i32) liblapzt.u32 {
+    [low, high] = a
+    [liblapzt.i16.to.u16(low), liblapzt.i16.to.u16(high)]
+}
+
+liblapzt.i32.from.u32 = (a: liblapzt.u32) liblapzt.i32 {
+    [low, high] = a
+    [liblapzt.i16.from.u16(low), liblapzt.i16.from.u16(high)]
+}
+
+liblapzt.i32.from.bool.erased = (a: liblapzt.bool) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.from.bool(a))
+}
+
+liblapzt.i32.from.bool = liblapzt.i32.from.bool.erased
+
+liblapzt.i32.not.erased = (a: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.not(liblapzt.i32.to.u32(a)))
+}
+
+liblapzt.i32.not = liblapzt.i32.not.erased
+
+liblapzt.i32.and.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.and(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b)))
+}
+
+liblapzt.i32.and = liblapzt.i32.and.erased
+
+liblapzt.i32.or.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.or(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b)))
+}
+
+liblapzt.i32.or = liblapzt.i32.or.erased
+
+liblapzt.i32.xor.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.xor(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b)))
+}
+
+liblapzt.i32.xor = liblapzt.i32.xor.erased
+
+liblapzt.i32.nand.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.nand(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b)))
+}
+
+liblapzt.i32.nand = liblapzt.i32.nand.erased
+
+liblapzt.i32.nor.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.nor(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b)))
+}
+
+liblapzt.i32.nor = liblapzt.i32.nor.erased
+
+liblapzt.i32.xnor.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.xnor(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b)))
+}
+
+liblapzt.i32.xnor = liblapzt.i32.xnor.erased
+
+liblapzt.i32.add.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.add(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b)))
+}
+
+liblapzt.i32.add = liblapzt.i32.add.erased
+
+liblapzt.i32.sub.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.sub(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b)))
+}
+
+liblapzt.i32.sub = liblapzt.i32.sub.erased
+
+liblapzt.i32.mul.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.mul(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b)))
+}
+
+liblapzt.i32.mul = liblapzt.i32.mul.erased
+
+liblapzt.i32.add.carry = (a: liblapzt.i32, b: liblapzt.i32) [liblapzt.i32, liblapzt.bool] {
+    [sum, carry] = liblapzt.u32.add.carry(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b))
+    [liblapzt.i32.from.u32(sum), carry]
+}
+
+liblapzt.i32.sub.borrow = (a: liblapzt.i32, b: liblapzt.i32) [liblapzt.i32, liblapzt.bool] {
+    [difference, borrow] = liblapzt.u32.sub.borrow(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b))
+    [liblapzt.i32.from.u32(difference), borrow]
+}
+
+liblapzt.i32.add3 = (a: liblapzt.i32, b: liblapzt.i32, c: liblapzt.i32) [liblapzt.i32, liblapzt.i32] {
+    [s1, c1] = liblapzt.i32.add.carry(a, b)
+    [s2, c2] = liblapzt.i32.add.carry(s1, c)
+    carry: liblapzt.i32 = liblapzt.i32.add(liblapzt.i32.from.bool(c1), liblapzt.i32.from.bool(c2))
+    [s2, carry]
+}
+
+liblapzt.i32.mul.full = (a: liblapzt.i32, b: liblapzt.i32) [liblapzt.i32, liblapzt.i32] {
+    [low, high] = liblapzt.u32.mul.full(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b))
+    [liblapzt.i32.from.u32(low), liblapzt.i32.from.u32(high)]
+}
+
+liblapzt.i32.shl1 = (a: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.shl1(liblapzt.i32.to.u32(a)))
+}
+
+liblapzt.i32.with.lsb = (a: liblapzt.i32, bit: liblapzt.bool) liblapzt.i32 {
+    liblapzt.i32.from.u32(liblapzt.u32.with.lsb(liblapzt.i32.to.u32(a), bit))
+}
+
+liblapzt.i32.msb = (a: liblapzt.i32) liblapzt.u1 {
+    [low, high] = a
+    liblapzt.i16.msb(high)
+}
+
+liblapzt.i32.sign.erased = (a: liblapzt.i32) liblapzt.bool {
+    [low, high] = a
+    liblapzt.i16.sign(high)
+}
+
+liblapzt.i32.sign = liblapzt.i32.sign.erased
+
+liblapzt.i32.is.negative.erased = (a: liblapzt.i32) liblapzt.bool {
+    liblapzt.i32.sign(a)
+}
+
+liblapzt.i32.is.negative = liblapzt.i32.is.negative.erased
+
+liblapzt.i32.eq.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.bool {
+    liblapzt.u32.eq(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b))
+}
+
+liblapzt.i32.eq = liblapzt.i32.eq.erased
+
+liblapzt.i32.ne.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.i32.eq(a, b))
+}
+
+liblapzt.i32.ne = liblapzt.i32.ne.erased
+
+liblapzt.i32.lt.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.bool {
+    a.negative: liblapzt.bool = liblapzt.i32.sign(a)
+    b.negative: liblapzt.bool = liblapzt.i32.sign(b)
+    differ: liblapzt.bool = liblapzt.bool.xor(a.negative, b.negative)
+    BRANCH (differ) {
+        a.negative
+    } {
+        liblapzt.u32.lt(liblapzt.i32.to.u32(a), liblapzt.i32.to.u32(b))
+    }
+}
+
+liblapzt.i32.lt = liblapzt.i32.lt.erased
+
+liblapzt.i32.le.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.bool {
+    liblapzt.bool.or(liblapzt.i32.lt(a, b), liblapzt.i32.eq(a, b))
+}
+
+liblapzt.i32.le = liblapzt.i32.le.erased
+
+liblapzt.i32.gt.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.bool {
+    liblapzt.i32.lt(b, a)
+}
+
+liblapzt.i32.gt = liblapzt.i32.gt.erased
+
+liblapzt.i32.ge.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.bool {
+    liblapzt.i32.le(b, a)
+}
+
+liblapzt.i32.ge = liblapzt.i32.ge.erased
+
+liblapzt.i32.select.erased = (flag: liblapzt.bool, when.true: liblapzt.i32, when.false: liblapzt.i32) liblapzt.i32 {
+    [tl, th] = when.true
+    [fl, fh] = when.false
+    [liblapzt.i16.select(flag, tl, fl), liblapzt.i16.select(flag, th, fh)]
+}
+
+liblapzt.i32.select = liblapzt.i32.select.erased
+
+liblapzt.i32.min.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.select(liblapzt.i32.lt(a, b), a, b)
+}
+
+liblapzt.i32.min = liblapzt.i32.min.erased
+
+liblapzt.i32.max.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.select(liblapzt.i32.gt(a, b), a, b)
+}
+
+liblapzt.i32.max = liblapzt.i32.max.erased
+
+liblapzt.i32.inc.erased = (a: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.add(a, liblapzt.i32.one)
+}
+
+liblapzt.i32.inc = liblapzt.i32.inc.erased
+
+liblapzt.i32.dec.erased = (a: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.sub(a, liblapzt.i32.one)
+}
+
+liblapzt.i32.dec = liblapzt.i32.dec.erased
+
+liblapzt.i32.is.zero.erased = (a: liblapzt.i32) liblapzt.bool {
+    liblapzt.u32.is.zero(liblapzt.i32.to.u32(a))
+}
+
+liblapzt.i32.is.zero = liblapzt.i32.is.zero.erased
+
+liblapzt.i32.is.one.erased = (a: liblapzt.i32) liblapzt.bool {
+    liblapzt.u32.is.one(liblapzt.i32.to.u32(a))
+}
+
+liblapzt.i32.is.one = liblapzt.i32.is.one.erased
+
+liblapzt.i32.to.bool.erased = (a: liblapzt.i32) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.i32.is.zero(a))
+}
+
+liblapzt.i32.to.bool = liblapzt.i32.to.bool.erased
+
+liblapzt.i32.neg.erased = (a: liblapzt.i32) liblapzt.i32 {
+    liblapzt.i32.inc(liblapzt.i32.not(a))
+}
+
+liblapzt.i32.neg = liblapzt.i32.neg.erased
+
+liblapzt.i32.abs.erased = (a: liblapzt.i32) liblapzt.i32 {
+    negative: liblapzt.bool = liblapzt.i32.sign(a)
+    BRANCH (negative) {
+        liblapzt.i32.neg(a)
+    } {
+        a
+    }
+}
+
+liblapzt.i32.abs = liblapzt.i32.abs.erased
+
+liblapzt.i32.div.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    zero: liblapzt.bool = liblapzt.i32.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.i32.zero
+    } {
+        negative: liblapzt.bool = liblapzt.bool.xor(liblapzt.i32.sign(a), liblapzt.i32.sign(b))
+        magnitude: liblapzt.u32 = liblapzt.u32.div(liblapzt.i32.to.u32(liblapzt.i32.abs(a)), liblapzt.i32.to.u32(liblapzt.i32.abs(b)))
+        quotient: liblapzt.i32 = liblapzt.i32.from.u32(magnitude)
+        BRANCH (negative) {
+            liblapzt.i32.neg(quotient)
+        } {
+            quotient
+        }
+    }
+}
+
+liblapzt.i32.div = liblapzt.i32.div.erased
+
+liblapzt.i32.mod.erased = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.i32 {
+    zero: liblapzt.bool = liblapzt.i32.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.i32.zero
+    } {
+        negative: liblapzt.bool = liblapzt.i32.sign(a)
+        magnitude: liblapzt.u32 = liblapzt.u32.mod(liblapzt.i32.to.u32(liblapzt.i32.abs(a)), liblapzt.i32.to.u32(liblapzt.i32.abs(b)))
+        remainder: liblapzt.i32 = liblapzt.i32.from.u32(magnitude)
+        BRANCH (negative) {
+            liblapzt.i32.neg(remainder)
+        } {
+            remainder
+        }
+    }
+}
+
+liblapzt.i32.mod = liblapzt.i32.mod.erased

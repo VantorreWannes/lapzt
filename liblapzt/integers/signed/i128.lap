@@ -1,0 +1,283 @@
+liblapzt.i128.erased = [liblapzt.i64.erased, liblapzt.i64.erased]
+
+liblapzt.i128 = liblapzt.i128.erased
+
+liblapzt.i128.zero.erased: liblapzt.i128.erased = [liblapzt.i64.zero.erased, liblapzt.i64.zero.erased]
+liblapzt.i128.one.erased: liblapzt.i128.erased = [liblapzt.i64.one.erased, liblapzt.i64.zero.erased]
+liblapzt.i128.minimum.erased: liblapzt.i128.erased = [liblapzt.i64.zero.erased, liblapzt.i64.minimum.erased]
+liblapzt.i128.maximum.erased: liblapzt.i128.erased = [liblapzt.u64.maximum.erased, liblapzt.i64.maximum.erased]
+
+liblapzt.i128.zero: liblapzt.i128 = liblapzt.i128.zero.erased
+liblapzt.i128.one: liblapzt.i128 = liblapzt.i128.one.erased
+liblapzt.i128.minimum: liblapzt.i128 = liblapzt.i128.minimum.erased
+liblapzt.i128.maximum: liblapzt.i128 = liblapzt.i128.maximum.erased
+
+liblapzt.i128.to.u128 = (a: liblapzt.i128) liblapzt.u128 {
+    [low, high] = a
+    [liblapzt.i64.to.u64(low), liblapzt.i64.to.u64(high)]
+}
+
+liblapzt.i128.from.u128 = (a: liblapzt.u128) liblapzt.i128 {
+    [low, high] = a
+    [liblapzt.i64.from.u64(low), liblapzt.i64.from.u64(high)]
+}
+
+liblapzt.i128.from.bool.erased = (a: liblapzt.bool) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.from.bool(a))
+}
+
+liblapzt.i128.from.bool = liblapzt.i128.from.bool.erased
+
+liblapzt.i128.not.erased = (a: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.not(liblapzt.i128.to.u128(a)))
+}
+
+liblapzt.i128.not = liblapzt.i128.not.erased
+
+liblapzt.i128.and.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.and(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+}
+
+liblapzt.i128.and = liblapzt.i128.and.erased
+
+liblapzt.i128.or.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.or(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+}
+
+liblapzt.i128.or = liblapzt.i128.or.erased
+
+liblapzt.i128.xor.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.xor(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+}
+
+liblapzt.i128.xor = liblapzt.i128.xor.erased
+
+liblapzt.i128.nand.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.nand(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+}
+
+liblapzt.i128.nand = liblapzt.i128.nand.erased
+
+liblapzt.i128.nor.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.nor(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+}
+
+liblapzt.i128.nor = liblapzt.i128.nor.erased
+
+liblapzt.i128.xnor.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.xnor(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+}
+
+liblapzt.i128.xnor = liblapzt.i128.xnor.erased
+
+liblapzt.i128.add.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.add(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+}
+
+liblapzt.i128.add = liblapzt.i128.add.erased
+
+liblapzt.i128.sub.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.sub(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+}
+
+liblapzt.i128.sub = liblapzt.i128.sub.erased
+
+liblapzt.i128.mul.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.mul(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+}
+
+liblapzt.i128.mul = liblapzt.i128.mul.erased
+
+liblapzt.i128.add.carry = (a: liblapzt.i128, b: liblapzt.i128) [liblapzt.i128, liblapzt.bool] {
+    [sum, carry] = liblapzt.u128.add.carry(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
+    [liblapzt.i128.from.u128(sum), carry]
+}
+
+liblapzt.i128.sub.borrow = (a: liblapzt.i128, b: liblapzt.i128) [liblapzt.i128, liblapzt.bool] {
+    [difference, borrow] = liblapzt.u128.sub.borrow(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
+    [liblapzt.i128.from.u128(difference), borrow]
+}
+
+liblapzt.i128.add3 = (a: liblapzt.i128, b: liblapzt.i128, c: liblapzt.i128) [liblapzt.i128, liblapzt.i128] {
+    [s1, c1] = liblapzt.i128.add.carry(a, b)
+    [s2, c2] = liblapzt.i128.add.carry(s1, c)
+    carry: liblapzt.i128 = liblapzt.i128.add(liblapzt.i128.from.bool(c1), liblapzt.i128.from.bool(c2))
+    [s2, carry]
+}
+
+liblapzt.i128.mul.full = (a: liblapzt.i128, b: liblapzt.i128) [liblapzt.i128, liblapzt.i128] {
+    [low, high] = liblapzt.u128.mul.full(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
+    [liblapzt.i128.from.u128(low), liblapzt.i128.from.u128(high)]
+}
+
+liblapzt.i128.shl1 = (a: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.shl1(liblapzt.i128.to.u128(a)))
+}
+
+liblapzt.i128.with.lsb = (a: liblapzt.i128, bit: liblapzt.bool) liblapzt.i128 {
+    liblapzt.i128.from.u128(liblapzt.u128.with.lsb(liblapzt.i128.to.u128(a), bit))
+}
+
+liblapzt.i128.msb = (a: liblapzt.i128) liblapzt.u1 {
+    [low, high] = a
+    liblapzt.i64.msb(high)
+}
+
+liblapzt.i128.sign.erased = (a: liblapzt.i128) liblapzt.bool {
+    [low, high] = a
+    liblapzt.i64.sign(high)
+}
+
+liblapzt.i128.sign = liblapzt.i128.sign.erased
+
+liblapzt.i128.is.negative.erased = (a: liblapzt.i128) liblapzt.bool {
+    liblapzt.i128.sign(a)
+}
+
+liblapzt.i128.is.negative = liblapzt.i128.is.negative.erased
+
+liblapzt.i128.eq.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
+    liblapzt.u128.eq(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
+}
+
+liblapzt.i128.eq = liblapzt.i128.eq.erased
+
+liblapzt.i128.ne.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.i128.eq(a, b))
+}
+
+liblapzt.i128.ne = liblapzt.i128.ne.erased
+
+liblapzt.i128.lt.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
+    a.negative: liblapzt.bool = liblapzt.i128.sign(a)
+    b.negative: liblapzt.bool = liblapzt.i128.sign(b)
+    differ: liblapzt.bool = liblapzt.bool.xor(a.negative, b.negative)
+    BRANCH (differ) {
+        a.negative
+    } {
+        liblapzt.u128.lt(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
+    }
+}
+
+liblapzt.i128.lt = liblapzt.i128.lt.erased
+
+liblapzt.i128.le.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
+    liblapzt.bool.or(liblapzt.i128.lt(a, b), liblapzt.i128.eq(a, b))
+}
+
+liblapzt.i128.le = liblapzt.i128.le.erased
+
+liblapzt.i128.gt.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
+    liblapzt.i128.lt(b, a)
+}
+
+liblapzt.i128.gt = liblapzt.i128.gt.erased
+
+liblapzt.i128.ge.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
+    liblapzt.i128.le(b, a)
+}
+
+liblapzt.i128.ge = liblapzt.i128.ge.erased
+
+liblapzt.i128.select.erased = (flag: liblapzt.bool, when.true: liblapzt.i128, when.false: liblapzt.i128) liblapzt.i128 {
+    [tl, th] = when.true
+    [fl, fh] = when.false
+    [liblapzt.i64.select(flag, tl, fl), liblapzt.i64.select(flag, th, fh)]
+}
+
+liblapzt.i128.select = liblapzt.i128.select.erased
+
+liblapzt.i128.min.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.select(liblapzt.i128.lt(a, b), a, b)
+}
+
+liblapzt.i128.min = liblapzt.i128.min.erased
+
+liblapzt.i128.max.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.select(liblapzt.i128.gt(a, b), a, b)
+}
+
+liblapzt.i128.max = liblapzt.i128.max.erased
+
+liblapzt.i128.inc.erased = (a: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.add(a, liblapzt.i128.one)
+}
+
+liblapzt.i128.inc = liblapzt.i128.inc.erased
+
+liblapzt.i128.dec.erased = (a: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.sub(a, liblapzt.i128.one)
+}
+
+liblapzt.i128.dec = liblapzt.i128.dec.erased
+
+liblapzt.i128.is.zero.erased = (a: liblapzt.i128) liblapzt.bool {
+    liblapzt.u128.is.zero(liblapzt.i128.to.u128(a))
+}
+
+liblapzt.i128.is.zero = liblapzt.i128.is.zero.erased
+
+liblapzt.i128.is.one.erased = (a: liblapzt.i128) liblapzt.bool {
+    liblapzt.u128.is.one(liblapzt.i128.to.u128(a))
+}
+
+liblapzt.i128.is.one = liblapzt.i128.is.one.erased
+
+liblapzt.i128.to.bool.erased = (a: liblapzt.i128) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.i128.is.zero(a))
+}
+
+liblapzt.i128.to.bool = liblapzt.i128.to.bool.erased
+
+liblapzt.i128.neg.erased = (a: liblapzt.i128) liblapzt.i128 {
+    liblapzt.i128.inc(liblapzt.i128.not(a))
+}
+
+liblapzt.i128.neg = liblapzt.i128.neg.erased
+
+liblapzt.i128.abs.erased = (a: liblapzt.i128) liblapzt.i128 {
+    negative: liblapzt.bool = liblapzt.i128.sign(a)
+    BRANCH (negative) {
+        liblapzt.i128.neg(a)
+    } {
+        a
+    }
+}
+
+liblapzt.i128.abs = liblapzt.i128.abs.erased
+
+liblapzt.i128.div.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    zero: liblapzt.bool = liblapzt.i128.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.i128.zero
+    } {
+        negative: liblapzt.bool = liblapzt.bool.xor(liblapzt.i128.sign(a), liblapzt.i128.sign(b))
+        magnitude: liblapzt.u128 = liblapzt.u128.div(liblapzt.i128.to.u128(liblapzt.i128.abs(a)), liblapzt.i128.to.u128(liblapzt.i128.abs(b)))
+        quotient: liblapzt.i128 = liblapzt.i128.from.u128(magnitude)
+        BRANCH (negative) {
+            liblapzt.i128.neg(quotient)
+        } {
+            quotient
+        }
+    }
+}
+
+liblapzt.i128.div = liblapzt.i128.div.erased
+
+liblapzt.i128.mod.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
+    zero: liblapzt.bool = liblapzt.i128.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.i128.zero
+    } {
+        negative: liblapzt.bool = liblapzt.i128.sign(a)
+        magnitude: liblapzt.u128 = liblapzt.u128.mod(liblapzt.i128.to.u128(liblapzt.i128.abs(a)), liblapzt.i128.to.u128(liblapzt.i128.abs(b)))
+        remainder: liblapzt.i128 = liblapzt.i128.from.u128(magnitude)
+        BRANCH (negative) {
+            liblapzt.i128.neg(remainder)
+        } {
+            remainder
+        }
+    }
+}
+
+liblapzt.i128.mod = liblapzt.i128.mod.erased

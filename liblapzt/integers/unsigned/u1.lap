@@ -1,0 +1,173 @@
+liblapzt.u1.erased = BIT
+liblapzt.bool.erased = BIT
+
+liblapzt.u1 = liblapzt.u1.erased
+liblapzt.bool = liblapzt.bool.erased
+
+liblapzt.u1.one.erased: liblapzt.u1.erased = NAND(BIT, NAND(BIT, BIT))
+liblapzt.u1.zero.erased: liblapzt.u1.erased = NAND(liblapzt.u1.one.erased, liblapzt.u1.one.erased)
+liblapzt.u1.maximum.erased: liblapzt.u1.erased = liblapzt.u1.one.erased
+
+liblapzt.u1.one: liblapzt.u1 = liblapzt.u1.one.erased
+liblapzt.u1.zero: liblapzt.u1 = liblapzt.u1.zero.erased
+liblapzt.u1.maximum: liblapzt.u1 = liblapzt.u1.maximum.erased
+
+liblapzt.u1.not = (a: liblapzt.u1) liblapzt.u1 {
+    NAND(a, a)
+}
+
+liblapzt.u1.and = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    n: liblapzt.u1 = NAND(a, b)
+    liblapzt.u1.not(n)
+}
+
+liblapzt.u1.or = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    na: liblapzt.u1 = NAND(a, a)
+    nb: liblapzt.u1 = NAND(b, b)
+    NAND(na, nb)
+}
+
+liblapzt.u1.xor = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    n: liblapzt.u1 = NAND(a, b)
+    na: liblapzt.u1 = NAND(a, n)
+    nb: liblapzt.u1 = NAND(b, n)
+    NAND(na, nb)
+}
+
+liblapzt.u1.nand = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    NAND(a, b)
+}
+
+liblapzt.u1.nor = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    na: liblapzt.u1 = NAND(a, a)
+    nb: liblapzt.u1 = NAND(b, b)
+    liblapzt.u1.and(na, nb)
+}
+
+liblapzt.u1.xnor = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    liblapzt.u1.not(liblapzt.u1.xor(a, b))
+}
+
+liblapzt.u1.implies = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    na: liblapzt.u1 = NAND(a, a)
+    liblapzt.u1.or(na, b)
+}
+
+liblapzt.u1.from.bool = (a: liblapzt.bool) liblapzt.u1 {
+    a
+}
+
+liblapzt.u1.add.carry = (a: liblapzt.u1, b: liblapzt.u1) [liblapzt.u1, liblapzt.bool] {
+    [liblapzt.u1.xor(a, b), liblapzt.u1.and(a, b)]
+}
+
+liblapzt.u1.add = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    [sum, carry] = liblapzt.u1.add.carry(a, b)
+    sum
+}
+
+liblapzt.u1.sub.borrow = (a: liblapzt.u1, b: liblapzt.u1) [liblapzt.u1, liblapzt.bool] {
+    na: liblapzt.u1 = liblapzt.u1.not(a)
+    [liblapzt.u1.xor(a, b), liblapzt.u1.and(na, b)]
+}
+
+liblapzt.u1.sub = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    [difference, borrow] = liblapzt.u1.sub.borrow(a, b)
+    difference
+}
+
+liblapzt.u1.add3 = (a: liblapzt.u1, b: liblapzt.u1, c: liblapzt.u1) [liblapzt.u1, liblapzt.u1] {
+    [s1, c1] = liblapzt.u1.add.carry(a, b)
+    [s2, c2] = liblapzt.u1.add.carry(s1, c)
+    carry: liblapzt.u1 = liblapzt.u1.add(liblapzt.u1.from.bool(c1), liblapzt.u1.from.bool(c2))
+    [s2, carry]
+}
+
+liblapzt.u1.mul.full = (a: liblapzt.u1, b: liblapzt.u1) [liblapzt.u1, liblapzt.u1] {
+    [liblapzt.u1.and(a, b), liblapzt.u1.zero]
+}
+
+liblapzt.u1.mul = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    [low, high] = liblapzt.u1.mul.full(a, b)
+    low
+}
+
+liblapzt.u1.div = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    liblapzt.u1.and(a, b)
+}
+
+liblapzt.u1.mod = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    liblapzt.u1.zero
+}
+
+liblapzt.u1.eq = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
+    liblapzt.u1.not(liblapzt.u1.xor(a, b))
+}
+
+liblapzt.u1.ne = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
+    liblapzt.u1.xor(a, b)
+}
+
+liblapzt.u1.lt = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
+    na: liblapzt.u1 = liblapzt.u1.not(a)
+    liblapzt.u1.and(na, b)
+}
+
+liblapzt.u1.le = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
+    na: liblapzt.u1 = liblapzt.u1.not(a)
+    liblapzt.u1.or(na, b)
+}
+
+liblapzt.u1.gt = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
+    nb: liblapzt.u1 = liblapzt.u1.not(b)
+    liblapzt.u1.and(a, nb)
+}
+
+liblapzt.u1.ge = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
+    nb: liblapzt.u1 = liblapzt.u1.not(b)
+    liblapzt.u1.or(a, nb)
+}
+
+liblapzt.u1.min = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    liblapzt.u1.and(a, b)
+}
+
+liblapzt.u1.max = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
+    liblapzt.u1.or(a, b)
+}
+
+liblapzt.u1.inc = (a: liblapzt.u1) liblapzt.u1 {
+    liblapzt.u1.not(a)
+}
+
+liblapzt.u1.dec = (a: liblapzt.u1) liblapzt.u1 {
+    liblapzt.u1.not(a)
+}
+
+liblapzt.u1.select = (flag: liblapzt.bool, when.one: liblapzt.u1, when.zero: liblapzt.u1) liblapzt.u1 {
+    BRANCH (flag) { when.one } { when.zero }
+}
+
+liblapzt.u1.is.zero = (a: liblapzt.u1) liblapzt.bool {
+    liblapzt.u1.not(a)
+}
+
+liblapzt.u1.is.one = (a: liblapzt.u1) liblapzt.bool {
+    a
+}
+
+liblapzt.u1.to.bool = (a: liblapzt.u1) liblapzt.bool {
+    a
+}
+
+liblapzt.u1.shl1 = (a: liblapzt.u1) liblapzt.u1 {
+    liblapzt.u1.zero
+}
+
+liblapzt.u1.with.lsb = (a: liblapzt.u1, bit: liblapzt.bool) liblapzt.u1 {
+    bit
+}
+
+liblapzt.u1.msb = (a: liblapzt.u1) liblapzt.u1 {
+    a
+}

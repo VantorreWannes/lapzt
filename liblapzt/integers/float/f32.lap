@@ -1,0 +1,945 @@
+liblapzt.f32.erased = [liblapzt.u16.erased, liblapzt.u16.erased]
+
+liblapzt.f32 = liblapzt.f32.erased
+
+liblapzt.f32.zero.erased: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.one.erased: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.negative.one.erased: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]]]]
+liblapzt.f32.infinity.erased: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.negative.infinity.erased: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]]]]]
+liblapzt.f32.nan.erased: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.maximum.erased: liblapzt.u32 = [[[[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]]]], [[[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.minimum.erased: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.epsilon.erased: liblapzt.u32 = [[[[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+
+liblapzt.f32.zero: liblapzt.f32 = liblapzt.f32.zero.erased
+liblapzt.f32.one: liblapzt.f32 = liblapzt.f32.one.erased
+liblapzt.f32.negative.one: liblapzt.f32 = liblapzt.f32.negative.one.erased
+liblapzt.f32.infinity: liblapzt.f32 = liblapzt.f32.infinity.erased
+liblapzt.f32.negative.infinity: liblapzt.f32 = liblapzt.f32.negative.infinity.erased
+liblapzt.f32.nan: liblapzt.f32 = liblapzt.f32.nan.erased
+liblapzt.f32.maximum: liblapzt.f32 = liblapzt.f32.maximum.erased
+liblapzt.f32.minimum: liblapzt.f32 = liblapzt.f32.minimum.erased
+liblapzt.f32.epsilon: liblapzt.f32 = liblapzt.f32.epsilon.erased
+
+liblapzt.f32.hidden: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.mantissa.mask: liblapzt.u32 = [[[[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]]]], [[[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.exponent.mask: liblapzt.u32 = [[[[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.sign.mask: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]]]]
+liblapzt.f32.bias: liblapzt.u32 = [[[[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.exponent.maximum: liblapzt.u32 = [[[[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.one.bits: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.nan.bits: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.infinity.bits: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.two.pow.mantissa: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.two.pow.exponent: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.two.pow.mantissa.plus.one: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.two.pow.mantissa.plus.two: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.two.pow.mantissa.plus.three: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.two.pow.sign: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]]]]
+liblapzt.f32.shift.limit: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.mantissa.width: liblapzt.u32 = [[[[[liblapzt.u1.one.erased, liblapzt.u1.one.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.mul.extra.bit: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.mul.low.extra: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.mul.low.normal: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.integer.width: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+
+liblapzt.f32.shift.1: liblapzt.u32 = [[[[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.divisor.1: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.shift.2: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.divisor.2: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.shift.4: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.divisor.4: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.shift.8: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.divisor.8: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.shift.16: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.divisor.16: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.0: liblapzt.u32 = [[[[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.1: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.2: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.3: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.4: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.5: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.6: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.7: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.8: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.9: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.10: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.11: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.12: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.13: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.14: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.15: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.16: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.17: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.18: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.19: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.20: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.21: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.22: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+liblapzt.f32.bit.23: liblapzt.u32 = [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]
+
+liblapzt.f32.to.bits = (a: liblapzt.f32) liblapzt.u32 {
+    [low, high] = a
+    [low, high]
+}
+
+liblapzt.f32.from.bits = (a: liblapzt.u32) liblapzt.f32 {
+    [low, high] = a
+    [low, high]
+}
+
+liblapzt.f32.shr = (a: liblapzt.u32, amount: liblapzt.u32) liblapzt.u32 {
+    s0: liblapzt.u32 = liblapzt.u32.select(liblapzt.u32.is.zero(liblapzt.u32.and(amount, liblapzt.f32.shift.1)), a, liblapzt.u32.div(a, liblapzt.f32.divisor.1))
+    s1: liblapzt.u32 = liblapzt.u32.select(liblapzt.u32.is.zero(liblapzt.u32.and(amount, liblapzt.f32.shift.2)), s0, liblapzt.u32.div(s0, liblapzt.f32.divisor.2))
+    s2: liblapzt.u32 = liblapzt.u32.select(liblapzt.u32.is.zero(liblapzt.u32.and(amount, liblapzt.f32.shift.4)), s1, liblapzt.u32.div(s1, liblapzt.f32.divisor.4))
+    s3: liblapzt.u32 = liblapzt.u32.select(liblapzt.u32.is.zero(liblapzt.u32.and(amount, liblapzt.f32.shift.8)), s2, liblapzt.u32.div(s2, liblapzt.f32.divisor.8))
+    s4: liblapzt.u32 = liblapzt.u32.select(liblapzt.u32.is.zero(liblapzt.u32.and(amount, liblapzt.f32.shift.16)), s3, liblapzt.u32.div(s3, liblapzt.f32.divisor.16))
+    s4
+}
+
+liblapzt.f32.shl = (a: liblapzt.u32, amount: liblapzt.u32) liblapzt.u32 {
+    s0: liblapzt.u32 = liblapzt.u32.select(liblapzt.u32.is.zero(liblapzt.u32.and(amount, liblapzt.f32.shift.1)), a, liblapzt.u32.mul(a, liblapzt.f32.divisor.1))
+    s1: liblapzt.u32 = liblapzt.u32.select(liblapzt.u32.is.zero(liblapzt.u32.and(amount, liblapzt.f32.shift.2)), s0, liblapzt.u32.mul(s0, liblapzt.f32.divisor.2))
+    s2: liblapzt.u32 = liblapzt.u32.select(liblapzt.u32.is.zero(liblapzt.u32.and(amount, liblapzt.f32.shift.4)), s1, liblapzt.u32.mul(s1, liblapzt.f32.divisor.4))
+    s3: liblapzt.u32 = liblapzt.u32.select(liblapzt.u32.is.zero(liblapzt.u32.and(amount, liblapzt.f32.shift.8)), s2, liblapzt.u32.mul(s2, liblapzt.f32.divisor.8))
+    s4: liblapzt.u32 = liblapzt.u32.select(liblapzt.u32.is.zero(liblapzt.u32.and(amount, liblapzt.f32.shift.16)), s3, liblapzt.u32.mul(s3, liblapzt.f32.divisor.16))
+    s4
+}
+
+liblapzt.f32.sign = (a: liblapzt.f32) liblapzt.bool {
+    liblapzt.u32.msb(liblapzt.f32.to.bits(a))
+}
+
+liblapzt.f32.exponent = (a: liblapzt.f32) liblapzt.u32 {
+    liblapzt.u32.mod(liblapzt.u32.div(liblapzt.f32.to.bits(a), liblapzt.f32.two.pow.mantissa), liblapzt.f32.two.pow.exponent)
+}
+
+liblapzt.f32.mantissa = (a: liblapzt.f32) liblapzt.u32 {
+    liblapzt.u32.mod(liblapzt.f32.to.bits(a), liblapzt.f32.two.pow.mantissa)
+}
+
+liblapzt.f32.pack = (sign: liblapzt.bool, exponent: liblapzt.u32, mantissa: liblapzt.u32) liblapzt.f32 {
+    liblapzt.f32.from.bits(liblapzt.u32.or(liblapzt.u32.or(liblapzt.f32.shl(exponent, liblapzt.f32.mantissa.width), mantissa), liblapzt.u32.select(sign, liblapzt.f32.sign.mask, liblapzt.u32.zero)))
+}
+
+liblapzt.f32.select.erased = (flag: liblapzt.bool, when.true: liblapzt.f32, when.false: liblapzt.f32) liblapzt.f32 {
+    BRANCH (flag) {
+        when.true
+    } {
+        when.false
+    }
+}
+
+liblapzt.f32.select = liblapzt.f32.select.erased
+
+liblapzt.f32.is.zero = (a: liblapzt.f32) liblapzt.bool {
+    liblapzt.bool.and(liblapzt.u32.is.zero(liblapzt.f32.exponent(a)), liblapzt.u32.is.zero(liblapzt.f32.mantissa(a)))
+}
+
+liblapzt.f32.is.one = (a: liblapzt.f32) liblapzt.bool {
+    liblapzt.u32.eq(liblapzt.f32.to.bits(a), liblapzt.f32.one.bits)
+}
+
+liblapzt.f32.is.nan = (a: liblapzt.f32) liblapzt.bool {
+    liblapzt.bool.and(liblapzt.u32.eq(liblapzt.f32.exponent(a), liblapzt.f32.exponent.maximum), liblapzt.bool.not(liblapzt.u32.is.zero(liblapzt.f32.mantissa(a))))
+}
+
+liblapzt.f32.is.infinite = (a: liblapzt.f32) liblapzt.bool {
+    liblapzt.bool.and(liblapzt.u32.eq(liblapzt.f32.exponent(a), liblapzt.f32.exponent.maximum), liblapzt.u32.is.zero(liblapzt.f32.mantissa(a)))
+}
+
+liblapzt.f32.is.negative = (a: liblapzt.f32) liblapzt.bool {
+    liblapzt.f32.sign(a)
+}
+
+liblapzt.f32.neg.erased = (a: liblapzt.f32) liblapzt.f32 {
+    liblapzt.f32.from.bits(liblapzt.u32.xor(liblapzt.f32.to.bits(a), liblapzt.f32.sign.mask))
+}
+
+liblapzt.f32.neg = liblapzt.f32.neg.erased
+
+liblapzt.f32.abs.erased = (a: liblapzt.f32) liblapzt.f32 {
+    liblapzt.f32.from.bits(liblapzt.u32.and(liblapzt.f32.to.bits(a), liblapzt.u32.not(liblapzt.f32.sign.mask)))
+}
+
+liblapzt.f32.abs = liblapzt.f32.abs.erased
+
+liblapzt.f32.to.bool = (a: liblapzt.f32) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.f32.is.zero(a))
+}
+
+liblapzt.f32.from.bool = (a: liblapzt.bool) liblapzt.f32 {
+    liblapzt.f32.select(a, liblapzt.f32.one, liblapzt.f32.zero)
+}
+
+liblapzt.f32.eq.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.bool {
+    a.nan: liblapzt.bool = liblapzt.f32.is.nan(a)
+    b.nan: liblapzt.bool = liblapzt.f32.is.nan(b)
+    BRANCH (liblapzt.bool.or(a.nan, b.nan)) {
+        liblapzt.bool.false
+    } {
+        liblapzt.bool.or(liblapzt.u32.eq(liblapzt.f32.to.bits(a), liblapzt.f32.to.bits(b)), liblapzt.bool.and(liblapzt.f32.is.zero(a), liblapzt.f32.is.zero(b)))
+    }
+}
+
+liblapzt.f32.eq = liblapzt.f32.eq.erased
+
+liblapzt.f32.ne.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.f32.eq(a, b))
+}
+
+liblapzt.f32.ne = liblapzt.f32.ne.erased
+
+liblapzt.f32.lt.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.bool {
+    a.nan: liblapzt.bool = liblapzt.f32.is.nan(a)
+    b.nan: liblapzt.bool = liblapzt.f32.is.nan(b)
+    BRANCH (liblapzt.bool.or(a.nan, b.nan)) {
+        liblapzt.bool.false
+    } {
+        a.sign: liblapzt.bool = liblapzt.f32.sign(a)
+        b.sign: liblapzt.bool = liblapzt.f32.sign(b)
+        differ: liblapzt.bool = liblapzt.bool.xor(a.sign, b.sign)
+        BRANCH (differ) {
+            a.sign
+        } {
+            BRANCH (a.sign) {
+                liblapzt.u32.gt(liblapzt.f32.to.bits(a), liblapzt.f32.to.bits(b))
+            } {
+                liblapzt.u32.lt(liblapzt.f32.to.bits(a), liblapzt.f32.to.bits(b))
+            }
+        }
+    }
+}
+
+liblapzt.f32.lt = liblapzt.f32.lt.erased
+
+liblapzt.f32.le.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.bool {
+    liblapzt.bool.or(liblapzt.f32.lt(a, b), liblapzt.f32.eq(a, b))
+}
+
+liblapzt.f32.le = liblapzt.f32.le.erased
+
+liblapzt.f32.gt.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.bool {
+    liblapzt.f32.lt(b, a)
+}
+
+liblapzt.f32.gt = liblapzt.f32.gt.erased
+
+liblapzt.f32.ge.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.bool {
+    liblapzt.f32.le(b, a)
+}
+
+liblapzt.f32.ge = liblapzt.f32.ge.erased
+
+liblapzt.f32.min.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.f32 {
+    a.nan: liblapzt.bool = liblapzt.f32.is.nan(a)
+    b.nan: liblapzt.bool = liblapzt.f32.is.nan(b)
+    BRANCH (liblapzt.bool.or(a.nan, b.nan)) {
+        liblapzt.f32.nan
+    } {
+        liblapzt.f32.select(liblapzt.f32.lt(a, b), a, b)
+    }
+}
+
+liblapzt.f32.min = liblapzt.f32.min.erased
+
+liblapzt.f32.max.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.f32 {
+    a.nan: liblapzt.bool = liblapzt.f32.is.nan(a)
+    b.nan: liblapzt.bool = liblapzt.f32.is.nan(b)
+    BRANCH (liblapzt.bool.or(a.nan, b.nan)) {
+        liblapzt.f32.nan
+    } {
+        liblapzt.f32.select(liblapzt.f32.gt(a, b), a, b)
+    }
+}
+
+liblapzt.f32.max = liblapzt.f32.max.erased
+
+liblapzt.f32.add.finite = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.f32 {
+    a.exp: liblapzt.u32 = liblapzt.f32.exponent(a)
+    b.exp: liblapzt.u32 = liblapzt.f32.exponent(b)
+    a.man: liblapzt.u32 = liblapzt.f32.mantissa(a)
+    b.man: liblapzt.u32 = liblapzt.f32.mantissa(b)
+    a.sign: liblapzt.bool = liblapzt.f32.sign(a)
+    b.sign: liblapzt.bool = liblapzt.f32.sign(b)
+    a.normal: liblapzt.bool = liblapzt.bool.not(liblapzt.u32.is.zero(a.exp))
+    b.normal: liblapzt.bool = liblapzt.bool.not(liblapzt.u32.is.zero(b.exp))
+    a.man.eff: liblapzt.u32 = liblapzt.u32.select(a.normal, liblapzt.u32.or(a.man, liblapzt.f32.hidden), a.man)
+    b.man.eff: liblapzt.u32 = liblapzt.u32.select(b.normal, liblapzt.u32.or(b.man, liblapzt.f32.hidden), b.man)
+    a.exp.eff: liblapzt.u32 = liblapzt.u32.select(a.normal, a.exp, liblapzt.u32.one)
+    b.exp.eff: liblapzt.u32 = liblapzt.u32.select(b.normal, b.exp, liblapzt.u32.one)
+    a.bigger: liblapzt.bool = liblapzt.u32.ge(a.exp.eff, b.exp.eff)
+    big.man: liblapzt.u32 = liblapzt.u32.select(a.bigger, a.man.eff, b.man.eff)
+    small.man: liblapzt.u32 = liblapzt.u32.select(a.bigger, b.man.eff, a.man.eff)
+    big.exp: liblapzt.u32 = liblapzt.u32.select(a.bigger, a.exp.eff, b.exp.eff)
+    small.exp: liblapzt.u32 = liblapzt.u32.select(a.bigger, b.exp.eff, a.exp.eff)
+    big.sign: liblapzt.bool = liblapzt.bool.select(a.bigger, a.sign, b.sign)
+    small.sign: liblapzt.bool = liblapzt.bool.select(a.bigger, b.sign, a.sign)
+    d: liblapzt.u32 = liblapzt.u32.sub(big.exp, small.exp)
+    d.clamped: liblapzt.u32 = liblapzt.u32.min(d, liblapzt.f32.shift.limit)
+    small.shifted: liblapzt.u32 = liblapzt.f32.shr(small.man, d.clamped)
+    shifted.out: liblapzt.u32 = liblapzt.u32.sub(small.man, liblapzt.f32.shl(small.shifted, d.clamped))
+    sticky: liblapzt.bool = liblapzt.bool.not(liblapzt.u32.is.zero(shifted.out))
+    same.sign: liblapzt.bool = liblapzt.bool.eq(big.sign, small.sign)
+    difference: liblapzt.u32 = liblapzt.u32.sub(big.man, small.shifted)
+    borrow: liblapzt.bool = liblapzt.bool.and(liblapzt.bool.not(same.sign), liblapzt.u32.lt(big.man, small.shifted))
+    sum: liblapzt.u32 = liblapzt.u32.select(same.sign, liblapzt.u32.add(big.man, small.shifted), liblapzt.u32.select(borrow, liblapzt.u32.sub(small.shifted, big.man), difference))
+    sign: liblapzt.bool = liblapzt.bool.select(borrow, small.sign, big.sign)
+    carry: liblapzt.bool = liblapzt.u32.is.one(liblapzt.u32.mod(liblapzt.u32.div(sum, liblapzt.f32.two.pow.mantissa.plus.one), liblapzt.f32.divisor.1))
+    s0: liblapzt.u32 = liblapzt.u32.select(carry, liblapzt.u32.div(sum, liblapzt.f32.divisor.1), sum)
+    e0: liblapzt.u32 = liblapzt.u32.select(carry, liblapzt.u32.add(big.exp, liblapzt.u32.one), big.exp)
+    below0: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s0, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e0)))
+    s1: liblapzt.u32 = liblapzt.u32.select(below0, liblapzt.u32.mul(s0, liblapzt.f32.divisor.1), s0)
+    e1: liblapzt.u32 = liblapzt.u32.select(below0, liblapzt.u32.sub(e0, liblapzt.u32.one), e0)
+    below1: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s1, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e1)))
+    s2: liblapzt.u32 = liblapzt.u32.select(below1, liblapzt.u32.mul(s1, liblapzt.f32.divisor.1), s1)
+    e2: liblapzt.u32 = liblapzt.u32.select(below1, liblapzt.u32.sub(e1, liblapzt.u32.one), e1)
+    below2: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s2, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e2)))
+    s3: liblapzt.u32 = liblapzt.u32.select(below2, liblapzt.u32.mul(s2, liblapzt.f32.divisor.1), s2)
+    e3: liblapzt.u32 = liblapzt.u32.select(below2, liblapzt.u32.sub(e2, liblapzt.u32.one), e2)
+    below3: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s3, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e3)))
+    s4: liblapzt.u32 = liblapzt.u32.select(below3, liblapzt.u32.mul(s3, liblapzt.f32.divisor.1), s3)
+    e4: liblapzt.u32 = liblapzt.u32.select(below3, liblapzt.u32.sub(e3, liblapzt.u32.one), e3)
+    below4: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s4, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e4)))
+    s5: liblapzt.u32 = liblapzt.u32.select(below4, liblapzt.u32.mul(s4, liblapzt.f32.divisor.1), s4)
+    e5: liblapzt.u32 = liblapzt.u32.select(below4, liblapzt.u32.sub(e4, liblapzt.u32.one), e4)
+    below5: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s5, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e5)))
+    s6: liblapzt.u32 = liblapzt.u32.select(below5, liblapzt.u32.mul(s5, liblapzt.f32.divisor.1), s5)
+    e6: liblapzt.u32 = liblapzt.u32.select(below5, liblapzt.u32.sub(e5, liblapzt.u32.one), e5)
+    below6: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s6, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e6)))
+    s7: liblapzt.u32 = liblapzt.u32.select(below6, liblapzt.u32.mul(s6, liblapzt.f32.divisor.1), s6)
+    e7: liblapzt.u32 = liblapzt.u32.select(below6, liblapzt.u32.sub(e6, liblapzt.u32.one), e6)
+    below7: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s7, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e7)))
+    s8: liblapzt.u32 = liblapzt.u32.select(below7, liblapzt.u32.mul(s7, liblapzt.f32.divisor.1), s7)
+    e8: liblapzt.u32 = liblapzt.u32.select(below7, liblapzt.u32.sub(e7, liblapzt.u32.one), e7)
+    below8: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s8, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e8)))
+    s9: liblapzt.u32 = liblapzt.u32.select(below8, liblapzt.u32.mul(s8, liblapzt.f32.divisor.1), s8)
+    e9: liblapzt.u32 = liblapzt.u32.select(below8, liblapzt.u32.sub(e8, liblapzt.u32.one), e8)
+    below9: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s9, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e9)))
+    s10: liblapzt.u32 = liblapzt.u32.select(below9, liblapzt.u32.mul(s9, liblapzt.f32.divisor.1), s9)
+    e10: liblapzt.u32 = liblapzt.u32.select(below9, liblapzt.u32.sub(e9, liblapzt.u32.one), e9)
+    below10: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s10, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e10)))
+    s11: liblapzt.u32 = liblapzt.u32.select(below10, liblapzt.u32.mul(s10, liblapzt.f32.divisor.1), s10)
+    e11: liblapzt.u32 = liblapzt.u32.select(below10, liblapzt.u32.sub(e10, liblapzt.u32.one), e10)
+    below11: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s11, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e11)))
+    s12: liblapzt.u32 = liblapzt.u32.select(below11, liblapzt.u32.mul(s11, liblapzt.f32.divisor.1), s11)
+    e12: liblapzt.u32 = liblapzt.u32.select(below11, liblapzt.u32.sub(e11, liblapzt.u32.one), e11)
+    below12: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s12, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e12)))
+    s13: liblapzt.u32 = liblapzt.u32.select(below12, liblapzt.u32.mul(s12, liblapzt.f32.divisor.1), s12)
+    e13: liblapzt.u32 = liblapzt.u32.select(below12, liblapzt.u32.sub(e12, liblapzt.u32.one), e12)
+    below13: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s13, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e13)))
+    s14: liblapzt.u32 = liblapzt.u32.select(below13, liblapzt.u32.mul(s13, liblapzt.f32.divisor.1), s13)
+    e14: liblapzt.u32 = liblapzt.u32.select(below13, liblapzt.u32.sub(e13, liblapzt.u32.one), e13)
+    below14: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s14, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e14)))
+    s15: liblapzt.u32 = liblapzt.u32.select(below14, liblapzt.u32.mul(s14, liblapzt.f32.divisor.1), s14)
+    e15: liblapzt.u32 = liblapzt.u32.select(below14, liblapzt.u32.sub(e14, liblapzt.u32.one), e14)
+    below15: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s15, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e15)))
+    s16: liblapzt.u32 = liblapzt.u32.select(below15, liblapzt.u32.mul(s15, liblapzt.f32.divisor.1), s15)
+    e16: liblapzt.u32 = liblapzt.u32.select(below15, liblapzt.u32.sub(e15, liblapzt.u32.one), e15)
+    below16: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s16, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e16)))
+    s17: liblapzt.u32 = liblapzt.u32.select(below16, liblapzt.u32.mul(s16, liblapzt.f32.divisor.1), s16)
+    e17: liblapzt.u32 = liblapzt.u32.select(below16, liblapzt.u32.sub(e16, liblapzt.u32.one), e16)
+    below17: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s17, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e17)))
+    s18: liblapzt.u32 = liblapzt.u32.select(below17, liblapzt.u32.mul(s17, liblapzt.f32.divisor.1), s17)
+    e18: liblapzt.u32 = liblapzt.u32.select(below17, liblapzt.u32.sub(e17, liblapzt.u32.one), e17)
+    below18: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s18, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e18)))
+    s19: liblapzt.u32 = liblapzt.u32.select(below18, liblapzt.u32.mul(s18, liblapzt.f32.divisor.1), s18)
+    e19: liblapzt.u32 = liblapzt.u32.select(below18, liblapzt.u32.sub(e18, liblapzt.u32.one), e18)
+    below19: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s19, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e19)))
+    s20: liblapzt.u32 = liblapzt.u32.select(below19, liblapzt.u32.mul(s19, liblapzt.f32.divisor.1), s19)
+    e20: liblapzt.u32 = liblapzt.u32.select(below19, liblapzt.u32.sub(e19, liblapzt.u32.one), e19)
+    below20: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s20, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e20)))
+    s21: liblapzt.u32 = liblapzt.u32.select(below20, liblapzt.u32.mul(s20, liblapzt.f32.divisor.1), s20)
+    e21: liblapzt.u32 = liblapzt.u32.select(below20, liblapzt.u32.sub(e20, liblapzt.u32.one), e20)
+    below21: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s21, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e21)))
+    s22: liblapzt.u32 = liblapzt.u32.select(below21, liblapzt.u32.mul(s21, liblapzt.f32.divisor.1), s21)
+    e22: liblapzt.u32 = liblapzt.u32.select(below21, liblapzt.u32.sub(e21, liblapzt.u32.one), e21)
+    below22: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s22, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e22)))
+    s23: liblapzt.u32 = liblapzt.u32.select(below22, liblapzt.u32.mul(s22, liblapzt.f32.divisor.1), s22)
+    e23: liblapzt.u32 = liblapzt.u32.select(below22, liblapzt.u32.sub(e22, liblapzt.u32.one), e22)
+    below23: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s23, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e23)))
+    s24: liblapzt.u32 = liblapzt.u32.select(below23, liblapzt.u32.mul(s23, liblapzt.f32.divisor.1), s23)
+    e24: liblapzt.u32 = liblapzt.u32.select(below23, liblapzt.u32.sub(e23, liblapzt.u32.one), e23)
+    below24: liblapzt.bool = liblapzt.bool.and(liblapzt.u32.lt(s24, liblapzt.f32.hidden), liblapzt.bool.not(liblapzt.u32.is.zero(e24)))
+    s25: liblapzt.u32 = liblapzt.u32.select(below24, liblapzt.u32.mul(s24, liblapzt.f32.divisor.1), s24)
+    e25: liblapzt.u32 = liblapzt.u32.select(below24, liblapzt.u32.sub(e24, liblapzt.u32.one), e24)
+    rounded: liblapzt.u32 = liblapzt.u32.select(sticky, liblapzt.u32.add(s25, liblapzt.u32.one), s25)
+    carry2: liblapzt.bool = liblapzt.u32.is.one(liblapzt.u32.mod(liblapzt.u32.div(rounded, liblapzt.f32.two.pow.mantissa.plus.one), liblapzt.f32.divisor.1))
+    s.final: liblapzt.u32 = liblapzt.u32.select(carry2, liblapzt.u32.div(rounded, liblapzt.f32.divisor.1), rounded)
+    e.final: liblapzt.u32 = liblapzt.u32.select(carry2, liblapzt.u32.add(e25, liblapzt.u32.one), e25)
+    overflow: liblapzt.bool = liblapzt.u32.ge(e.final, liblapzt.f32.exponent.maximum)
+    BRANCH (overflow) {
+        liblapzt.f32.pack(sign, liblapzt.f32.exponent.maximum, liblapzt.u32.zero)
+    } {
+        BRANCH (liblapzt.u32.is.zero(s.final)) {
+            liblapzt.f32.zero
+        } {
+            subnormal: liblapzt.bool = liblapzt.u32.is.zero(e.final)
+            man.final: liblapzt.u32 = liblapzt.u32.select(subnormal, s.final, liblapzt.u32.sub(s.final, liblapzt.f32.hidden))
+            liblapzt.f32.pack(sign, e.final, man.final)
+        }
+    }
+}
+
+liblapzt.f32.add.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.f32 {
+    a.nan: liblapzt.bool = liblapzt.f32.is.nan(a)
+    b.nan: liblapzt.bool = liblapzt.f32.is.nan(b)
+    BRANCH (liblapzt.bool.or(a.nan, b.nan)) {
+        liblapzt.f32.nan
+    } {
+        a.inf: liblapzt.bool = liblapzt.f32.is.infinite(a)
+        b.inf: liblapzt.bool = liblapzt.f32.is.infinite(b)
+        BRANCH (liblapzt.bool.and(a.inf, b.inf)) {
+            BRANCH (liblapzt.bool.xor(liblapzt.f32.sign(a), liblapzt.f32.sign(b))) {
+                liblapzt.f32.nan
+            } {
+                a
+            }
+        } {
+            BRANCH (a.inf) {
+                a
+            } {
+                BRANCH (b.inf) {
+                    b
+                } {
+                    a.zero: liblapzt.bool = liblapzt.f32.is.zero(a)
+                    b.zero: liblapzt.bool = liblapzt.f32.is.zero(b)
+                    BRANCH (liblapzt.bool.and(a.zero, b.zero)) {
+                        BRANCH (liblapzt.bool.xor(liblapzt.f32.sign(a), liblapzt.f32.sign(b))) {
+                            liblapzt.f32.zero
+                        } {
+                            a
+                        }
+                    } {
+                        BRANCH (a.zero) {
+                            b
+                        } {
+                            BRANCH (b.zero) {
+                                a
+                            } {
+                                liblapzt.f32.add.finite(a, b)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+liblapzt.f32.add = liblapzt.f32.add.erased
+
+liblapzt.f32.sub.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.f32 {
+    liblapzt.f32.add(a, liblapzt.f32.neg(b))
+}
+
+liblapzt.f32.sub = liblapzt.f32.sub.erased
+
+liblapzt.f32.mul.finite = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.f32 {
+    a.exp: liblapzt.u32 = liblapzt.f32.exponent(a)
+    b.exp: liblapzt.u32 = liblapzt.f32.exponent(b)
+    a.man: liblapzt.u32 = liblapzt.f32.mantissa(a)
+    b.man: liblapzt.u32 = liblapzt.f32.mantissa(b)
+    a.normal: liblapzt.bool = liblapzt.bool.not(liblapzt.u32.is.zero(a.exp))
+    b.normal: liblapzt.bool = liblapzt.bool.not(liblapzt.u32.is.zero(b.exp))
+    a.man.eff: liblapzt.u32 = liblapzt.u32.select(a.normal, liblapzt.u32.or(a.man, liblapzt.f32.hidden), a.man)
+    b.man.eff: liblapzt.u32 = liblapzt.u32.select(b.normal, liblapzt.u32.or(b.man, liblapzt.f32.hidden), b.man)
+    a.exp.eff: liblapzt.u32 = liblapzt.u32.select(a.normal, a.exp, liblapzt.u32.one)
+    b.exp.eff: liblapzt.u32 = liblapzt.u32.select(b.normal, b.exp, liblapzt.u32.one)
+    sign: liblapzt.bool = liblapzt.bool.xor(liblapzt.f32.sign(a), liblapzt.f32.sign(b))
+    exp: liblapzt.u32 = liblapzt.u32.sub(liblapzt.u32.add(a.exp.eff, b.exp.eff), liblapzt.f32.bias)
+    [low, high] = liblapzt.u32.mul.full(a.man.eff, b.man.eff)
+    extra: liblapzt.bool = liblapzt.u32.is.one(liblapzt.u32.mod(liblapzt.u32.div(high, liblapzt.f32.mul.extra.bit), liblapzt.f32.divisor.1))
+    shifted.extra: liblapzt.u32 = liblapzt.u32.or(liblapzt.u32.mul(high, liblapzt.f32.mul.low.extra), liblapzt.u32.div(low, liblapzt.f32.two.pow.mantissa.plus.one))
+    shifted.normal: liblapzt.u32 = liblapzt.u32.or(liblapzt.u32.mul(high, liblapzt.f32.mul.low.normal), liblapzt.u32.div(low, liblapzt.f32.two.pow.mantissa))
+    shifted: liblapzt.u32 = liblapzt.u32.select(extra, shifted.extra, shifted.normal)
+    exp.final: liblapzt.u32 = liblapzt.u32.add(exp, liblapzt.u32.select(extra, liblapzt.u32.one, liblapzt.u32.zero))
+    overflow: liblapzt.bool = liblapzt.u32.ge(exp.final, liblapzt.f32.exponent.maximum)
+    BRANCH (overflow) {
+        liblapzt.f32.pack(sign, liblapzt.f32.exponent.maximum, liblapzt.u32.zero)
+    } {
+        subnormal: liblapzt.bool = liblapzt.u32.is.zero(exp.final)
+        man.final: liblapzt.u32 = liblapzt.u32.select(subnormal, liblapzt.u32.mod(shifted, liblapzt.f32.two.pow.mantissa), liblapzt.u32.sub(shifted, liblapzt.f32.hidden))
+        liblapzt.f32.pack(sign, exp.final, man.final)
+    }
+}
+
+liblapzt.f32.mul.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.f32 {
+    a.nan: liblapzt.bool = liblapzt.f32.is.nan(a)
+    b.nan: liblapzt.bool = liblapzt.f32.is.nan(b)
+    BRANCH (liblapzt.bool.or(a.nan, b.nan)) {
+        liblapzt.f32.nan
+    } {
+        a.inf: liblapzt.bool = liblapzt.f32.is.infinite(a)
+        b.inf: liblapzt.bool = liblapzt.f32.is.infinite(b)
+        a.zero: liblapzt.bool = liblapzt.f32.is.zero(a)
+        b.zero: liblapzt.bool = liblapzt.f32.is.zero(b)
+        BRANCH (liblapzt.bool.or(liblapzt.bool.and(a.inf, b.zero), liblapzt.bool.and(b.inf, a.zero))) {
+            liblapzt.f32.nan
+        } {
+            BRANCH (liblapzt.bool.or(a.inf, b.inf)) {
+                liblapzt.f32.pack(liblapzt.bool.xor(liblapzt.f32.sign(a), liblapzt.f32.sign(b)), liblapzt.f32.exponent.maximum, liblapzt.u32.zero)
+            } {
+                BRANCH (liblapzt.bool.or(a.zero, b.zero)) {
+                    liblapzt.f32.pack(liblapzt.bool.xor(liblapzt.f32.sign(a), liblapzt.f32.sign(b)), liblapzt.u32.zero, liblapzt.u32.zero)
+                } {
+                    liblapzt.f32.mul.finite(a, b)
+                }
+            }
+        }
+    }
+}
+
+liblapzt.f32.mul = liblapzt.f32.mul.erased
+
+liblapzt.f32.div.finite = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.f32 {
+    a.exp: liblapzt.u32 = liblapzt.f32.exponent(a)
+    b.exp: liblapzt.u32 = liblapzt.f32.exponent(b)
+    a.man: liblapzt.u32 = liblapzt.f32.mantissa(a)
+    b.man: liblapzt.u32 = liblapzt.f32.mantissa(b)
+    a.normal: liblapzt.bool = liblapzt.bool.not(liblapzt.u32.is.zero(a.exp))
+    b.normal: liblapzt.bool = liblapzt.bool.not(liblapzt.u32.is.zero(b.exp))
+    a.man.eff: liblapzt.u32 = liblapzt.u32.select(a.normal, liblapzt.u32.or(a.man, liblapzt.f32.hidden), a.man)
+    b.man.eff: liblapzt.u32 = liblapzt.u32.select(b.normal, liblapzt.u32.or(b.man, liblapzt.f32.hidden), b.man)
+    a.exp.eff: liblapzt.u32 = liblapzt.u32.select(a.normal, a.exp, liblapzt.u32.one)
+    b.exp.eff: liblapzt.u32 = liblapzt.u32.select(b.normal, b.exp, liblapzt.u32.one)
+    sign: liblapzt.bool = liblapzt.bool.xor(liblapzt.f32.sign(a), liblapzt.f32.sign(b))
+    exp: liblapzt.u32 = liblapzt.u32.add(liblapzt.u32.sub(a.exp.eff, b.exp.eff), liblapzt.f32.bias)
+    less: liblapzt.bool = liblapzt.u32.lt(a.man.eff, b.man.eff)
+    numerator: liblapzt.u32 = liblapzt.u32.select(less, liblapzt.u32.mul(a.man.eff, liblapzt.f32.divisor.1), a.man.eff)
+    exp.final: liblapzt.u32 = liblapzt.u32.select(less, liblapzt.u32.sub(exp, liblapzt.u32.one), exp)
+    r0: liblapzt.u32 = liblapzt.u32.sub(numerator, b.man.eff)
+    q0: liblapzt.u32 = liblapzt.f32.hidden
+    r1: liblapzt.u32 = liblapzt.u32.mul(r0, liblapzt.f32.divisor.1)
+    ge0: liblapzt.bool = liblapzt.u32.ge(r1, b.man.eff)
+    r2: liblapzt.u32 = liblapzt.u32.select(ge0, liblapzt.u32.sub(r1, b.man.eff), r1)
+    q1: liblapzt.u32 = liblapzt.u32.select(ge0, liblapzt.u32.or(q0, liblapzt.f32.bit.22), q0)
+    r3: liblapzt.u32 = liblapzt.u32.mul(r2, liblapzt.f32.divisor.1)
+    ge1: liblapzt.bool = liblapzt.u32.ge(r3, b.man.eff)
+    r4: liblapzt.u32 = liblapzt.u32.select(ge1, liblapzt.u32.sub(r3, b.man.eff), r3)
+    q2: liblapzt.u32 = liblapzt.u32.select(ge1, liblapzt.u32.or(q1, liblapzt.f32.bit.21), q1)
+    r5: liblapzt.u32 = liblapzt.u32.mul(r4, liblapzt.f32.divisor.1)
+    ge2: liblapzt.bool = liblapzt.u32.ge(r5, b.man.eff)
+    r6: liblapzt.u32 = liblapzt.u32.select(ge2, liblapzt.u32.sub(r5, b.man.eff), r5)
+    q3: liblapzt.u32 = liblapzt.u32.select(ge2, liblapzt.u32.or(q2, liblapzt.f32.bit.20), q2)
+    r7: liblapzt.u32 = liblapzt.u32.mul(r6, liblapzt.f32.divisor.1)
+    ge3: liblapzt.bool = liblapzt.u32.ge(r7, b.man.eff)
+    r8: liblapzt.u32 = liblapzt.u32.select(ge3, liblapzt.u32.sub(r7, b.man.eff), r7)
+    q4: liblapzt.u32 = liblapzt.u32.select(ge3, liblapzt.u32.or(q3, liblapzt.f32.bit.19), q3)
+    r9: liblapzt.u32 = liblapzt.u32.mul(r8, liblapzt.f32.divisor.1)
+    ge4: liblapzt.bool = liblapzt.u32.ge(r9, b.man.eff)
+    r10: liblapzt.u32 = liblapzt.u32.select(ge4, liblapzt.u32.sub(r9, b.man.eff), r9)
+    q5: liblapzt.u32 = liblapzt.u32.select(ge4, liblapzt.u32.or(q4, liblapzt.f32.bit.18), q4)
+    r11: liblapzt.u32 = liblapzt.u32.mul(r10, liblapzt.f32.divisor.1)
+    ge5: liblapzt.bool = liblapzt.u32.ge(r11, b.man.eff)
+    r12: liblapzt.u32 = liblapzt.u32.select(ge5, liblapzt.u32.sub(r11, b.man.eff), r11)
+    q6: liblapzt.u32 = liblapzt.u32.select(ge5, liblapzt.u32.or(q5, liblapzt.f32.bit.17), q5)
+    r13: liblapzt.u32 = liblapzt.u32.mul(r12, liblapzt.f32.divisor.1)
+    ge6: liblapzt.bool = liblapzt.u32.ge(r13, b.man.eff)
+    r14: liblapzt.u32 = liblapzt.u32.select(ge6, liblapzt.u32.sub(r13, b.man.eff), r13)
+    q7: liblapzt.u32 = liblapzt.u32.select(ge6, liblapzt.u32.or(q6, liblapzt.f32.bit.16), q6)
+    r15: liblapzt.u32 = liblapzt.u32.mul(r14, liblapzt.f32.divisor.1)
+    ge7: liblapzt.bool = liblapzt.u32.ge(r15, b.man.eff)
+    r16: liblapzt.u32 = liblapzt.u32.select(ge7, liblapzt.u32.sub(r15, b.man.eff), r15)
+    q8: liblapzt.u32 = liblapzt.u32.select(ge7, liblapzt.u32.or(q7, liblapzt.f32.bit.15), q7)
+    r17: liblapzt.u32 = liblapzt.u32.mul(r16, liblapzt.f32.divisor.1)
+    ge8: liblapzt.bool = liblapzt.u32.ge(r17, b.man.eff)
+    r18: liblapzt.u32 = liblapzt.u32.select(ge8, liblapzt.u32.sub(r17, b.man.eff), r17)
+    q9: liblapzt.u32 = liblapzt.u32.select(ge8, liblapzt.u32.or(q8, liblapzt.f32.bit.14), q8)
+    r19: liblapzt.u32 = liblapzt.u32.mul(r18, liblapzt.f32.divisor.1)
+    ge9: liblapzt.bool = liblapzt.u32.ge(r19, b.man.eff)
+    r20: liblapzt.u32 = liblapzt.u32.select(ge9, liblapzt.u32.sub(r19, b.man.eff), r19)
+    q10: liblapzt.u32 = liblapzt.u32.select(ge9, liblapzt.u32.or(q9, liblapzt.f32.bit.13), q9)
+    r21: liblapzt.u32 = liblapzt.u32.mul(r20, liblapzt.f32.divisor.1)
+    ge10: liblapzt.bool = liblapzt.u32.ge(r21, b.man.eff)
+    r22: liblapzt.u32 = liblapzt.u32.select(ge10, liblapzt.u32.sub(r21, b.man.eff), r21)
+    q11: liblapzt.u32 = liblapzt.u32.select(ge10, liblapzt.u32.or(q10, liblapzt.f32.bit.12), q10)
+    r23: liblapzt.u32 = liblapzt.u32.mul(r22, liblapzt.f32.divisor.1)
+    ge11: liblapzt.bool = liblapzt.u32.ge(r23, b.man.eff)
+    r24: liblapzt.u32 = liblapzt.u32.select(ge11, liblapzt.u32.sub(r23, b.man.eff), r23)
+    q12: liblapzt.u32 = liblapzt.u32.select(ge11, liblapzt.u32.or(q11, liblapzt.f32.bit.11), q11)
+    r25: liblapzt.u32 = liblapzt.u32.mul(r24, liblapzt.f32.divisor.1)
+    ge12: liblapzt.bool = liblapzt.u32.ge(r25, b.man.eff)
+    r26: liblapzt.u32 = liblapzt.u32.select(ge12, liblapzt.u32.sub(r25, b.man.eff), r25)
+    q13: liblapzt.u32 = liblapzt.u32.select(ge12, liblapzt.u32.or(q12, liblapzt.f32.bit.10), q12)
+    r27: liblapzt.u32 = liblapzt.u32.mul(r26, liblapzt.f32.divisor.1)
+    ge13: liblapzt.bool = liblapzt.u32.ge(r27, b.man.eff)
+    r28: liblapzt.u32 = liblapzt.u32.select(ge13, liblapzt.u32.sub(r27, b.man.eff), r27)
+    q14: liblapzt.u32 = liblapzt.u32.select(ge13, liblapzt.u32.or(q13, liblapzt.f32.bit.9), q13)
+    r29: liblapzt.u32 = liblapzt.u32.mul(r28, liblapzt.f32.divisor.1)
+    ge14: liblapzt.bool = liblapzt.u32.ge(r29, b.man.eff)
+    r30: liblapzt.u32 = liblapzt.u32.select(ge14, liblapzt.u32.sub(r29, b.man.eff), r29)
+    q15: liblapzt.u32 = liblapzt.u32.select(ge14, liblapzt.u32.or(q14, liblapzt.f32.bit.8), q14)
+    r31: liblapzt.u32 = liblapzt.u32.mul(r30, liblapzt.f32.divisor.1)
+    ge15: liblapzt.bool = liblapzt.u32.ge(r31, b.man.eff)
+    r32: liblapzt.u32 = liblapzt.u32.select(ge15, liblapzt.u32.sub(r31, b.man.eff), r31)
+    q16: liblapzt.u32 = liblapzt.u32.select(ge15, liblapzt.u32.or(q15, liblapzt.f32.bit.7), q15)
+    r33: liblapzt.u32 = liblapzt.u32.mul(r32, liblapzt.f32.divisor.1)
+    ge16: liblapzt.bool = liblapzt.u32.ge(r33, b.man.eff)
+    r34: liblapzt.u32 = liblapzt.u32.select(ge16, liblapzt.u32.sub(r33, b.man.eff), r33)
+    q17: liblapzt.u32 = liblapzt.u32.select(ge16, liblapzt.u32.or(q16, liblapzt.f32.bit.6), q16)
+    r35: liblapzt.u32 = liblapzt.u32.mul(r34, liblapzt.f32.divisor.1)
+    ge17: liblapzt.bool = liblapzt.u32.ge(r35, b.man.eff)
+    r36: liblapzt.u32 = liblapzt.u32.select(ge17, liblapzt.u32.sub(r35, b.man.eff), r35)
+    q18: liblapzt.u32 = liblapzt.u32.select(ge17, liblapzt.u32.or(q17, liblapzt.f32.bit.5), q17)
+    r37: liblapzt.u32 = liblapzt.u32.mul(r36, liblapzt.f32.divisor.1)
+    ge18: liblapzt.bool = liblapzt.u32.ge(r37, b.man.eff)
+    r38: liblapzt.u32 = liblapzt.u32.select(ge18, liblapzt.u32.sub(r37, b.man.eff), r37)
+    q19: liblapzt.u32 = liblapzt.u32.select(ge18, liblapzt.u32.or(q18, liblapzt.f32.bit.4), q18)
+    r39: liblapzt.u32 = liblapzt.u32.mul(r38, liblapzt.f32.divisor.1)
+    ge19: liblapzt.bool = liblapzt.u32.ge(r39, b.man.eff)
+    r40: liblapzt.u32 = liblapzt.u32.select(ge19, liblapzt.u32.sub(r39, b.man.eff), r39)
+    q20: liblapzt.u32 = liblapzt.u32.select(ge19, liblapzt.u32.or(q19, liblapzt.f32.bit.3), q19)
+    r41: liblapzt.u32 = liblapzt.u32.mul(r40, liblapzt.f32.divisor.1)
+    ge20: liblapzt.bool = liblapzt.u32.ge(r41, b.man.eff)
+    r42: liblapzt.u32 = liblapzt.u32.select(ge20, liblapzt.u32.sub(r41, b.man.eff), r41)
+    q21: liblapzt.u32 = liblapzt.u32.select(ge20, liblapzt.u32.or(q20, liblapzt.f32.bit.2), q20)
+    r43: liblapzt.u32 = liblapzt.u32.mul(r42, liblapzt.f32.divisor.1)
+    ge21: liblapzt.bool = liblapzt.u32.ge(r43, b.man.eff)
+    r44: liblapzt.u32 = liblapzt.u32.select(ge21, liblapzt.u32.sub(r43, b.man.eff), r43)
+    q22: liblapzt.u32 = liblapzt.u32.select(ge21, liblapzt.u32.or(q21, liblapzt.f32.bit.1), q21)
+    r45: liblapzt.u32 = liblapzt.u32.mul(r44, liblapzt.f32.divisor.1)
+    ge22: liblapzt.bool = liblapzt.u32.ge(r45, b.man.eff)
+    r46: liblapzt.u32 = liblapzt.u32.select(ge22, liblapzt.u32.sub(r45, b.man.eff), r45)
+    q23: liblapzt.u32 = liblapzt.u32.select(ge22, liblapzt.u32.or(q22, liblapzt.f32.bit.0), q22)
+    rounded: liblapzt.u32 = liblapzt.u32.select(liblapzt.bool.not(liblapzt.u32.is.zero(r46)), liblapzt.u32.add(q23, liblapzt.u32.one), q23)
+    carry: liblapzt.bool = liblapzt.u32.is.one(liblapzt.u32.mod(liblapzt.u32.div(rounded, liblapzt.f32.two.pow.mantissa.plus.one), liblapzt.f32.divisor.1))
+    s.final: liblapzt.u32 = liblapzt.u32.select(carry, liblapzt.u32.div(rounded, liblapzt.f32.divisor.1), rounded)
+    e.final: liblapzt.u32 = liblapzt.u32.select(carry, liblapzt.u32.add(exp.final, liblapzt.u32.one), exp.final)
+    overflow: liblapzt.bool = liblapzt.u32.ge(e.final, liblapzt.f32.exponent.maximum)
+    BRANCH (overflow) {
+        liblapzt.f32.pack(sign, liblapzt.f32.exponent.maximum, liblapzt.u32.zero)
+    } {
+        subnormal: liblapzt.bool = liblapzt.u32.is.zero(e.final)
+        man.final: liblapzt.u32 = liblapzt.u32.select(subnormal, liblapzt.u32.mod(s.final, liblapzt.f32.two.pow.mantissa), liblapzt.u32.sub(s.final, liblapzt.f32.hidden))
+        liblapzt.f32.pack(sign, e.final, man.final)
+    }
+}
+
+liblapzt.f32.div.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.f32 {
+    a.nan: liblapzt.bool = liblapzt.f32.is.nan(a)
+    b.nan: liblapzt.bool = liblapzt.f32.is.nan(b)
+    BRANCH (liblapzt.bool.or(a.nan, b.nan)) {
+        liblapzt.f32.nan
+    } {
+        a.inf: liblapzt.bool = liblapzt.f32.is.infinite(a)
+        b.inf: liblapzt.bool = liblapzt.f32.is.infinite(b)
+        a.zero: liblapzt.bool = liblapzt.f32.is.zero(a)
+        b.zero: liblapzt.bool = liblapzt.f32.is.zero(b)
+        BRANCH (liblapzt.bool.or(liblapzt.bool.and(a.inf, b.inf), liblapzt.bool.and(a.zero, b.zero))) {
+            liblapzt.f32.nan
+        } {
+            BRANCH (a.inf) {
+                liblapzt.f32.pack(liblapzt.bool.xor(liblapzt.f32.sign(a), liblapzt.f32.sign(b)), liblapzt.f32.exponent.maximum, liblapzt.u32.zero)
+            } {
+                BRANCH (b.inf) {
+                    liblapzt.f32.pack(liblapzt.bool.xor(liblapzt.f32.sign(a), liblapzt.f32.sign(b)), liblapzt.u32.zero, liblapzt.u32.zero)
+                } {
+                    BRANCH (a.zero) {
+                        liblapzt.f32.pack(liblapzt.bool.xor(liblapzt.f32.sign(a), liblapzt.f32.sign(b)), liblapzt.u32.zero, liblapzt.u32.zero)
+                    } {
+                        BRANCH (b.zero) {
+                            liblapzt.f32.pack(liblapzt.bool.xor(liblapzt.f32.sign(a), liblapzt.f32.sign(b)), liblapzt.f32.exponent.maximum, liblapzt.u32.zero)
+                        } {
+                            liblapzt.f32.div.finite(a, b)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+liblapzt.f32.div = liblapzt.f32.div.erased
+
+liblapzt.f32.trunc = (a: liblapzt.f32) liblapzt.f32 {
+    exp: liblapzt.u32 = liblapzt.f32.exponent(a)
+    small: liblapzt.bool = liblapzt.u32.lt(exp, liblapzt.f32.bias)
+    BRANCH (small) {
+        liblapzt.f32.pack(liblapzt.f32.sign(a), liblapzt.u32.zero, liblapzt.u32.zero)
+    } {
+        large: liblapzt.bool = liblapzt.u32.ge(exp, liblapzt.u32.add(liblapzt.f32.bias, liblapzt.f32.mantissa.width))
+        BRANCH (large) {
+            a
+        } {
+            shift: liblapzt.u32 = liblapzt.u32.sub(liblapzt.u32.add(liblapzt.f32.bias, liblapzt.f32.mantissa.width), exp)
+            mask: liblapzt.u32 = liblapzt.u32.sub(liblapzt.f32.shl(liblapzt.u32.one, shift), liblapzt.u32.one)
+            man: liblapzt.u32 = liblapzt.u32.and(liblapzt.f32.mantissa(a), liblapzt.u32.not(mask))
+            liblapzt.f32.pack(liblapzt.f32.sign(a), exp, man)
+        }
+    }
+}
+
+liblapzt.f32.mod.erased = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.f32 {
+    quotient: liblapzt.f32 = liblapzt.f32.div(a, b)
+    truncated: liblapzt.f32 = liblapzt.f32.trunc(quotient)
+    liblapzt.f32.sub(a, liblapzt.f32.mul(truncated, b))
+}
+
+liblapzt.f32.mod = liblapzt.f32.mod.erased
+
+liblapzt.f32.to.u32.erased = (a: liblapzt.f32) liblapzt.u32 {
+    negative: liblapzt.bool = liblapzt.f32.sign(a)
+    exp: liblapzt.u32 = liblapzt.f32.exponent(a)
+    small: liblapzt.bool = liblapzt.u32.lt(exp, liblapzt.f32.bias)
+    BRANCH (liblapzt.bool.or(negative, small)) {
+        liblapzt.u32.zero
+    } {
+        too.large: liblapzt.bool = liblapzt.u32.ge(exp, liblapzt.u32.add(liblapzt.f32.bias, liblapzt.f32.integer.width))
+        BRANCH (too.large) {
+            liblapzt.u32.maximum
+        } {
+            man: liblapzt.u32 = liblapzt.u32.or(liblapzt.f32.mantissa(a), liblapzt.f32.hidden)
+            shift: liblapzt.u32 = liblapzt.u32.sub(exp, liblapzt.f32.bias)
+            left: liblapzt.bool = liblapzt.u32.ge(shift, liblapzt.f32.mantissa.width)
+            left.amount: liblapzt.u32 = liblapzt.u32.sub(shift, liblapzt.f32.mantissa.width)
+            right.amount: liblapzt.u32 = liblapzt.u32.sub(liblapzt.f32.mantissa.width, shift)
+            liblapzt.u32.select(left, liblapzt.f32.shl(man, left.amount), liblapzt.f32.shr(man, right.amount))
+        }
+    }
+}
+
+liblapzt.f32.to.u32 = liblapzt.f32.to.u32.erased
+
+liblapzt.f32.from.u32.erased = (a: liblapzt.u32) liblapzt.f32 {
+    BRANCH (liblapzt.u32.is.zero(a)) {
+        liblapzt.f32.zero
+    } {
+        v0: liblapzt.u32 = a
+        e0: liblapzt.u32 = liblapzt.u32.add(liblapzt.f32.bias, liblapzt.f32.mantissa.width)
+        high0: liblapzt.bool = liblapzt.u32.ge(v0, liblapzt.f32.two.pow.mantissa.plus.one)
+        v1: liblapzt.u32 = liblapzt.u32.select(high0, liblapzt.u32.div(v0, liblapzt.f32.divisor.1), v0)
+        e1: liblapzt.u32 = liblapzt.u32.select(high0, liblapzt.u32.add(e0, liblapzt.u32.one), e0)
+        high1: liblapzt.bool = liblapzt.u32.ge(v1, liblapzt.f32.two.pow.mantissa.plus.one)
+        v2: liblapzt.u32 = liblapzt.u32.select(high1, liblapzt.u32.div(v1, liblapzt.f32.divisor.1), v1)
+        e2: liblapzt.u32 = liblapzt.u32.select(high1, liblapzt.u32.add(e1, liblapzt.u32.one), e1)
+        high2: liblapzt.bool = liblapzt.u32.ge(v2, liblapzt.f32.two.pow.mantissa.plus.one)
+        v3: liblapzt.u32 = liblapzt.u32.select(high2, liblapzt.u32.div(v2, liblapzt.f32.divisor.1), v2)
+        e3: liblapzt.u32 = liblapzt.u32.select(high2, liblapzt.u32.add(e2, liblapzt.u32.one), e2)
+        high3: liblapzt.bool = liblapzt.u32.ge(v3, liblapzt.f32.two.pow.mantissa.plus.one)
+        v4: liblapzt.u32 = liblapzt.u32.select(high3, liblapzt.u32.div(v3, liblapzt.f32.divisor.1), v3)
+        e4: liblapzt.u32 = liblapzt.u32.select(high3, liblapzt.u32.add(e3, liblapzt.u32.one), e3)
+        high4: liblapzt.bool = liblapzt.u32.ge(v4, liblapzt.f32.two.pow.mantissa.plus.one)
+        v5: liblapzt.u32 = liblapzt.u32.select(high4, liblapzt.u32.div(v4, liblapzt.f32.divisor.1), v4)
+        e5: liblapzt.u32 = liblapzt.u32.select(high4, liblapzt.u32.add(e4, liblapzt.u32.one), e4)
+        high5: liblapzt.bool = liblapzt.u32.ge(v5, liblapzt.f32.two.pow.mantissa.plus.one)
+        v6: liblapzt.u32 = liblapzt.u32.select(high5, liblapzt.u32.div(v5, liblapzt.f32.divisor.1), v5)
+        e6: liblapzt.u32 = liblapzt.u32.select(high5, liblapzt.u32.add(e5, liblapzt.u32.one), e5)
+        high6: liblapzt.bool = liblapzt.u32.ge(v6, liblapzt.f32.two.pow.mantissa.plus.one)
+        v7: liblapzt.u32 = liblapzt.u32.select(high6, liblapzt.u32.div(v6, liblapzt.f32.divisor.1), v6)
+        e7: liblapzt.u32 = liblapzt.u32.select(high6, liblapzt.u32.add(e6, liblapzt.u32.one), e6)
+        high7: liblapzt.bool = liblapzt.u32.ge(v7, liblapzt.f32.two.pow.mantissa.plus.one)
+        v8: liblapzt.u32 = liblapzt.u32.select(high7, liblapzt.u32.div(v7, liblapzt.f32.divisor.1), v7)
+        e8: liblapzt.u32 = liblapzt.u32.select(high7, liblapzt.u32.add(e7, liblapzt.u32.one), e7)
+        high8: liblapzt.bool = liblapzt.u32.ge(v8, liblapzt.f32.two.pow.mantissa.plus.one)
+        v9: liblapzt.u32 = liblapzt.u32.select(high8, liblapzt.u32.div(v8, liblapzt.f32.divisor.1), v8)
+        e9: liblapzt.u32 = liblapzt.u32.select(high8, liblapzt.u32.add(e8, liblapzt.u32.one), e8)
+        high9: liblapzt.bool = liblapzt.u32.ge(v9, liblapzt.f32.two.pow.mantissa.plus.one)
+        v10: liblapzt.u32 = liblapzt.u32.select(high9, liblapzt.u32.div(v9, liblapzt.f32.divisor.1), v9)
+        e10: liblapzt.u32 = liblapzt.u32.select(high9, liblapzt.u32.add(e9, liblapzt.u32.one), e9)
+        high10: liblapzt.bool = liblapzt.u32.ge(v10, liblapzt.f32.two.pow.mantissa.plus.one)
+        v11: liblapzt.u32 = liblapzt.u32.select(high10, liblapzt.u32.div(v10, liblapzt.f32.divisor.1), v10)
+        e11: liblapzt.u32 = liblapzt.u32.select(high10, liblapzt.u32.add(e10, liblapzt.u32.one), e10)
+        high11: liblapzt.bool = liblapzt.u32.ge(v11, liblapzt.f32.two.pow.mantissa.plus.one)
+        v12: liblapzt.u32 = liblapzt.u32.select(high11, liblapzt.u32.div(v11, liblapzt.f32.divisor.1), v11)
+        e12: liblapzt.u32 = liblapzt.u32.select(high11, liblapzt.u32.add(e11, liblapzt.u32.one), e11)
+        high12: liblapzt.bool = liblapzt.u32.ge(v12, liblapzt.f32.two.pow.mantissa.plus.one)
+        v13: liblapzt.u32 = liblapzt.u32.select(high12, liblapzt.u32.div(v12, liblapzt.f32.divisor.1), v12)
+        e13: liblapzt.u32 = liblapzt.u32.select(high12, liblapzt.u32.add(e12, liblapzt.u32.one), e12)
+        high13: liblapzt.bool = liblapzt.u32.ge(v13, liblapzt.f32.two.pow.mantissa.plus.one)
+        v14: liblapzt.u32 = liblapzt.u32.select(high13, liblapzt.u32.div(v13, liblapzt.f32.divisor.1), v13)
+        e14: liblapzt.u32 = liblapzt.u32.select(high13, liblapzt.u32.add(e13, liblapzt.u32.one), e13)
+        high14: liblapzt.bool = liblapzt.u32.ge(v14, liblapzt.f32.two.pow.mantissa.plus.one)
+        v15: liblapzt.u32 = liblapzt.u32.select(high14, liblapzt.u32.div(v14, liblapzt.f32.divisor.1), v14)
+        e15: liblapzt.u32 = liblapzt.u32.select(high14, liblapzt.u32.add(e14, liblapzt.u32.one), e14)
+        high15: liblapzt.bool = liblapzt.u32.ge(v15, liblapzt.f32.two.pow.mantissa.plus.one)
+        v16: liblapzt.u32 = liblapzt.u32.select(high15, liblapzt.u32.div(v15, liblapzt.f32.divisor.1), v15)
+        e16: liblapzt.u32 = liblapzt.u32.select(high15, liblapzt.u32.add(e15, liblapzt.u32.one), e15)
+        high16: liblapzt.bool = liblapzt.u32.ge(v16, liblapzt.f32.two.pow.mantissa.plus.one)
+        v17: liblapzt.u32 = liblapzt.u32.select(high16, liblapzt.u32.div(v16, liblapzt.f32.divisor.1), v16)
+        e17: liblapzt.u32 = liblapzt.u32.select(high16, liblapzt.u32.add(e16, liblapzt.u32.one), e16)
+        high17: liblapzt.bool = liblapzt.u32.ge(v17, liblapzt.f32.two.pow.mantissa.plus.one)
+        v18: liblapzt.u32 = liblapzt.u32.select(high17, liblapzt.u32.div(v17, liblapzt.f32.divisor.1), v17)
+        e18: liblapzt.u32 = liblapzt.u32.select(high17, liblapzt.u32.add(e17, liblapzt.u32.one), e17)
+        high18: liblapzt.bool = liblapzt.u32.ge(v18, liblapzt.f32.two.pow.mantissa.plus.one)
+        v19: liblapzt.u32 = liblapzt.u32.select(high18, liblapzt.u32.div(v18, liblapzt.f32.divisor.1), v18)
+        e19: liblapzt.u32 = liblapzt.u32.select(high18, liblapzt.u32.add(e18, liblapzt.u32.one), e18)
+        high19: liblapzt.bool = liblapzt.u32.ge(v19, liblapzt.f32.two.pow.mantissa.plus.one)
+        v20: liblapzt.u32 = liblapzt.u32.select(high19, liblapzt.u32.div(v19, liblapzt.f32.divisor.1), v19)
+        e20: liblapzt.u32 = liblapzt.u32.select(high19, liblapzt.u32.add(e19, liblapzt.u32.one), e19)
+        high20: liblapzt.bool = liblapzt.u32.ge(v20, liblapzt.f32.two.pow.mantissa.plus.one)
+        v21: liblapzt.u32 = liblapzt.u32.select(high20, liblapzt.u32.div(v20, liblapzt.f32.divisor.1), v20)
+        e21: liblapzt.u32 = liblapzt.u32.select(high20, liblapzt.u32.add(e20, liblapzt.u32.one), e20)
+        high21: liblapzt.bool = liblapzt.u32.ge(v21, liblapzt.f32.two.pow.mantissa.plus.one)
+        v22: liblapzt.u32 = liblapzt.u32.select(high21, liblapzt.u32.div(v21, liblapzt.f32.divisor.1), v21)
+        e22: liblapzt.u32 = liblapzt.u32.select(high21, liblapzt.u32.add(e21, liblapzt.u32.one), e21)
+        high22: liblapzt.bool = liblapzt.u32.ge(v22, liblapzt.f32.two.pow.mantissa.plus.one)
+        v23: liblapzt.u32 = liblapzt.u32.select(high22, liblapzt.u32.div(v22, liblapzt.f32.divisor.1), v22)
+        e23: liblapzt.u32 = liblapzt.u32.select(high22, liblapzt.u32.add(e22, liblapzt.u32.one), e22)
+        high23: liblapzt.bool = liblapzt.u32.ge(v23, liblapzt.f32.two.pow.mantissa.plus.one)
+        v24: liblapzt.u32 = liblapzt.u32.select(high23, liblapzt.u32.div(v23, liblapzt.f32.divisor.1), v23)
+        e24: liblapzt.u32 = liblapzt.u32.select(high23, liblapzt.u32.add(e23, liblapzt.u32.one), e23)
+        high24: liblapzt.bool = liblapzt.u32.ge(v24, liblapzt.f32.two.pow.mantissa.plus.one)
+        v25: liblapzt.u32 = liblapzt.u32.select(high24, liblapzt.u32.div(v24, liblapzt.f32.divisor.1), v24)
+        e25: liblapzt.u32 = liblapzt.u32.select(high24, liblapzt.u32.add(e24, liblapzt.u32.one), e24)
+        high25: liblapzt.bool = liblapzt.u32.ge(v25, liblapzt.f32.two.pow.mantissa.plus.one)
+        v26: liblapzt.u32 = liblapzt.u32.select(high25, liblapzt.u32.div(v25, liblapzt.f32.divisor.1), v25)
+        e26: liblapzt.u32 = liblapzt.u32.select(high25, liblapzt.u32.add(e25, liblapzt.u32.one), e25)
+        high26: liblapzt.bool = liblapzt.u32.ge(v26, liblapzt.f32.two.pow.mantissa.plus.one)
+        v27: liblapzt.u32 = liblapzt.u32.select(high26, liblapzt.u32.div(v26, liblapzt.f32.divisor.1), v26)
+        e27: liblapzt.u32 = liblapzt.u32.select(high26, liblapzt.u32.add(e26, liblapzt.u32.one), e26)
+        high27: liblapzt.bool = liblapzt.u32.ge(v27, liblapzt.f32.two.pow.mantissa.plus.one)
+        v28: liblapzt.u32 = liblapzt.u32.select(high27, liblapzt.u32.div(v27, liblapzt.f32.divisor.1), v27)
+        e28: liblapzt.u32 = liblapzt.u32.select(high27, liblapzt.u32.add(e27, liblapzt.u32.one), e27)
+        high28: liblapzt.bool = liblapzt.u32.ge(v28, liblapzt.f32.two.pow.mantissa.plus.one)
+        v29: liblapzt.u32 = liblapzt.u32.select(high28, liblapzt.u32.div(v28, liblapzt.f32.divisor.1), v28)
+        e29: liblapzt.u32 = liblapzt.u32.select(high28, liblapzt.u32.add(e28, liblapzt.u32.one), e28)
+        high29: liblapzt.bool = liblapzt.u32.ge(v29, liblapzt.f32.two.pow.mantissa.plus.one)
+        v30: liblapzt.u32 = liblapzt.u32.select(high29, liblapzt.u32.div(v29, liblapzt.f32.divisor.1), v29)
+        e30: liblapzt.u32 = liblapzt.u32.select(high29, liblapzt.u32.add(e29, liblapzt.u32.one), e29)
+        high30: liblapzt.bool = liblapzt.u32.ge(v30, liblapzt.f32.two.pow.mantissa.plus.one)
+        v31: liblapzt.u32 = liblapzt.u32.select(high30, liblapzt.u32.div(v30, liblapzt.f32.divisor.1), v30)
+        e31: liblapzt.u32 = liblapzt.u32.select(high30, liblapzt.u32.add(e30, liblapzt.u32.one), e30)
+        high31: liblapzt.bool = liblapzt.u32.ge(v31, liblapzt.f32.two.pow.mantissa.plus.one)
+        v32: liblapzt.u32 = liblapzt.u32.select(high31, liblapzt.u32.div(v31, liblapzt.f32.divisor.1), v31)
+        e32: liblapzt.u32 = liblapzt.u32.select(high31, liblapzt.u32.add(e31, liblapzt.u32.one), e31)
+        low0: liblapzt.bool = liblapzt.u32.lt(v32, liblapzt.f32.hidden)
+        w1: liblapzt.u32 = liblapzt.u32.select(low0, liblapzt.u32.mul(v32, liblapzt.f32.divisor.1), v32)
+        d1: liblapzt.u32 = liblapzt.u32.select(low0, liblapzt.u32.sub(e32, liblapzt.u32.one), e32)
+        low1: liblapzt.bool = liblapzt.u32.lt(w1, liblapzt.f32.hidden)
+        w2: liblapzt.u32 = liblapzt.u32.select(low1, liblapzt.u32.mul(w1, liblapzt.f32.divisor.1), w1)
+        d2: liblapzt.u32 = liblapzt.u32.select(low1, liblapzt.u32.sub(d1, liblapzt.u32.one), d1)
+        low2: liblapzt.bool = liblapzt.u32.lt(w2, liblapzt.f32.hidden)
+        w3: liblapzt.u32 = liblapzt.u32.select(low2, liblapzt.u32.mul(w2, liblapzt.f32.divisor.1), w2)
+        d3: liblapzt.u32 = liblapzt.u32.select(low2, liblapzt.u32.sub(d2, liblapzt.u32.one), d2)
+        low3: liblapzt.bool = liblapzt.u32.lt(w3, liblapzt.f32.hidden)
+        w4: liblapzt.u32 = liblapzt.u32.select(low3, liblapzt.u32.mul(w3, liblapzt.f32.divisor.1), w3)
+        d4: liblapzt.u32 = liblapzt.u32.select(low3, liblapzt.u32.sub(d3, liblapzt.u32.one), d3)
+        low4: liblapzt.bool = liblapzt.u32.lt(w4, liblapzt.f32.hidden)
+        w5: liblapzt.u32 = liblapzt.u32.select(low4, liblapzt.u32.mul(w4, liblapzt.f32.divisor.1), w4)
+        d5: liblapzt.u32 = liblapzt.u32.select(low4, liblapzt.u32.sub(d4, liblapzt.u32.one), d4)
+        low5: liblapzt.bool = liblapzt.u32.lt(w5, liblapzt.f32.hidden)
+        w6: liblapzt.u32 = liblapzt.u32.select(low5, liblapzt.u32.mul(w5, liblapzt.f32.divisor.1), w5)
+        d6: liblapzt.u32 = liblapzt.u32.select(low5, liblapzt.u32.sub(d5, liblapzt.u32.one), d5)
+        low6: liblapzt.bool = liblapzt.u32.lt(w6, liblapzt.f32.hidden)
+        w7: liblapzt.u32 = liblapzt.u32.select(low6, liblapzt.u32.mul(w6, liblapzt.f32.divisor.1), w6)
+        d7: liblapzt.u32 = liblapzt.u32.select(low6, liblapzt.u32.sub(d6, liblapzt.u32.one), d6)
+        low7: liblapzt.bool = liblapzt.u32.lt(w7, liblapzt.f32.hidden)
+        w8: liblapzt.u32 = liblapzt.u32.select(low7, liblapzt.u32.mul(w7, liblapzt.f32.divisor.1), w7)
+        d8: liblapzt.u32 = liblapzt.u32.select(low7, liblapzt.u32.sub(d7, liblapzt.u32.one), d7)
+        low8: liblapzt.bool = liblapzt.u32.lt(w8, liblapzt.f32.hidden)
+        w9: liblapzt.u32 = liblapzt.u32.select(low8, liblapzt.u32.mul(w8, liblapzt.f32.divisor.1), w8)
+        d9: liblapzt.u32 = liblapzt.u32.select(low8, liblapzt.u32.sub(d8, liblapzt.u32.one), d8)
+        low9: liblapzt.bool = liblapzt.u32.lt(w9, liblapzt.f32.hidden)
+        w10: liblapzt.u32 = liblapzt.u32.select(low9, liblapzt.u32.mul(w9, liblapzt.f32.divisor.1), w9)
+        d10: liblapzt.u32 = liblapzt.u32.select(low9, liblapzt.u32.sub(d9, liblapzt.u32.one), d9)
+        low10: liblapzt.bool = liblapzt.u32.lt(w10, liblapzt.f32.hidden)
+        w11: liblapzt.u32 = liblapzt.u32.select(low10, liblapzt.u32.mul(w10, liblapzt.f32.divisor.1), w10)
+        d11: liblapzt.u32 = liblapzt.u32.select(low10, liblapzt.u32.sub(d10, liblapzt.u32.one), d10)
+        low11: liblapzt.bool = liblapzt.u32.lt(w11, liblapzt.f32.hidden)
+        w12: liblapzt.u32 = liblapzt.u32.select(low11, liblapzt.u32.mul(w11, liblapzt.f32.divisor.1), w11)
+        d12: liblapzt.u32 = liblapzt.u32.select(low11, liblapzt.u32.sub(d11, liblapzt.u32.one), d11)
+        low12: liblapzt.bool = liblapzt.u32.lt(w12, liblapzt.f32.hidden)
+        w13: liblapzt.u32 = liblapzt.u32.select(low12, liblapzt.u32.mul(w12, liblapzt.f32.divisor.1), w12)
+        d13: liblapzt.u32 = liblapzt.u32.select(low12, liblapzt.u32.sub(d12, liblapzt.u32.one), d12)
+        low13: liblapzt.bool = liblapzt.u32.lt(w13, liblapzt.f32.hidden)
+        w14: liblapzt.u32 = liblapzt.u32.select(low13, liblapzt.u32.mul(w13, liblapzt.f32.divisor.1), w13)
+        d14: liblapzt.u32 = liblapzt.u32.select(low13, liblapzt.u32.sub(d13, liblapzt.u32.one), d13)
+        low14: liblapzt.bool = liblapzt.u32.lt(w14, liblapzt.f32.hidden)
+        w15: liblapzt.u32 = liblapzt.u32.select(low14, liblapzt.u32.mul(w14, liblapzt.f32.divisor.1), w14)
+        d15: liblapzt.u32 = liblapzt.u32.select(low14, liblapzt.u32.sub(d14, liblapzt.u32.one), d14)
+        low15: liblapzt.bool = liblapzt.u32.lt(w15, liblapzt.f32.hidden)
+        w16: liblapzt.u32 = liblapzt.u32.select(low15, liblapzt.u32.mul(w15, liblapzt.f32.divisor.1), w15)
+        d16: liblapzt.u32 = liblapzt.u32.select(low15, liblapzt.u32.sub(d15, liblapzt.u32.one), d15)
+        low16: liblapzt.bool = liblapzt.u32.lt(w16, liblapzt.f32.hidden)
+        w17: liblapzt.u32 = liblapzt.u32.select(low16, liblapzt.u32.mul(w16, liblapzt.f32.divisor.1), w16)
+        d17: liblapzt.u32 = liblapzt.u32.select(low16, liblapzt.u32.sub(d16, liblapzt.u32.one), d16)
+        low17: liblapzt.bool = liblapzt.u32.lt(w17, liblapzt.f32.hidden)
+        w18: liblapzt.u32 = liblapzt.u32.select(low17, liblapzt.u32.mul(w17, liblapzt.f32.divisor.1), w17)
+        d18: liblapzt.u32 = liblapzt.u32.select(low17, liblapzt.u32.sub(d17, liblapzt.u32.one), d17)
+        low18: liblapzt.bool = liblapzt.u32.lt(w18, liblapzt.f32.hidden)
+        w19: liblapzt.u32 = liblapzt.u32.select(low18, liblapzt.u32.mul(w18, liblapzt.f32.divisor.1), w18)
+        d19: liblapzt.u32 = liblapzt.u32.select(low18, liblapzt.u32.sub(d18, liblapzt.u32.one), d18)
+        low19: liblapzt.bool = liblapzt.u32.lt(w19, liblapzt.f32.hidden)
+        w20: liblapzt.u32 = liblapzt.u32.select(low19, liblapzt.u32.mul(w19, liblapzt.f32.divisor.1), w19)
+        d20: liblapzt.u32 = liblapzt.u32.select(low19, liblapzt.u32.sub(d19, liblapzt.u32.one), d19)
+        low20: liblapzt.bool = liblapzt.u32.lt(w20, liblapzt.f32.hidden)
+        w21: liblapzt.u32 = liblapzt.u32.select(low20, liblapzt.u32.mul(w20, liblapzt.f32.divisor.1), w20)
+        d21: liblapzt.u32 = liblapzt.u32.select(low20, liblapzt.u32.sub(d20, liblapzt.u32.one), d20)
+        low21: liblapzt.bool = liblapzt.u32.lt(w21, liblapzt.f32.hidden)
+        w22: liblapzt.u32 = liblapzt.u32.select(low21, liblapzt.u32.mul(w21, liblapzt.f32.divisor.1), w21)
+        d22: liblapzt.u32 = liblapzt.u32.select(low21, liblapzt.u32.sub(d21, liblapzt.u32.one), d21)
+        low22: liblapzt.bool = liblapzt.u32.lt(w22, liblapzt.f32.hidden)
+        w23: liblapzt.u32 = liblapzt.u32.select(low22, liblapzt.u32.mul(w22, liblapzt.f32.divisor.1), w22)
+        d23: liblapzt.u32 = liblapzt.u32.select(low22, liblapzt.u32.sub(d22, liblapzt.u32.one), d22)
+        low23: liblapzt.bool = liblapzt.u32.lt(w23, liblapzt.f32.hidden)
+        w24: liblapzt.u32 = liblapzt.u32.select(low23, liblapzt.u32.mul(w23, liblapzt.f32.divisor.1), w23)
+        d24: liblapzt.u32 = liblapzt.u32.select(low23, liblapzt.u32.sub(d23, liblapzt.u32.one), d23)
+        low24: liblapzt.bool = liblapzt.u32.lt(w24, liblapzt.f32.hidden)
+        w25: liblapzt.u32 = liblapzt.u32.select(low24, liblapzt.u32.mul(w24, liblapzt.f32.divisor.1), w24)
+        d25: liblapzt.u32 = liblapzt.u32.select(low24, liblapzt.u32.sub(d24, liblapzt.u32.one), d24)
+        low25: liblapzt.bool = liblapzt.u32.lt(w25, liblapzt.f32.hidden)
+        w26: liblapzt.u32 = liblapzt.u32.select(low25, liblapzt.u32.mul(w25, liblapzt.f32.divisor.1), w25)
+        d26: liblapzt.u32 = liblapzt.u32.select(low25, liblapzt.u32.sub(d25, liblapzt.u32.one), d25)
+        low26: liblapzt.bool = liblapzt.u32.lt(w26, liblapzt.f32.hidden)
+        w27: liblapzt.u32 = liblapzt.u32.select(low26, liblapzt.u32.mul(w26, liblapzt.f32.divisor.1), w26)
+        d27: liblapzt.u32 = liblapzt.u32.select(low26, liblapzt.u32.sub(d26, liblapzt.u32.one), d26)
+        low27: liblapzt.bool = liblapzt.u32.lt(w27, liblapzt.f32.hidden)
+        w28: liblapzt.u32 = liblapzt.u32.select(low27, liblapzt.u32.mul(w27, liblapzt.f32.divisor.1), w27)
+        d28: liblapzt.u32 = liblapzt.u32.select(low27, liblapzt.u32.sub(d27, liblapzt.u32.one), d27)
+        low28: liblapzt.bool = liblapzt.u32.lt(w28, liblapzt.f32.hidden)
+        w29: liblapzt.u32 = liblapzt.u32.select(low28, liblapzt.u32.mul(w28, liblapzt.f32.divisor.1), w28)
+        d29: liblapzt.u32 = liblapzt.u32.select(low28, liblapzt.u32.sub(d28, liblapzt.u32.one), d28)
+        low29: liblapzt.bool = liblapzt.u32.lt(w29, liblapzt.f32.hidden)
+        w30: liblapzt.u32 = liblapzt.u32.select(low29, liblapzt.u32.mul(w29, liblapzt.f32.divisor.1), w29)
+        d30: liblapzt.u32 = liblapzt.u32.select(low29, liblapzt.u32.sub(d29, liblapzt.u32.one), d29)
+        low30: liblapzt.bool = liblapzt.u32.lt(w30, liblapzt.f32.hidden)
+        w31: liblapzt.u32 = liblapzt.u32.select(low30, liblapzt.u32.mul(w30, liblapzt.f32.divisor.1), w30)
+        d31: liblapzt.u32 = liblapzt.u32.select(low30, liblapzt.u32.sub(d30, liblapzt.u32.one), d30)
+        low31: liblapzt.bool = liblapzt.u32.lt(w31, liblapzt.f32.hidden)
+        w32: liblapzt.u32 = liblapzt.u32.select(low31, liblapzt.u32.mul(w31, liblapzt.f32.divisor.1), w31)
+        d32: liblapzt.u32 = liblapzt.u32.select(low31, liblapzt.u32.sub(d31, liblapzt.u32.one), d31)
+        man.final: liblapzt.u32 = liblapzt.u32.sub(w32, liblapzt.f32.hidden)
+        liblapzt.f32.pack(liblapzt.bool.false, d32, man.final)
+    }
+}
+
+liblapzt.f32.from.u32 = liblapzt.f32.from.u32.erased
+
+liblapzt.f32.to.i32.erased = (a: liblapzt.f32) liblapzt.i32 {
+    magnitude: liblapzt.u32 = liblapzt.f32.to.u32(liblapzt.f32.abs(a))
+    positive: liblapzt.i32 = liblapzt.i32.from.u32(magnitude)
+    BRANCH (liblapzt.f32.sign(a)) {
+        liblapzt.i32.neg(positive)
+    } {
+        positive
+    }
+}
+
+liblapzt.f32.to.i32 = liblapzt.f32.to.i32.erased
+
+liblapzt.f32.from.i32.erased = (a: liblapzt.i32) liblapzt.f32 {
+    magnitude: liblapzt.u32 = liblapzt.i32.to.u32(liblapzt.i32.abs(a))
+    positive: liblapzt.f32 = liblapzt.f32.from.u32(magnitude)
+    BRANCH (liblapzt.i32.sign(a)) {
+        liblapzt.f32.neg(positive)
+    } {
+        positive
+    }
+}
+
+liblapzt.f32.from.i32 = liblapzt.f32.from.i32.erased
+
+liblapzt.f32.inc.erased = (a: liblapzt.f32) liblapzt.f32 {
+    liblapzt.f32.add(a, liblapzt.f32.one)
+}
+
+liblapzt.f32.inc = liblapzt.f32.inc.erased
+
+liblapzt.f32.dec.erased = (a: liblapzt.f32) liblapzt.f32 {
+    liblapzt.f32.sub(a, liblapzt.f32.one)
+}
+
+liblapzt.f32.dec = liblapzt.f32.dec.erased
+

@@ -1,0 +1,15 @@
+liblapzt.memory.alloc = (size: liblapzt.u64) [BIT, liblapzt.u64] {
+    EXTERN(OP.MEMORY.ACQUIRE, size)
+}
+
+liblapzt.memory.free = (handle: liblapzt.u64) [BIT] {
+    EXTERN(OP.MEMORY.RELEASE, handle)
+}
+
+liblapzt.memory.read = (handle: liblapzt.u64, offset: liblapzt.u64) [BIT, liblapzt.u64] {
+    EXTERN(OP.READ, handle, offset)
+}
+
+liblapzt.memory.write = (handle: liblapzt.u64, offset: liblapzt.u64, value: liblapzt.u64) [BIT] {
+    EXTERN(OP.WRITE, handle, offset, value)
+}

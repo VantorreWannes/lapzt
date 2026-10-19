@@ -1,0 +1,321 @@
+liblapzt.u8.erased = [liblapzt.u4.erased, liblapzt.u4.erased]
+
+liblapzt.u8 = liblapzt.u8.erased
+
+liblapzt.u8.zero.erased: liblapzt.u8.erased = [liblapzt.u4.zero.erased, liblapzt.u4.zero.erased]
+liblapzt.u8.one.erased: liblapzt.u8.erased = [liblapzt.u4.one.erased, liblapzt.u4.zero.erased]
+liblapzt.u8.maximum.erased: liblapzt.u8.erased = [liblapzt.u4.maximum.erased, liblapzt.u4.maximum.erased]
+
+liblapzt.u8.zero: liblapzt.u8 = liblapzt.u8.zero.erased
+liblapzt.u8.one: liblapzt.u8 = liblapzt.u8.one.erased
+liblapzt.u8.maximum: liblapzt.u8 = liblapzt.u8.maximum.erased
+
+liblapzt.u8.not.erased = (a: liblapzt.u8) liblapzt.u8 {
+    [low, high] = a
+    [liblapzt.u4.not(low), liblapzt.u4.not(high)]
+}
+
+liblapzt.u8.not = liblapzt.u8.not.erased
+
+liblapzt.u8.and.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u4.and(al, bl), liblapzt.u4.and(ah, bh)]
+}
+
+liblapzt.u8.and = liblapzt.u8.and.erased
+
+liblapzt.u8.or.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u4.or(al, bl), liblapzt.u4.or(ah, bh)]
+}
+
+liblapzt.u8.or = liblapzt.u8.or.erased
+
+liblapzt.u8.xor.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u4.xor(al, bl), liblapzt.u4.xor(ah, bh)]
+}
+
+liblapzt.u8.xor = liblapzt.u8.xor.erased
+
+liblapzt.u8.nand.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u4.nand(al, bl), liblapzt.u4.nand(ah, bh)]
+}
+
+liblapzt.u8.nand = liblapzt.u8.nand.erased
+
+liblapzt.u8.nor.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u4.nor(al, bl), liblapzt.u4.nor(ah, bh)]
+}
+
+liblapzt.u8.nor = liblapzt.u8.nor.erased
+
+liblapzt.u8.xnor.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u4.xnor(al, bl), liblapzt.u4.xnor(ah, bh)]
+}
+
+liblapzt.u8.xnor = liblapzt.u8.xnor.erased
+
+liblapzt.u8.from.bool.erased = (a: liblapzt.bool) liblapzt.u8 {
+    [liblapzt.u4.from.bool(a), liblapzt.u4.zero]
+}
+
+liblapzt.u8.from.bool = liblapzt.u8.from.bool.erased
+
+liblapzt.u8.add.carry = (a: liblapzt.u8, b: liblapzt.u8) [liblapzt.u8, liblapzt.bool] {
+    [al, ah] = a
+    [bl, bh] = b
+    [sl, cl] = liblapzt.u4.add.carry(al, bl)
+    [sh, ch] = liblapzt.u4.add.carry(ah, bh)
+    [sh2, ch2] = liblapzt.u4.add.carry(sh, liblapzt.u4.from.bool(cl))
+    [[sl, sh2], liblapzt.bool.or(ch, ch2)]
+}
+
+liblapzt.u8.add.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    [sum, carry] = liblapzt.u8.add.carry(a, b)
+    sum
+}
+
+liblapzt.u8.add = liblapzt.u8.add.erased
+
+liblapzt.u8.sub.borrow = (a: liblapzt.u8, b: liblapzt.u8) [liblapzt.u8, liblapzt.bool] {
+    [al, ah] = a
+    [bl, bh] = b
+    [sl, blw] = liblapzt.u4.sub.borrow(al, bl)
+    [sh, bhw] = liblapzt.u4.sub.borrow(ah, bh)
+    [sh2, bhw2] = liblapzt.u4.sub.borrow(sh, liblapzt.u4.from.bool(blw))
+    [[sl, sh2], liblapzt.bool.or(bhw, bhw2)]
+}
+
+liblapzt.u8.sub.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    [difference, borrow] = liblapzt.u8.sub.borrow(a, b)
+    difference
+}
+
+liblapzt.u8.sub = liblapzt.u8.sub.erased
+
+liblapzt.u8.add3 = (a: liblapzt.u8, b: liblapzt.u8, c: liblapzt.u8) [liblapzt.u8, liblapzt.u8] {
+    [s1, c1] = liblapzt.u8.add.carry(a, b)
+    [s2, c2] = liblapzt.u8.add.carry(s1, c)
+    carry: liblapzt.u8 = liblapzt.u8.add(liblapzt.u8.from.bool(c1), liblapzt.u8.from.bool(c2))
+    [s2, carry]
+}
+
+liblapzt.u8.mul.full = (a: liblapzt.u8, b: liblapzt.u8) [liblapzt.u8, liblapzt.u8] {
+    [al, ah] = a
+    [bl, bh] = b
+    [ll, lh] = liblapzt.u4.mul.full(al, bl)
+    [cl, ch] = liblapzt.u4.mul.full(al, bh)
+    [dl, dh] = liblapzt.u4.mul.full(ah, bl)
+    [el, eh] = liblapzt.u4.mul.full(ah, bh)
+    [low.sum, low.carry] = liblapzt.u4.add3(lh, cl, dl)
+    low: liblapzt.u8 = [ll, low.sum]
+    [high.sum, high.carry] = liblapzt.u4.add3(ch, dh, el)
+    [high.sum2, high.carry2] = liblapzt.u4.add.carry(high.sum, low.carry)
+    high.high: liblapzt.u4 = liblapzt.u4.add(liblapzt.u4.add(eh, high.carry), liblapzt.u4.from.bool(high.carry2))
+    high: liblapzt.u8 = [high.sum2, high.high]
+    [low, high]
+}
+
+liblapzt.u8.mul.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    [al, ah] = a
+    [bl, bh] = b
+    [ll, lh] = liblapzt.u4.mul.full(al, bl)
+    cross: liblapzt.u4 = liblapzt.u4.add(liblapzt.u4.mul(al, bh), liblapzt.u4.mul(ah, bl))
+    [ll, liblapzt.u4.add(lh, cross)]
+}
+
+liblapzt.u8.mul = liblapzt.u8.mul.erased
+
+liblapzt.u8.shl1 = (a: liblapzt.u8) liblapzt.u8 {
+    [low, high] = a
+    [liblapzt.u4.shl1(low), liblapzt.u4.or(liblapzt.u4.shl1(high), liblapzt.u4.from.bool(liblapzt.u4.msb(low)))]
+}
+
+liblapzt.u8.with.lsb = (a: liblapzt.u8, bit: liblapzt.bool) liblapzt.u8 {
+    [low, high] = a
+    [liblapzt.u4.with.lsb(low, bit), high]
+}
+
+liblapzt.u8.msb = (a: liblapzt.u8) liblapzt.u1 {
+    [low, high] = a
+    liblapzt.u4.msb(high)
+}
+
+liblapzt.u8.eq.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.bool {
+    [al, ah] = a
+    [bl, bh] = b
+    liblapzt.bool.and(liblapzt.u4.eq(al, bl), liblapzt.u4.eq(ah, bh))
+}
+
+liblapzt.u8.eq = liblapzt.u8.eq.erased
+
+liblapzt.u8.ne.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.u8.eq(a, b))
+}
+
+liblapzt.u8.ne = liblapzt.u8.ne.erased
+
+liblapzt.u8.lt.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.bool {
+    [al, ah] = a
+    [bl, bh] = b
+    high.lt: liblapzt.bool = liblapzt.u4.lt(ah, bh)
+    high.eq: liblapzt.bool = liblapzt.u4.eq(ah, bh)
+    low.lt: liblapzt.bool = liblapzt.u4.lt(al, bl)
+    liblapzt.bool.or(high.lt, liblapzt.bool.and(high.eq, low.lt))
+}
+
+liblapzt.u8.lt = liblapzt.u8.lt.erased
+
+liblapzt.u8.le.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.bool {
+    liblapzt.bool.or(liblapzt.u8.lt(a, b), liblapzt.u8.eq(a, b))
+}
+
+liblapzt.u8.le = liblapzt.u8.le.erased
+
+liblapzt.u8.gt.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.bool {
+    liblapzt.u8.lt(b, a)
+}
+
+liblapzt.u8.gt = liblapzt.u8.gt.erased
+
+liblapzt.u8.ge.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.bool {
+    liblapzt.u8.le(b, a)
+}
+
+liblapzt.u8.ge = liblapzt.u8.ge.erased
+
+liblapzt.u8.select.erased = (flag: liblapzt.bool, when.true: liblapzt.u8, when.false: liblapzt.u8) liblapzt.u8 {
+    [tl, th] = when.true
+    [fl, fh] = when.false
+    [liblapzt.u4.select(flag, tl, fl), liblapzt.u4.select(flag, th, fh)]
+}
+
+liblapzt.u8.select = liblapzt.u8.select.erased
+
+liblapzt.u8.min.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    liblapzt.u8.select(liblapzt.u8.lt(a, b), a, b)
+}
+
+liblapzt.u8.min = liblapzt.u8.min.erased
+
+liblapzt.u8.max.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    liblapzt.u8.select(liblapzt.u8.gt(a, b), a, b)
+}
+
+liblapzt.u8.max = liblapzt.u8.max.erased
+
+liblapzt.u8.inc.erased = (a: liblapzt.u8) liblapzt.u8 {
+    liblapzt.u8.add(a, liblapzt.u8.one)
+}
+
+liblapzt.u8.inc = liblapzt.u8.inc.erased
+
+liblapzt.u8.dec.erased = (a: liblapzt.u8) liblapzt.u8 {
+    liblapzt.u8.sub(a, liblapzt.u8.one)
+}
+
+liblapzt.u8.dec = liblapzt.u8.dec.erased
+
+liblapzt.u8.is.zero.erased = (a: liblapzt.u8) liblapzt.bool {
+    [low, high] = a
+    liblapzt.bool.and(liblapzt.u4.is.zero(low), liblapzt.u4.is.zero(high))
+}
+
+liblapzt.u8.is.zero = liblapzt.u8.is.zero.erased
+
+liblapzt.u8.is.one.erased = (a: liblapzt.u8) liblapzt.bool {
+    [low, high] = a
+    liblapzt.bool.and(liblapzt.u4.is.one(low), liblapzt.u4.is.zero(high))
+}
+
+liblapzt.u8.is.one = liblapzt.u8.is.one.erased
+
+liblapzt.u8.to.bool.erased = (a: liblapzt.u8) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.u8.is.zero(a))
+}
+
+liblapzt.u8.to.bool = liblapzt.u8.to.bool.erased
+
+liblapzt.u8.div.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    zero: liblapzt.bool = liblapzt.u8.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.u8.zero
+    } {
+        [[[a0, a1], [a2, a3]], [[a4, a5], [a6, a7]]] = a
+        r0: liblapzt.u8 = liblapzt.u8.zero
+        r1: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r0), a7)
+        q7: liblapzt.bool = liblapzt.u8.ge(r1, b)
+        r2: liblapzt.u8 = liblapzt.u8.select(q7, liblapzt.u8.sub(r1, b), r1)
+        r3: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r2), a6)
+        q6: liblapzt.bool = liblapzt.u8.ge(r3, b)
+        r4: liblapzt.u8 = liblapzt.u8.select(q6, liblapzt.u8.sub(r3, b), r3)
+        r5: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r4), a5)
+        q5: liblapzt.bool = liblapzt.u8.ge(r5, b)
+        r6: liblapzt.u8 = liblapzt.u8.select(q5, liblapzt.u8.sub(r5, b), r5)
+        r7: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r6), a4)
+        q4: liblapzt.bool = liblapzt.u8.ge(r7, b)
+        r8: liblapzt.u8 = liblapzt.u8.select(q4, liblapzt.u8.sub(r7, b), r7)
+        r9: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r8), a3)
+        q3: liblapzt.bool = liblapzt.u8.ge(r9, b)
+        r10: liblapzt.u8 = liblapzt.u8.select(q3, liblapzt.u8.sub(r9, b), r9)
+        r11: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r10), a2)
+        q2: liblapzt.bool = liblapzt.u8.ge(r11, b)
+        r12: liblapzt.u8 = liblapzt.u8.select(q2, liblapzt.u8.sub(r11, b), r11)
+        r13: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r12), a1)
+        q1: liblapzt.bool = liblapzt.u8.ge(r13, b)
+        r14: liblapzt.u8 = liblapzt.u8.select(q1, liblapzt.u8.sub(r13, b), r13)
+        r15: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r14), a0)
+        q0: liblapzt.bool = liblapzt.u8.ge(r15, b)
+        r16: liblapzt.u8 = liblapzt.u8.select(q0, liblapzt.u8.sub(r15, b), r15)
+        [[[q0, q1], [q2, q3]], [[q4, q5], [q6, q7]]]
+    }
+}
+
+liblapzt.u8.div = liblapzt.u8.div.erased
+
+liblapzt.u8.mod.erased = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.u8 {
+    zero: liblapzt.bool = liblapzt.u8.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.u8.zero
+    } {
+        [[[a0, a1], [a2, a3]], [[a4, a5], [a6, a7]]] = a
+        r0: liblapzt.u8 = liblapzt.u8.zero
+        r1: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r0), a7)
+        q7: liblapzt.bool = liblapzt.u8.ge(r1, b)
+        r2: liblapzt.u8 = liblapzt.u8.select(q7, liblapzt.u8.sub(r1, b), r1)
+        r3: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r2), a6)
+        q6: liblapzt.bool = liblapzt.u8.ge(r3, b)
+        r4: liblapzt.u8 = liblapzt.u8.select(q6, liblapzt.u8.sub(r3, b), r3)
+        r5: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r4), a5)
+        q5: liblapzt.bool = liblapzt.u8.ge(r5, b)
+        r6: liblapzt.u8 = liblapzt.u8.select(q5, liblapzt.u8.sub(r5, b), r5)
+        r7: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r6), a4)
+        q4: liblapzt.bool = liblapzt.u8.ge(r7, b)
+        r8: liblapzt.u8 = liblapzt.u8.select(q4, liblapzt.u8.sub(r7, b), r7)
+        r9: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r8), a3)
+        q3: liblapzt.bool = liblapzt.u8.ge(r9, b)
+        r10: liblapzt.u8 = liblapzt.u8.select(q3, liblapzt.u8.sub(r9, b), r9)
+        r11: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r10), a2)
+        q2: liblapzt.bool = liblapzt.u8.ge(r11, b)
+        r12: liblapzt.u8 = liblapzt.u8.select(q2, liblapzt.u8.sub(r11, b), r11)
+        r13: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r12), a1)
+        q1: liblapzt.bool = liblapzt.u8.ge(r13, b)
+        r14: liblapzt.u8 = liblapzt.u8.select(q1, liblapzt.u8.sub(r13, b), r13)
+        r15: liblapzt.u8 = liblapzt.u8.with.lsb(liblapzt.u8.shl1(r14), a0)
+        q0: liblapzt.bool = liblapzt.u8.ge(r15, b)
+        r16: liblapzt.u8 = liblapzt.u8.select(q0, liblapzt.u8.sub(r15, b), r15)
+        r16
+    }
+}
+
+liblapzt.u8.mod = liblapzt.u8.mod.erased

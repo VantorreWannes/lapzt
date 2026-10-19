@@ -1,0 +1,66 @@
+liblapzt.bool.true.erased = liblapzt.u1.one.erased
+liblapzt.bool.false.erased = liblapzt.u1.zero.erased
+
+liblapzt.bool.true = liblapzt.bool.true.erased
+liblapzt.bool.false = liblapzt.bool.false.erased
+
+liblapzt.bool.not = (a: liblapzt.bool) liblapzt.bool {
+    NAND(a, a)
+}
+
+liblapzt.bool.and = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
+    n: liblapzt.bool = NAND(a, b)
+    liblapzt.bool.not(n)
+}
+
+liblapzt.bool.or = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
+    na: liblapzt.bool = NAND(a, a)
+    nb: liblapzt.bool = NAND(b, b)
+    NAND(na, nb)
+}
+
+liblapzt.bool.xor = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
+    n: liblapzt.bool = NAND(a, b)
+    na: liblapzt.bool = NAND(a, n)
+    nb: liblapzt.bool = NAND(b, n)
+    NAND(na, nb)
+}
+
+liblapzt.bool.nand = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
+    NAND(a, b)
+}
+
+liblapzt.bool.nor = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
+    na: liblapzt.bool = NAND(a, a)
+    nb: liblapzt.bool = NAND(b, b)
+    liblapzt.bool.and(na, nb)
+}
+
+liblapzt.bool.xnor = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.bool.xor(a, b))
+}
+
+liblapzt.bool.implies = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
+    na: liblapzt.bool = NAND(a, a)
+    liblapzt.bool.or(na, b)
+}
+
+liblapzt.bool.eq = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.bool.xor(a, b))
+}
+
+liblapzt.bool.ne = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
+    liblapzt.bool.xor(a, b)
+}
+
+liblapzt.bool.select = (flag: liblapzt.bool, when.true: liblapzt.bool, when.false: liblapzt.bool) liblapzt.bool {
+    BRANCH (flag) { when.true } { when.false }
+}
+
+liblapzt.bool.to.u1 = (a: liblapzt.bool) liblapzt.u1 {
+    a
+}
+
+liblapzt.bool.from.u1 = (a: liblapzt.u1) liblapzt.bool {
+    a
+}

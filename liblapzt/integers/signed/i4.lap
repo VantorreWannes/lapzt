@@ -1,0 +1,283 @@
+liblapzt.i4.erased = [liblapzt.i2.erased, liblapzt.i2.erased]
+
+liblapzt.i4 = liblapzt.i4.erased
+
+liblapzt.i4.zero.erased: liblapzt.i4.erased = [liblapzt.i2.zero.erased, liblapzt.i2.zero.erased]
+liblapzt.i4.one.erased: liblapzt.i4.erased = [liblapzt.i2.one.erased, liblapzt.i2.zero.erased]
+liblapzt.i4.minimum.erased: liblapzt.i4.erased = [liblapzt.i2.zero.erased, liblapzt.i2.minimum.erased]
+liblapzt.i4.maximum.erased: liblapzt.i4.erased = [liblapzt.u2.maximum.erased, liblapzt.i2.maximum.erased]
+
+liblapzt.i4.zero: liblapzt.i4 = liblapzt.i4.zero.erased
+liblapzt.i4.one: liblapzt.i4 = liblapzt.i4.one.erased
+liblapzt.i4.minimum: liblapzt.i4 = liblapzt.i4.minimum.erased
+liblapzt.i4.maximum: liblapzt.i4 = liblapzt.i4.maximum.erased
+
+liblapzt.i4.to.u4 = (a: liblapzt.i4) liblapzt.u4 {
+    [low, high] = a
+    [liblapzt.i2.to.u2(low), liblapzt.i2.to.u2(high)]
+}
+
+liblapzt.i4.from.u4 = (a: liblapzt.u4) liblapzt.i4 {
+    [low, high] = a
+    [liblapzt.i2.from.u2(low), liblapzt.i2.from.u2(high)]
+}
+
+liblapzt.i4.from.bool.erased = (a: liblapzt.bool) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.from.bool(a))
+}
+
+liblapzt.i4.from.bool = liblapzt.i4.from.bool.erased
+
+liblapzt.i4.not.erased = (a: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.not(liblapzt.i4.to.u4(a)))
+}
+
+liblapzt.i4.not = liblapzt.i4.not.erased
+
+liblapzt.i4.and.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.and(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b)))
+}
+
+liblapzt.i4.and = liblapzt.i4.and.erased
+
+liblapzt.i4.or.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.or(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b)))
+}
+
+liblapzt.i4.or = liblapzt.i4.or.erased
+
+liblapzt.i4.xor.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.xor(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b)))
+}
+
+liblapzt.i4.xor = liblapzt.i4.xor.erased
+
+liblapzt.i4.nand.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.nand(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b)))
+}
+
+liblapzt.i4.nand = liblapzt.i4.nand.erased
+
+liblapzt.i4.nor.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.nor(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b)))
+}
+
+liblapzt.i4.nor = liblapzt.i4.nor.erased
+
+liblapzt.i4.xnor.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.xnor(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b)))
+}
+
+liblapzt.i4.xnor = liblapzt.i4.xnor.erased
+
+liblapzt.i4.add.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.add(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b)))
+}
+
+liblapzt.i4.add = liblapzt.i4.add.erased
+
+liblapzt.i4.sub.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.sub(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b)))
+}
+
+liblapzt.i4.sub = liblapzt.i4.sub.erased
+
+liblapzt.i4.mul.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.mul(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b)))
+}
+
+liblapzt.i4.mul = liblapzt.i4.mul.erased
+
+liblapzt.i4.add.carry = (a: liblapzt.i4, b: liblapzt.i4) [liblapzt.i4, liblapzt.bool] {
+    [sum, carry] = liblapzt.u4.add.carry(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b))
+    [liblapzt.i4.from.u4(sum), carry]
+}
+
+liblapzt.i4.sub.borrow = (a: liblapzt.i4, b: liblapzt.i4) [liblapzt.i4, liblapzt.bool] {
+    [difference, borrow] = liblapzt.u4.sub.borrow(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b))
+    [liblapzt.i4.from.u4(difference), borrow]
+}
+
+liblapzt.i4.add3 = (a: liblapzt.i4, b: liblapzt.i4, c: liblapzt.i4) [liblapzt.i4, liblapzt.i4] {
+    [s1, c1] = liblapzt.i4.add.carry(a, b)
+    [s2, c2] = liblapzt.i4.add.carry(s1, c)
+    carry: liblapzt.i4 = liblapzt.i4.add(liblapzt.i4.from.bool(c1), liblapzt.i4.from.bool(c2))
+    [s2, carry]
+}
+
+liblapzt.i4.mul.full = (a: liblapzt.i4, b: liblapzt.i4) [liblapzt.i4, liblapzt.i4] {
+    [low, high] = liblapzt.u4.mul.full(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b))
+    [liblapzt.i4.from.u4(low), liblapzt.i4.from.u4(high)]
+}
+
+liblapzt.i4.shl1 = (a: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.shl1(liblapzt.i4.to.u4(a)))
+}
+
+liblapzt.i4.with.lsb = (a: liblapzt.i4, bit: liblapzt.bool) liblapzt.i4 {
+    liblapzt.i4.from.u4(liblapzt.u4.with.lsb(liblapzt.i4.to.u4(a), bit))
+}
+
+liblapzt.i4.msb = (a: liblapzt.i4) liblapzt.u1 {
+    [low, high] = a
+    liblapzt.i2.msb(high)
+}
+
+liblapzt.i4.sign.erased = (a: liblapzt.i4) liblapzt.bool {
+    [low, high] = a
+    liblapzt.i2.sign(high)
+}
+
+liblapzt.i4.sign = liblapzt.i4.sign.erased
+
+liblapzt.i4.is.negative.erased = (a: liblapzt.i4) liblapzt.bool {
+    liblapzt.i4.sign(a)
+}
+
+liblapzt.i4.is.negative = liblapzt.i4.is.negative.erased
+
+liblapzt.i4.eq.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.bool {
+    liblapzt.u4.eq(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b))
+}
+
+liblapzt.i4.eq = liblapzt.i4.eq.erased
+
+liblapzt.i4.ne.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.i4.eq(a, b))
+}
+
+liblapzt.i4.ne = liblapzt.i4.ne.erased
+
+liblapzt.i4.lt.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.bool {
+    a.negative: liblapzt.bool = liblapzt.i4.sign(a)
+    b.negative: liblapzt.bool = liblapzt.i4.sign(b)
+    differ: liblapzt.bool = liblapzt.bool.xor(a.negative, b.negative)
+    BRANCH (differ) {
+        a.negative
+    } {
+        liblapzt.u4.lt(liblapzt.i4.to.u4(a), liblapzt.i4.to.u4(b))
+    }
+}
+
+liblapzt.i4.lt = liblapzt.i4.lt.erased
+
+liblapzt.i4.le.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.bool {
+    liblapzt.bool.or(liblapzt.i4.lt(a, b), liblapzt.i4.eq(a, b))
+}
+
+liblapzt.i4.le = liblapzt.i4.le.erased
+
+liblapzt.i4.gt.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.bool {
+    liblapzt.i4.lt(b, a)
+}
+
+liblapzt.i4.gt = liblapzt.i4.gt.erased
+
+liblapzt.i4.ge.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.bool {
+    liblapzt.i4.le(b, a)
+}
+
+liblapzt.i4.ge = liblapzt.i4.ge.erased
+
+liblapzt.i4.select.erased = (flag: liblapzt.bool, when.true: liblapzt.i4, when.false: liblapzt.i4) liblapzt.i4 {
+    [tl, th] = when.true
+    [fl, fh] = when.false
+    [liblapzt.i2.select(flag, tl, fl), liblapzt.i2.select(flag, th, fh)]
+}
+
+liblapzt.i4.select = liblapzt.i4.select.erased
+
+liblapzt.i4.min.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.select(liblapzt.i4.lt(a, b), a, b)
+}
+
+liblapzt.i4.min = liblapzt.i4.min.erased
+
+liblapzt.i4.max.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.select(liblapzt.i4.gt(a, b), a, b)
+}
+
+liblapzt.i4.max = liblapzt.i4.max.erased
+
+liblapzt.i4.inc.erased = (a: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.add(a, liblapzt.i4.one)
+}
+
+liblapzt.i4.inc = liblapzt.i4.inc.erased
+
+liblapzt.i4.dec.erased = (a: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.sub(a, liblapzt.i4.one)
+}
+
+liblapzt.i4.dec = liblapzt.i4.dec.erased
+
+liblapzt.i4.is.zero.erased = (a: liblapzt.i4) liblapzt.bool {
+    liblapzt.u4.is.zero(liblapzt.i4.to.u4(a))
+}
+
+liblapzt.i4.is.zero = liblapzt.i4.is.zero.erased
+
+liblapzt.i4.is.one.erased = (a: liblapzt.i4) liblapzt.bool {
+    liblapzt.u4.is.one(liblapzt.i4.to.u4(a))
+}
+
+liblapzt.i4.is.one = liblapzt.i4.is.one.erased
+
+liblapzt.i4.to.bool.erased = (a: liblapzt.i4) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.i4.is.zero(a))
+}
+
+liblapzt.i4.to.bool = liblapzt.i4.to.bool.erased
+
+liblapzt.i4.neg.erased = (a: liblapzt.i4) liblapzt.i4 {
+    liblapzt.i4.inc(liblapzt.i4.not(a))
+}
+
+liblapzt.i4.neg = liblapzt.i4.neg.erased
+
+liblapzt.i4.abs.erased = (a: liblapzt.i4) liblapzt.i4 {
+    negative: liblapzt.bool = liblapzt.i4.sign(a)
+    BRANCH (negative) {
+        liblapzt.i4.neg(a)
+    } {
+        a
+    }
+}
+
+liblapzt.i4.abs = liblapzt.i4.abs.erased
+
+liblapzt.i4.div.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    zero: liblapzt.bool = liblapzt.i4.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.i4.zero
+    } {
+        negative: liblapzt.bool = liblapzt.bool.xor(liblapzt.i4.sign(a), liblapzt.i4.sign(b))
+        magnitude: liblapzt.u4 = liblapzt.u4.div(liblapzt.i4.to.u4(liblapzt.i4.abs(a)), liblapzt.i4.to.u4(liblapzt.i4.abs(b)))
+        quotient: liblapzt.i4 = liblapzt.i4.from.u4(magnitude)
+        BRANCH (negative) {
+            liblapzt.i4.neg(quotient)
+        } {
+            quotient
+        }
+    }
+}
+
+liblapzt.i4.div = liblapzt.i4.div.erased
+
+liblapzt.i4.mod.erased = (a: liblapzt.i4, b: liblapzt.i4) liblapzt.i4 {
+    zero: liblapzt.bool = liblapzt.i4.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.i4.zero
+    } {
+        negative: liblapzt.bool = liblapzt.i4.sign(a)
+        magnitude: liblapzt.u4 = liblapzt.u4.mod(liblapzt.i4.to.u4(liblapzt.i4.abs(a)), liblapzt.i4.to.u4(liblapzt.i4.abs(b)))
+        remainder: liblapzt.i4 = liblapzt.i4.from.u4(magnitude)
+        BRANCH (negative) {
+            liblapzt.i4.neg(remainder)
+        } {
+            remainder
+        }
+    }
+}
+
+liblapzt.i4.mod = liblapzt.i4.mod.erased

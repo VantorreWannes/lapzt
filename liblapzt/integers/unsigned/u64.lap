@@ -1,0 +1,657 @@
+liblapzt.u64.erased = [liblapzt.u32.erased, liblapzt.u32.erased]
+
+liblapzt.u64 = liblapzt.u64.erased
+
+liblapzt.u64.zero.erased: liblapzt.u64.erased = [liblapzt.u32.zero.erased, liblapzt.u32.zero.erased]
+liblapzt.u64.one.erased: liblapzt.u64.erased = [liblapzt.u32.one.erased, liblapzt.u32.zero.erased]
+liblapzt.u64.maximum.erased: liblapzt.u64.erased = [liblapzt.u32.maximum.erased, liblapzt.u32.maximum.erased]
+
+liblapzt.u64.zero: liblapzt.u64 = liblapzt.u64.zero.erased
+liblapzt.u64.one: liblapzt.u64 = liblapzt.u64.one.erased
+liblapzt.u64.maximum: liblapzt.u64 = liblapzt.u64.maximum.erased
+
+liblapzt.u64.not.erased = (a: liblapzt.u64) liblapzt.u64 {
+    [low, high] = a
+    [liblapzt.u32.not(low), liblapzt.u32.not(high)]
+}
+
+liblapzt.u64.not = liblapzt.u64.not.erased
+
+liblapzt.u64.and.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u32.and(al, bl), liblapzt.u32.and(ah, bh)]
+}
+
+liblapzt.u64.and = liblapzt.u64.and.erased
+
+liblapzt.u64.or.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u32.or(al, bl), liblapzt.u32.or(ah, bh)]
+}
+
+liblapzt.u64.or = liblapzt.u64.or.erased
+
+liblapzt.u64.xor.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u32.xor(al, bl), liblapzt.u32.xor(ah, bh)]
+}
+
+liblapzt.u64.xor = liblapzt.u64.xor.erased
+
+liblapzt.u64.nand.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u32.nand(al, bl), liblapzt.u32.nand(ah, bh)]
+}
+
+liblapzt.u64.nand = liblapzt.u64.nand.erased
+
+liblapzt.u64.nor.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u32.nor(al, bl), liblapzt.u32.nor(ah, bh)]
+}
+
+liblapzt.u64.nor = liblapzt.u64.nor.erased
+
+liblapzt.u64.xnor.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [al, ah] = a
+    [bl, bh] = b
+    [liblapzt.u32.xnor(al, bl), liblapzt.u32.xnor(ah, bh)]
+}
+
+liblapzt.u64.xnor = liblapzt.u64.xnor.erased
+
+liblapzt.u64.from.bool.erased = (a: liblapzt.bool) liblapzt.u64 {
+    [liblapzt.u32.from.bool(a), liblapzt.u32.zero]
+}
+
+liblapzt.u64.from.bool = liblapzt.u64.from.bool.erased
+
+liblapzt.u64.add.carry = (a: liblapzt.u64, b: liblapzt.u64) [liblapzt.u64, liblapzt.bool] {
+    [al, ah] = a
+    [bl, bh] = b
+    [sl, cl] = liblapzt.u32.add.carry(al, bl)
+    [sh, ch] = liblapzt.u32.add.carry(ah, bh)
+    [sh2, ch2] = liblapzt.u32.add.carry(sh, liblapzt.u32.from.bool(cl))
+    [[sl, sh2], liblapzt.bool.or(ch, ch2)]
+}
+
+liblapzt.u64.add.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [sum, carry] = liblapzt.u64.add.carry(a, b)
+    sum
+}
+
+liblapzt.u64.add = liblapzt.u64.add.erased
+
+liblapzt.u64.sub.borrow = (a: liblapzt.u64, b: liblapzt.u64) [liblapzt.u64, liblapzt.bool] {
+    [al, ah] = a
+    [bl, bh] = b
+    [sl, blw] = liblapzt.u32.sub.borrow(al, bl)
+    [sh, bhw] = liblapzt.u32.sub.borrow(ah, bh)
+    [sh2, bhw2] = liblapzt.u32.sub.borrow(sh, liblapzt.u32.from.bool(blw))
+    [[sl, sh2], liblapzt.bool.or(bhw, bhw2)]
+}
+
+liblapzt.u64.sub.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [difference, borrow] = liblapzt.u64.sub.borrow(a, b)
+    difference
+}
+
+liblapzt.u64.sub = liblapzt.u64.sub.erased
+
+liblapzt.u64.add3 = (a: liblapzt.u64, b: liblapzt.u64, c: liblapzt.u64) [liblapzt.u64, liblapzt.u64] {
+    [s1, c1] = liblapzt.u64.add.carry(a, b)
+    [s2, c2] = liblapzt.u64.add.carry(s1, c)
+    carry: liblapzt.u64 = liblapzt.u64.add(liblapzt.u64.from.bool(c1), liblapzt.u64.from.bool(c2))
+    [s2, carry]
+}
+
+liblapzt.u64.mul.full = (a: liblapzt.u64, b: liblapzt.u64) [liblapzt.u64, liblapzt.u64] {
+    [al, ah] = a
+    [bl, bh] = b
+    [ll, lh] = liblapzt.u32.mul.full(al, bl)
+    [cl, ch] = liblapzt.u32.mul.full(al, bh)
+    [dl, dh] = liblapzt.u32.mul.full(ah, bl)
+    [el, eh] = liblapzt.u32.mul.full(ah, bh)
+    [low.sum, low.carry] = liblapzt.u32.add3(lh, cl, dl)
+    low: liblapzt.u64 = [ll, low.sum]
+    [high.sum, high.carry] = liblapzt.u32.add3(ch, dh, el)
+    [high.sum2, high.carry2] = liblapzt.u32.add.carry(high.sum, low.carry)
+    high.high: liblapzt.u32 = liblapzt.u32.add(liblapzt.u32.add(eh, high.carry), liblapzt.u32.from.bool(high.carry2))
+    high: liblapzt.u64 = [high.sum2, high.high]
+    [low, high]
+}
+
+liblapzt.u64.mul.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [al, ah] = a
+    [bl, bh] = b
+    [ll, lh] = liblapzt.u32.mul.full(al, bl)
+    cross: liblapzt.u32 = liblapzt.u32.add(liblapzt.u32.mul(al, bh), liblapzt.u32.mul(ah, bl))
+    [ll, liblapzt.u32.add(lh, cross)]
+}
+
+liblapzt.u64.mul = liblapzt.u64.mul.erased
+
+liblapzt.u64.shl1 = (a: liblapzt.u64) liblapzt.u64 {
+    [low, high] = a
+    [liblapzt.u32.shl1(low), liblapzt.u32.or(liblapzt.u32.shl1(high), liblapzt.u32.from.bool(liblapzt.u32.msb(low)))]
+}
+
+liblapzt.u64.with.lsb = (a: liblapzt.u64, bit: liblapzt.bool) liblapzt.u64 {
+    [low, high] = a
+    [liblapzt.u32.with.lsb(low, bit), high]
+}
+
+liblapzt.u64.msb = (a: liblapzt.u64) liblapzt.u1 {
+    [low, high] = a
+    liblapzt.u32.msb(high)
+}
+
+liblapzt.u64.eq.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
+    [al, ah] = a
+    [bl, bh] = b
+    liblapzt.bool.and(liblapzt.u32.eq(al, bl), liblapzt.u32.eq(ah, bh))
+}
+
+liblapzt.u64.eq = liblapzt.u64.eq.erased
+
+liblapzt.u64.ne.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.u64.eq(a, b))
+}
+
+liblapzt.u64.ne = liblapzt.u64.ne.erased
+
+liblapzt.u64.lt.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
+    [al, ah] = a
+    [bl, bh] = b
+    high.lt: liblapzt.bool = liblapzt.u32.lt(ah, bh)
+    high.eq: liblapzt.bool = liblapzt.u32.eq(ah, bh)
+    low.lt: liblapzt.bool = liblapzt.u32.lt(al, bl)
+    liblapzt.bool.or(high.lt, liblapzt.bool.and(high.eq, low.lt))
+}
+
+liblapzt.u64.lt = liblapzt.u64.lt.erased
+
+liblapzt.u64.le.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
+    liblapzt.bool.or(liblapzt.u64.lt(a, b), liblapzt.u64.eq(a, b))
+}
+
+liblapzt.u64.le = liblapzt.u64.le.erased
+
+liblapzt.u64.gt.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
+    liblapzt.u64.lt(b, a)
+}
+
+liblapzt.u64.gt = liblapzt.u64.gt.erased
+
+liblapzt.u64.ge.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
+    liblapzt.u64.le(b, a)
+}
+
+liblapzt.u64.ge = liblapzt.u64.ge.erased
+
+liblapzt.u64.select.erased = (flag: liblapzt.bool, when.true: liblapzt.u64, when.false: liblapzt.u64) liblapzt.u64 {
+    [tl, th] = when.true
+    [fl, fh] = when.false
+    [liblapzt.u32.select(flag, tl, fl), liblapzt.u32.select(flag, th, fh)]
+}
+
+liblapzt.u64.select = liblapzt.u64.select.erased
+
+liblapzt.u64.min.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    liblapzt.u64.select(liblapzt.u64.lt(a, b), a, b)
+}
+
+liblapzt.u64.min = liblapzt.u64.min.erased
+
+liblapzt.u64.max.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    liblapzt.u64.select(liblapzt.u64.gt(a, b), a, b)
+}
+
+liblapzt.u64.max = liblapzt.u64.max.erased
+
+liblapzt.u64.inc.erased = (a: liblapzt.u64) liblapzt.u64 {
+    liblapzt.u64.add(a, liblapzt.u64.one)
+}
+
+liblapzt.u64.inc = liblapzt.u64.inc.erased
+
+liblapzt.u64.dec.erased = (a: liblapzt.u64) liblapzt.u64 {
+    liblapzt.u64.sub(a, liblapzt.u64.one)
+}
+
+liblapzt.u64.dec = liblapzt.u64.dec.erased
+
+liblapzt.u64.is.zero.erased = (a: liblapzt.u64) liblapzt.bool {
+    [low, high] = a
+    liblapzt.bool.and(liblapzt.u32.is.zero(low), liblapzt.u32.is.zero(high))
+}
+
+liblapzt.u64.is.zero = liblapzt.u64.is.zero.erased
+
+liblapzt.u64.is.one.erased = (a: liblapzt.u64) liblapzt.bool {
+    [low, high] = a
+    liblapzt.bool.and(liblapzt.u32.is.one(low), liblapzt.u32.is.zero(high))
+}
+
+liblapzt.u64.is.one = liblapzt.u64.is.one.erased
+
+liblapzt.u64.to.bool.erased = (a: liblapzt.u64) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.u64.is.zero(a))
+}
+
+liblapzt.u64.to.bool = liblapzt.u64.to.bool.erased
+
+liblapzt.u64.div.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.u64.zero
+    } {
+        [[[[[[a0, a1], [a2, a3]], [[a4, a5], [a6, a7]]], [[[a8, a9], [a10, a11]], [[a12, a13], [a14, a15]]]], [[[[a16, a17], [a18, a19]], [[a20, a21], [a22, a23]]], [[[a24, a25], [a26, a27]], [[a28, a29], [a30, a31]]]]], [[[[[a32, a33], [a34, a35]], [[a36, a37], [a38, a39]]], [[[a40, a41], [a42, a43]], [[a44, a45], [a46, a47]]]], [[[[a48, a49], [a50, a51]], [[a52, a53], [a54, a55]]], [[[a56, a57], [a58, a59]], [[a60, a61], [a62, a63]]]]]] = a
+        r0: liblapzt.u64 = liblapzt.u64.zero
+        r1: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r0), a63)
+        q63: liblapzt.bool = liblapzt.u64.ge(r1, b)
+        r2: liblapzt.u64 = liblapzt.u64.select(q63, liblapzt.u64.sub(r1, b), r1)
+        r3: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r2), a62)
+        q62: liblapzt.bool = liblapzt.u64.ge(r3, b)
+        r4: liblapzt.u64 = liblapzt.u64.select(q62, liblapzt.u64.sub(r3, b), r3)
+        r5: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r4), a61)
+        q61: liblapzt.bool = liblapzt.u64.ge(r5, b)
+        r6: liblapzt.u64 = liblapzt.u64.select(q61, liblapzt.u64.sub(r5, b), r5)
+        r7: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r6), a60)
+        q60: liblapzt.bool = liblapzt.u64.ge(r7, b)
+        r8: liblapzt.u64 = liblapzt.u64.select(q60, liblapzt.u64.sub(r7, b), r7)
+        r9: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r8), a59)
+        q59: liblapzt.bool = liblapzt.u64.ge(r9, b)
+        r10: liblapzt.u64 = liblapzt.u64.select(q59, liblapzt.u64.sub(r9, b), r9)
+        r11: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r10), a58)
+        q58: liblapzt.bool = liblapzt.u64.ge(r11, b)
+        r12: liblapzt.u64 = liblapzt.u64.select(q58, liblapzt.u64.sub(r11, b), r11)
+        r13: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r12), a57)
+        q57: liblapzt.bool = liblapzt.u64.ge(r13, b)
+        r14: liblapzt.u64 = liblapzt.u64.select(q57, liblapzt.u64.sub(r13, b), r13)
+        r15: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r14), a56)
+        q56: liblapzt.bool = liblapzt.u64.ge(r15, b)
+        r16: liblapzt.u64 = liblapzt.u64.select(q56, liblapzt.u64.sub(r15, b), r15)
+        r17: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r16), a55)
+        q55: liblapzt.bool = liblapzt.u64.ge(r17, b)
+        r18: liblapzt.u64 = liblapzt.u64.select(q55, liblapzt.u64.sub(r17, b), r17)
+        r19: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r18), a54)
+        q54: liblapzt.bool = liblapzt.u64.ge(r19, b)
+        r20: liblapzt.u64 = liblapzt.u64.select(q54, liblapzt.u64.sub(r19, b), r19)
+        r21: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r20), a53)
+        q53: liblapzt.bool = liblapzt.u64.ge(r21, b)
+        r22: liblapzt.u64 = liblapzt.u64.select(q53, liblapzt.u64.sub(r21, b), r21)
+        r23: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r22), a52)
+        q52: liblapzt.bool = liblapzt.u64.ge(r23, b)
+        r24: liblapzt.u64 = liblapzt.u64.select(q52, liblapzt.u64.sub(r23, b), r23)
+        r25: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r24), a51)
+        q51: liblapzt.bool = liblapzt.u64.ge(r25, b)
+        r26: liblapzt.u64 = liblapzt.u64.select(q51, liblapzt.u64.sub(r25, b), r25)
+        r27: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r26), a50)
+        q50: liblapzt.bool = liblapzt.u64.ge(r27, b)
+        r28: liblapzt.u64 = liblapzt.u64.select(q50, liblapzt.u64.sub(r27, b), r27)
+        r29: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r28), a49)
+        q49: liblapzt.bool = liblapzt.u64.ge(r29, b)
+        r30: liblapzt.u64 = liblapzt.u64.select(q49, liblapzt.u64.sub(r29, b), r29)
+        r31: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r30), a48)
+        q48: liblapzt.bool = liblapzt.u64.ge(r31, b)
+        r32: liblapzt.u64 = liblapzt.u64.select(q48, liblapzt.u64.sub(r31, b), r31)
+        r33: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r32), a47)
+        q47: liblapzt.bool = liblapzt.u64.ge(r33, b)
+        r34: liblapzt.u64 = liblapzt.u64.select(q47, liblapzt.u64.sub(r33, b), r33)
+        r35: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r34), a46)
+        q46: liblapzt.bool = liblapzt.u64.ge(r35, b)
+        r36: liblapzt.u64 = liblapzt.u64.select(q46, liblapzt.u64.sub(r35, b), r35)
+        r37: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r36), a45)
+        q45: liblapzt.bool = liblapzt.u64.ge(r37, b)
+        r38: liblapzt.u64 = liblapzt.u64.select(q45, liblapzt.u64.sub(r37, b), r37)
+        r39: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r38), a44)
+        q44: liblapzt.bool = liblapzt.u64.ge(r39, b)
+        r40: liblapzt.u64 = liblapzt.u64.select(q44, liblapzt.u64.sub(r39, b), r39)
+        r41: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r40), a43)
+        q43: liblapzt.bool = liblapzt.u64.ge(r41, b)
+        r42: liblapzt.u64 = liblapzt.u64.select(q43, liblapzt.u64.sub(r41, b), r41)
+        r43: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r42), a42)
+        q42: liblapzt.bool = liblapzt.u64.ge(r43, b)
+        r44: liblapzt.u64 = liblapzt.u64.select(q42, liblapzt.u64.sub(r43, b), r43)
+        r45: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r44), a41)
+        q41: liblapzt.bool = liblapzt.u64.ge(r45, b)
+        r46: liblapzt.u64 = liblapzt.u64.select(q41, liblapzt.u64.sub(r45, b), r45)
+        r47: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r46), a40)
+        q40: liblapzt.bool = liblapzt.u64.ge(r47, b)
+        r48: liblapzt.u64 = liblapzt.u64.select(q40, liblapzt.u64.sub(r47, b), r47)
+        r49: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r48), a39)
+        q39: liblapzt.bool = liblapzt.u64.ge(r49, b)
+        r50: liblapzt.u64 = liblapzt.u64.select(q39, liblapzt.u64.sub(r49, b), r49)
+        r51: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r50), a38)
+        q38: liblapzt.bool = liblapzt.u64.ge(r51, b)
+        r52: liblapzt.u64 = liblapzt.u64.select(q38, liblapzt.u64.sub(r51, b), r51)
+        r53: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r52), a37)
+        q37: liblapzt.bool = liblapzt.u64.ge(r53, b)
+        r54: liblapzt.u64 = liblapzt.u64.select(q37, liblapzt.u64.sub(r53, b), r53)
+        r55: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r54), a36)
+        q36: liblapzt.bool = liblapzt.u64.ge(r55, b)
+        r56: liblapzt.u64 = liblapzt.u64.select(q36, liblapzt.u64.sub(r55, b), r55)
+        r57: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r56), a35)
+        q35: liblapzt.bool = liblapzt.u64.ge(r57, b)
+        r58: liblapzt.u64 = liblapzt.u64.select(q35, liblapzt.u64.sub(r57, b), r57)
+        r59: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r58), a34)
+        q34: liblapzt.bool = liblapzt.u64.ge(r59, b)
+        r60: liblapzt.u64 = liblapzt.u64.select(q34, liblapzt.u64.sub(r59, b), r59)
+        r61: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r60), a33)
+        q33: liblapzt.bool = liblapzt.u64.ge(r61, b)
+        r62: liblapzt.u64 = liblapzt.u64.select(q33, liblapzt.u64.sub(r61, b), r61)
+        r63: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r62), a32)
+        q32: liblapzt.bool = liblapzt.u64.ge(r63, b)
+        r64: liblapzt.u64 = liblapzt.u64.select(q32, liblapzt.u64.sub(r63, b), r63)
+        r65: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r64), a31)
+        q31: liblapzt.bool = liblapzt.u64.ge(r65, b)
+        r66: liblapzt.u64 = liblapzt.u64.select(q31, liblapzt.u64.sub(r65, b), r65)
+        r67: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r66), a30)
+        q30: liblapzt.bool = liblapzt.u64.ge(r67, b)
+        r68: liblapzt.u64 = liblapzt.u64.select(q30, liblapzt.u64.sub(r67, b), r67)
+        r69: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r68), a29)
+        q29: liblapzt.bool = liblapzt.u64.ge(r69, b)
+        r70: liblapzt.u64 = liblapzt.u64.select(q29, liblapzt.u64.sub(r69, b), r69)
+        r71: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r70), a28)
+        q28: liblapzt.bool = liblapzt.u64.ge(r71, b)
+        r72: liblapzt.u64 = liblapzt.u64.select(q28, liblapzt.u64.sub(r71, b), r71)
+        r73: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r72), a27)
+        q27: liblapzt.bool = liblapzt.u64.ge(r73, b)
+        r74: liblapzt.u64 = liblapzt.u64.select(q27, liblapzt.u64.sub(r73, b), r73)
+        r75: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r74), a26)
+        q26: liblapzt.bool = liblapzt.u64.ge(r75, b)
+        r76: liblapzt.u64 = liblapzt.u64.select(q26, liblapzt.u64.sub(r75, b), r75)
+        r77: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r76), a25)
+        q25: liblapzt.bool = liblapzt.u64.ge(r77, b)
+        r78: liblapzt.u64 = liblapzt.u64.select(q25, liblapzt.u64.sub(r77, b), r77)
+        r79: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r78), a24)
+        q24: liblapzt.bool = liblapzt.u64.ge(r79, b)
+        r80: liblapzt.u64 = liblapzt.u64.select(q24, liblapzt.u64.sub(r79, b), r79)
+        r81: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r80), a23)
+        q23: liblapzt.bool = liblapzt.u64.ge(r81, b)
+        r82: liblapzt.u64 = liblapzt.u64.select(q23, liblapzt.u64.sub(r81, b), r81)
+        r83: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r82), a22)
+        q22: liblapzt.bool = liblapzt.u64.ge(r83, b)
+        r84: liblapzt.u64 = liblapzt.u64.select(q22, liblapzt.u64.sub(r83, b), r83)
+        r85: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r84), a21)
+        q21: liblapzt.bool = liblapzt.u64.ge(r85, b)
+        r86: liblapzt.u64 = liblapzt.u64.select(q21, liblapzt.u64.sub(r85, b), r85)
+        r87: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r86), a20)
+        q20: liblapzt.bool = liblapzt.u64.ge(r87, b)
+        r88: liblapzt.u64 = liblapzt.u64.select(q20, liblapzt.u64.sub(r87, b), r87)
+        r89: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r88), a19)
+        q19: liblapzt.bool = liblapzt.u64.ge(r89, b)
+        r90: liblapzt.u64 = liblapzt.u64.select(q19, liblapzt.u64.sub(r89, b), r89)
+        r91: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r90), a18)
+        q18: liblapzt.bool = liblapzt.u64.ge(r91, b)
+        r92: liblapzt.u64 = liblapzt.u64.select(q18, liblapzt.u64.sub(r91, b), r91)
+        r93: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r92), a17)
+        q17: liblapzt.bool = liblapzt.u64.ge(r93, b)
+        r94: liblapzt.u64 = liblapzt.u64.select(q17, liblapzt.u64.sub(r93, b), r93)
+        r95: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r94), a16)
+        q16: liblapzt.bool = liblapzt.u64.ge(r95, b)
+        r96: liblapzt.u64 = liblapzt.u64.select(q16, liblapzt.u64.sub(r95, b), r95)
+        r97: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r96), a15)
+        q15: liblapzt.bool = liblapzt.u64.ge(r97, b)
+        r98: liblapzt.u64 = liblapzt.u64.select(q15, liblapzt.u64.sub(r97, b), r97)
+        r99: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r98), a14)
+        q14: liblapzt.bool = liblapzt.u64.ge(r99, b)
+        r100: liblapzt.u64 = liblapzt.u64.select(q14, liblapzt.u64.sub(r99, b), r99)
+        r101: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r100), a13)
+        q13: liblapzt.bool = liblapzt.u64.ge(r101, b)
+        r102: liblapzt.u64 = liblapzt.u64.select(q13, liblapzt.u64.sub(r101, b), r101)
+        r103: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r102), a12)
+        q12: liblapzt.bool = liblapzt.u64.ge(r103, b)
+        r104: liblapzt.u64 = liblapzt.u64.select(q12, liblapzt.u64.sub(r103, b), r103)
+        r105: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r104), a11)
+        q11: liblapzt.bool = liblapzt.u64.ge(r105, b)
+        r106: liblapzt.u64 = liblapzt.u64.select(q11, liblapzt.u64.sub(r105, b), r105)
+        r107: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r106), a10)
+        q10: liblapzt.bool = liblapzt.u64.ge(r107, b)
+        r108: liblapzt.u64 = liblapzt.u64.select(q10, liblapzt.u64.sub(r107, b), r107)
+        r109: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r108), a9)
+        q9: liblapzt.bool = liblapzt.u64.ge(r109, b)
+        r110: liblapzt.u64 = liblapzt.u64.select(q9, liblapzt.u64.sub(r109, b), r109)
+        r111: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r110), a8)
+        q8: liblapzt.bool = liblapzt.u64.ge(r111, b)
+        r112: liblapzt.u64 = liblapzt.u64.select(q8, liblapzt.u64.sub(r111, b), r111)
+        r113: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r112), a7)
+        q7: liblapzt.bool = liblapzt.u64.ge(r113, b)
+        r114: liblapzt.u64 = liblapzt.u64.select(q7, liblapzt.u64.sub(r113, b), r113)
+        r115: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r114), a6)
+        q6: liblapzt.bool = liblapzt.u64.ge(r115, b)
+        r116: liblapzt.u64 = liblapzt.u64.select(q6, liblapzt.u64.sub(r115, b), r115)
+        r117: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r116), a5)
+        q5: liblapzt.bool = liblapzt.u64.ge(r117, b)
+        r118: liblapzt.u64 = liblapzt.u64.select(q5, liblapzt.u64.sub(r117, b), r117)
+        r119: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r118), a4)
+        q4: liblapzt.bool = liblapzt.u64.ge(r119, b)
+        r120: liblapzt.u64 = liblapzt.u64.select(q4, liblapzt.u64.sub(r119, b), r119)
+        r121: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r120), a3)
+        q3: liblapzt.bool = liblapzt.u64.ge(r121, b)
+        r122: liblapzt.u64 = liblapzt.u64.select(q3, liblapzt.u64.sub(r121, b), r121)
+        r123: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r122), a2)
+        q2: liblapzt.bool = liblapzt.u64.ge(r123, b)
+        r124: liblapzt.u64 = liblapzt.u64.select(q2, liblapzt.u64.sub(r123, b), r123)
+        r125: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r124), a1)
+        q1: liblapzt.bool = liblapzt.u64.ge(r125, b)
+        r126: liblapzt.u64 = liblapzt.u64.select(q1, liblapzt.u64.sub(r125, b), r125)
+        r127: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r126), a0)
+        q0: liblapzt.bool = liblapzt.u64.ge(r127, b)
+        r128: liblapzt.u64 = liblapzt.u64.select(q0, liblapzt.u64.sub(r127, b), r127)
+        [[[[[[q0, q1], [q2, q3]], [[q4, q5], [q6, q7]]], [[[q8, q9], [q10, q11]], [[q12, q13], [q14, q15]]]], [[[[q16, q17], [q18, q19]], [[q20, q21], [q22, q23]]], [[[q24, q25], [q26, q27]], [[q28, q29], [q30, q31]]]]], [[[[[q32, q33], [q34, q35]], [[q36, q37], [q38, q39]]], [[[q40, q41], [q42, q43]], [[q44, q45], [q46, q47]]]], [[[[q48, q49], [q50, q51]], [[q52, q53], [q54, q55]]], [[[q56, q57], [q58, q59]], [[q60, q61], [q62, q63]]]]]]
+    }
+}
+
+liblapzt.u64.div = liblapzt.u64.div.erased
+
+liblapzt.u64.mod.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.u64.zero
+    } {
+        [[[[[[a0, a1], [a2, a3]], [[a4, a5], [a6, a7]]], [[[a8, a9], [a10, a11]], [[a12, a13], [a14, a15]]]], [[[[a16, a17], [a18, a19]], [[a20, a21], [a22, a23]]], [[[a24, a25], [a26, a27]], [[a28, a29], [a30, a31]]]]], [[[[[a32, a33], [a34, a35]], [[a36, a37], [a38, a39]]], [[[a40, a41], [a42, a43]], [[a44, a45], [a46, a47]]]], [[[[a48, a49], [a50, a51]], [[a52, a53], [a54, a55]]], [[[a56, a57], [a58, a59]], [[a60, a61], [a62, a63]]]]]] = a
+        r0: liblapzt.u64 = liblapzt.u64.zero
+        r1: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r0), a63)
+        q63: liblapzt.bool = liblapzt.u64.ge(r1, b)
+        r2: liblapzt.u64 = liblapzt.u64.select(q63, liblapzt.u64.sub(r1, b), r1)
+        r3: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r2), a62)
+        q62: liblapzt.bool = liblapzt.u64.ge(r3, b)
+        r4: liblapzt.u64 = liblapzt.u64.select(q62, liblapzt.u64.sub(r3, b), r3)
+        r5: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r4), a61)
+        q61: liblapzt.bool = liblapzt.u64.ge(r5, b)
+        r6: liblapzt.u64 = liblapzt.u64.select(q61, liblapzt.u64.sub(r5, b), r5)
+        r7: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r6), a60)
+        q60: liblapzt.bool = liblapzt.u64.ge(r7, b)
+        r8: liblapzt.u64 = liblapzt.u64.select(q60, liblapzt.u64.sub(r7, b), r7)
+        r9: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r8), a59)
+        q59: liblapzt.bool = liblapzt.u64.ge(r9, b)
+        r10: liblapzt.u64 = liblapzt.u64.select(q59, liblapzt.u64.sub(r9, b), r9)
+        r11: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r10), a58)
+        q58: liblapzt.bool = liblapzt.u64.ge(r11, b)
+        r12: liblapzt.u64 = liblapzt.u64.select(q58, liblapzt.u64.sub(r11, b), r11)
+        r13: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r12), a57)
+        q57: liblapzt.bool = liblapzt.u64.ge(r13, b)
+        r14: liblapzt.u64 = liblapzt.u64.select(q57, liblapzt.u64.sub(r13, b), r13)
+        r15: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r14), a56)
+        q56: liblapzt.bool = liblapzt.u64.ge(r15, b)
+        r16: liblapzt.u64 = liblapzt.u64.select(q56, liblapzt.u64.sub(r15, b), r15)
+        r17: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r16), a55)
+        q55: liblapzt.bool = liblapzt.u64.ge(r17, b)
+        r18: liblapzt.u64 = liblapzt.u64.select(q55, liblapzt.u64.sub(r17, b), r17)
+        r19: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r18), a54)
+        q54: liblapzt.bool = liblapzt.u64.ge(r19, b)
+        r20: liblapzt.u64 = liblapzt.u64.select(q54, liblapzt.u64.sub(r19, b), r19)
+        r21: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r20), a53)
+        q53: liblapzt.bool = liblapzt.u64.ge(r21, b)
+        r22: liblapzt.u64 = liblapzt.u64.select(q53, liblapzt.u64.sub(r21, b), r21)
+        r23: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r22), a52)
+        q52: liblapzt.bool = liblapzt.u64.ge(r23, b)
+        r24: liblapzt.u64 = liblapzt.u64.select(q52, liblapzt.u64.sub(r23, b), r23)
+        r25: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r24), a51)
+        q51: liblapzt.bool = liblapzt.u64.ge(r25, b)
+        r26: liblapzt.u64 = liblapzt.u64.select(q51, liblapzt.u64.sub(r25, b), r25)
+        r27: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r26), a50)
+        q50: liblapzt.bool = liblapzt.u64.ge(r27, b)
+        r28: liblapzt.u64 = liblapzt.u64.select(q50, liblapzt.u64.sub(r27, b), r27)
+        r29: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r28), a49)
+        q49: liblapzt.bool = liblapzt.u64.ge(r29, b)
+        r30: liblapzt.u64 = liblapzt.u64.select(q49, liblapzt.u64.sub(r29, b), r29)
+        r31: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r30), a48)
+        q48: liblapzt.bool = liblapzt.u64.ge(r31, b)
+        r32: liblapzt.u64 = liblapzt.u64.select(q48, liblapzt.u64.sub(r31, b), r31)
+        r33: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r32), a47)
+        q47: liblapzt.bool = liblapzt.u64.ge(r33, b)
+        r34: liblapzt.u64 = liblapzt.u64.select(q47, liblapzt.u64.sub(r33, b), r33)
+        r35: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r34), a46)
+        q46: liblapzt.bool = liblapzt.u64.ge(r35, b)
+        r36: liblapzt.u64 = liblapzt.u64.select(q46, liblapzt.u64.sub(r35, b), r35)
+        r37: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r36), a45)
+        q45: liblapzt.bool = liblapzt.u64.ge(r37, b)
+        r38: liblapzt.u64 = liblapzt.u64.select(q45, liblapzt.u64.sub(r37, b), r37)
+        r39: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r38), a44)
+        q44: liblapzt.bool = liblapzt.u64.ge(r39, b)
+        r40: liblapzt.u64 = liblapzt.u64.select(q44, liblapzt.u64.sub(r39, b), r39)
+        r41: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r40), a43)
+        q43: liblapzt.bool = liblapzt.u64.ge(r41, b)
+        r42: liblapzt.u64 = liblapzt.u64.select(q43, liblapzt.u64.sub(r41, b), r41)
+        r43: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r42), a42)
+        q42: liblapzt.bool = liblapzt.u64.ge(r43, b)
+        r44: liblapzt.u64 = liblapzt.u64.select(q42, liblapzt.u64.sub(r43, b), r43)
+        r45: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r44), a41)
+        q41: liblapzt.bool = liblapzt.u64.ge(r45, b)
+        r46: liblapzt.u64 = liblapzt.u64.select(q41, liblapzt.u64.sub(r45, b), r45)
+        r47: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r46), a40)
+        q40: liblapzt.bool = liblapzt.u64.ge(r47, b)
+        r48: liblapzt.u64 = liblapzt.u64.select(q40, liblapzt.u64.sub(r47, b), r47)
+        r49: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r48), a39)
+        q39: liblapzt.bool = liblapzt.u64.ge(r49, b)
+        r50: liblapzt.u64 = liblapzt.u64.select(q39, liblapzt.u64.sub(r49, b), r49)
+        r51: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r50), a38)
+        q38: liblapzt.bool = liblapzt.u64.ge(r51, b)
+        r52: liblapzt.u64 = liblapzt.u64.select(q38, liblapzt.u64.sub(r51, b), r51)
+        r53: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r52), a37)
+        q37: liblapzt.bool = liblapzt.u64.ge(r53, b)
+        r54: liblapzt.u64 = liblapzt.u64.select(q37, liblapzt.u64.sub(r53, b), r53)
+        r55: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r54), a36)
+        q36: liblapzt.bool = liblapzt.u64.ge(r55, b)
+        r56: liblapzt.u64 = liblapzt.u64.select(q36, liblapzt.u64.sub(r55, b), r55)
+        r57: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r56), a35)
+        q35: liblapzt.bool = liblapzt.u64.ge(r57, b)
+        r58: liblapzt.u64 = liblapzt.u64.select(q35, liblapzt.u64.sub(r57, b), r57)
+        r59: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r58), a34)
+        q34: liblapzt.bool = liblapzt.u64.ge(r59, b)
+        r60: liblapzt.u64 = liblapzt.u64.select(q34, liblapzt.u64.sub(r59, b), r59)
+        r61: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r60), a33)
+        q33: liblapzt.bool = liblapzt.u64.ge(r61, b)
+        r62: liblapzt.u64 = liblapzt.u64.select(q33, liblapzt.u64.sub(r61, b), r61)
+        r63: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r62), a32)
+        q32: liblapzt.bool = liblapzt.u64.ge(r63, b)
+        r64: liblapzt.u64 = liblapzt.u64.select(q32, liblapzt.u64.sub(r63, b), r63)
+        r65: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r64), a31)
+        q31: liblapzt.bool = liblapzt.u64.ge(r65, b)
+        r66: liblapzt.u64 = liblapzt.u64.select(q31, liblapzt.u64.sub(r65, b), r65)
+        r67: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r66), a30)
+        q30: liblapzt.bool = liblapzt.u64.ge(r67, b)
+        r68: liblapzt.u64 = liblapzt.u64.select(q30, liblapzt.u64.sub(r67, b), r67)
+        r69: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r68), a29)
+        q29: liblapzt.bool = liblapzt.u64.ge(r69, b)
+        r70: liblapzt.u64 = liblapzt.u64.select(q29, liblapzt.u64.sub(r69, b), r69)
+        r71: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r70), a28)
+        q28: liblapzt.bool = liblapzt.u64.ge(r71, b)
+        r72: liblapzt.u64 = liblapzt.u64.select(q28, liblapzt.u64.sub(r71, b), r71)
+        r73: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r72), a27)
+        q27: liblapzt.bool = liblapzt.u64.ge(r73, b)
+        r74: liblapzt.u64 = liblapzt.u64.select(q27, liblapzt.u64.sub(r73, b), r73)
+        r75: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r74), a26)
+        q26: liblapzt.bool = liblapzt.u64.ge(r75, b)
+        r76: liblapzt.u64 = liblapzt.u64.select(q26, liblapzt.u64.sub(r75, b), r75)
+        r77: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r76), a25)
+        q25: liblapzt.bool = liblapzt.u64.ge(r77, b)
+        r78: liblapzt.u64 = liblapzt.u64.select(q25, liblapzt.u64.sub(r77, b), r77)
+        r79: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r78), a24)
+        q24: liblapzt.bool = liblapzt.u64.ge(r79, b)
+        r80: liblapzt.u64 = liblapzt.u64.select(q24, liblapzt.u64.sub(r79, b), r79)
+        r81: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r80), a23)
+        q23: liblapzt.bool = liblapzt.u64.ge(r81, b)
+        r82: liblapzt.u64 = liblapzt.u64.select(q23, liblapzt.u64.sub(r81, b), r81)
+        r83: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r82), a22)
+        q22: liblapzt.bool = liblapzt.u64.ge(r83, b)
+        r84: liblapzt.u64 = liblapzt.u64.select(q22, liblapzt.u64.sub(r83, b), r83)
+        r85: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r84), a21)
+        q21: liblapzt.bool = liblapzt.u64.ge(r85, b)
+        r86: liblapzt.u64 = liblapzt.u64.select(q21, liblapzt.u64.sub(r85, b), r85)
+        r87: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r86), a20)
+        q20: liblapzt.bool = liblapzt.u64.ge(r87, b)
+        r88: liblapzt.u64 = liblapzt.u64.select(q20, liblapzt.u64.sub(r87, b), r87)
+        r89: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r88), a19)
+        q19: liblapzt.bool = liblapzt.u64.ge(r89, b)
+        r90: liblapzt.u64 = liblapzt.u64.select(q19, liblapzt.u64.sub(r89, b), r89)
+        r91: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r90), a18)
+        q18: liblapzt.bool = liblapzt.u64.ge(r91, b)
+        r92: liblapzt.u64 = liblapzt.u64.select(q18, liblapzt.u64.sub(r91, b), r91)
+        r93: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r92), a17)
+        q17: liblapzt.bool = liblapzt.u64.ge(r93, b)
+        r94: liblapzt.u64 = liblapzt.u64.select(q17, liblapzt.u64.sub(r93, b), r93)
+        r95: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r94), a16)
+        q16: liblapzt.bool = liblapzt.u64.ge(r95, b)
+        r96: liblapzt.u64 = liblapzt.u64.select(q16, liblapzt.u64.sub(r95, b), r95)
+        r97: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r96), a15)
+        q15: liblapzt.bool = liblapzt.u64.ge(r97, b)
+        r98: liblapzt.u64 = liblapzt.u64.select(q15, liblapzt.u64.sub(r97, b), r97)
+        r99: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r98), a14)
+        q14: liblapzt.bool = liblapzt.u64.ge(r99, b)
+        r100: liblapzt.u64 = liblapzt.u64.select(q14, liblapzt.u64.sub(r99, b), r99)
+        r101: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r100), a13)
+        q13: liblapzt.bool = liblapzt.u64.ge(r101, b)
+        r102: liblapzt.u64 = liblapzt.u64.select(q13, liblapzt.u64.sub(r101, b), r101)
+        r103: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r102), a12)
+        q12: liblapzt.bool = liblapzt.u64.ge(r103, b)
+        r104: liblapzt.u64 = liblapzt.u64.select(q12, liblapzt.u64.sub(r103, b), r103)
+        r105: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r104), a11)
+        q11: liblapzt.bool = liblapzt.u64.ge(r105, b)
+        r106: liblapzt.u64 = liblapzt.u64.select(q11, liblapzt.u64.sub(r105, b), r105)
+        r107: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r106), a10)
+        q10: liblapzt.bool = liblapzt.u64.ge(r107, b)
+        r108: liblapzt.u64 = liblapzt.u64.select(q10, liblapzt.u64.sub(r107, b), r107)
+        r109: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r108), a9)
+        q9: liblapzt.bool = liblapzt.u64.ge(r109, b)
+        r110: liblapzt.u64 = liblapzt.u64.select(q9, liblapzt.u64.sub(r109, b), r109)
+        r111: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r110), a8)
+        q8: liblapzt.bool = liblapzt.u64.ge(r111, b)
+        r112: liblapzt.u64 = liblapzt.u64.select(q8, liblapzt.u64.sub(r111, b), r111)
+        r113: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r112), a7)
+        q7: liblapzt.bool = liblapzt.u64.ge(r113, b)
+        r114: liblapzt.u64 = liblapzt.u64.select(q7, liblapzt.u64.sub(r113, b), r113)
+        r115: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r114), a6)
+        q6: liblapzt.bool = liblapzt.u64.ge(r115, b)
+        r116: liblapzt.u64 = liblapzt.u64.select(q6, liblapzt.u64.sub(r115, b), r115)
+        r117: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r116), a5)
+        q5: liblapzt.bool = liblapzt.u64.ge(r117, b)
+        r118: liblapzt.u64 = liblapzt.u64.select(q5, liblapzt.u64.sub(r117, b), r117)
+        r119: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r118), a4)
+        q4: liblapzt.bool = liblapzt.u64.ge(r119, b)
+        r120: liblapzt.u64 = liblapzt.u64.select(q4, liblapzt.u64.sub(r119, b), r119)
+        r121: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r120), a3)
+        q3: liblapzt.bool = liblapzt.u64.ge(r121, b)
+        r122: liblapzt.u64 = liblapzt.u64.select(q3, liblapzt.u64.sub(r121, b), r121)
+        r123: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r122), a2)
+        q2: liblapzt.bool = liblapzt.u64.ge(r123, b)
+        r124: liblapzt.u64 = liblapzt.u64.select(q2, liblapzt.u64.sub(r123, b), r123)
+        r125: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r124), a1)
+        q1: liblapzt.bool = liblapzt.u64.ge(r125, b)
+        r126: liblapzt.u64 = liblapzt.u64.select(q1, liblapzt.u64.sub(r125, b), r125)
+        r127: liblapzt.u64 = liblapzt.u64.with.lsb(liblapzt.u64.shl1(r126), a0)
+        q0: liblapzt.bool = liblapzt.u64.ge(r127, b)
+        r128: liblapzt.u64 = liblapzt.u64.select(q0, liblapzt.u64.sub(r127, b), r127)
+        r128
+    }
+}
+
+liblapzt.u64.mod = liblapzt.u64.mod.erased

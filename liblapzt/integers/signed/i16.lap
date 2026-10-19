@@ -1,0 +1,283 @@
+liblapzt.i16.erased = [liblapzt.i8.erased, liblapzt.i8.erased]
+
+liblapzt.i16 = liblapzt.i16.erased
+
+liblapzt.i16.zero.erased: liblapzt.i16.erased = [liblapzt.i8.zero.erased, liblapzt.i8.zero.erased]
+liblapzt.i16.one.erased: liblapzt.i16.erased = [liblapzt.i8.one.erased, liblapzt.i8.zero.erased]
+liblapzt.i16.minimum.erased: liblapzt.i16.erased = [liblapzt.i8.zero.erased, liblapzt.i8.minimum.erased]
+liblapzt.i16.maximum.erased: liblapzt.i16.erased = [liblapzt.u8.maximum.erased, liblapzt.i8.maximum.erased]
+
+liblapzt.i16.zero: liblapzt.i16 = liblapzt.i16.zero.erased
+liblapzt.i16.one: liblapzt.i16 = liblapzt.i16.one.erased
+liblapzt.i16.minimum: liblapzt.i16 = liblapzt.i16.minimum.erased
+liblapzt.i16.maximum: liblapzt.i16 = liblapzt.i16.maximum.erased
+
+liblapzt.i16.to.u16 = (a: liblapzt.i16) liblapzt.u16 {
+    [low, high] = a
+    [liblapzt.i8.to.u8(low), liblapzt.i8.to.u8(high)]
+}
+
+liblapzt.i16.from.u16 = (a: liblapzt.u16) liblapzt.i16 {
+    [low, high] = a
+    [liblapzt.i8.from.u8(low), liblapzt.i8.from.u8(high)]
+}
+
+liblapzt.i16.from.bool.erased = (a: liblapzt.bool) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.from.bool(a))
+}
+
+liblapzt.i16.from.bool = liblapzt.i16.from.bool.erased
+
+liblapzt.i16.not.erased = (a: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.not(liblapzt.i16.to.u16(a)))
+}
+
+liblapzt.i16.not = liblapzt.i16.not.erased
+
+liblapzt.i16.and.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.and(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b)))
+}
+
+liblapzt.i16.and = liblapzt.i16.and.erased
+
+liblapzt.i16.or.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.or(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b)))
+}
+
+liblapzt.i16.or = liblapzt.i16.or.erased
+
+liblapzt.i16.xor.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.xor(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b)))
+}
+
+liblapzt.i16.xor = liblapzt.i16.xor.erased
+
+liblapzt.i16.nand.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.nand(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b)))
+}
+
+liblapzt.i16.nand = liblapzt.i16.nand.erased
+
+liblapzt.i16.nor.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.nor(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b)))
+}
+
+liblapzt.i16.nor = liblapzt.i16.nor.erased
+
+liblapzt.i16.xnor.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.xnor(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b)))
+}
+
+liblapzt.i16.xnor = liblapzt.i16.xnor.erased
+
+liblapzt.i16.add.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.add(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b)))
+}
+
+liblapzt.i16.add = liblapzt.i16.add.erased
+
+liblapzt.i16.sub.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.sub(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b)))
+}
+
+liblapzt.i16.sub = liblapzt.i16.sub.erased
+
+liblapzt.i16.mul.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.mul(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b)))
+}
+
+liblapzt.i16.mul = liblapzt.i16.mul.erased
+
+liblapzt.i16.add.carry = (a: liblapzt.i16, b: liblapzt.i16) [liblapzt.i16, liblapzt.bool] {
+    [sum, carry] = liblapzt.u16.add.carry(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b))
+    [liblapzt.i16.from.u16(sum), carry]
+}
+
+liblapzt.i16.sub.borrow = (a: liblapzt.i16, b: liblapzt.i16) [liblapzt.i16, liblapzt.bool] {
+    [difference, borrow] = liblapzt.u16.sub.borrow(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b))
+    [liblapzt.i16.from.u16(difference), borrow]
+}
+
+liblapzt.i16.add3 = (a: liblapzt.i16, b: liblapzt.i16, c: liblapzt.i16) [liblapzt.i16, liblapzt.i16] {
+    [s1, c1] = liblapzt.i16.add.carry(a, b)
+    [s2, c2] = liblapzt.i16.add.carry(s1, c)
+    carry: liblapzt.i16 = liblapzt.i16.add(liblapzt.i16.from.bool(c1), liblapzt.i16.from.bool(c2))
+    [s2, carry]
+}
+
+liblapzt.i16.mul.full = (a: liblapzt.i16, b: liblapzt.i16) [liblapzt.i16, liblapzt.i16] {
+    [low, high] = liblapzt.u16.mul.full(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b))
+    [liblapzt.i16.from.u16(low), liblapzt.i16.from.u16(high)]
+}
+
+liblapzt.i16.shl1 = (a: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.shl1(liblapzt.i16.to.u16(a)))
+}
+
+liblapzt.i16.with.lsb = (a: liblapzt.i16, bit: liblapzt.bool) liblapzt.i16 {
+    liblapzt.i16.from.u16(liblapzt.u16.with.lsb(liblapzt.i16.to.u16(a), bit))
+}
+
+liblapzt.i16.msb = (a: liblapzt.i16) liblapzt.u1 {
+    [low, high] = a
+    liblapzt.i8.msb(high)
+}
+
+liblapzt.i16.sign.erased = (a: liblapzt.i16) liblapzt.bool {
+    [low, high] = a
+    liblapzt.i8.sign(high)
+}
+
+liblapzt.i16.sign = liblapzt.i16.sign.erased
+
+liblapzt.i16.is.negative.erased = (a: liblapzt.i16) liblapzt.bool {
+    liblapzt.i16.sign(a)
+}
+
+liblapzt.i16.is.negative = liblapzt.i16.is.negative.erased
+
+liblapzt.i16.eq.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.bool {
+    liblapzt.u16.eq(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b))
+}
+
+liblapzt.i16.eq = liblapzt.i16.eq.erased
+
+liblapzt.i16.ne.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.i16.eq(a, b))
+}
+
+liblapzt.i16.ne = liblapzt.i16.ne.erased
+
+liblapzt.i16.lt.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.bool {
+    a.negative: liblapzt.bool = liblapzt.i16.sign(a)
+    b.negative: liblapzt.bool = liblapzt.i16.sign(b)
+    differ: liblapzt.bool = liblapzt.bool.xor(a.negative, b.negative)
+    BRANCH (differ) {
+        a.negative
+    } {
+        liblapzt.u16.lt(liblapzt.i16.to.u16(a), liblapzt.i16.to.u16(b))
+    }
+}
+
+liblapzt.i16.lt = liblapzt.i16.lt.erased
+
+liblapzt.i16.le.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.bool {
+    liblapzt.bool.or(liblapzt.i16.lt(a, b), liblapzt.i16.eq(a, b))
+}
+
+liblapzt.i16.le = liblapzt.i16.le.erased
+
+liblapzt.i16.gt.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.bool {
+    liblapzt.i16.lt(b, a)
+}
+
+liblapzt.i16.gt = liblapzt.i16.gt.erased
+
+liblapzt.i16.ge.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.bool {
+    liblapzt.i16.le(b, a)
+}
+
+liblapzt.i16.ge = liblapzt.i16.ge.erased
+
+liblapzt.i16.select.erased = (flag: liblapzt.bool, when.true: liblapzt.i16, when.false: liblapzt.i16) liblapzt.i16 {
+    [tl, th] = when.true
+    [fl, fh] = when.false
+    [liblapzt.i8.select(flag, tl, fl), liblapzt.i8.select(flag, th, fh)]
+}
+
+liblapzt.i16.select = liblapzt.i16.select.erased
+
+liblapzt.i16.min.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.select(liblapzt.i16.lt(a, b), a, b)
+}
+
+liblapzt.i16.min = liblapzt.i16.min.erased
+
+liblapzt.i16.max.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.select(liblapzt.i16.gt(a, b), a, b)
+}
+
+liblapzt.i16.max = liblapzt.i16.max.erased
+
+liblapzt.i16.inc.erased = (a: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.add(a, liblapzt.i16.one)
+}
+
+liblapzt.i16.inc = liblapzt.i16.inc.erased
+
+liblapzt.i16.dec.erased = (a: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.sub(a, liblapzt.i16.one)
+}
+
+liblapzt.i16.dec = liblapzt.i16.dec.erased
+
+liblapzt.i16.is.zero.erased = (a: liblapzt.i16) liblapzt.bool {
+    liblapzt.u16.is.zero(liblapzt.i16.to.u16(a))
+}
+
+liblapzt.i16.is.zero = liblapzt.i16.is.zero.erased
+
+liblapzt.i16.is.one.erased = (a: liblapzt.i16) liblapzt.bool {
+    liblapzt.u16.is.one(liblapzt.i16.to.u16(a))
+}
+
+liblapzt.i16.is.one = liblapzt.i16.is.one.erased
+
+liblapzt.i16.to.bool.erased = (a: liblapzt.i16) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.i16.is.zero(a))
+}
+
+liblapzt.i16.to.bool = liblapzt.i16.to.bool.erased
+
+liblapzt.i16.neg.erased = (a: liblapzt.i16) liblapzt.i16 {
+    liblapzt.i16.inc(liblapzt.i16.not(a))
+}
+
+liblapzt.i16.neg = liblapzt.i16.neg.erased
+
+liblapzt.i16.abs.erased = (a: liblapzt.i16) liblapzt.i16 {
+    negative: liblapzt.bool = liblapzt.i16.sign(a)
+    BRANCH (negative) {
+        liblapzt.i16.neg(a)
+    } {
+        a
+    }
+}
+
+liblapzt.i16.abs = liblapzt.i16.abs.erased
+
+liblapzt.i16.div.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    zero: liblapzt.bool = liblapzt.i16.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.i16.zero
+    } {
+        negative: liblapzt.bool = liblapzt.bool.xor(liblapzt.i16.sign(a), liblapzt.i16.sign(b))
+        magnitude: liblapzt.u16 = liblapzt.u16.div(liblapzt.i16.to.u16(liblapzt.i16.abs(a)), liblapzt.i16.to.u16(liblapzt.i16.abs(b)))
+        quotient: liblapzt.i16 = liblapzt.i16.from.u16(magnitude)
+        BRANCH (negative) {
+            liblapzt.i16.neg(quotient)
+        } {
+            quotient
+        }
+    }
+}
+
+liblapzt.i16.div = liblapzt.i16.div.erased
+
+liblapzt.i16.mod.erased = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.i16 {
+    zero: liblapzt.bool = liblapzt.i16.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.i16.zero
+    } {
+        negative: liblapzt.bool = liblapzt.i16.sign(a)
+        magnitude: liblapzt.u16 = liblapzt.u16.mod(liblapzt.i16.to.u16(liblapzt.i16.abs(a)), liblapzt.i16.to.u16(liblapzt.i16.abs(b)))
+        remainder: liblapzt.i16 = liblapzt.i16.from.u16(magnitude)
+        BRANCH (negative) {
+            liblapzt.i16.neg(remainder)
+        } {
+            remainder
+        }
+    }
+}
+
+liblapzt.i16.mod = liblapzt.i16.mod.erased

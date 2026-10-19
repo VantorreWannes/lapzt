@@ -1,0 +1,71 @@
+liblapzt.u0.erased = []
+
+liblapzt.u0 = liblapzt.u0.erased
+
+liblapzt.u0.zero.erased: liblapzt.u0.erased = []
+
+liblapzt.u0.zero: liblapzt.u0 = liblapzt.u0.zero.erased
+
+liblapzt.u0.eq = (a: liblapzt.u0, b: liblapzt.u0) liblapzt.bool {
+    liblapzt.bool.true
+}
+
+liblapzt.u0.ne = (a: liblapzt.u0, b: liblapzt.u0) liblapzt.bool {
+    liblapzt.bool.false
+}
+
+liblapzt.u0.add = (a: liblapzt.u0, b: liblapzt.u0) liblapzt.u0 {
+    []
+}
+
+liblapzt.u0.sub = (a: liblapzt.u0, b: liblapzt.u0) liblapzt.u0 {
+    []
+}
+
+liblapzt.u0.mul = (a: liblapzt.u0, b: liblapzt.u0) liblapzt.u0 {
+    []
+}
+
+liblapzt.u0.div = (a: liblapzt.u0, b: liblapzt.u0) liblapzt.u0 {
+    []
+}
+
+liblapzt.u0.mod = (a: liblapzt.u0, b: liblapzt.u0) liblapzt.u0 {
+    []
+}
+
+liblapzt.u0.min = (a: liblapzt.u0, b: liblapzt.u0) liblapzt.u0 {
+    []
+}
+
+liblapzt.u0.max = (a: liblapzt.u0, b: liblapzt.u0) liblapzt.u0 {
+    []
+}
+
+liblapzt.u0.inc = (a: liblapzt.u0) liblapzt.u0 {
+    []
+}
+
+liblapzt.u0.dec = (a: liblapzt.u0) liblapzt.u0 {
+    []
+}
+
+liblapzt.u0.select = (flag: liblapzt.bool, when.one: liblapzt.u0, when.zero: liblapzt.u0) liblapzt.u0 {
+    []
+}
+
+liblapzt.u0.to.u1 = (a: liblapzt.u0) liblapzt.u1 {
+    liblapzt.u1.zero
+}
+
+liblapzt.u0.from.u1 = (a: liblapzt.u1) liblapzt.u0 {
+    []
+}
+
+liblapzt.u0.to.bool = (a: liblapzt.u0) liblapzt.bool {
+    liblapzt.bool.false
+}
+
+liblapzt.u0.from.bool = (a: liblapzt.bool) liblapzt.u0 {
+    []
+}

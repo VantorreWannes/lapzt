@@ -1,0 +1,11 @@
+liblapzt.assert.true = (condition: liblapzt.bool) [] {
+    BRANCH (condition) {
+        []
+    } {
+        liblapzt.process.exit(liblapzt.u64.one)
+    }
+}
+
+liblapzt.assert.false = (condition: liblapzt.bool) [] {
+    liblapzt.assert.true(liblapzt.bool.not(condition))
+}

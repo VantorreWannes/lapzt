@@ -1,0 +1,12 @@
+liblapzt.io.stdin: liblapzt.u64 = IO.STDIN
+liblapzt.io.stdout: liblapzt.u64 = IO.STDOUT
+liblapzt.io.stderr: liblapzt.u64 = IO.STDERR
+liblapzt.io.args: liblapzt.u64 = IO.ARGS
+
+liblapzt.io.read = (handle: liblapzt.u64, offset: liblapzt.u64) [BIT, liblapzt.u64] {
+    EXTERN(OP.READ, handle, offset)
+}
+
+liblapzt.io.write = (handle: liblapzt.u64, offset: liblapzt.u64, value: liblapzt.u64) [BIT] {
+    EXTERN(OP.WRITE, handle, offset, value)
+}
