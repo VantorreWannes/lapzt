@@ -1,0 +1,55 @@
+two: liblapzt.u64 = [[[[[[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]]]
+threshold: liblapzt.u64 = [[[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]]]
+limit: liblapzt.u64 = [[[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]]], [[[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]]]
+
+is.prime = (n: liblapzt.u64, divisor: liblapzt.u64) liblapzt.bool {
+    done: liblapzt.bool = liblapzt.u64.gt(liblapzt.u64.mul(divisor, divisor), n)
+    BRANCH (done) {
+        liblapzt.bool.true
+    } {
+        divides: liblapzt.bool = liblapzt.u64.is.zero(liblapzt.u64.mod(n, divisor))
+        BRANCH (divides) {
+            liblapzt.bool.false
+        } {
+            is.prime(n, liblapzt.u64.inc(divisor))
+        }
+    }
+}
+
+count.linear = (n: liblapzt.u64, high: liblapzt.u64) liblapzt.u64 {
+    done: liblapzt.bool = liblapzt.u64.ge(n, high)
+    BRANCH (done) {
+        liblapzt.u64.zero
+    } {
+        prime: liblapzt.bool = is.prime(n, two)
+        rest: liblapzt.u64 = count.linear(liblapzt.u64.inc(n), high)
+        liblapzt.u64.select(prime, liblapzt.u64.inc(rest), rest)
+    }
+}
+
+count.range = (low: liblapzt.u64, high: liblapzt.u64) liblapzt.u64 {
+    done: liblapzt.bool = liblapzt.u64.ge(low, high)
+    BRANCH (done) {
+        liblapzt.u64.zero
+    } {
+        size: liblapzt.u64 = liblapzt.u64.sub(high, low)
+        small: liblapzt.bool = liblapzt.u64.le(size, threshold)
+        BRANCH (small) {
+            count.linear(low, high)
+        } {
+            middle: liblapzt.u64 = liblapzt.u64.add(low, liblapzt.u64.div(size, two))
+            left: liblapzt.u64 = count.range(low, middle)
+            right: liblapzt.u64 = count.range(middle, high)
+            liblapzt.u64.add(left, right)
+        }
+    }
+}
+
+main = () [] {
+    [ok, extra] = liblapzt.io.read(liblapzt.io.stdin, liblapzt.u64.zero)
+    limit.runtime: liblapzt.u64 = liblapzt.u64.add(limit, extra)
+    result: liblapzt.u64 = count.range(two, limit.runtime)
+    liblapzt.print.u64(result)
+    liblapzt.print.newline()
+    []
+}
