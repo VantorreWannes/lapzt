@@ -1,4 +1,6 @@
-liblapzt.option.none: [BIT, liblapzt.u64] = [liblapzt.bool.false, liblapzt.u64.zero]
+liblapzt.option = [liblapzt.bool, liblapzt.u64]
+
+liblapzt.option.none: liblapzt.option = [liblapzt.bool.false, liblapzt.u64.zero]
 
 liblapzt.option.some = (value: liblapzt.u64) [BIT, liblapzt.u64] {
     [liblapzt.bool.true, value]
@@ -17,4 +19,56 @@ liblapzt.option.is.none = (option: [BIT, liblapzt.u64]) liblapzt.bool {
 liblapzt.option.unwrap = (option: [BIT, liblapzt.u64]) liblapzt.u64 {
     [status, value] = option
     value
+}
+
+liblapzt.option.unwrap.or = (option: liblapzt.option, default: liblapzt.u64) liblapzt.u64 {
+    [status, value] = option
+    BRANCH (status) {
+        value
+    } {
+        default
+    }
+}
+
+liblapzt.option.expect = (option: liblapzt.option, code: liblapzt.u64) liblapzt.u64 {
+    [status, value] = option
+    BRANCH (status) {
+        value
+    } {
+        liblapzt.process.exit(code)
+        value
+    }
+}
+
+liblapzt.option.or.else = (option: liblapzt.option, other: liblapzt.option) liblapzt.option {
+    [status, value] = option
+    BRANCH (status) {
+        option
+    } {
+        other
+    }
+}
+
+liblapzt.option.and.then = (option: liblapzt.option, other: liblapzt.option) liblapzt.option {
+    [status, value] = option
+    BRANCH (status) {
+        other
+    } {
+        liblapzt.option.none
+    }
+}
+
+liblapzt.option.zip = (a: liblapzt.option, b: liblapzt.option) [liblapzt.bool, liblapzt.u64, liblapzt.u64] {
+    [a.status, a.value] = a
+    [b.status, b.value] = b
+    both: liblapzt.bool = liblapzt.bool.and(a.status, b.status)
+    [both, a.value, b.value]
+}
+
+liblapzt.option.eq = (a: liblapzt.option, b: liblapzt.option) liblapzt.bool {
+    [a.status, a.value] = a
+    [b.status, b.value] = b
+    same.status: liblapzt.bool = liblapzt.bool.eq(a.status, b.status)
+    same.value: liblapzt.bool = liblapzt.u64.eq(a.value, b.value)
+    liblapzt.bool.or(liblapzt.bool.and(liblapzt.bool.not(a.status), liblapzt.bool.not(b.status)), liblapzt.bool.and(same.status, same.value))
 }

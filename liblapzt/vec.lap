@@ -1,0 +1,185 @@
+liblapzt.vec = [liblapzt.u64, liblapzt.u64, liblapzt.u64, liblapzt.u64]
+
+liblapzt.vec.new = (capacity: liblapzt.u64) [BIT, liblapzt.vec] {
+    [ok, handle] = liblapzt.memory.alloc(liblapzt.u64.mul(capacity, liblapzt.constants.eight))
+    [ok, [handle, liblapzt.u64.zero, capacity, liblapzt.constants.eight]]
+}
+
+liblapzt.vec.grow = (vector: *liblapzt.vec, capacity: liblapzt.u64) [BIT] {
+    [handle, length, old.capacity, stride] = vector
+    [ok, new.handle] = liblapzt.memory.alloc(liblapzt.u64.mul(capacity, liblapzt.constants.eight))
+    BRANCH (ok) {
+        [copy.ok] = liblapzt.memory.copy(new.handle, handle, liblapzt.u64.mul(length, liblapzt.constants.eight))
+        BRANCH (copy.ok) {
+            [free.ok] = liblapzt.memory.free(handle)
+            vector = [new.handle, length, capacity, stride]
+            [liblapzt.bool.true]
+        } {
+            [liblapzt.bool.false]
+        }
+    } {
+        [liblapzt.bool.false]
+    }
+}
+
+liblapzt.vec.reserve = (vector: *liblapzt.vec, capacity: liblapzt.u64) [BIT] {
+    [handle, length, old.capacity, stride] = vector
+    enough: liblapzt.bool = liblapzt.u64.ge(old.capacity, capacity)
+    BRANCH (enough) {
+        [liblapzt.bool.true]
+    } {
+        liblapzt.vec.grow(*vector, capacity)
+    }
+}
+
+liblapzt.vec.push = (vector: *liblapzt.vec, value: liblapzt.u64) [BIT] {
+    [handle, length, capacity, stride] = vector
+    full: liblapzt.bool = liblapzt.u64.ge(length, capacity)
+    BRANCH (full) {
+        zero: liblapzt.bool = liblapzt.u64.is.zero(capacity)
+        new.capacity: liblapzt.u64 = BRANCH (zero) {
+            liblapzt.u64.one
+        } {
+            liblapzt.u64.mul(capacity, liblapzt.constants.two)
+        }
+        [grow.ok] = liblapzt.vec.grow(*vector, new.capacity)
+        BRANCH (grow.ok) {
+            liblapzt.vec.push(*vector, value)
+        } {
+            [liblapzt.bool.false]
+        }
+    } {
+        [write.ok] = liblapzt.memory.write(handle, liblapzt.u64.mul(length, liblapzt.constants.eight), value)
+        BRANCH (write.ok) {
+            vector = [handle, liblapzt.u64.inc(length), capacity, stride]
+            [liblapzt.bool.true]
+        } {
+            [liblapzt.bool.false]
+        }
+    }
+}
+
+liblapzt.vec.pop = (vector: *liblapzt.vec) liblapzt.option {
+    [handle, length, capacity, stride] = vector
+    empty: liblapzt.bool = liblapzt.u64.is.zero(length)
+    BRANCH (empty) {
+        liblapzt.option.none
+    } {
+        new.length: liblapzt.u64 = liblapzt.u64.dec(length)
+        [ok, value] = liblapzt.memory.read(handle, liblapzt.u64.mul(new.length, liblapzt.constants.eight))
+        vector = [handle, new.length, capacity, stride]
+        BRANCH (ok) {
+            liblapzt.option.some(value)
+        } {
+            liblapzt.option.none
+        }
+    }
+}
+
+liblapzt.vec.get = (vector: liblapzt.vec, index: liblapzt.u64) liblapzt.option {
+    [handle, length, capacity, stride] = vector
+    out: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (out) {
+        liblapzt.option.none
+    } {
+        [ok, value] = liblapzt.memory.read(handle, liblapzt.u64.mul(index, liblapzt.constants.eight))
+        BRANCH (ok) {
+            liblapzt.option.some(value)
+        } {
+            liblapzt.option.none
+        }
+    }
+}
+
+liblapzt.vec.set = (vector: *liblapzt.vec, index: liblapzt.u64, value: liblapzt.u64) [BIT] {
+    [handle, length, capacity, stride] = vector
+    out: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (out) {
+        [liblapzt.bool.false]
+    } {
+        liblapzt.memory.write(handle, liblapzt.u64.mul(index, liblapzt.constants.eight), value)
+    }
+}
+
+liblapzt.vec.length = (vector: liblapzt.vec) liblapzt.u64 {
+    [handle, length, capacity, stride] = vector
+    length
+}
+
+liblapzt.vec.capacity = (vector: liblapzt.vec) liblapzt.u64 {
+    [handle, length, capacity, stride] = vector
+    capacity
+}
+
+liblapzt.vec.clear = (vector: *liblapzt.vec) [] {
+    [handle, length, capacity, stride] = vector
+    vector = [handle, liblapzt.u64.zero, capacity, stride]
+    []
+}
+
+liblapzt.vec.free = (vector: *liblapzt.vec) [BIT] {
+    [handle, length, capacity, stride] = vector
+    [ok] = liblapzt.memory.free(handle)
+    vector = [liblapzt.u64.zero, liblapzt.u64.zero, liblapzt.u64.zero, liblapzt.constants.eight]
+    [ok]
+}
+
+liblapzt.vec.copy.helper = (destination: liblapzt.u64, source: liblapzt.u64, index: liblapzt.u64, length: liblapzt.u64) [BIT] {
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        [liblapzt.bool.true]
+    } {
+        [read.ok, value] = liblapzt.memory.read(source, liblapzt.u64.mul(index, liblapzt.constants.eight))
+        [write.ok] = liblapzt.memory.write(destination, liblapzt.u64.mul(index, liblapzt.constants.eight), value)
+        ok: liblapzt.bool = liblapzt.bool.and(read.ok, write.ok)
+        BRANCH (ok) {
+            liblapzt.vec.copy.helper(destination, source, liblapzt.u64.inc(index), length)
+        } {
+            [liblapzt.bool.false]
+        }
+    }
+}
+
+liblapzt.vec.copy = (destination: *liblapzt.vec, source: liblapzt.vec) [BIT] {
+    [source.handle, source.length, source.capacity, source.stride] = source
+    [reserve.ok] = liblapzt.vec.reserve(*destination, source.length)
+    BRANCH (reserve.ok) {
+        [destination.handle, destination.length, destination.capacity, destination.stride] = destination
+        [copy.ok] = liblapzt.vec.copy.helper(destination.handle, source.handle, liblapzt.u64.zero, source.length)
+        BRANCH (copy.ok) {
+            destination = [destination.handle, source.length, destination.capacity, destination.stride]
+            [liblapzt.bool.true]
+        } {
+            [liblapzt.bool.false]
+        }
+    } {
+        [liblapzt.bool.false]
+    }
+}
+
+liblapzt.vec.eq.helper = (a: liblapzt.u64, b: liblapzt.u64, index: liblapzt.u64, length: liblapzt.u64) liblapzt.bool {
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        liblapzt.bool.true
+    } {
+        [a.ok, a.value] = liblapzt.memory.read(a, liblapzt.u64.mul(index, liblapzt.constants.eight))
+        [b.ok, b.value] = liblapzt.memory.read(b, liblapzt.u64.mul(index, liblapzt.constants.eight))
+        same: liblapzt.bool = liblapzt.u64.eq(a.value, b.value)
+        BRANCH (same) {
+            liblapzt.vec.eq.helper(a, b, liblapzt.u64.inc(index), length)
+        } {
+            liblapzt.bool.false
+        }
+    }
+}
+
+liblapzt.vec.eq = (a: liblapzt.vec, b: liblapzt.vec) liblapzt.bool {
+    [a.handle, a.length, a.capacity, a.stride] = a
+    [b.handle, b.length, b.capacity, b.stride] = b
+    same.length: liblapzt.bool = liblapzt.u64.eq(a.length, b.length)
+    BRANCH (same.length) {
+        liblapzt.vec.eq.helper(a.handle, b.handle, liblapzt.u64.zero, a.length)
+    } {
+        liblapzt.bool.false
+    }
+}

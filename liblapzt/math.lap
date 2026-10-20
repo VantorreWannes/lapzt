@@ -1,0 +1,568 @@
+liblapzt.math.with.msb.u1 = (a: liblapzt.u1, bit: liblapzt.bool) liblapzt.u1 {
+    bit
+}
+
+liblapzt.math.with.msb.u2 = (a: liblapzt.u2, bit: liblapzt.bool) liblapzt.u2 {
+    [low, high] = a
+    [low, bit]
+}
+
+liblapzt.math.with.msb.u4 = (a: liblapzt.u4, bit: liblapzt.bool) liblapzt.u4 {
+    [low, high] = a
+    [low, liblapzt.math.with.msb.u2(high, bit)]
+}
+
+liblapzt.math.with.msb.u8 = (a: liblapzt.u8, bit: liblapzt.bool) liblapzt.u8 {
+    [low, high] = a
+    [low, liblapzt.math.with.msb.u4(high, bit)]
+}
+
+liblapzt.math.with.msb.u16 = (a: liblapzt.u16, bit: liblapzt.bool) liblapzt.u16 {
+    [low, high] = a
+    [low, liblapzt.math.with.msb.u8(high, bit)]
+}
+
+liblapzt.math.with.msb.u32 = (a: liblapzt.u32, bit: liblapzt.bool) liblapzt.u32 {
+    [low, high] = a
+    [low, liblapzt.math.with.msb.u16(high, bit)]
+}
+
+liblapzt.math.with.msb.u64 = (a: liblapzt.u64, bit: liblapzt.bool) liblapzt.u64 {
+    [low, high] = a
+    [low, liblapzt.math.with.msb.u32(high, bit)]
+}
+
+liblapzt.math.with.msb.u128 = (a: liblapzt.u128, bit: liblapzt.bool) liblapzt.u128 {
+    [low, high] = a
+    [low, liblapzt.math.with.msb.u64(high, bit)]
+}
+
+liblapzt.math.lsb.u2 = (a: liblapzt.u2) liblapzt.bool {
+    liblapzt.u2.is.one(liblapzt.u2.and(a, liblapzt.u2.one))
+}
+
+liblapzt.math.lsb.u4 = (a: liblapzt.u4) liblapzt.bool {
+    liblapzt.u4.is.one(liblapzt.u4.and(a, liblapzt.u4.one))
+}
+
+liblapzt.math.lsb.u8 = (a: liblapzt.u8) liblapzt.bool {
+    liblapzt.u8.is.one(liblapzt.u8.and(a, liblapzt.u8.one))
+}
+
+liblapzt.math.lsb.u16 = (a: liblapzt.u16) liblapzt.bool {
+    liblapzt.u16.is.one(liblapzt.u16.and(a, liblapzt.u16.one))
+}
+
+liblapzt.math.lsb.u32 = (a: liblapzt.u32) liblapzt.bool {
+    liblapzt.u32.is.one(liblapzt.u32.and(a, liblapzt.u32.one))
+}
+
+liblapzt.math.lsb.u64 = (a: liblapzt.u64) liblapzt.bool {
+    liblapzt.u64.is.one(liblapzt.u64.and(a, liblapzt.u64.one))
+}
+
+liblapzt.math.lsb.u128 = (a: liblapzt.u128) liblapzt.bool {
+    liblapzt.u128.is.one(liblapzt.u128.and(a, liblapzt.u128.one))
+}
+
+liblapzt.math.shr1.u1 = (a: liblapzt.u1) liblapzt.u1 {
+    liblapzt.u1.zero
+}
+
+liblapzt.math.shr1.u2 = (a: liblapzt.u2) liblapzt.u2 {
+    [low, high] = a
+    [high, liblapzt.u1.zero]
+}
+
+liblapzt.math.shr1.u4 = (a: liblapzt.u4) liblapzt.u4 {
+    [low, high] = a
+    [liblapzt.math.with.msb.u2(liblapzt.math.shr1.u2(low), liblapzt.math.lsb.u2(high)), liblapzt.math.shr1.u2(high)]
+}
+
+liblapzt.math.shr1.u8 = (a: liblapzt.u8) liblapzt.u8 {
+    [low, high] = a
+    [liblapzt.math.with.msb.u4(liblapzt.math.shr1.u4(low), liblapzt.math.lsb.u4(high)), liblapzt.math.shr1.u4(high)]
+}
+
+liblapzt.math.shr1.u16 = (a: liblapzt.u16) liblapzt.u16 {
+    [low, high] = a
+    [liblapzt.math.with.msb.u8(liblapzt.math.shr1.u8(low), liblapzt.math.lsb.u8(high)), liblapzt.math.shr1.u8(high)]
+}
+
+liblapzt.math.shr1.u32 = (a: liblapzt.u32) liblapzt.u32 {
+    [low, high] = a
+    [liblapzt.math.with.msb.u16(liblapzt.math.shr1.u16(low), liblapzt.math.lsb.u16(high)), liblapzt.math.shr1.u16(high)]
+}
+
+liblapzt.math.shr1.u64 = (a: liblapzt.u64) liblapzt.u64 {
+    [low, high] = a
+    [liblapzt.math.with.msb.u32(liblapzt.math.shr1.u32(low), liblapzt.math.lsb.u32(high)), liblapzt.math.shr1.u32(high)]
+}
+
+liblapzt.math.shr1.u128 = (a: liblapzt.u128) liblapzt.u128 {
+    [low, high] = a
+    [liblapzt.math.with.msb.u64(liblapzt.math.shr1.u64(low), liblapzt.math.lsb.u64(high)), liblapzt.math.shr1.u64(high)]
+}
+
+liblapzt.math.shl.u64 = (value: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
+    done: liblapzt.bool = liblapzt.u64.is.zero(amount)
+    BRANCH (done) {
+        value
+    } {
+        liblapzt.math.shl.u64(liblapzt.u64.shl1(value), liblapzt.u64.dec(amount))
+    }
+}
+
+liblapzt.math.shr.u64 = (value: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
+    done: liblapzt.bool = liblapzt.u64.is.zero(amount)
+    BRANCH (done) {
+        value
+    } {
+        liblapzt.math.shr.u64(liblapzt.math.shr1.u64(value), liblapzt.u64.dec(amount))
+    }
+}
+
+liblapzt.math.popcount.u1 = (a: liblapzt.u1) liblapzt.u64 {
+    BRANCH (a) {
+        liblapzt.u64.one
+    } {
+        liblapzt.u64.zero
+    }
+}
+
+liblapzt.math.popcount.u2 = (a: liblapzt.u2) liblapzt.u64 {
+    [low, high] = a
+    liblapzt.u64.add(liblapzt.math.popcount.u1(low), liblapzt.math.popcount.u1(high))
+}
+
+liblapzt.math.popcount.u4 = (a: liblapzt.u4) liblapzt.u64 {
+    [low, high] = a
+    liblapzt.u64.add(liblapzt.math.popcount.u2(low), liblapzt.math.popcount.u2(high))
+}
+
+liblapzt.math.popcount.u8 = (a: liblapzt.u8) liblapzt.u64 {
+    [low, high] = a
+    liblapzt.u64.add(liblapzt.math.popcount.u4(low), liblapzt.math.popcount.u4(high))
+}
+
+liblapzt.math.popcount.u16 = (a: liblapzt.u16) liblapzt.u64 {
+    [low, high] = a
+    liblapzt.u64.add(liblapzt.math.popcount.u8(low), liblapzt.math.popcount.u8(high))
+}
+
+liblapzt.math.popcount.u32 = (a: liblapzt.u32) liblapzt.u64 {
+    [low, high] = a
+    liblapzt.u64.add(liblapzt.math.popcount.u16(low), liblapzt.math.popcount.u16(high))
+}
+
+liblapzt.math.popcount.u64 = (a: liblapzt.u64) liblapzt.u64 {
+    [low, high] = a
+    liblapzt.u64.add(liblapzt.math.popcount.u32(low), liblapzt.math.popcount.u32(high))
+}
+
+liblapzt.math.popcount.u128 = (a: liblapzt.u128) liblapzt.u64 {
+    [low, high] = a
+    liblapzt.u64.add(liblapzt.math.popcount.u64(low), liblapzt.math.popcount.u64(high))
+}
+
+liblapzt.math.clz.u1 = (a: liblapzt.u1) liblapzt.u64 {
+    BRANCH (a) {
+        liblapzt.u64.zero
+    } {
+        liblapzt.u64.one
+    }
+}
+
+liblapzt.math.clz.u2 = (a: liblapzt.u2) liblapzt.u64 {
+    [low, high] = a
+    high.zero: liblapzt.bool = liblapzt.u1.is.zero(high)
+    BRANCH (high.zero) {
+        liblapzt.u64.add(liblapzt.u64.one, liblapzt.math.clz.u1(low))
+    } {
+        liblapzt.math.clz.u1(high)
+    }
+}
+
+liblapzt.math.clz.u4 = (a: liblapzt.u4) liblapzt.u64 {
+    [low, high] = a
+    high.zero: liblapzt.bool = liblapzt.u2.is.zero(high)
+    BRANCH (high.zero) {
+        liblapzt.u64.add(liblapzt.constants.two, liblapzt.math.clz.u2(low))
+    } {
+        liblapzt.math.clz.u2(high)
+    }
+}
+
+liblapzt.math.clz.u8 = (a: liblapzt.u8) liblapzt.u64 {
+    [low, high] = a
+    high.zero: liblapzt.bool = liblapzt.u4.is.zero(high)
+    BRANCH (high.zero) {
+        liblapzt.u64.add(liblapzt.constants.four, liblapzt.math.clz.u4(low))
+    } {
+        liblapzt.math.clz.u4(high)
+    }
+}
+
+liblapzt.math.clz.u16 = (a: liblapzt.u16) liblapzt.u64 {
+    [low, high] = a
+    high.zero: liblapzt.bool = liblapzt.u8.is.zero(high)
+    BRANCH (high.zero) {
+        liblapzt.u64.add(liblapzt.constants.eight, liblapzt.math.clz.u8(low))
+    } {
+        liblapzt.math.clz.u8(high)
+    }
+}
+
+liblapzt.math.clz.u32 = (a: liblapzt.u32) liblapzt.u64 {
+    [low, high] = a
+    high.zero: liblapzt.bool = liblapzt.u16.is.zero(high)
+    BRANCH (high.zero) {
+        liblapzt.u64.add(liblapzt.constants.sixteen, liblapzt.math.clz.u16(low))
+    } {
+        liblapzt.math.clz.u16(high)
+    }
+}
+
+liblapzt.math.clz.u64 = (a: liblapzt.u64) liblapzt.u64 {
+    [low, high] = a
+    high.zero: liblapzt.bool = liblapzt.u32.is.zero(high)
+    BRANCH (high.zero) {
+        liblapzt.u64.add(liblapzt.constants.thirty.two, liblapzt.math.clz.u32(low))
+    } {
+        liblapzt.math.clz.u32(high)
+    }
+}
+
+liblapzt.math.clz.u128 = (a: liblapzt.u128) liblapzt.u64 {
+    [low, high] = a
+    high.zero: liblapzt.bool = liblapzt.u64.is.zero(high)
+    BRANCH (high.zero) {
+        liblapzt.u64.add(liblapzt.constants.sixty.four, liblapzt.math.clz.u64(low))
+    } {
+        liblapzt.math.clz.u64(high)
+    }
+}
+
+liblapzt.math.ctz.u1 = (a: liblapzt.u1) liblapzt.u64 {
+    BRANCH (a) {
+        liblapzt.u64.zero
+    } {
+        liblapzt.u64.one
+    }
+}
+
+liblapzt.math.ctz.u2 = (a: liblapzt.u2) liblapzt.u64 {
+    [low, high] = a
+    low.zero: liblapzt.bool = liblapzt.u1.is.zero(low)
+    BRANCH (low.zero) {
+        liblapzt.u64.add(liblapzt.u64.one, liblapzt.math.ctz.u1(high))
+    } {
+        liblapzt.math.ctz.u1(low)
+    }
+}
+
+liblapzt.math.ctz.u4 = (a: liblapzt.u4) liblapzt.u64 {
+    [low, high] = a
+    low.zero: liblapzt.bool = liblapzt.u2.is.zero(low)
+    BRANCH (low.zero) {
+        liblapzt.u64.add(liblapzt.constants.two, liblapzt.math.ctz.u2(high))
+    } {
+        liblapzt.math.ctz.u2(low)
+    }
+}
+
+liblapzt.math.ctz.u8 = (a: liblapzt.u8) liblapzt.u64 {
+    [low, high] = a
+    low.zero: liblapzt.bool = liblapzt.u4.is.zero(low)
+    BRANCH (low.zero) {
+        liblapzt.u64.add(liblapzt.constants.four, liblapzt.math.ctz.u4(high))
+    } {
+        liblapzt.math.ctz.u4(low)
+    }
+}
+
+liblapzt.math.ctz.u16 = (a: liblapzt.u16) liblapzt.u64 {
+    [low, high] = a
+    low.zero: liblapzt.bool = liblapzt.u8.is.zero(low)
+    BRANCH (low.zero) {
+        liblapzt.u64.add(liblapzt.constants.eight, liblapzt.math.ctz.u8(high))
+    } {
+        liblapzt.math.ctz.u8(low)
+    }
+}
+
+liblapzt.math.ctz.u32 = (a: liblapzt.u32) liblapzt.u64 {
+    [low, high] = a
+    low.zero: liblapzt.bool = liblapzt.u16.is.zero(low)
+    BRANCH (low.zero) {
+        liblapzt.u64.add(liblapzt.constants.sixteen, liblapzt.math.ctz.u16(high))
+    } {
+        liblapzt.math.ctz.u16(low)
+    }
+}
+
+liblapzt.math.ctz.u64 = (a: liblapzt.u64) liblapzt.u64 {
+    [low, high] = a
+    low.zero: liblapzt.bool = liblapzt.u32.is.zero(low)
+    BRANCH (low.zero) {
+        liblapzt.u64.add(liblapzt.constants.thirty.two, liblapzt.math.ctz.u32(high))
+    } {
+        liblapzt.math.ctz.u32(low)
+    }
+}
+
+liblapzt.math.ctz.u128 = (a: liblapzt.u128) liblapzt.u64 {
+    [low, high] = a
+    low.zero: liblapzt.bool = liblapzt.u64.is.zero(low)
+    BRANCH (low.zero) {
+        liblapzt.u64.add(liblapzt.constants.sixty.four, liblapzt.math.ctz.u64(high))
+    } {
+        liblapzt.math.ctz.u64(low)
+    }
+}
+
+liblapzt.math.reverse.bits.u1 = (a: liblapzt.u1) liblapzt.u1 {
+    a
+}
+
+liblapzt.math.reverse.bits.u2 = (a: liblapzt.u2) liblapzt.u2 {
+    [low, high] = a
+    [liblapzt.math.reverse.bits.u1(high), liblapzt.math.reverse.bits.u1(low)]
+}
+
+liblapzt.math.reverse.bits.u4 = (a: liblapzt.u4) liblapzt.u4 {
+    [low, high] = a
+    [liblapzt.math.reverse.bits.u2(high), liblapzt.math.reverse.bits.u2(low)]
+}
+
+liblapzt.math.reverse.bits.u8 = (a: liblapzt.u8) liblapzt.u8 {
+    [low, high] = a
+    [liblapzt.math.reverse.bits.u4(high), liblapzt.math.reverse.bits.u4(low)]
+}
+
+liblapzt.math.reverse.bits.u16 = (a: liblapzt.u16) liblapzt.u16 {
+    [low, high] = a
+    [liblapzt.math.reverse.bits.u8(high), liblapzt.math.reverse.bits.u8(low)]
+}
+
+liblapzt.math.reverse.bits.u32 = (a: liblapzt.u32) liblapzt.u32 {
+    [low, high] = a
+    [liblapzt.math.reverse.bits.u16(high), liblapzt.math.reverse.bits.u16(low)]
+}
+
+liblapzt.math.reverse.bits.u64 = (a: liblapzt.u64) liblapzt.u64 {
+    [low, high] = a
+    [liblapzt.math.reverse.bits.u32(high), liblapzt.math.reverse.bits.u32(low)]
+}
+
+liblapzt.math.reverse.bits.u128 = (a: liblapzt.u128) liblapzt.u128 {
+    [low, high] = a
+    [liblapzt.math.reverse.bits.u64(high), liblapzt.math.reverse.bits.u64(low)]
+}
+
+liblapzt.math.bswap.u16 = (a: liblapzt.u16) liblapzt.u16 {
+    [low, high] = a
+    [high, low]
+}
+
+liblapzt.math.bswap.u32 = (a: liblapzt.u32) liblapzt.u32 {
+    [low, high] = a
+    [liblapzt.math.bswap.u16(high), liblapzt.math.bswap.u16(low)]
+}
+
+liblapzt.math.bswap.u64 = (a: liblapzt.u64) liblapzt.u64 {
+    [low, high] = a
+    [liblapzt.math.bswap.u32(high), liblapzt.math.bswap.u32(low)]
+}
+
+liblapzt.math.bswap.u128 = (a: liblapzt.u128) liblapzt.u128 {
+    [low, high] = a
+    [liblapzt.math.bswap.u64(high), liblapzt.math.bswap.u64(low)]
+}
+
+liblapzt.math.rotate.left.u64 = (value: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
+    amount.mod: liblapzt.u64 = liblapzt.u64.mod(amount, liblapzt.constants.sixty.four)
+    left: liblapzt.u64 = liblapzt.math.shl.u64(value, amount.mod)
+    right: liblapzt.u64 = liblapzt.math.shr.u64(value, liblapzt.u64.sub(liblapzt.constants.sixty.four, amount.mod))
+    liblapzt.u64.or(left, right)
+}
+
+liblapzt.math.rotate.right.u64 = (value: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
+    amount.mod: liblapzt.u64 = liblapzt.u64.mod(amount, liblapzt.constants.sixty.four)
+    right: liblapzt.u64 = liblapzt.math.shr.u64(value, amount.mod)
+    left: liblapzt.u64 = liblapzt.math.shl.u64(value, liblapzt.u64.sub(liblapzt.constants.sixty.four, amount.mod))
+    liblapzt.u64.or(left, right)
+}
+
+liblapzt.math.is.even.u64 = (value: liblapzt.u64) liblapzt.bool {
+    liblapzt.u64.is.zero(liblapzt.u64.and(value, liblapzt.u64.one))
+}
+
+liblapzt.math.is.odd.u64 = (value: liblapzt.u64) liblapzt.bool {
+    liblapzt.bool.not(liblapzt.math.is.even.u64(value))
+}
+
+liblapzt.math.next.power.of.two.u64.helper = (value: liblapzt.u64, power: liblapzt.u64) liblapzt.u64 {
+    enough: liblapzt.bool = liblapzt.u64.ge(power, value)
+    BRANCH (enough) {
+        power
+    } {
+        liblapzt.math.next.power.of.two.u64.helper(value, liblapzt.u64.shl1(power))
+    }
+}
+
+liblapzt.math.next.power.of.two.u64 = (value: liblapzt.u64) liblapzt.u64 {
+    small: liblapzt.bool = liblapzt.u64.le(value, liblapzt.u64.one)
+    BRANCH (small) {
+        liblapzt.u64.one
+    } {
+        liblapzt.math.next.power.of.two.u64.helper(value, liblapzt.u64.one)
+    }
+}
+
+liblapzt.math.align.up.u64 = (value: liblapzt.u64, alignment: liblapzt.u64) liblapzt.u64 {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(alignment)
+    BRANCH (zero) {
+        value
+    } {
+        remainder: liblapzt.u64 = liblapzt.u64.mod(value, alignment)
+        aligned: liblapzt.bool = liblapzt.u64.is.zero(remainder)
+        BRANCH (aligned) {
+            value
+        } {
+            liblapzt.u64.add(value, liblapzt.u64.sub(alignment, remainder))
+        }
+    }
+}
+
+liblapzt.math.align.down.u64 = (value: liblapzt.u64, alignment: liblapzt.u64) liblapzt.u64 {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(alignment)
+    BRANCH (zero) {
+        value
+    } {
+        liblapzt.u64.sub(value, liblapzt.u64.mod(value, alignment))
+    }
+}
+
+liblapzt.math.gcd.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(b)
+    BRANCH (zero) {
+        a
+    } {
+        liblapzt.math.gcd.u64(b, liblapzt.u64.mod(a, b))
+    }
+}
+
+liblapzt.math.lcm.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    zero: liblapzt.bool = liblapzt.bool.or(liblapzt.u64.is.zero(a), liblapzt.u64.is.zero(b))
+    BRANCH (zero) {
+        liblapzt.u64.zero
+    } {
+        liblapzt.u64.mul(liblapzt.u64.div(a, liblapzt.math.gcd.u64(a, b)), b)
+    }
+}
+
+liblapzt.math.pow.u64.helper = (base: liblapzt.u64, exponent: liblapzt.u64, accumulator: liblapzt.u64) liblapzt.u64 {
+    done: liblapzt.bool = liblapzt.u64.is.zero(exponent)
+    BRANCH (done) {
+        accumulator
+    } {
+        odd: liblapzt.bool = liblapzt.math.is.odd.u64(exponent)
+        next.accumulator: liblapzt.u64 = BRANCH (odd) {
+            liblapzt.u64.mul(accumulator, base)
+        } {
+            accumulator
+        }
+        liblapzt.math.pow.u64.helper(liblapzt.u64.mul(base, base), liblapzt.math.shr1.u64(exponent), next.accumulator)
+    }
+}
+
+liblapzt.math.pow.u64 = (base: liblapzt.u64, exponent: liblapzt.u64) liblapzt.u64 {
+    liblapzt.math.pow.u64.helper(base, exponent, liblapzt.u64.one)
+}
+
+liblapzt.math.isqrt.u64.helper = (value: liblapzt.u64, low: liblapzt.u64, high: liblapzt.u64) liblapzt.u64 {
+    done: liblapzt.bool = liblapzt.u64.ge(low, high)
+    BRANCH (done) {
+        liblapzt.u64.dec(low)
+    } {
+        mid: liblapzt.u64 = liblapzt.u64.div(liblapzt.u64.add(low, high), liblapzt.constants.two)
+        mid.zero: liblapzt.bool = liblapzt.u64.is.zero(mid)
+        too.big: liblapzt.bool = BRANCH (mid.zero) {
+            liblapzt.bool.false
+        } {
+            liblapzt.u64.gt(mid, liblapzt.u64.div(value, mid))
+        }
+        BRANCH (too.big) {
+            liblapzt.math.isqrt.u64.helper(value, low, mid)
+        } {
+            liblapzt.math.isqrt.u64.helper(value, liblapzt.u64.inc(mid), high)
+        }
+    }
+}
+
+liblapzt.math.isqrt.u64 = (value: liblapzt.u64) liblapzt.u64 {
+    liblapzt.math.isqrt.u64.helper(value, liblapzt.u64.zero, liblapzt.u64.add(value, liblapzt.u64.one))
+}
+
+liblapzt.math.log2.u64.helper = (value: liblapzt.u64, count: liblapzt.u64) liblapzt.u64 {
+    done: liblapzt.bool = liblapzt.u64.le(value, liblapzt.u64.one)
+    BRANCH (done) {
+        count
+    } {
+        liblapzt.math.log2.u64.helper(liblapzt.math.shr1.u64(value), liblapzt.u64.inc(count))
+    }
+}
+
+liblapzt.math.log2.u64 = (value: liblapzt.u64) liblapzt.u64 {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(value)
+    BRANCH (zero) {
+        liblapzt.u64.zero
+    } {
+        liblapzt.math.log2.u64.helper(value, liblapzt.u64.zero)
+    }
+}
+
+liblapzt.math.clamp.u64 = (value: liblapzt.u64, low: liblapzt.u64, high: liblapzt.u64) liblapzt.u64 {
+    below: liblapzt.bool = liblapzt.u64.lt(value, low)
+    above: liblapzt.bool = liblapzt.u64.gt(value, high)
+    BRANCH (below) {
+        low
+    } {
+        BRANCH (above) {
+            high
+        } {
+            value
+        }
+    }
+}
+
+liblapzt.math.abs.i8 = liblapzt.i8.abs
+liblapzt.math.abs.i16 = liblapzt.i16.abs
+liblapzt.math.abs.i32 = liblapzt.i32.abs
+liblapzt.math.abs.i64 = liblapzt.i64.abs
+liblapzt.math.abs.i128 = liblapzt.i128.abs
+
+liblapzt.math.sign.i8 = liblapzt.i8.sign
+liblapzt.math.sign.i16 = liblapzt.i16.sign
+liblapzt.math.sign.i32 = liblapzt.i32.sign
+liblapzt.math.sign.i64 = liblapzt.i64.sign
+liblapzt.math.sign.i128 = liblapzt.i128.sign
+
+liblapzt.math.shl.u128 = (value: liblapzt.u128, amount: liblapzt.u64) liblapzt.u128 {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(amount)
+    BRANCH (zero) {
+        value
+    } {
+        liblapzt.math.shl.u128(liblapzt.u128.shl1(value), liblapzt.u64.dec(amount))
+    }
+}
+
+liblapzt.math.shr.u128 = (value: liblapzt.u128, amount: liblapzt.u64) liblapzt.u128 {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(amount)
+    BRANCH (zero) {
+        value
+    } {
+        liblapzt.math.shr.u128(liblapzt.math.shr1.u128(value), liblapzt.u64.dec(amount))
+    }
+}

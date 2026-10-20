@@ -1,0 +1,41 @@
+liblapzt.random.multiplier: liblapzt.u64 = [[[[[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.true]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.false]]], [[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.true]]]], [[[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]]], [[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]]]]]]
+
+liblapzt.random.seed = (value: liblapzt.u64) liblapzt.u64 {
+    liblapzt.hash.mix.u64(value)
+}
+
+liblapzt.random.next = (state: *liblapzt.u64) liblapzt.u64 {
+    x0: liblapzt.u64 = state
+    x1: liblapzt.u64 = liblapzt.u64.xor(x0, liblapzt.math.shl.u64(x0, liblapzt.constants.n13))
+    x2: liblapzt.u64 = liblapzt.u64.xor(x1, liblapzt.math.shr.u64(x1, liblapzt.constants.n7))
+    x3: liblapzt.u64 = liblapzt.u64.xor(x2, liblapzt.math.shl.u64(x2, liblapzt.constants.n17))
+    state = x3
+    liblapzt.u64.mul(x3, liblapzt.random.multiplier)
+}
+
+liblapzt.random.splitmix64 = (state: *liblapzt.u64) liblapzt.u64 {
+    state = liblapzt.u64.add(state, liblapzt.hash.golden)
+    liblapzt.hash.mix.u64(state)
+}
+
+liblapzt.random.below = (state: *liblapzt.u64, bound: liblapzt.u64) liblapzt.u64 {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(bound)
+    BRANCH (zero) {
+        liblapzt.u64.zero
+    } {
+        liblapzt.u64.mod(liblapzt.random.next(state), bound)
+    }
+}
+
+liblapzt.random.range = (state: *liblapzt.u64, low: liblapzt.u64, high: liblapzt.u64) liblapzt.u64 {
+    empty: liblapzt.bool = liblapzt.u64.le(high, low)
+    BRANCH (empty) {
+        low
+    } {
+        liblapzt.u64.add(low, liblapzt.random.below(state, liblapzt.u64.sub(high, low)))
+    }
+}
+
+liblapzt.random.bool = (state: *liblapzt.u64) liblapzt.bool {
+    liblapzt.math.is.odd.u64(liblapzt.random.next(state))
+}

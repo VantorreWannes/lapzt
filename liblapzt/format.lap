@@ -1,0 +1,155 @@
+liblapzt.format.u64.helper = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, digits: liblapzt.u64, index: liblapzt.u64) [BIT] {
+    done: liblapzt.bool = liblapzt.u64.is.zero(value)
+    BRANCH (done) {
+        [liblapzt.bool.true]
+    } {
+        digit: liblapzt.u64 = liblapzt.u64.mod(value, liblapzt.constants.ten)
+        position: liblapzt.u64 = liblapzt.u64.sub(liblapzt.u64.add(offset, digits), liblapzt.u64.inc(index))
+        [ok] = liblapzt.memory.write.byte(handle, position, liblapzt.u64.to.u8(liblapzt.u64.add(digit, liblapzt.constants.ascii.zero)))
+        BRANCH (ok) {
+            liblapzt.format.u64.helper(liblapzt.u64.div(value, liblapzt.constants.ten), handle, offset, digits, liblapzt.u64.inc(index))
+        } {
+            [liblapzt.bool.false]
+        }
+    }
+}
+
+liblapzt.format.u64 = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, capacity: liblapzt.u64) liblapzt.result {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(value)
+    BRANCH (zero) {
+        enough: liblapzt.bool = liblapzt.u64.ge(capacity, liblapzt.u64.one)
+        BRANCH (enough) {
+            [ok] = liblapzt.memory.write.byte(handle, offset, liblapzt.u64.to.u8(liblapzt.constants.ascii.zero))
+            BRANCH (ok) {
+                liblapzt.result.ok(liblapzt.u64.one)
+            } {
+                liblapzt.result.err(liblapzt.constants.one)
+            }
+        } {
+            liblapzt.result.err(liblapzt.constants.one)
+        }
+    } {
+        digits: liblapzt.u64 = liblapzt.print.u64.digits(value)
+        enough: liblapzt.bool = liblapzt.u64.le(digits, capacity)
+        BRANCH (enough) {
+            [ok] = liblapzt.format.u64.helper(value, handle, offset, digits, liblapzt.u64.zero)
+            BRANCH (ok) {
+                liblapzt.result.ok(digits)
+            } {
+                liblapzt.result.err(liblapzt.constants.one)
+            }
+        } {
+            liblapzt.result.err(liblapzt.constants.one)
+        }
+    }
+}
+
+liblapzt.format.i64 = (value: liblapzt.i64, handle: liblapzt.u64, offset: liblapzt.u64, capacity: liblapzt.u64) liblapzt.result {
+    negative: liblapzt.bool = liblapzt.i64.is.negative(value)
+    BRANCH (negative) {
+        enough: liblapzt.bool = liblapzt.u64.ge(capacity, liblapzt.u64.one)
+        BRANCH (enough) {
+            [sign.ok] = liblapzt.memory.write.byte(handle, offset, liblapzt.u64.to.u8(liblapzt.constants.ascii.minus))
+            BRANCH (sign.ok) {
+                [result.ok, result.value, result.code] = liblapzt.format.u64(liblapzt.i64.to.u64(liblapzt.i64.abs(value)), handle, liblapzt.u64.inc(offset), liblapzt.u64.dec(capacity))
+                BRANCH (result.ok) {
+                    liblapzt.result.ok(liblapzt.u64.inc(result.value))
+                } {
+                    liblapzt.result.err(result.code)
+                }
+            } {
+                liblapzt.result.err(liblapzt.constants.one)
+            }
+        } {
+            liblapzt.result.err(liblapzt.constants.one)
+        }
+    } {
+        liblapzt.format.u64(liblapzt.i64.to.u64(value), handle, offset, capacity)
+    }
+}
+
+liblapzt.format.hex.digit = (digit: liblapzt.u64) liblapzt.u8 {
+    below.ten: liblapzt.bool = liblapzt.u64.lt(digit, liblapzt.constants.ten)
+    BRANCH (below.ten) {
+        liblapzt.u64.to.u8(liblapzt.u64.add(digit, liblapzt.constants.ascii.zero))
+    } {
+        liblapzt.u64.to.u8(liblapzt.u64.add(liblapzt.u64.sub(digit, liblapzt.constants.ten), liblapzt.constants.ascii.lower.a))
+    }
+}
+
+liblapzt.format.hex.u64.helper = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, digits: liblapzt.u64, index: liblapzt.u64) [BIT] {
+    done: liblapzt.bool = liblapzt.u64.ge(index, digits)
+    BRANCH (done) {
+        [liblapzt.bool.true]
+    } {
+        shift: liblapzt.u64 = liblapzt.u64.mul(liblapzt.u64.sub(liblapzt.u64.dec(digits), index), liblapzt.constants.four)
+        digit: liblapzt.u64 = liblapzt.u64.and(liblapzt.math.shr.u64(value, shift), liblapzt.constants.fifteen)
+        [ok] = liblapzt.memory.write.byte(handle, liblapzt.u64.add(offset, index), liblapzt.format.hex.digit(digit))
+        BRANCH (ok) {
+            liblapzt.format.hex.u64.helper(value, handle, offset, digits, liblapzt.u64.inc(index))
+        } {
+            [liblapzt.bool.false]
+        }
+    }
+}
+
+liblapzt.format.hex.u64 = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, capacity: liblapzt.u64) liblapzt.result {
+    leading: liblapzt.u64 = liblapzt.math.clz.u64(value)
+    significant: liblapzt.u64 = liblapzt.u64.sub(liblapzt.constants.sixty.four, leading)
+    digits: liblapzt.u64 = liblapzt.u64.div(liblapzt.u64.add(significant, liblapzt.constants.three), liblapzt.constants.four)
+    zero: liblapzt.bool = liblapzt.u64.is.zero(value)
+    digits.final: liblapzt.u64 = BRANCH (zero) {
+        liblapzt.u64.one
+    } {
+        digits
+    }
+    enough: liblapzt.bool = liblapzt.u64.le(digits.final, capacity)
+    BRANCH (enough) {
+        [ok] = liblapzt.format.hex.u64.helper(value, handle, offset, digits.final, liblapzt.u64.zero)
+        BRANCH (ok) {
+            liblapzt.result.ok(digits.final)
+        } {
+            liblapzt.result.err(liblapzt.constants.one)
+        }
+    } {
+        liblapzt.result.err(liblapzt.constants.one)
+    }
+}
+
+liblapzt.format.bin.u64.helper = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, digits: liblapzt.u64, index: liblapzt.u64) [BIT] {
+    done: liblapzt.bool = liblapzt.u64.ge(index, digits)
+    BRANCH (done) {
+        [liblapzt.bool.true]
+    } {
+        shift: liblapzt.u64 = liblapzt.u64.sub(liblapzt.u64.dec(digits), index)
+        bit: liblapzt.u64 = liblapzt.u64.and(liblapzt.math.shr.u64(value, shift), liblapzt.u64.one)
+        [ok] = liblapzt.memory.write.byte(handle, liblapzt.u64.add(offset, index), liblapzt.u64.to.u8(liblapzt.u64.add(bit, liblapzt.constants.ascii.zero)))
+        BRANCH (ok) {
+            liblapzt.format.bin.u64.helper(value, handle, offset, digits, liblapzt.u64.inc(index))
+        } {
+            [liblapzt.bool.false]
+        }
+    }
+}
+
+liblapzt.format.bin.u64 = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, capacity: liblapzt.u64) liblapzt.result {
+    leading: liblapzt.u64 = liblapzt.math.clz.u64(value)
+    significant: liblapzt.u64 = liblapzt.u64.sub(liblapzt.constants.sixty.four, leading)
+    zero: liblapzt.bool = liblapzt.u64.is.zero(value)
+    digits: liblapzt.u64 = BRANCH (zero) {
+        liblapzt.u64.one
+    } {
+        significant
+    }
+    enough: liblapzt.bool = liblapzt.u64.le(digits, capacity)
+    BRANCH (enough) {
+        [ok] = liblapzt.format.bin.u64.helper(value, handle, offset, digits, liblapzt.u64.zero)
+        BRANCH (ok) {
+            liblapzt.result.ok(digits)
+        } {
+            liblapzt.result.err(liblapzt.constants.one)
+        }
+    } {
+        liblapzt.result.err(liblapzt.constants.one)
+    }
+}

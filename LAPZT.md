@@ -58,6 +58,11 @@ Lap Zig Transpiler (`lapzt`) compiles [Labels and Primitives](LAP.md) (Lap) sour
 - `main` takes no parameters and returns `[]`.
 - `EXTERN` takes an operation constant as its first argument.
 
+### Recursion
+
+- A function whose terminal expression is a self-call, or a branch of self-calls and values, is emitted as a loop. Its parameters become mutable locals, so self-tail recursion uses constant stack.
+- Other recursion uses the native stack. Raise it with `zig build-exe ... --stack <bytes>` when a program recurses deeply without being self-tail-recursive.
+
 ## Runtime
 
 `EXTERN` is the only exit from Lap. The runtime provides five operations and four handles. The runtime is emitted with the program, so the resulting Zig source is self-contained.

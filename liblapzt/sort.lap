@@ -1,0 +1,103 @@
+liblapzt.sort.u64.inner = (handle: liblapzt.u64, offset: liblapzt.u64, index: liblapzt.u64) [BIT] {
+    done: liblapzt.bool = liblapzt.u64.is.zero(index)
+    BRANCH (done) {
+        [liblapzt.bool.true]
+    } {
+        previous: liblapzt.u64 = liblapzt.u64.dec(index)
+        [a.ok, a] = liblapzt.memory.read(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(previous, liblapzt.constants.eight)))
+        [b.ok, b] = liblapzt.memory.read(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(index, liblapzt.constants.eight)))
+        greater: liblapzt.bool = liblapzt.u64.gt(a, b)
+        BRANCH (greater) {
+            [write.a.ok] = liblapzt.memory.write(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(previous, liblapzt.constants.eight)), b)
+            [write.b.ok] = liblapzt.memory.write(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(index, liblapzt.constants.eight)), a)
+            ok: liblapzt.bool = liblapzt.bool.and(liblapzt.bool.and(a.ok, b.ok), liblapzt.bool.and(write.a.ok, write.b.ok))
+            BRANCH (ok) {
+                liblapzt.sort.u64.inner(handle, offset, previous)
+            } {
+                [liblapzt.bool.false]
+            }
+        } {
+            [liblapzt.bool.true]
+        }
+    }
+}
+
+liblapzt.sort.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64) [BIT] {
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        [liblapzt.bool.true]
+    } {
+        [ok] = liblapzt.sort.u64.inner(handle, offset, index)
+        BRANCH (ok) {
+            liblapzt.sort.u64.helper(handle, offset, length, liblapzt.u64.inc(index))
+        } {
+            [liblapzt.bool.false]
+        }
+    }
+}
+
+liblapzt.sort.u64 = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64) [BIT] {
+    liblapzt.sort.u64.helper(handle, offset, length, liblapzt.u64.one)
+}
+
+liblapzt.sort.i64.inner = (handle: liblapzt.u64, offset: liblapzt.u64, index: liblapzt.u64) [BIT] {
+    done: liblapzt.bool = liblapzt.u64.is.zero(index)
+    BRANCH (done) {
+        [liblapzt.bool.true]
+    } {
+        previous: liblapzt.u64 = liblapzt.u64.dec(index)
+        [a.ok, a] = liblapzt.memory.read(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(previous, liblapzt.constants.eight)))
+        [b.ok, b] = liblapzt.memory.read(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(index, liblapzt.constants.eight)))
+        greater: liblapzt.bool = liblapzt.i64.gt(liblapzt.i64.from.u64(a), liblapzt.i64.from.u64(b))
+        BRANCH (greater) {
+            [write.a.ok] = liblapzt.memory.write(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(previous, liblapzt.constants.eight)), b)
+            [write.b.ok] = liblapzt.memory.write(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(index, liblapzt.constants.eight)), a)
+            ok: liblapzt.bool = liblapzt.bool.and(liblapzt.bool.and(a.ok, b.ok), liblapzt.bool.and(write.a.ok, write.b.ok))
+            BRANCH (ok) {
+                liblapzt.sort.i64.inner(handle, offset, previous)
+            } {
+                [liblapzt.bool.false]
+            }
+        } {
+            [liblapzt.bool.true]
+        }
+    }
+}
+
+liblapzt.sort.i64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64) [BIT] {
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        [liblapzt.bool.true]
+    } {
+        [ok] = liblapzt.sort.i64.inner(handle, offset, index)
+        BRANCH (ok) {
+            liblapzt.sort.i64.helper(handle, offset, length, liblapzt.u64.inc(index))
+        } {
+            [liblapzt.bool.false]
+        }
+    }
+}
+
+liblapzt.sort.i64 = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64) [BIT] {
+    liblapzt.sort.i64.helper(handle, offset, length, liblapzt.u64.one)
+}
+
+liblapzt.sort.is.sorted.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64) liblapzt.bool {
+    done: liblapzt.bool = liblapzt.u64.ge(liblapzt.u64.inc(index), length)
+    BRANCH (done) {
+        liblapzt.bool.true
+    } {
+        [a.ok, a] = liblapzt.memory.read(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(index, liblapzt.constants.eight)))
+        [b.ok, b] = liblapzt.memory.read(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(liblapzt.u64.inc(index), liblapzt.constants.eight)))
+        ordered: liblapzt.bool = liblapzt.u64.le(a, b)
+        BRANCH (ordered) {
+            liblapzt.sort.is.sorted.u64.helper(handle, offset, length, liblapzt.u64.inc(index))
+        } {
+            liblapzt.bool.false
+        }
+    }
+}
+
+liblapzt.sort.is.sorted.u64 = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64) liblapzt.bool {
+    liblapzt.sort.is.sorted.u64.helper(handle, offset, length, liblapzt.u64.zero)
+}

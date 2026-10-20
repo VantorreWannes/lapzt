@@ -1,0 +1,104 @@
+liblapzt.args.write.word = (buffer: liblapzt.u64, capacity: liblapzt.u64, index: liblapzt.u64, word: liblapzt.u64, byte.index: liblapzt.u64) [BIT, liblapzt.u64] {
+    done.bytes: liblapzt.bool = liblapzt.u64.ge(byte.index, liblapzt.constants.eight)
+    done.capacity: liblapzt.bool = liblapzt.u64.ge(index, capacity)
+    done: liblapzt.bool = liblapzt.bool.or(done.bytes, done.capacity)
+    BRANCH (done) {
+        [liblapzt.bool.true, index]
+    } {
+        shift: liblapzt.u64 = liblapzt.u64.mul(byte.index, liblapzt.constants.eight)
+        byte: liblapzt.u8 = liblapzt.u64.to.u8(liblapzt.math.shr.u64(word, shift))
+        [ok] = liblapzt.memory.write.byte(buffer, index, byte)
+        BRANCH (ok) {
+            liblapzt.args.write.word(buffer, capacity, liblapzt.u64.inc(index), word, liblapzt.u64.inc(byte.index))
+        } {
+            [liblapzt.bool.false, index]
+        }
+    }
+}
+
+liblapzt.args.read.all.helper = (buffer: liblapzt.u64, capacity: liblapzt.u64, index: liblapzt.u64) [BIT, liblapzt.u64] {
+    full: liblapzt.bool = liblapzt.u64.ge(index, capacity)
+    BRANCH (full) {
+        [liblapzt.bool.true, index]
+    } {
+        [ok, word] = liblapzt.io.read(liblapzt.io.args, liblapzt.u64.zero)
+        BRANCH (ok) {
+            [write.ok, next.index] = liblapzt.args.write.word(buffer, capacity, index, word, liblapzt.u64.zero)
+            BRANCH (write.ok) {
+                liblapzt.args.read.all.helper(buffer, capacity, next.index)
+            } {
+                [liblapzt.bool.false, index]
+            }
+        } {
+            [liblapzt.bool.true, index]
+        }
+    }
+}
+
+liblapzt.args.read.all = (buffer: liblapzt.u64, capacity: liblapzt.u64) [BIT, liblapzt.u64] {
+    liblapzt.args.read.all.helper(buffer, capacity, liblapzt.u64.zero)
+}
+
+liblapzt.args.count.helper = (buffer: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64, count: liblapzt.u64) liblapzt.u64 {
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        count
+    } {
+        [ok, byte] = liblapzt.memory.read.byte(buffer, index)
+        zero: liblapzt.bool = liblapzt.u8.is.zero(byte)
+        next: liblapzt.u64 = BRANCH (zero) {
+            liblapzt.u64.inc(count)
+        } {
+            count
+        }
+        liblapzt.args.count.helper(buffer, length, liblapzt.u64.inc(index), next)
+    }
+}
+
+liblapzt.args.count = (buffer: liblapzt.u64, length: liblapzt.u64) liblapzt.u64 {
+    liblapzt.args.count.helper(buffer, length, liblapzt.u64.zero, liblapzt.u64.zero)
+}
+
+liblapzt.args.at.helper = (buffer: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64, current: liblapzt.u64, start: liblapzt.u64, position: liblapzt.u64) [BIT, liblapzt.string] {
+    done: liblapzt.bool = liblapzt.u64.ge(position, length)
+    BRANCH (done) {
+        last: liblapzt.bool = liblapzt.bool.and(liblapzt.u64.eq(current, index), liblapzt.u64.lt(start, length))
+        BRANCH (last) {
+            [liblapzt.bool.true, [buffer, start, liblapzt.u64.sub(length, start)]]
+        } {
+            [liblapzt.bool.false, [liblapzt.u64.zero, liblapzt.u64.zero, liblapzt.u64.zero]]
+        }
+    } {
+        [ok, byte] = liblapzt.memory.read.byte(buffer, position)
+        zero: liblapzt.bool = liblapzt.u8.is.zero(byte)
+        BRANCH (zero) {
+            found: liblapzt.bool = liblapzt.u64.eq(current, index)
+            BRANCH (found) {
+                [liblapzt.bool.true, [buffer, start, liblapzt.u64.sub(position, start)]]
+            } {
+                liblapzt.args.at.helper(buffer, length, index, liblapzt.u64.inc(current), liblapzt.u64.inc(position), liblapzt.u64.inc(position))
+            }
+        } {
+            liblapzt.args.at.helper(buffer, length, index, current, start, liblapzt.u64.inc(position))
+        }
+    }
+}
+
+liblapzt.args.at = (buffer: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64) [BIT, liblapzt.string] {
+    liblapzt.args.at.helper(buffer, length, index, liblapzt.u64.zero, liblapzt.u64.zero, liblapzt.u64.zero)
+}
+
+liblapzt.args.print.helper = (buffer: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64) [] {
+    [ok, string] = liblapzt.args.at(buffer, length, index)
+    BRANCH (ok) {
+        liblapzt.string.print(string)
+        liblapzt.print.newline()
+        liblapzt.args.print.helper(buffer, length, liblapzt.u64.inc(index))
+    } {
+        []
+    }
+}
+
+liblapzt.args.print = (buffer: liblapzt.u64, length: liblapzt.u64) [] {
+    liblapzt.args.print.helper(buffer, length, liblapzt.u64.zero)
+}
