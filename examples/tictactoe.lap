@@ -1,0 +1,479 @@
+// Tic-tac-toe for the terminal.
+//
+// The board is a heap block of nine words. Each word holds one cell:
+// 0 is empty, 1 is X, and 2 is O. A heap block lets a turn update one
+// cell by index without rebuilding a collection.
+//
+// The program is split into five layers:
+//   ttt.board.*  reads and writes cells
+//   ttt.win.*    detects a winner or a full board
+//   ttt.input.*  reads a line from standard input
+//   ttt.print.*  renders the board and messages
+//   ttt.game.*   runs a turn and a session
+
+ttt.board = liblapzt.u64
+
+ttt.cell.empty: liblapzt.u64 = liblapzt.u64.zero
+ttt.cell.x: liblapzt.u64 = liblapzt.u64.one
+ttt.cell.o: liblapzt.u64 = liblapzt.constants.two
+
+ttt.cells: liblapzt.u64 = liblapzt.constants.nine
+ttt.cell.bytes: liblapzt.u64 = liblapzt.constants.eight
+ttt.board.bytes: liblapzt.u64 = liblapzt.constants.n72
+ttt.buffer.bytes: liblapzt.u64 = liblapzt.constants.thirty.two
+
+// Board
+
+ttt.board.cell = (board: ttt.board, index: liblapzt.u64) liblapzt.u64 {
+    offset: liblapzt.u64 = liblapzt.u64.mul(index, ttt.cell.bytes)
+    [ok, value] = liblapzt.memory.read(board, offset)
+    liblapzt.assert.true(ok)
+    value
+}
+
+ttt.board.set = (board: ttt.board, index: liblapzt.u64, mark: liblapzt.u64) [] {
+    offset: liblapzt.u64 = liblapzt.u64.mul(index, ttt.cell.bytes)
+    [ok] = liblapzt.memory.write(board, offset, mark)
+    liblapzt.assert.true(ok)
+    []
+}
+
+ttt.board.clear = (board: ttt.board) [] {
+    [ok] = liblapzt.memory.zero(board, liblapzt.u64.zero, ttt.board.bytes)
+    liblapzt.assert.true(ok)
+    []
+}
+
+// Win detection
+
+// A line wins when all three cells hold the same non-empty mark.
+ttt.win.line = (board: ttt.board, a: liblapzt.u64, b: liblapzt.u64, c: liblapzt.u64) liblapzt.u64 {
+    first: liblapzt.u64 = ttt.board.cell(board, a)
+    second: liblapzt.u64 = ttt.board.cell(board, b)
+    third: liblapzt.u64 = ttt.board.cell(board, c)
+    empty: liblapzt.bool = liblapzt.u64.is.zero(first)
+    same.ab: liblapzt.bool = liblapzt.u64.eq(first, second)
+    same.bc: liblapzt.bool = liblapzt.u64.eq(second, third)
+    same: liblapzt.bool = liblapzt.bool.and(same.ab, same.bc)
+    win: liblapzt.bool = liblapzt.bool.and(liblapzt.bool.not(empty), same)
+    BRANCH (win) {
+        first
+    } {
+        ttt.cell.empty
+    }
+}
+
+// Only one mark can have a winning line in a legal game, so the
+// largest line result is the winner. Zero means no winner yet.
+ttt.win.mark = (board: ttt.board) liblapzt.u64 {
+    row.0: liblapzt.u64 = ttt.win.line(board, liblapzt.constants.zero, liblapzt.constants.one, liblapzt.constants.two)
+    row.1: liblapzt.u64 = ttt.win.line(board, liblapzt.constants.three, liblapzt.constants.four, liblapzt.constants.five)
+    row.2: liblapzt.u64 = ttt.win.line(board, liblapzt.constants.six, liblapzt.constants.seven, liblapzt.constants.eight)
+    column.0: liblapzt.u64 = ttt.win.line(board, liblapzt.constants.zero, liblapzt.constants.three, liblapzt.constants.six)
+    column.1: liblapzt.u64 = ttt.win.line(board, liblapzt.constants.one, liblapzt.constants.four, liblapzt.constants.seven)
+    column.2: liblapzt.u64 = ttt.win.line(board, liblapzt.constants.two, liblapzt.constants.five, liblapzt.constants.eight)
+    diagonal.0: liblapzt.u64 = ttt.win.line(board, liblapzt.constants.zero, liblapzt.constants.four, liblapzt.constants.eight)
+    diagonal.1: liblapzt.u64 = ttt.win.line(board, liblapzt.constants.two, liblapzt.constants.four, liblapzt.constants.six)
+    first.half: liblapzt.u64 = liblapzt.u64.max(liblapzt.u64.max(row.0, row.1), liblapzt.u64.max(row.2, column.0))
+    second.half: liblapzt.u64 = liblapzt.u64.max(liblapzt.u64.max(column.1, column.2), liblapzt.u64.max(diagonal.0, diagonal.1))
+    liblapzt.u64.max(first.half, second.half)
+}
+
+ttt.win.full.helper = (board: ttt.board, index: liblapzt.u64) liblapzt.bool {
+    done: liblapzt.bool = liblapzt.u64.ge(index, ttt.cells)
+    BRANCH (done) {
+        liblapzt.bool.true
+    } {
+        value: liblapzt.u64 = ttt.board.cell(board, index)
+        filled: liblapzt.bool = liblapzt.u64.to.bool(value)
+        BRANCH (filled) {
+            ttt.win.full.helper(board, liblapzt.u64.inc(index))
+        } {
+            liblapzt.bool.false
+        }
+    }
+}
+
+ttt.win.full = (board: ttt.board) liblapzt.bool {
+    ttt.win.full.helper(board, liblapzt.u64.zero)
+}
+
+// Input
+
+// A reference parameter is forwarded with *stream. A bare stream reads
+// the aliased slot.
+
+// A stream read zero-pads the final word. When a NUL is seen, the rest
+// of that word is padding, so the stream is marked done.
+ttt.input.drain = (stream: *liblapzt.stream) [] {
+    [handle, word, remaining, done] = stream
+    zero: liblapzt.u64 = liblapzt.u64.zero
+    stream = [handle, zero, zero, liblapzt.bool.true]
+    []
+}
+
+// Reads bytes until a newline, a carriage return, a NUL, or the buffer
+// capacity.
+ttt.input.line.helper = (stream: *liblapzt.stream, buffer: liblapzt.u64, capacity: liblapzt.u64, length: liblapzt.u64) liblapzt.string {
+    [ok, byte] = liblapzt.stream.read.byte(*stream)
+    BRANCH (ok) {
+        newline: liblapzt.bool = liblapzt.u8.eq(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.newline))
+        carriage: liblapzt.bool = liblapzt.u8.eq(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.carriage.return))
+        nul: liblapzt.bool = liblapzt.u8.is.zero(byte)
+        end: liblapzt.bool = liblapzt.bool.or(liblapzt.bool.or(newline, carriage), nul)
+        BRANCH (end) {
+            BRANCH (nul) {
+                ttt.input.drain(*stream)
+                [buffer, liblapzt.u64.zero, length]
+            } {
+                [buffer, liblapzt.u64.zero, length]
+            }
+        } {
+            full: liblapzt.bool = liblapzt.u64.ge(length, capacity)
+            BRANCH (full) {
+                [buffer, liblapzt.u64.zero, length]
+            } {
+                [write.ok] = liblapzt.memory.write.byte(buffer, length, byte)
+                liblapzt.assert.true(write.ok)
+                ttt.input.line.helper(*stream, buffer, capacity, liblapzt.u64.inc(length))
+            }
+        }
+    } {
+        [buffer, liblapzt.u64.zero, length]
+    }
+}
+
+ttt.input.line = (stream: *liblapzt.stream, buffer: liblapzt.u64, capacity: liblapzt.u64) liblapzt.string {
+    ttt.input.line.helper(*stream, buffer, capacity, liblapzt.u64.zero)
+}
+
+// Returns zero when the line is not a number. Zero is never a valid
+// cell, so the caller can treat it as invalid input.
+ttt.input.number = (stream: *liblapzt.stream, buffer: liblapzt.u64, capacity: liblapzt.u64) liblapzt.u64 {
+    line: liblapzt.string = ttt.input.line(*stream, buffer, capacity)
+    trimmed: liblapzt.string = liblapzt.string.trim.right(liblapzt.string.trim.left(line))
+    [ok, value, code] = liblapzt.parse.u64(trimmed)
+    BRANCH (ok) {
+        value
+    } {
+        liblapzt.u64.zero
+    }
+}
+
+ttt.input.yes = (stream: *liblapzt.stream, buffer: liblapzt.u64, capacity: liblapzt.u64) liblapzt.bool {
+    line: liblapzt.string = liblapzt.string.trim.left(ttt.input.line(*stream, buffer, capacity))
+    [handle, offset, length] = line
+    empty: liblapzt.bool = liblapzt.u64.is.zero(length)
+    BRANCH (empty) {
+        liblapzt.bool.false
+    } {
+        [ok, byte] = liblapzt.string.byte(line, liblapzt.u64.zero)
+        lower: liblapzt.bool = liblapzt.u8.eq(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.lower.y))
+        upper: liblapzt.bool = liblapzt.u8.eq(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.upper.y))
+        liblapzt.bool.or(lower, upper)
+    }
+}
+
+// Printing
+
+ttt.print.mark = (mark: liblapzt.u64) [] {
+    x: liblapzt.bool = liblapzt.u64.eq(mark, ttt.cell.x)
+    BRANCH (x) {
+        liblapzt.print.char(liblapzt.constants.ascii.upper.x)
+    } {
+        liblapzt.print.char(liblapzt.constants.ascii.upper.o)
+    }
+}
+
+ttt.print.player = (player: liblapzt.u64) [] {
+    liblapzt.print.char(liblapzt.constants.ascii.upper.p)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.l)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.y)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.e)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.r)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    ttt.print.mark(player)
+}
+
+ttt.print.cell = (board: ttt.board, index: liblapzt.u64) [] {
+    value: liblapzt.u64 = ttt.board.cell(board, index)
+    empty: liblapzt.bool = liblapzt.u64.is.zero(value)
+    BRANCH (empty) {
+        liblapzt.print.u64(liblapzt.u64.inc(index))
+    } {
+        ttt.print.mark(value)
+    }
+}
+
+ttt.print.row = (board: ttt.board, base: liblapzt.u64) [] {
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    ttt.print.cell(board, base)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.pipe)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    ttt.print.cell(board, liblapzt.u64.inc(base))
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.pipe)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    ttt.print.cell(board, liblapzt.u64.add(base, liblapzt.constants.two))
+    liblapzt.print.newline()
+}
+
+ttt.print.separator = () [] {
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.plus)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.plus)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.newline()
+}
+
+ttt.print.board = (board: ttt.board) [] {
+    liblapzt.print.newline()
+    ttt.print.row(board, liblapzt.constants.zero)
+    ttt.print.separator()
+    ttt.print.row(board, liblapzt.constants.three)
+    ttt.print.separator()
+    ttt.print.row(board, liblapzt.constants.six)
+    liblapzt.print.newline()
+}
+
+ttt.print.title = () [] {
+    liblapzt.print.char(liblapzt.constants.ascii.upper.t)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.i)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.c)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.t)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.c)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.t)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.o)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.e)
+    liblapzt.print.newline()
+}
+
+ttt.print.prompt = (player: liblapzt.u64) [] {
+    ttt.print.player(player)
+    liblapzt.print.char(liblapzt.constants.ascii.comma)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.c)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.h)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.o)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.o)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.s)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.e)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.c)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.e)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.l)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.l)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.left.paren)
+    liblapzt.print.char(liblapzt.constants.ascii.one)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.nine)
+    liblapzt.print.char(liblapzt.constants.ascii.right.paren)
+    liblapzt.print.char(liblapzt.constants.ascii.colon)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+}
+
+ttt.print.invalid = () [] {
+    liblapzt.print.char(liblapzt.constants.ascii.upper.i)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.n)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.v)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.l)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.i)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.d)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.i)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.n)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.p)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.u)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.t)
+    liblapzt.print.char(liblapzt.constants.ascii.dot)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.upper.e)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.n)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.t)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.e)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.r)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.one)
+    liblapzt.print.char(liblapzt.constants.ascii.minus)
+    liblapzt.print.char(liblapzt.constants.ascii.nine)
+    liblapzt.print.char(liblapzt.constants.ascii.dot)
+    liblapzt.print.newline()
+}
+
+ttt.print.occupied = () [] {
+    liblapzt.print.char(liblapzt.constants.ascii.upper.t)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.h)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.t)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.c)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.e)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.l)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.l)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.i)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.s)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.l)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.r)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.e)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.d)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.y)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.t)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.k)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.e)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.n)
+    liblapzt.print.char(liblapzt.constants.ascii.dot)
+    liblapzt.print.newline()
+}
+
+ttt.print.winner = (mark: liblapzt.u64) [] {
+    ttt.print.player(mark)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.w)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.i)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.n)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.s)
+    liblapzt.print.char(liblapzt.constants.ascii.exclamation)
+    liblapzt.print.newline()
+}
+
+ttt.print.draw = () [] {
+    liblapzt.print.char(liblapzt.constants.ascii.upper.i)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.t)
+    liblapzt.print.char(liblapzt.constants.ascii.apostrophe)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.s)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.d)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.r)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.w)
+    liblapzt.print.char(liblapzt.constants.ascii.dot)
+    liblapzt.print.newline()
+}
+
+ttt.print.again = () [] {
+    liblapzt.print.char(liblapzt.constants.ascii.upper.p)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.l)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.y)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.g)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.a)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.i)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.n)
+    liblapzt.print.char(liblapzt.constants.ascii.question)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+    liblapzt.print.char(liblapzt.constants.ascii.left.paren)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.y)
+    liblapzt.print.char(liblapzt.constants.ascii.slash)
+    liblapzt.print.char(liblapzt.constants.ascii.lower.n)
+    liblapzt.print.char(liblapzt.constants.ascii.right.paren)
+    liblapzt.print.char(liblapzt.constants.ascii.colon)
+    liblapzt.print.char(liblapzt.constants.ascii.space)
+}
+
+// Game
+
+ttt.game.other = (player: liblapzt.u64) liblapzt.u64 {
+    x: liblapzt.bool = liblapzt.u64.eq(player, ttt.cell.x)
+    BRANCH (x) {
+        ttt.cell.o
+    } {
+        ttt.cell.x
+    }
+}
+
+// A turn reads one choice. EOF ends the process. Otherwise the move is
+// applied and the game either ends or starts the next turn. Invalid and
+// occupied cells start a new turn for the same player.
+ttt.game.turn = (board: ttt.board, stream: *liblapzt.stream, buffer: liblapzt.u64, capacity: liblapzt.u64, player: liblapzt.u64) [] {
+    ttt.print.board(board)
+    ttt.print.prompt(player)
+    choice: liblapzt.u64 = ttt.input.number(*stream, buffer, capacity)
+    eof: liblapzt.bool = liblapzt.stream.eof(stream)
+    empty.choice: liblapzt.bool = liblapzt.u64.is.zero(choice)
+    end: liblapzt.bool = liblapzt.bool.and(eof, empty.choice)
+    BRANCH (end) {
+        liblapzt.process.exit(liblapzt.u64.zero)
+    } {
+        in.range: liblapzt.bool = liblapzt.bool.and(liblapzt.u64.ge(choice, liblapzt.u64.one), liblapzt.u64.le(choice, ttt.cells))
+        BRANCH (in.range) {
+            index: liblapzt.u64 = liblapzt.u64.dec(choice)
+            current: liblapzt.u64 = ttt.board.cell(board, index)
+            empty: liblapzt.bool = liblapzt.u64.is.zero(current)
+            BRANCH (empty) {
+                ttt.board.set(board, index, player)
+                winner: liblapzt.u64 = ttt.win.mark(board)
+                BRANCH (liblapzt.u64.is.zero(winner)) {
+                    full: liblapzt.bool = ttt.win.full(board)
+                    BRANCH (full) {
+                        ttt.print.board(board)
+                        ttt.print.draw()
+                    } {
+                        next: liblapzt.u64 = ttt.game.other(player)
+                        ttt.game.turn(board, *stream, buffer, capacity, next)
+                    }
+                } {
+                    ttt.print.board(board)
+                    ttt.print.winner(winner)
+                }
+            } {
+                ttt.print.occupied()
+                ttt.game.turn(board, *stream, buffer, capacity, player)
+            }
+        } {
+            ttt.print.invalid()
+            ttt.game.turn(board, *stream, buffer, capacity, player)
+        }
+    }
+}
+
+ttt.game.session = (board: ttt.board, stream: *liblapzt.stream, buffer: liblapzt.u64, capacity: liblapzt.u64) [] {
+    ttt.board.clear(board)
+    ttt.game.turn(board, *stream, buffer, capacity, ttt.cell.x)
+    ttt.print.again()
+    again: liblapzt.bool = ttt.input.yes(*stream, buffer, capacity)
+    BRANCH (again) {
+        ttt.game.session(board, *stream, buffer, capacity)
+    } {
+        []
+    }
+}
+
+main = () [] {
+    [board.ok, board] = liblapzt.memory.alloc(ttt.board.bytes)
+    liblapzt.assert.true(board.ok)
+    [buffer.ok, buffer] = liblapzt.memory.alloc(ttt.buffer.bytes)
+    liblapzt.assert.true(buffer.ok)
+    stream: liblapzt.stream = liblapzt.stream.new(liblapzt.io.stdin)
+    ttt.print.title()
+    ttt.game.session(board, *stream, buffer, ttt.buffer.bytes)
+    liblapzt.print.newline()
+    liblapzt.memory.free(board)
+    liblapzt.memory.free(buffer)
+    []
+}
