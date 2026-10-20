@@ -1329,6 +1329,7 @@ pub fn std() -> String {
         include_str!("../liblapzt/process.lap"),
         include_str!("../liblapzt/option.lap"),
         include_str!("../liblapzt/assert.lap"),
+        include_str!("../liblapzt/print.lap"),
     ]
     .join("\n");
     source.push('\n');
