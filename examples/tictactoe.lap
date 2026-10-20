@@ -103,39 +103,30 @@ ttt.win.full = (board: ttt.board) liblapzt.bool {
 // A reference parameter is forwarded with *stream. A bare stream reads
 // the aliased slot.
 
-// A stream read zero-pads the final word. When a NUL is seen, the rest
-// of that word is padding, so the stream is marked done.
-ttt.input.drain = (stream: *liblapzt.stream) [] {
-    [handle, word, remaining, done] = stream
-    zero: liblapzt.u64 = liblapzt.u64.zero
-    stream = [handle, zero, zero, liblapzt.bool.true]
-    []
-}
-
-// Reads bytes until a newline, a carriage return, a NUL, or the buffer
-// capacity.
+// Reads bytes until a newline or the buffer capacity. Carriage returns
+// and NUL padding are skipped. A stream read zero-pads the final word,
+// so skipping NUL keeps the padding out of the line.
 ttt.input.line.helper = (stream: *liblapzt.stream, buffer: liblapzt.u64, capacity: liblapzt.u64, length: liblapzt.u64) liblapzt.string {
     [ok, byte] = liblapzt.stream.read.byte(*stream)
     BRANCH (ok) {
         newline: liblapzt.bool = liblapzt.u8.eq(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.newline))
-        carriage: liblapzt.bool = liblapzt.u8.eq(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.carriage.return))
-        nul: liblapzt.bool = liblapzt.u8.is.zero(byte)
-        end: liblapzt.bool = liblapzt.bool.or(liblapzt.bool.or(newline, carriage), nul)
-        BRANCH (end) {
-            BRANCH (nul) {
-                ttt.input.drain(*stream)
-                [buffer, liblapzt.u64.zero, length]
-            } {
-                [buffer, liblapzt.u64.zero, length]
-            }
+        BRANCH (newline) {
+            [buffer, liblapzt.u64.zero, length]
         } {
-            full: liblapzt.bool = liblapzt.u64.ge(length, capacity)
-            BRANCH (full) {
-                [buffer, liblapzt.u64.zero, length]
+            carriage: liblapzt.bool = liblapzt.u8.eq(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.carriage.return))
+            nul: liblapzt.bool = liblapzt.u8.is.zero(byte)
+            skip: liblapzt.bool = liblapzt.bool.or(carriage, nul)
+            BRANCH (skip) {
+                ttt.input.line.helper(*stream, buffer, capacity, length)
             } {
-                [write.ok] = liblapzt.memory.write.byte(buffer, length, byte)
-                liblapzt.assert.true(write.ok)
-                ttt.input.line.helper(*stream, buffer, capacity, liblapzt.u64.inc(length))
+                full: liblapzt.bool = liblapzt.u64.ge(length, capacity)
+                BRANCH (full) {
+                    [buffer, liblapzt.u64.zero, length]
+                } {
+                    [write.ok] = liblapzt.memory.write.byte(buffer, length, byte)
+                    liblapzt.assert.true(write.ok)
+                    ttt.input.line.helper(*stream, buffer, capacity, liblapzt.u64.inc(length))
+                }
             }
         }
     } {
