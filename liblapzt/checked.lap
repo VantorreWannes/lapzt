@@ -1,0 +1,45 @@
+liblapzt.checked.add.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
+    [sum, carry] = liblapzt.u64.add.carry(a, b)
+    BRANCH (carry) {
+        liblapzt.result.err(liblapzt.constants.one)
+    } {
+        liblapzt.result.ok(sum)
+    }
+}
+
+liblapzt.checked.sub.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
+    [difference, borrow] = liblapzt.u64.sub.borrow(a, b)
+    BRANCH (borrow) {
+        liblapzt.result.err(liblapzt.constants.one)
+    } {
+        liblapzt.result.ok(difference)
+    }
+}
+
+liblapzt.checked.mul.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
+    [low, high] = liblapzt.u64.mul.full(a, b)
+    overflow: liblapzt.bool = liblapzt.bool.not(liblapzt.u64.is.zero(high))
+    BRANCH (overflow) {
+        liblapzt.result.err(liblapzt.constants.one)
+    } {
+        liblapzt.result.ok(low)
+    }
+}
+
+liblapzt.checked.div.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.result.err(liblapzt.constants.one)
+    } {
+        liblapzt.result.ok(liblapzt.u64.div(a, b))
+    }
+}
+
+liblapzt.checked.mod.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
+    zero: liblapzt.bool = liblapzt.u64.is.zero(b)
+    BRANCH (zero) {
+        liblapzt.result.err(liblapzt.constants.one)
+    } {
+        liblapzt.result.ok(liblapzt.u64.mod(a, b))
+    }
+}

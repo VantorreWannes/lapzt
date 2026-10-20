@@ -1,0 +1,27 @@
+liblapzt.saturating.add.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [sum, carry] = liblapzt.u64.add.carry(a, b)
+    BRANCH (carry) {
+        liblapzt.u64.maximum
+    } {
+        sum
+    }
+}
+
+liblapzt.saturating.sub.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [difference, borrow] = liblapzt.u64.sub.borrow(a, b)
+    BRANCH (borrow) {
+        liblapzt.u64.zero
+    } {
+        difference
+    }
+}
+
+liblapzt.saturating.mul.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    [low, high] = liblapzt.u64.mul.full(a, b)
+    overflow: liblapzt.bool = liblapzt.bool.not(liblapzt.u64.is.zero(high))
+    BRANCH (overflow) {
+        liblapzt.u64.maximum
+    } {
+        low
+    }
+}

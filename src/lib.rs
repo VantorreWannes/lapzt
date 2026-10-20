@@ -1324,12 +1324,33 @@ pub fn std() -> String {
         include_str!("../liblapzt/integers/float/f32.lap"),
         include_str!("../liblapzt/integers/float/f64.lap"),
         include_str!("../liblapzt/integers/float/f128.lap"),
+        include_str!("../liblapzt/constants.lap"),
+        include_str!("../liblapzt/casts.lap"),
+        include_str!("../liblapzt/compare.lap"),
+        include_str!("../liblapzt/math.lap"),
+        include_str!("../liblapzt/float_casts.lap"),
         include_str!("../liblapzt/io.lap"),
+        include_str!("../liblapzt/stream.lap"),
         include_str!("../liblapzt/memory.lap"),
         include_str!("../liblapzt/process.lap"),
         include_str!("../liblapzt/option.lap"),
         include_str!("../liblapzt/assert.lap"),
+        include_str!("../liblapzt/result.lap"),
         include_str!("../liblapzt/print.lap"),
+        include_str!("../liblapzt/hash.lap"),
+        include_str!("../liblapzt/random.lap"),
+        include_str!("../liblapzt/checked.lap"),
+        include_str!("../liblapzt/saturating.lap"),
+        include_str!("../liblapzt/format.lap"),
+        include_str!("../liblapzt/string.lap"),
+        include_str!("../liblapzt/parse.lap"),
+        include_str!("../liblapzt/alloc.lap"),
+        include_str!("../liblapzt/args.lap"),
+        include_str!("../liblapzt/vec.lap"),
+        include_str!("../liblapzt/map.lap"),
+        include_str!("../liblapzt/set.lap"),
+        include_str!("../liblapzt/sort.lap"),
+        include_str!("../liblapzt/search.lap"),
     ]
     .join("\n");
     source.push('\n');
@@ -2212,6 +2233,23 @@ enum Terminal {
     Discard,
 }
 
+fn block_self_tail_calls(block: &Block, text: &str) -> bool {
+    match block.expression.as_deref() {
+        Some(expression) => expression_self_tail_calls(expression, text),
+        None => false,
+    }
+}
+
+fn expression_self_tail_calls(expression: &Expression, text: &str) -> bool {
+    match expression {
+        Expression::Call(call) => call.label.text() == text,
+        Expression::Branch(branch) => {
+            block_self_tail_calls(&branch.left, text) || block_self_tail_calls(&branch.right, text)
+        }
+        _ => false,
+    }
+}
+
 fn block_uses_label(block: &Block, text: &str) -> bool {
     block
         .statements
@@ -2408,6 +2446,12 @@ struct Emitter {
     temporaries: usize,
     blocks: usize,
     erasure: bool,
+    tail: bool,
+    current_function: Option<String>,
+    current_parameters: Vec<Type>,
+    current_parameter_labels: Vec<Label>,
+    current_return: Option<Type>,
+    self_tail_recursive: bool,
 }
 
 impl Emitter {
@@ -2419,6 +2463,12 @@ impl Emitter {
             temporaries: 0,
             blocks: 0,
             erasure,
+            tail: false,
+            current_function: None,
+            current_parameters: Vec::new(),
+            current_parameter_labels: Vec::new(),
+            current_return: None,
+            self_tail_recursive: false,
         }
     }
 
@@ -2554,8 +2604,12 @@ impl Emitter {
         } else {
             Self::emit_label(&typed_identifier.label)
         };
+        let self_tail_recursive = !is_main
+            && block_self_tail_calls(&function_definition.block, &typed_identifier.label.text());
         let parameters = if is_main {
             "init: std.process.Init.Minimal".to_string()
+        } else if self_tail_recursive {
+            self.emit_parameters_suffixed(function_definition, ".param")
         } else {
             self.emit_parameters(function_definition)
         };
@@ -2586,12 +2640,55 @@ impl Emitter {
         if is_main {
             self.line("@\"$lapzt\".initialize(init);");
         }
+        if self_tail_recursive {
+            if let Some(parameter_list) = &function_definition.parameters {
+                for parameter in &parameter_list.parameters {
+                    self.line(&format!(
+                        "var {} = {};",
+                        Self::emit_label(&parameter.label),
+                        Self::emit_label_with_suffix(&parameter.label, ".param")
+                    ));
+                }
+            }
+            self.line("while (true) {");
+            self.indent();
+        }
+        let previous_function = self.current_function.clone();
+        let previous_parameters = std::mem::take(&mut self.current_parameters);
+        let previous_parameter_labels = std::mem::take(&mut self.current_parameter_labels);
+        let previous_return = self.current_return.take();
+        let previous_self_tail_recursive = self.self_tail_recursive;
+        self.current_function = Some(typed_identifier.label.text());
+        self.current_parameters = function_definition.parameter_types();
+        self.current_parameter_labels = function_definition
+            .parameters
+            .as_ref()
+            .map(|parameter_list| {
+                parameter_list
+                    .parameters
+                    .iter()
+                    .map(|parameter| parameter.label.clone())
+                    .collect()
+            })
+            .unwrap_or_default();
+        self.current_return = Some(function_definition.r#type.clone());
+        self.self_tail_recursive = self_tail_recursive;
         self.emit_function_body(function_definition, terminal);
+        self.current_function = previous_function;
+        self.current_parameters = previous_parameters;
+        self.current_parameter_labels = previous_parameter_labels;
+        self.current_return = previous_return;
+        self.self_tail_recursive = previous_self_tail_recursive;
+        if self_tail_recursive {
+            self.dedent();
+            self.line("}");
+        }
         self.dedent();
         self.line("}");
     }
 
     fn emit_function_body(&mut self, function_definition: &FunctionDefinition, terminal: Terminal) {
+        self.tail = false;
         self.scope.push();
         if let Some(parameter_list) = &function_definition.parameters {
             for parameter in &parameter_list.parameters {
@@ -2628,6 +2725,8 @@ impl Emitter {
     ) -> Vec<String> {
         let mutated = self.collect_mutated(block);
         let used = collect_used_labels(block);
+        let tail = self.tail;
+        self.tail = false;
         self.scope.push();
         let mut statements = block
             .statements
@@ -2635,15 +2734,61 @@ impl Emitter {
             .map(|statement| self.emit_statement_string(statement, &mutated, &used))
             .collect::<Vec<String>>();
         let value = match &block.expression {
-            Some(expression) => match expected_type {
-                Some(expected_type) => self.emit_expression_typed(expression, expected_type),
-                None => self.emit_expression(expression),
-            },
+            Some(expression) => {
+                self.tail = match terminal {
+                    Terminal::Return => true,
+                    Terminal::Break(_) => tail,
+                    Terminal::Discard => false,
+                };
+                let value = match expected_type {
+                    Some(expected_type) => self.emit_expression_typed(expression, expected_type),
+                    None => self.emit_expression(expression),
+                };
+                self.tail = false;
+                value
+            }
             None => ".{}".to_string(),
         };
+        self.tail = tail;
+        let is_tail_loop = self.self_tail_recursive
+            && match terminal {
+                Terminal::Return => true,
+                Terminal::Break(_) => tail,
+                Terminal::Discard => false,
+            }
+            && block
+                .expression
+                .as_deref()
+                .map(|expression| {
+                    expression_self_tail_calls(
+                        expression,
+                        self.current_function.as_deref().unwrap_or(""),
+                    )
+                })
+                .unwrap_or(false);
         match terminal {
-            Terminal::Return => statements.push(format!("return {};", value)),
-            Terminal::Break(label) => statements.push(format!("break :{} {};", label, value)),
+            Terminal::Return => {
+                if is_tail_loop {
+                    if matches!(block.expression.as_deref(), Some(Expression::Call(_))) {
+                        statements.push(value);
+                    } else {
+                        statements.push(format!("{};", value));
+                    }
+                } else {
+                    statements.push(format!("return {};", value));
+                }
+            }
+            Terminal::Break(label) => {
+                if is_tail_loop {
+                    if matches!(block.expression.as_deref(), Some(Expression::Call(_))) {
+                        statements.push(value);
+                    } else {
+                        statements.push(format!("{};", value));
+                    }
+                } else {
+                    statements.push(format!("break :{} {};", label, value));
+                }
+            }
             Terminal::Discard => {
                 if value != ".{}" {
                     statements.push(format!("_ = {};", value));
@@ -2727,7 +2872,7 @@ impl Emitter {
                 None => self.emit_expression(expression),
             },
             BindingValue::FunctionDefinition(function_definition) => {
-                self.emit_function_value(function_definition)
+                self.emit_function_value(Some(&typed_identifier.label), function_definition)
             }
         };
         if let Some(r#type) = &typed_identifier.r#type {
@@ -2792,7 +2937,7 @@ impl Emitter {
                 r#type: function_definition.r#type.clone(),
             },
         );
-        let value = self.emit_function_value(function_definition);
+        let value = self.emit_function_value(Some(&typed_identifier.label), function_definition);
         let discard = if used.contains(&typed_identifier.label.text()) {
             String::new()
         } else {
@@ -2806,7 +2951,17 @@ impl Emitter {
         )
     }
 
-    fn emit_function_value(&mut self, function_definition: &FunctionDefinition) -> String {
+    fn emit_function_value(
+        &mut self,
+        label: Option<&Label>,
+        function_definition: &FunctionDefinition,
+    ) -> String {
+        let previous_function = self.current_function.clone();
+        let previous_parameters = std::mem::take(&mut self.current_parameters);
+        let previous_return = self.current_return.take();
+        self.current_function = label.map(|label| label.text());
+        self.current_parameters = function_definition.parameter_types();
+        self.current_return = Some(function_definition.r#type.clone());
         let parameters = self.emit_parameters(function_definition);
         let return_type = self.emit_type(&function_definition.r#type);
         self.scope.push();
@@ -2834,12 +2989,16 @@ impl Emitter {
             Some(&function_definition.r#type),
         ));
         self.scope.pop();
-        format!(
+        let result = format!(
             "struct {{ fn @\"call\"({}) {} {{ {} }} }}",
             parameters,
             return_type,
             statements.join(" ")
-        )
+        );
+        self.current_function = previous_function;
+        self.current_parameters = previous_parameters;
+        self.current_return = previous_return;
+        result
     }
 
     fn emit_local_destructuring(
@@ -3029,7 +3188,7 @@ impl Emitter {
         match value {
             BindingValue::Expression(expression) => self.emit_expression(expression),
             BindingValue::FunctionDefinition(function_definition) => {
-                self.emit_function_value(function_definition)
+                self.emit_function_value(None, function_definition)
             }
         }
     }
@@ -3045,6 +3204,8 @@ impl Emitter {
         match expression {
             Expression::Primary(primary) => self.emit_primary(primary),
             Expression::Extern(r#extern) => {
+                let tail = self.tail;
+                self.tail = false;
                 let operation = r#extern.expressions.first();
                 let arguments = r#extern
                     .expressions
@@ -3064,7 +3225,7 @@ impl Emitter {
                     })
                     .collect::<Vec<String>>()
                     .join(", ");
-                match operation {
+                let result = match operation {
                     Some(Expression::Primary(Primary::Label(label))) => {
                         let call =
                             format!("@\"$lapzt\".{}({})", Self::emit_label(label), arguments);
@@ -3085,20 +3246,28 @@ impl Emitter {
                             .join(", ");
                         format!("@\"$lapzt\".@\"EXTERN\"({})", arguments)
                     }
-                }
+                };
+                self.tail = tail;
+                result
             }
             Expression::Branch(branch) => self.emit_branch(branch),
             Expression::Nand(nand) => {
+                let tail = self.tail;
+                self.tail = false;
                 let left = self.emit_expression(&nand.left);
                 let right = self.emit_expression(&nand.right);
+                self.tail = tail;
                 format!("!({} and {})", left, right)
             }
             Expression::Collection(collection) => {
+                let tail = self.tail;
+                self.tail = false;
                 let elements = collection
                     .expressions
                     .iter()
                     .map(|expression| self.emit_expression(expression))
                     .collect::<Vec<String>>();
+                self.tail = tail;
                 if elements.is_empty() {
                     ".{}".to_string()
                 } else {
@@ -3106,6 +3275,8 @@ impl Emitter {
                 }
             }
             Expression::Call(call) => {
+                let tail = self.tail;
+                self.tail = false;
                 let target = self.scope.resolve_alias_label(&call.label);
                 let meaning = self.scope.lookup(&target).cloned();
                 let parameters = match &meaning {
@@ -3129,7 +3300,7 @@ impl Emitter {
                         );
                     }
                 }
-                let arguments = call
+                let argument_values = call
                     .expressions
                     .iter()
                     .enumerate()
@@ -3137,14 +3308,40 @@ impl Emitter {
                         Some(parameter) => self.emit_expression_typed(expression, parameter),
                         None => self.emit_expression(expression),
                     })
-                    .collect::<Vec<String>>()
-                    .join(", ");
+                    .collect::<Vec<String>>();
+                let arguments = argument_values.join(", ");
                 let label = Self::emit_label(&target);
-                match meaning {
+                let same_function =
+                    self.current_function.as_deref() == Some(target.text().as_str());
+                let call_expression = match meaning {
                     Some(Meaning::Function { local: true, .. }) => {
                         format!("{}.@\"call\"({})", label, arguments)
                     }
                     _ => format!("{}({})", label, arguments),
+                };
+                if tail && self.self_tail_recursive && same_function {
+                    let temporaries = argument_values
+                        .iter()
+                        .map(|_| self.temporary())
+                        .collect::<Vec<String>>();
+                    let declarations = temporaries
+                        .iter()
+                        .zip(argument_values.iter())
+                        .map(|(temporary, value)| format!("const {} = {};", temporary, value))
+                        .collect::<Vec<String>>()
+                        .join(" ");
+                    let assignments = self
+                        .current_parameter_labels
+                        .iter()
+                        .zip(temporaries.iter())
+                        .map(|(label, temporary)| {
+                            format!("{} = {};", Self::emit_label(label), temporary)
+                        })
+                        .collect::<Vec<String>>()
+                        .join(" ");
+                    format!("{{ {} {} continue; }}", declarations, assignments)
+                } else {
+                    call_expression
                 }
             }
         }
@@ -3276,40 +3473,56 @@ impl Emitter {
             });
         match expression {
             Expression::Collection(collection) => {
-                if let (Some(word), Some(types)) = (erased.as_ref(), element_types.as_ref()) {
-                    return self.emit_packed(collection, types, word);
-                }
-                let elements = collection
-                    .expressions
-                    .iter()
-                    .enumerate()
-                    .map(|(index, expression)| {
-                        let element_type =
-                            element_types.as_ref().and_then(|types| types.get(index));
-                        match element_type {
-                            Some(element_type) => {
-                                self.emit_expression_typed(expression, element_type)
-                            }
-                            None => self.emit_expression(expression),
+                let tail = self.tail;
+                self.tail = false;
+                let result =
+                    if let (Some(word), Some(types)) = (erased.as_ref(), element_types.as_ref()) {
+                        self.emit_packed(collection, types, word)
+                    } else {
+                        let elements = collection
+                            .expressions
+                            .iter()
+                            .enumerate()
+                            .map(|(index, expression)| {
+                                let element_type =
+                                    element_types.as_ref().and_then(|types| types.get(index));
+                                match element_type {
+                                    Some(element_type) => {
+                                        self.emit_expression_typed(expression, element_type)
+                                    }
+                                    None => self.emit_expression(expression),
+                                }
+                            })
+                            .collect::<Vec<String>>();
+                        if elements.is_empty() {
+                            ".{}".to_string()
+                        } else {
+                            format!(".{{ {} }}", elements.join(", "))
                         }
-                    })
-                    .collect::<Vec<String>>();
-                if elements.is_empty() {
-                    ".{}".to_string()
-                } else {
-                    format!(".{{ {} }}", elements.join(", "))
-                }
+                    };
+                self.tail = tail;
+                result
             }
             Expression::Branch(branch) => {
+                let tail = self.tail;
+                self.tail = false;
                 let condition = self.emit_expression(&branch.expression);
+                self.tail = tail;
                 let left_label = format!("blk{}", self.blocks);
                 self.blocks += 1;
                 let right_label = format!("blk{}", self.blocks);
                 self.blocks += 1;
-                let left =
-                    self.emit_block_expression(&branch.left, &left_label, Some(expected_type));
-                let right =
-                    self.emit_block_expression(&branch.right, &right_label, Some(expected_type));
+                let left = if tail && self.self_tail_recursive {
+                    self.emit_tail_block_expression(&branch.left, Some(expected_type))
+                } else {
+                    self.emit_block_expression(&branch.left, &left_label, Some(expected_type))
+                };
+                let right = if tail && self.self_tail_recursive {
+                    self.emit_tail_block_expression(&branch.right, Some(expected_type))
+                } else {
+                    self.emit_block_expression(&branch.right, &right_label, Some(expected_type))
+                };
+                self.tail = false;
                 format!("(if ({}) {} else {})", condition, left, right)
             }
             _ => self.emit_expression(expression),
@@ -3368,7 +3581,7 @@ impl Emitter {
                 format!("(@as(u64, @intFromBool({element})) << {offset})")
             } else {
                 let packed = self.emit_pack_runtime(&element, element_type);
-                format!("({packed} << {offset})")
+                format!("(({packed}) << {offset})")
             };
             parts.push(part);
             offset += width;
@@ -3405,12 +3618,15 @@ impl Emitter {
         }
     }
 
-    fn emit_extern_result(&self, label: &Label, call: &str) -> String {
+    fn emit_extern_result(&mut self, label: &Label, call: &str) -> String {
         match label.text().as_str() {
             "OP.MEMORY.ACQUIRE" | "OP.READ" => {
+                let temporary = self.temporary();
                 let word = Type::Label(Label::parse("liblapzt.u64").unwrap());
-                let unpacked = self.emit_unpack_runtime(&format!("{call}[1]"), &word);
-                format!(".{{ {call}[0], {unpacked} }}")
+                let unpacked = self.emit_unpack_runtime(&format!("{temporary}[1]"), &word);
+                format!(
+                    "blk: {{ const {temporary} = {call}; break :blk .{{ {temporary}[0], {unpacked} }}; }}"
+                )
             }
             "OP.MEMORY.RELEASE" | "OP.WRITE" => format!(".{{ {call}[0] }}"),
             _ => call.to_string(),
@@ -3418,14 +3634,35 @@ impl Emitter {
     }
 
     fn emit_branch(&mut self, branch: &BranchExpression) -> String {
+        let tail = self.tail;
+        self.tail = false;
         let condition = self.emit_expression(&branch.expression);
+        self.tail = tail;
         let left_label = format!("blk{}", self.blocks);
         self.blocks += 1;
         let right_label = format!("blk{}", self.blocks);
         self.blocks += 1;
-        let left = self.emit_block_expression(&branch.left, &left_label, None);
-        let right = self.emit_block_expression(&branch.right, &right_label, None);
+        let left = if tail && self.self_tail_recursive {
+            self.emit_tail_block_expression(&branch.left, None)
+        } else {
+            self.emit_block_expression(&branch.left, &left_label, None)
+        };
+        let right = if tail && self.self_tail_recursive {
+            self.emit_tail_block_expression(&branch.right, None)
+        } else {
+            self.emit_block_expression(&branch.right, &right_label, None)
+        };
+        self.tail = false;
         format!("(if ({}) {} else {})", condition, left, right)
+    }
+
+    fn emit_tail_block_expression(
+        &mut self,
+        block: &Block,
+        expected_type: Option<&Type>,
+    ) -> String {
+        let statements = self.emit_block_statements(block, Terminal::Return, expected_type);
+        format!("{{ {} }}", statements.join(" "))
     }
 
     fn emit_block_expression(
@@ -3569,6 +3806,14 @@ impl Emitter {
     }
 
     fn emit_parameters(&self, function_definition: &FunctionDefinition) -> String {
+        self.emit_parameters_suffixed(function_definition, "")
+    }
+
+    fn emit_parameters_suffixed(
+        &self,
+        function_definition: &FunctionDefinition,
+        suffix: &str,
+    ) -> String {
         function_definition
             .parameters
             .as_ref()
@@ -3579,7 +3824,7 @@ impl Emitter {
                     .map(|parameter| {
                         format!(
                             "{}: {}",
-                            Self::emit_label(&parameter.label),
+                            Self::emit_label_with_suffix(&parameter.label, suffix),
                             self.emit_type(&parameter.r#type)
                         )
                     })
@@ -3587,6 +3832,10 @@ impl Emitter {
                     .join(", ")
             })
             .unwrap_or_default()
+    }
+
+    fn emit_label_with_suffix(label: &Label, suffix: &str) -> String {
+        format!("@\"{}{}\"", label.text(), suffix)
     }
 
     fn emit_value_typed(&self, value: &Value, expected_type: &Type) -> String {
@@ -5031,6 +5280,17 @@ mod tests {
     #[test]
     pub fn test_liblapzt() {
         let program = Program::parse(&std()).unwrap();
+        assert_eq!(Vec::<ProgramError>::new(), program.errors());
+    }
+
+    #[test]
+    pub fn test_liblapzt_extensions() {
+        let source = format!(
+            "{}\n{}",
+            std(),
+            "main = () [] {\n    a: liblapzt.f64 = liblapzt.f64.from.u64(liblapzt.constants.one)\n    b: liblapzt.f32 = liblapzt.f64.to.f32(a)\n    c: liblapzt.f64 = liblapzt.f32.to.f64(b)\n    liblapzt.print.f64(c)\n    liblapzt.print.newline()\n    o: liblapzt.ordering = liblapzt.compare.f64(a, c)\n    liblapzt.print.bool(liblapzt.ordering.is.equal(o))\n    liblapzt.print.newline()\n    []\n}\n"
+        );
+        let program = Program::parse(&source).unwrap();
         assert_eq!(Vec::<ProgramError>::new(), program.errors());
     }
 

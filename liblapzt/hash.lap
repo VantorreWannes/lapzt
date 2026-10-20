@@ -1,0 +1,65 @@
+liblapzt.hash.prime: liblapzt.u64 = [[[[[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]]], [[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]]]
+liblapzt.hash.basis: liblapzt.u64 = [[[[[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]]]]], [[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.true]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]]]], [[[[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.true]]], [[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.true]]]]]]
+liblapzt.hash.crc32.mask: liblapzt.u64 = [[[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]]], [[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.true]]]]], [[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]]]
+liblapzt.hash.mix.constant.one: liblapzt.u64 = [[[[[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]]], [[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.true]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.true]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.false]]], [[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]]], [[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]]]]]]
+liblapzt.hash.mix.constant.two: liblapzt.u64 = [[[[[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.true]]], [[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]]], [[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.true]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]]]]]]
+liblapzt.hash.golden: liblapzt.u64 = [[[[[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.true, liblapzt.bool.false]]], [[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]]], [[[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.false]]]], [[[[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.true, liblapzt.bool.true]], [[liblapzt.bool.true, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.true]]]]]]
+
+liblapzt.hash.fnv1a.byte = (hash: liblapzt.u64, byte: liblapzt.u8) liblapzt.u64 {
+    liblapzt.u64.mul(liblapzt.u64.xor(hash, liblapzt.u8.to.u64(byte)), liblapzt.hash.prime)
+}
+
+liblapzt.hash.fnv1a.word = (hash: liblapzt.u64, word: liblapzt.u64) liblapzt.u64 {
+    liblapzt.u64.mul(liblapzt.u64.xor(hash, word), liblapzt.hash.prime)
+}
+
+liblapzt.hash.fnv1a.bytes.helper = (hash: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, index: liblapzt.u64, length: liblapzt.u64) liblapzt.u64 {
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        hash
+    } {
+        [ok, byte] = liblapzt.memory.read.byte(handle, liblapzt.u64.add(offset, index))
+        liblapzt.hash.fnv1a.bytes.helper(liblapzt.hash.fnv1a.byte(hash, byte), handle, offset, liblapzt.u64.inc(index), length)
+    }
+}
+
+liblapzt.hash.fnv1a.bytes = (hash: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64) liblapzt.u64 {
+    liblapzt.hash.fnv1a.bytes.helper(hash, handle, offset, liblapzt.u64.zero, length)
+}
+
+liblapzt.hash.djb2.byte = (hash: liblapzt.u64, byte: liblapzt.u8) liblapzt.u64 {
+    liblapzt.u64.add(liblapzt.u64.mul(hash, liblapzt.constants.n33), liblapzt.u8.to.u64(byte))
+}
+
+liblapzt.hash.crc32.bit.helper = (crc: liblapzt.u64, byte: liblapzt.u8, index: liblapzt.u64) liblapzt.u64 {
+    done: liblapzt.bool = liblapzt.u64.ge(index, liblapzt.constants.eight)
+    BRANCH (done) {
+        crc
+    } {
+        low: liblapzt.bool = liblapzt.u64.is.one(liblapzt.u64.and(crc, liblapzt.u64.one))
+        shifted: liblapzt.u64 = liblapzt.math.shr1.u64(crc)
+        mixed: liblapzt.u64 = liblapzt.u64.xor(shifted, liblapzt.hash.crc32.mask)
+        next: liblapzt.u64 = liblapzt.u64.select(low, mixed, shifted)
+        liblapzt.hash.crc32.bit.helper(next, byte, liblapzt.u64.inc(index))
+    }
+}
+
+liblapzt.hash.crc32.bit = (crc: liblapzt.u64, byte: liblapzt.u8) liblapzt.u64 {
+    liblapzt.hash.crc32.bit.helper(crc, byte, liblapzt.u64.zero)
+}
+
+liblapzt.hash.crc32.byte = (crc: liblapzt.u64, byte: liblapzt.u8) liblapzt.u64 {
+    liblapzt.hash.crc32.bit(liblapzt.u64.xor(crc, liblapzt.u8.to.u64(byte)), byte)
+}
+
+liblapzt.hash.mix.u64 = (value: liblapzt.u64) liblapzt.u64 {
+    a: liblapzt.u64 = liblapzt.u64.xor(value, liblapzt.math.shr.u64(value, liblapzt.constants.n30))
+    b: liblapzt.u64 = liblapzt.u64.mul(a, liblapzt.hash.mix.constant.one)
+    c: liblapzt.u64 = liblapzt.u64.xor(b, liblapzt.math.shr.u64(b, liblapzt.constants.n27))
+    d: liblapzt.u64 = liblapzt.u64.mul(c, liblapzt.hash.mix.constant.two)
+    liblapzt.u64.xor(d, liblapzt.math.shr.u64(d, liblapzt.constants.n31))
+}
+
+liblapzt.hash.combine.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
+    liblapzt.hash.mix.u64(liblapzt.u64.xor(a, liblapzt.u64.add(b, liblapzt.hash.golden)))
+}

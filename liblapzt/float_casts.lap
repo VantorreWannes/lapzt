@@ -1,0 +1,321 @@
+liblapzt.f16.to.f32.finite = (a: liblapzt.f16) liblapzt.f32 {
+    sign: liblapzt.bool = liblapzt.f16.sign(a)
+    exponent: liblapzt.u16 = liblapzt.f16.exponent(a)
+    mantissa: liblapzt.u16 = liblapzt.f16.mantissa(a)
+    zero: liblapzt.bool = liblapzt.u16.is.zero(exponent)
+    maximum: liblapzt.bool = liblapzt.u16.eq(exponent, liblapzt.f16.exponent.maximum)
+    BRANCH (zero) {
+        liblapzt.f32.pack(sign, liblapzt.u32.zero, liblapzt.u32.zero)
+    } {
+        BRANCH (maximum) {
+            liblapzt.f32.pack(sign, liblapzt.f32.exponent.maximum, liblapzt.u64.to.u32(liblapzt.math.shl.u64(liblapzt.u16.to.u64(mantissa), liblapzt.constants.n13)))
+        } {
+            new.exponent: liblapzt.u64 = liblapzt.u64.add(liblapzt.u64.sub(liblapzt.u16.to.u64(exponent), liblapzt.u16.to.u64(liblapzt.f16.bias)), liblapzt.u32.to.u64(liblapzt.f32.bias))
+            new.mantissa: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u16.to.u64(mantissa), liblapzt.constants.n13)
+            liblapzt.f32.pack(sign, liblapzt.u64.to.u32(new.exponent), liblapzt.u64.to.u32(new.mantissa))
+        }
+    }
+}
+
+liblapzt.f32.to.f64.finite = (a: liblapzt.f32) liblapzt.f64 {
+    sign: liblapzt.bool = liblapzt.f32.sign(a)
+    exponent: liblapzt.u32 = liblapzt.f32.exponent(a)
+    mantissa: liblapzt.u32 = liblapzt.f32.mantissa(a)
+    zero: liblapzt.bool = liblapzt.u32.is.zero(exponent)
+    maximum: liblapzt.bool = liblapzt.u32.eq(exponent, liblapzt.f32.exponent.maximum)
+    BRANCH (zero) {
+        liblapzt.f64.pack(sign, liblapzt.u64.zero, liblapzt.u64.zero)
+    } {
+        BRANCH (maximum) {
+            liblapzt.f64.pack(sign, liblapzt.f64.exponent.maximum, liblapzt.math.shl.u64(liblapzt.u32.to.u64(mantissa), liblapzt.constants.n29))
+        } {
+            new.exponent: liblapzt.u64 = liblapzt.u64.add(liblapzt.u64.sub(liblapzt.u32.to.u64(exponent), liblapzt.u32.to.u64(liblapzt.f32.bias)), liblapzt.u64.to.u64(liblapzt.f64.bias))
+            new.mantissa: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u32.to.u64(mantissa), liblapzt.constants.n29)
+            liblapzt.f64.pack(sign, liblapzt.u64.to.u64(new.exponent), new.mantissa)
+        }
+    }
+}
+
+liblapzt.f64.to.f128.finite = (a: liblapzt.f64) liblapzt.f128 {
+    sign: liblapzt.bool = liblapzt.f64.sign(a)
+    exponent: liblapzt.u64 = liblapzt.f64.exponent(a)
+    mantissa: liblapzt.u64 = liblapzt.f64.mantissa(a)
+    zero: liblapzt.bool = liblapzt.u64.is.zero(exponent)
+    maximum: liblapzt.bool = liblapzt.u64.eq(exponent, liblapzt.f64.exponent.maximum)
+    BRANCH (zero) {
+        liblapzt.f128.pack(sign, liblapzt.u128.zero, liblapzt.u128.zero)
+    } {
+        BRANCH (maximum) {
+            liblapzt.f128.pack(sign, liblapzt.f128.exponent.maximum, liblapzt.math.shl.u128(liblapzt.u64.to.u128(mantissa), liblapzt.constants.n60))
+        } {
+            new.exponent: liblapzt.u64 = liblapzt.u64.add(liblapzt.u64.sub(liblapzt.u64.to.u64(exponent), liblapzt.u64.to.u64(liblapzt.f64.bias)), liblapzt.u128.to.u64(liblapzt.f128.bias))
+            new.mantissa: liblapzt.u128 = liblapzt.math.shl.u128(liblapzt.u64.to.u128(mantissa), liblapzt.constants.n60)
+            liblapzt.f128.pack(sign, liblapzt.u64.to.u128(new.exponent), new.mantissa)
+        }
+    }
+}
+
+liblapzt.f32.to.f16.finite = (a: liblapzt.f32) liblapzt.f16 {
+    sign: liblapzt.bool = liblapzt.f32.sign(a)
+    exponent: liblapzt.u32 = liblapzt.f32.exponent(a)
+    mantissa: liblapzt.u32 = liblapzt.f32.mantissa(a)
+    zero: liblapzt.bool = liblapzt.u32.is.zero(exponent)
+    maximum: liblapzt.bool = liblapzt.u32.eq(exponent, liblapzt.f32.exponent.maximum)
+    difference: liblapzt.u32 = liblapzt.u32.sub(liblapzt.f32.bias, liblapzt.u16.to.u32(liblapzt.f16.bias))
+    underflow: liblapzt.bool = liblapzt.u32.le(exponent, difference)
+    overflow: liblapzt.bool = liblapzt.u32.ge(exponent, liblapzt.u32.add(difference, liblapzt.u16.to.u32(liblapzt.f16.exponent.maximum)))
+    rounding: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u64.one, liblapzt.constants.n12)
+    rounded: liblapzt.u64 = liblapzt.u64.add(liblapzt.u32.to.u64(mantissa), rounding)
+    shifted: liblapzt.u64 = liblapzt.math.shr.u64(rounded, liblapzt.constants.n13)
+    mantissa.limit: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u64.one, liblapzt.constants.n10)
+    carry: liblapzt.bool = liblapzt.u64.ge(shifted, mantissa.limit)
+    BRANCH (zero) {
+        liblapzt.f16.pack(sign, liblapzt.u16.zero, liblapzt.u16.zero)
+    } {
+        BRANCH (maximum) {
+            liblapzt.f16.pack(sign, liblapzt.f16.exponent.maximum, liblapzt.u64.to.u16(shifted))
+        } {
+            BRANCH (underflow) {
+                liblapzt.f16.pack(sign, liblapzt.u16.zero, liblapzt.u16.zero)
+            } {
+                BRANCH (overflow) {
+                    liblapzt.f16.pack(sign, liblapzt.f16.exponent.maximum, liblapzt.u16.zero)
+                } {
+                    new.exponent: liblapzt.u32 = liblapzt.u32.sub(exponent, difference)
+                    BRANCH (carry) {
+                        incremented: liblapzt.u32 = liblapzt.u32.inc(new.exponent)
+                        at.maximum: liblapzt.bool = liblapzt.u32.ge(incremented, liblapzt.u16.to.u32(liblapzt.f16.exponent.maximum))
+                        BRANCH (at.maximum) {
+                            liblapzt.f16.pack(sign, liblapzt.f16.exponent.maximum, liblapzt.u16.zero)
+                        } {
+                            liblapzt.f16.pack(sign, liblapzt.u32.to.u16(incremented), liblapzt.u16.zero)
+                        }
+                    } {
+                        liblapzt.f16.pack(sign, liblapzt.u32.to.u16(new.exponent), liblapzt.u64.to.u16(shifted))
+                    }
+                }
+            }
+        }
+    }
+}
+
+liblapzt.f64.to.f32.finite = (a: liblapzt.f64) liblapzt.f32 {
+    sign: liblapzt.bool = liblapzt.f64.sign(a)
+    exponent: liblapzt.u64 = liblapzt.f64.exponent(a)
+    mantissa: liblapzt.u64 = liblapzt.f64.mantissa(a)
+    zero: liblapzt.bool = liblapzt.u64.is.zero(exponent)
+    maximum: liblapzt.bool = liblapzt.u64.eq(exponent, liblapzt.f64.exponent.maximum)
+    difference: liblapzt.u64 = liblapzt.u64.sub(liblapzt.f64.bias, liblapzt.u32.to.u64(liblapzt.f32.bias))
+    underflow: liblapzt.bool = liblapzt.u64.le(exponent, difference)
+    overflow: liblapzt.bool = liblapzt.u64.ge(exponent, liblapzt.u64.add(difference, liblapzt.u32.to.u64(liblapzt.f32.exponent.maximum)))
+    rounding: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u64.one, liblapzt.constants.n28)
+    rounded: liblapzt.u64 = liblapzt.u64.add(liblapzt.u64.to.u64(mantissa), rounding)
+    shifted: liblapzt.u64 = liblapzt.math.shr.u64(rounded, liblapzt.constants.n29)
+    mantissa.limit: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u64.one, liblapzt.constants.n23)
+    carry: liblapzt.bool = liblapzt.u64.ge(shifted, mantissa.limit)
+    BRANCH (zero) {
+        liblapzt.f32.pack(sign, liblapzt.u32.zero, liblapzt.u32.zero)
+    } {
+        BRANCH (maximum) {
+            liblapzt.f32.pack(sign, liblapzt.f32.exponent.maximum, liblapzt.u64.to.u32(shifted))
+        } {
+            BRANCH (underflow) {
+                liblapzt.f32.pack(sign, liblapzt.u32.zero, liblapzt.u32.zero)
+            } {
+                BRANCH (overflow) {
+                    liblapzt.f32.pack(sign, liblapzt.f32.exponent.maximum, liblapzt.u32.zero)
+                } {
+                    new.exponent: liblapzt.u64 = liblapzt.u64.sub(exponent, difference)
+                    BRANCH (carry) {
+                        incremented: liblapzt.u64 = liblapzt.u64.inc(new.exponent)
+                        at.maximum: liblapzt.bool = liblapzt.u64.ge(incremented, liblapzt.u32.to.u64(liblapzt.f32.exponent.maximum))
+                        BRANCH (at.maximum) {
+                            liblapzt.f32.pack(sign, liblapzt.f32.exponent.maximum, liblapzt.u32.zero)
+                        } {
+                            liblapzt.f32.pack(sign, liblapzt.u64.to.u32(incremented), liblapzt.u32.zero)
+                        }
+                    } {
+                        liblapzt.f32.pack(sign, liblapzt.u64.to.u32(new.exponent), liblapzt.u64.to.u32(shifted))
+                    }
+                }
+            }
+        }
+    }
+}
+
+liblapzt.f128.to.f64.finite = (a: liblapzt.f128) liblapzt.f64 {
+    sign: liblapzt.bool = liblapzt.f128.sign(a)
+    exponent: liblapzt.u128 = liblapzt.f128.exponent(a)
+    mantissa: liblapzt.u128 = liblapzt.f128.mantissa(a)
+    zero: liblapzt.bool = liblapzt.u128.is.zero(exponent)
+    maximum: liblapzt.bool = liblapzt.u128.eq(exponent, liblapzt.f128.exponent.maximum)
+    difference: liblapzt.u128 = liblapzt.u128.sub(liblapzt.f128.bias, liblapzt.u64.to.u128(liblapzt.f64.bias))
+    underflow: liblapzt.bool = liblapzt.u128.le(exponent, difference)
+    overflow: liblapzt.bool = liblapzt.u128.ge(exponent, liblapzt.u128.add(difference, liblapzt.u64.to.u128(liblapzt.f64.exponent.maximum)))
+    rounding: liblapzt.u128 = liblapzt.math.shl.u128(liblapzt.u128.one, liblapzt.constants.n59)
+    rounded: liblapzt.u128 = liblapzt.u128.add(liblapzt.u128.to.u128(mantissa), rounding)
+    shifted: liblapzt.u128 = liblapzt.math.shr.u128(rounded, liblapzt.constants.n60)
+    mantissa.limit: liblapzt.u128 = liblapzt.math.shl.u128(liblapzt.u128.one, liblapzt.constants.n52)
+    carry: liblapzt.bool = liblapzt.u128.ge(shifted, mantissa.limit)
+    BRANCH (zero) {
+        liblapzt.f64.pack(sign, liblapzt.u64.zero, liblapzt.u64.zero)
+    } {
+        BRANCH (maximum) {
+            liblapzt.f64.pack(sign, liblapzt.f64.exponent.maximum, liblapzt.u128.to.u64(shifted))
+        } {
+            BRANCH (underflow) {
+                liblapzt.f64.pack(sign, liblapzt.u64.zero, liblapzt.u64.zero)
+            } {
+                BRANCH (overflow) {
+                    liblapzt.f64.pack(sign, liblapzt.f64.exponent.maximum, liblapzt.u64.zero)
+                } {
+                    new.exponent: liblapzt.u128 = liblapzt.u128.sub(exponent, difference)
+                    BRANCH (carry) {
+                        incremented: liblapzt.u128 = liblapzt.u128.inc(new.exponent)
+                        at.maximum: liblapzt.bool = liblapzt.u128.ge(incremented, liblapzt.u64.to.u128(liblapzt.f64.exponent.maximum))
+                        BRANCH (at.maximum) {
+                            liblapzt.f64.pack(sign, liblapzt.f64.exponent.maximum, liblapzt.u64.zero)
+                        } {
+                            liblapzt.f64.pack(sign, liblapzt.u128.to.u64(incremented), liblapzt.u64.zero)
+                        }
+                    } {
+                        liblapzt.f64.pack(sign, liblapzt.u128.to.u64(new.exponent), liblapzt.u128.to.u64(shifted))
+                    }
+                }
+            }
+        }
+    }
+}
+
+liblapzt.f16.to.f64.finite = (a: liblapzt.f16) liblapzt.f64 {
+    liblapzt.f32.to.f64.finite(liblapzt.f16.to.f32.finite(a))
+}
+
+liblapzt.f64.to.f16.finite = (a: liblapzt.f64) liblapzt.f16 {
+    liblapzt.f32.to.f16.finite(liblapzt.f64.to.f32.finite(a))
+}
+
+liblapzt.f16.to.f128.finite = (a: liblapzt.f16) liblapzt.f128 {
+    liblapzt.f64.to.f128.finite(liblapzt.f16.to.f64.finite(a))
+}
+
+liblapzt.f128.to.f16.finite = (a: liblapzt.f128) liblapzt.f16 {
+    liblapzt.f64.to.f16.finite(liblapzt.f128.to.f64.finite(a))
+}
+
+liblapzt.f32.to.f128.finite = (a: liblapzt.f32) liblapzt.f128 {
+    liblapzt.f64.to.f128.finite(liblapzt.f32.to.f64.finite(a))
+}
+
+liblapzt.f128.to.f32.finite = (a: liblapzt.f128) liblapzt.f32 {
+    liblapzt.f64.to.f32.finite(liblapzt.f128.to.f64.finite(a))
+}
+
+liblapzt.f16.to.f32.erased = (a: liblapzt.f16) liblapzt.f32 {
+    liblapzt.f16.to.f32.finite(a)
+}
+liblapzt.f16.to.f32 = liblapzt.f16.to.f32.erased
+liblapzt.f32.from.f16.erased = (a: liblapzt.f16) liblapzt.f32 {
+    liblapzt.f16.to.f32.finite(a)
+}
+liblapzt.f32.from.f16 = liblapzt.f32.from.f16.erased
+
+liblapzt.f16.to.f64.erased = (a: liblapzt.f16) liblapzt.f64 {
+    liblapzt.f16.to.f64.finite(a)
+}
+liblapzt.f16.to.f64 = liblapzt.f16.to.f64.erased
+liblapzt.f64.from.f16.erased = (a: liblapzt.f16) liblapzt.f64 {
+    liblapzt.f16.to.f64.finite(a)
+}
+liblapzt.f64.from.f16 = liblapzt.f64.from.f16.erased
+
+liblapzt.f16.to.f128.erased = (a: liblapzt.f16) liblapzt.f128 {
+    liblapzt.f16.to.f128.finite(a)
+}
+liblapzt.f16.to.f128 = liblapzt.f16.to.f128.erased
+liblapzt.f128.from.f16.erased = (a: liblapzt.f16) liblapzt.f128 {
+    liblapzt.f16.to.f128.finite(a)
+}
+liblapzt.f128.from.f16 = liblapzt.f128.from.f16.erased
+
+liblapzt.f32.to.f16.erased = (a: liblapzt.f32) liblapzt.f16 {
+    liblapzt.f32.to.f16.finite(a)
+}
+liblapzt.f32.to.f16 = liblapzt.f32.to.f16.erased
+liblapzt.f16.from.f32.erased = (a: liblapzt.f32) liblapzt.f16 {
+    liblapzt.f32.to.f16.finite(a)
+}
+liblapzt.f16.from.f32 = liblapzt.f16.from.f32.erased
+
+liblapzt.f32.to.f64.erased = (a: liblapzt.f32) liblapzt.f64 {
+    liblapzt.f32.to.f64.finite(a)
+}
+liblapzt.f32.to.f64 = liblapzt.f32.to.f64.erased
+liblapzt.f64.from.f32.erased = (a: liblapzt.f32) liblapzt.f64 {
+    liblapzt.f32.to.f64.finite(a)
+}
+liblapzt.f64.from.f32 = liblapzt.f64.from.f32.erased
+
+liblapzt.f32.to.f128.erased = (a: liblapzt.f32) liblapzt.f128 {
+    liblapzt.f32.to.f128.finite(a)
+}
+liblapzt.f32.to.f128 = liblapzt.f32.to.f128.erased
+liblapzt.f128.from.f32.erased = (a: liblapzt.f32) liblapzt.f128 {
+    liblapzt.f32.to.f128.finite(a)
+}
+liblapzt.f128.from.f32 = liblapzt.f128.from.f32.erased
+
+liblapzt.f64.to.f16.erased = (a: liblapzt.f64) liblapzt.f16 {
+    liblapzt.f64.to.f16.finite(a)
+}
+liblapzt.f64.to.f16 = liblapzt.f64.to.f16.erased
+liblapzt.f16.from.f64.erased = (a: liblapzt.f64) liblapzt.f16 {
+    liblapzt.f64.to.f16.finite(a)
+}
+liblapzt.f16.from.f64 = liblapzt.f16.from.f64.erased
+
+liblapzt.f64.to.f32.erased = (a: liblapzt.f64) liblapzt.f32 {
+    liblapzt.f64.to.f32.finite(a)
+}
+liblapzt.f64.to.f32 = liblapzt.f64.to.f32.erased
+liblapzt.f32.from.f64.erased = (a: liblapzt.f64) liblapzt.f32 {
+    liblapzt.f64.to.f32.finite(a)
+}
+liblapzt.f32.from.f64 = liblapzt.f32.from.f64.erased
+
+liblapzt.f64.to.f128.erased = (a: liblapzt.f64) liblapzt.f128 {
+    liblapzt.f64.to.f128.finite(a)
+}
+liblapzt.f64.to.f128 = liblapzt.f64.to.f128.erased
+liblapzt.f128.from.f64.erased = (a: liblapzt.f64) liblapzt.f128 {
+    liblapzt.f64.to.f128.finite(a)
+}
+liblapzt.f128.from.f64 = liblapzt.f128.from.f64.erased
+
+liblapzt.f128.to.f16.erased = (a: liblapzt.f128) liblapzt.f16 {
+    liblapzt.f128.to.f16.finite(a)
+}
+liblapzt.f128.to.f16 = liblapzt.f128.to.f16.erased
+liblapzt.f16.from.f128.erased = (a: liblapzt.f128) liblapzt.f16 {
+    liblapzt.f128.to.f16.finite(a)
+}
+liblapzt.f16.from.f128 = liblapzt.f16.from.f128.erased
+
+liblapzt.f128.to.f32.erased = (a: liblapzt.f128) liblapzt.f32 {
+    liblapzt.f128.to.f32.finite(a)
+}
+liblapzt.f128.to.f32 = liblapzt.f128.to.f32.erased
+liblapzt.f32.from.f128.erased = (a: liblapzt.f128) liblapzt.f32 {
+    liblapzt.f128.to.f32.finite(a)
+}
+liblapzt.f32.from.f128 = liblapzt.f32.from.f128.erased
+
+liblapzt.f128.to.f64.erased = (a: liblapzt.f128) liblapzt.f64 {
+    liblapzt.f128.to.f64.finite(a)
+}
+liblapzt.f128.to.f64 = liblapzt.f128.to.f64.erased
+liblapzt.f64.from.f128.erased = (a: liblapzt.f128) liblapzt.f64 {
+    liblapzt.f128.to.f64.finite(a)
+}
+liblapzt.f64.from.f128 = liblapzt.f64.from.f128.erased
+

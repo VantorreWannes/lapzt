@@ -1,5 +1,5 @@
 liblapzt.memory.alloc = (size: liblapzt.u64) [BIT, liblapzt.u64] {
-    EXTERN(OP.MEMORY.ACQUIRE, size)
+    EXTERN(OP.MEMORY.ACQUIRE, liblapzt.math.align.up.u64(size, liblapzt.constants.eight))
 }
 
 liblapzt.memory.free = (handle: liblapzt.u64) [BIT] {
@@ -12,4 +12,163 @@ liblapzt.memory.read = (handle: liblapzt.u64, offset: liblapzt.u64) [BIT, liblap
 
 liblapzt.memory.write = (handle: liblapzt.u64, offset: liblapzt.u64, value: liblapzt.u64) [BIT] {
     EXTERN(OP.WRITE, handle, offset, value)
+}
+
+liblapzt.memory.read.byte = (handle: liblapzt.u64, offset: liblapzt.u64) [BIT, liblapzt.u8] {
+    base: liblapzt.u64 = liblapzt.math.align.down.u64(offset, liblapzt.constants.eight)
+    shift: liblapzt.u64 = liblapzt.u64.mul(liblapzt.u64.sub(offset, base), liblapzt.constants.eight)
+    [ok, word] = liblapzt.memory.read(handle, base)
+    [ok, liblapzt.u64.to.u8(liblapzt.math.shr.u64(word, shift))]
+}
+
+liblapzt.memory.write.byte = (handle: liblapzt.u64, offset: liblapzt.u64, value: liblapzt.u8) [BIT] {
+    base: liblapzt.u64 = liblapzt.math.align.down.u64(offset, liblapzt.constants.eight)
+    shift: liblapzt.u64 = liblapzt.u64.mul(liblapzt.u64.sub(offset, base), liblapzt.constants.eight)
+    [ok, word] = liblapzt.memory.read(handle, base)
+    mask: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.constants.n255, shift)
+    cleared: liblapzt.u64 = liblapzt.u64.and(word, liblapzt.u64.not(mask))
+    inserted: liblapzt.u64 = liblapzt.u64.or(cleared, liblapzt.math.shl.u64(liblapzt.u8.to.u64(value), shift))
+    liblapzt.memory.write(handle, base, inserted)
+}
+
+liblapzt.memory.read.u8 = (handle: liblapzt.u64, offset: liblapzt.u64) [BIT, liblapzt.u8] {
+    liblapzt.memory.read.byte(handle, offset)
+}
+
+liblapzt.memory.read.u16 = (handle: liblapzt.u64, offset: liblapzt.u64) [BIT, liblapzt.u16] {
+    [ok, word] = liblapzt.memory.read(handle, offset)
+    [ok, liblapzt.u64.to.u16(word)]
+}
+
+liblapzt.memory.read.u32 = (handle: liblapzt.u64, offset: liblapzt.u64) [BIT, liblapzt.u32] {
+    [ok, word] = liblapzt.memory.read(handle, offset)
+    [ok, liblapzt.u64.to.u32(word)]
+}
+
+liblapzt.memory.read.u64 = (handle: liblapzt.u64, offset: liblapzt.u64) [BIT, liblapzt.u64] {
+    liblapzt.memory.read(handle, offset)
+}
+
+liblapzt.memory.read.u128 = (handle: liblapzt.u64, offset: liblapzt.u64) [BIT, liblapzt.u128] {
+    [low.ok, low] = liblapzt.memory.read(handle, offset)
+    [high.ok, high] = liblapzt.memory.read(handle, liblapzt.u64.add(offset, liblapzt.constants.eight))
+    [liblapzt.bool.and(low.ok, high.ok), [low, high]]
+}
+
+liblapzt.memory.write.u8 = (handle: liblapzt.u64, offset: liblapzt.u64, value: liblapzt.u8) [BIT] {
+    liblapzt.memory.write.byte(handle, offset, value)
+}
+
+liblapzt.memory.write.u16 = (handle: liblapzt.u64, offset: liblapzt.u64, value: liblapzt.u16) [BIT] {
+    base: liblapzt.u64 = liblapzt.math.align.down.u64(offset, liblapzt.constants.eight)
+    shift: liblapzt.u64 = liblapzt.u64.mul(liblapzt.u64.sub(offset, base), liblapzt.constants.eight)
+    [ok, word] = liblapzt.memory.read(handle, base)
+    mask: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.constants.n65535, shift)
+    cleared: liblapzt.u64 = liblapzt.u64.and(word, liblapzt.u64.not(mask))
+    inserted: liblapzt.u64 = liblapzt.u64.or(cleared, liblapzt.math.shl.u64(liblapzt.u16.to.u64(value), shift))
+    liblapzt.memory.write(handle, base, inserted)
+}
+
+liblapzt.memory.write.u32 = (handle: liblapzt.u64, offset: liblapzt.u64, value: liblapzt.u32) [BIT] {
+    base: liblapzt.u64 = liblapzt.math.align.down.u64(offset, liblapzt.constants.eight)
+    shift: liblapzt.u64 = liblapzt.u64.mul(liblapzt.u64.sub(offset, base), liblapzt.constants.eight)
+    [ok, word] = liblapzt.memory.read(handle, base)
+    mask: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.constants.n4294967295, shift)
+    cleared: liblapzt.u64 = liblapzt.u64.and(word, liblapzt.u64.not(mask))
+    inserted: liblapzt.u64 = liblapzt.u64.or(cleared, liblapzt.math.shl.u64(liblapzt.u32.to.u64(value), shift))
+    liblapzt.memory.write(handle, base, inserted)
+}
+
+liblapzt.memory.write.u64 = (handle: liblapzt.u64, offset: liblapzt.u64, value: liblapzt.u64) [BIT] {
+    liblapzt.memory.write(handle, offset, value)
+}
+
+liblapzt.memory.write.u128 = (handle: liblapzt.u64, offset: liblapzt.u64, value: liblapzt.u128) [BIT] {
+    [low, high] = value
+    [low.ok] = liblapzt.memory.write(handle, offset, low)
+    [high.ok] = liblapzt.memory.write(handle, liblapzt.u64.add(offset, liblapzt.constants.eight), high)
+    [liblapzt.bool.and(low.ok, high.ok)]
+}
+
+liblapzt.memory.copy.helper = (destination: liblapzt.u64, source: liblapzt.u64, index: liblapzt.u64, length: liblapzt.u64) [BIT] {
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        [liblapzt.bool.true]
+    } {
+        [read.ok, byte] = liblapzt.memory.read.byte(source, index)
+        [write.ok] = liblapzt.memory.write.byte(destination, index, byte)
+        ok: liblapzt.bool = liblapzt.bool.and(read.ok, write.ok)
+        BRANCH (ok) {
+            liblapzt.memory.copy.helper(destination, source, liblapzt.u64.inc(index), length)
+        } {
+            [liblapzt.bool.false]
+        }
+    }
+}
+
+liblapzt.memory.copy = (destination: liblapzt.u64, source: liblapzt.u64, length: liblapzt.u64) [BIT] {
+    liblapzt.memory.copy.helper(destination, source, liblapzt.u64.zero, length)
+}
+
+liblapzt.memory.fill.helper = (handle: liblapzt.u64, offset: liblapzt.u64, index: liblapzt.u64, length: liblapzt.u64, value: liblapzt.u8) [BIT] {
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        [liblapzt.bool.true]
+    } {
+        [ok] = liblapzt.memory.write.byte(handle, liblapzt.u64.add(offset, index), value)
+        BRANCH (ok) {
+            liblapzt.memory.fill.helper(handle, offset, liblapzt.u64.inc(index), length, value)
+        } {
+            [liblapzt.bool.false]
+        }
+    }
+}
+
+liblapzt.memory.fill = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, value: liblapzt.u8) [BIT] {
+    liblapzt.memory.fill.helper(handle, offset, liblapzt.u64.zero, length, value)
+}
+
+liblapzt.memory.zero = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64) [BIT] {
+    liblapzt.memory.fill(handle, offset, length, liblapzt.u8.zero)
+}
+
+liblapzt.memory.eq.helper = (a: liblapzt.u64, b: liblapzt.u64, index: liblapzt.u64, length: liblapzt.u64) liblapzt.bool {
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        liblapzt.bool.true
+    } {
+        [a.ok, a.byte] = liblapzt.memory.read.byte(a, index)
+        [b.ok, b.byte] = liblapzt.memory.read.byte(b, index)
+        same: liblapzt.bool = liblapzt.u8.eq(a.byte, b.byte)
+        BRANCH (same) {
+            liblapzt.memory.eq.helper(a, b, liblapzt.u64.inc(index), length)
+        } {
+            liblapzt.bool.false
+        }
+    }
+}
+
+liblapzt.memory.eq = (a: liblapzt.u64, b: liblapzt.u64, length: liblapzt.u64) liblapzt.bool {
+    liblapzt.memory.eq.helper(a, b, liblapzt.u64.zero, length)
+}
+
+liblapzt.memory.compare.helper = (a: liblapzt.u64, b: liblapzt.u64, index: liblapzt.u64, length: liblapzt.u64) liblapzt.ordering {
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        liblapzt.ordering.equal
+    } {
+        [a.ok, a.byte] = liblapzt.memory.read.byte(a, index)
+        [b.ok, b.byte] = liblapzt.memory.read.byte(b, index)
+        ordering: liblapzt.ordering = liblapzt.compare.u8(a.byte, b.byte)
+        equal: liblapzt.bool = liblapzt.ordering.is.equal(ordering)
+        BRANCH (equal) {
+            liblapzt.memory.compare.helper(a, b, liblapzt.u64.inc(index), length)
+        } {
+            ordering
+        }
+    }
+}
+
+liblapzt.memory.compare = (a: liblapzt.u64, b: liblapzt.u64, length: liblapzt.u64) liblapzt.ordering {
+    liblapzt.memory.compare.helper(a, b, liblapzt.u64.zero, length)
 }

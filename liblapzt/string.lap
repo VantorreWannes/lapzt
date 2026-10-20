@@ -1,0 +1,274 @@
+liblapzt.string = [liblapzt.u64, liblapzt.u64, liblapzt.u64]
+
+liblapzt.string.new = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64) liblapzt.string {
+    [handle, offset, length]
+}
+
+liblapzt.string.handle = (string: liblapzt.string) liblapzt.u64 {
+    [handle, offset, length] = string
+    handle
+}
+
+liblapzt.string.offset = (string: liblapzt.string) liblapzt.u64 {
+    [handle, offset, length] = string
+    offset
+}
+
+liblapzt.string.length = (string: liblapzt.string) liblapzt.u64 {
+    [handle, offset, length] = string
+    length
+}
+
+liblapzt.string.byte = (string: liblapzt.string, index: liblapzt.u64) [BIT, liblapzt.u8] {
+    [handle, offset, length] = string
+    liblapzt.memory.read.byte(handle, liblapzt.u64.add(offset, index))
+}
+
+liblapzt.string.eq.helper = (a: liblapzt.string, b: liblapzt.string, index: liblapzt.u64) liblapzt.bool {
+    [a.handle, a.offset, a.length] = a
+    [b.handle, b.offset, b.length] = b
+    done: liblapzt.bool = liblapzt.u64.ge(index, a.length)
+    BRANCH (done) {
+        liblapzt.bool.true
+    } {
+        [a.ok, a.byte] = liblapzt.memory.read.byte(a.handle, liblapzt.u64.add(a.offset, index))
+        [b.ok, b.byte] = liblapzt.memory.read.byte(b.handle, liblapzt.u64.add(b.offset, index))
+        same: liblapzt.bool = liblapzt.u8.eq(a.byte, b.byte)
+        BRANCH (same) {
+            liblapzt.string.eq.helper(a, b, liblapzt.u64.inc(index))
+        } {
+            liblapzt.bool.false
+        }
+    }
+}
+
+liblapzt.string.eq = (a: liblapzt.string, b: liblapzt.string) liblapzt.bool {
+    [a.handle, a.offset, a.length] = a
+    [b.handle, b.offset, b.length] = b
+    same.length: liblapzt.bool = liblapzt.u64.eq(a.length, b.length)
+    BRANCH (same.length) {
+        liblapzt.string.eq.helper(a, b, liblapzt.u64.zero)
+    } {
+        liblapzt.bool.false
+    }
+}
+
+liblapzt.string.compare.helper = (a: liblapzt.string, b: liblapzt.string, index: liblapzt.u64) liblapzt.ordering {
+    [a.handle, a.offset, a.length] = a
+    [b.handle, b.offset, b.length] = b
+    a.done: liblapzt.bool = liblapzt.u64.ge(index, a.length)
+    b.done: liblapzt.bool = liblapzt.u64.ge(index, b.length)
+    BRANCH (a.done) {
+        BRANCH (b.done) {
+            liblapzt.ordering.equal
+        } {
+            liblapzt.ordering.less
+        }
+    } {
+        BRANCH (b.done) {
+            liblapzt.ordering.greater
+        } {
+            [a.ok, a.byte] = liblapzt.memory.read.byte(a.handle, liblapzt.u64.add(a.offset, index))
+            [b.ok, b.byte] = liblapzt.memory.read.byte(b.handle, liblapzt.u64.add(b.offset, index))
+            ordering: liblapzt.ordering = liblapzt.compare.u8(a.byte, b.byte)
+            equal: liblapzt.bool = liblapzt.ordering.is.equal(ordering)
+            BRANCH (equal) {
+                liblapzt.string.compare.helper(a, b, liblapzt.u64.inc(index))
+            } {
+                ordering
+            }
+        }
+    }
+}
+
+liblapzt.string.compare = (a: liblapzt.string, b: liblapzt.string) liblapzt.ordering {
+    liblapzt.string.compare.helper(a, b, liblapzt.u64.zero)
+}
+
+liblapzt.string.copy = (destination: liblapzt.u64, destination.offset: liblapzt.u64, source: liblapzt.string) [BIT] {
+    [handle, offset, length] = source
+    liblapzt.memory.copy(destination, liblapzt.u64.add(handle, offset), length)
+}
+
+liblapzt.string.match.at = (haystack: liblapzt.string, needle: liblapzt.string, index: liblapzt.u64, needle.index: liblapzt.u64) liblapzt.bool {
+    [h.handle, h.offset, h.length] = haystack
+    [n.handle, n.offset, n.length] = needle
+    done: liblapzt.bool = liblapzt.u64.ge(needle.index, n.length)
+    BRANCH (done) {
+        liblapzt.bool.true
+    } {
+        [h.ok, h.byte] = liblapzt.memory.read.byte(h.handle, liblapzt.u64.add(h.offset, liblapzt.u64.add(index, needle.index)))
+        [n.ok, n.byte] = liblapzt.memory.read.byte(n.handle, liblapzt.u64.add(n.offset, needle.index))
+        same: liblapzt.bool = liblapzt.u8.eq(h.byte, n.byte)
+        BRANCH (same) {
+            liblapzt.string.match.at(haystack, needle, index, liblapzt.u64.inc(needle.index))
+        } {
+            liblapzt.bool.false
+        }
+    }
+}
+
+liblapzt.string.find.helper = (haystack: liblapzt.string, needle: liblapzt.string, index: liblapzt.u64) liblapzt.option {
+    [h.handle, h.offset, h.length] = haystack
+    [n.handle, n.offset, n.length] = needle
+    end: liblapzt.u64 = liblapzt.u64.add(index, n.length)
+    too.far: liblapzt.bool = liblapzt.u64.gt(end, h.length)
+    BRANCH (too.far) {
+        liblapzt.option.none
+    } {
+        matched: liblapzt.bool = liblapzt.string.match.at(haystack, needle, index, liblapzt.u64.zero)
+        BRANCH (matched) {
+            liblapzt.option.some(index)
+        } {
+            liblapzt.string.find.helper(haystack, needle, liblapzt.u64.inc(index))
+        }
+    }
+}
+
+liblapzt.string.find = (haystack: liblapzt.string, needle: liblapzt.string) liblapzt.option {
+    [n.handle, n.offset, n.length] = needle
+    empty: liblapzt.bool = liblapzt.u64.is.zero(n.length)
+    BRANCH (empty) {
+        liblapzt.option.some(liblapzt.u64.zero)
+    } {
+        liblapzt.string.find.helper(haystack, needle, liblapzt.u64.zero)
+    }
+}
+
+liblapzt.string.starts.with = (string: liblapzt.string, prefix: liblapzt.string) liblapzt.bool {
+    [s.handle, s.offset, s.length] = string
+    [p.handle, p.offset, p.length] = prefix
+    too.long: liblapzt.bool = liblapzt.u64.gt(p.length, s.length)
+    BRANCH (too.long) {
+        liblapzt.bool.false
+    } {
+        liblapzt.string.match.at(string, prefix, liblapzt.u64.zero, liblapzt.u64.zero)
+    }
+}
+
+liblapzt.string.ends.with = (string: liblapzt.string, suffix: liblapzt.string) liblapzt.bool {
+    [s.handle, s.offset, s.length] = string
+    [p.handle, p.offset, p.length] = suffix
+    too.long: liblapzt.bool = liblapzt.u64.gt(p.length, s.length)
+    BRANCH (too.long) {
+        liblapzt.bool.false
+    } {
+        liblapzt.string.match.at(string, suffix, liblapzt.u64.sub(s.length, p.length), liblapzt.u64.zero)
+    }
+}
+
+liblapzt.string.is.space = (byte: liblapzt.u8) liblapzt.bool {
+    space: liblapzt.bool = liblapzt.u8.eq(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.space))
+    tab: liblapzt.bool = liblapzt.u8.eq(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.tab))
+    newline: liblapzt.bool = liblapzt.u8.eq(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.newline))
+    carriage: liblapzt.bool = liblapzt.u8.eq(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.carriage.return))
+    liblapzt.bool.or(liblapzt.bool.or(space, tab), liblapzt.bool.or(newline, carriage))
+}
+
+liblapzt.string.trim.left.helper = (string: liblapzt.string, index: liblapzt.u64) liblapzt.string {
+    [handle, offset, length] = string
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        string
+    } {
+        [ok, byte] = liblapzt.memory.read.byte(handle, liblapzt.u64.add(offset, index))
+        space: liblapzt.bool = liblapzt.string.is.space(byte)
+        BRANCH (space) {
+            liblapzt.string.trim.left.helper(string, liblapzt.u64.inc(index))
+        } {
+            [handle, liblapzt.u64.add(offset, index), liblapzt.u64.sub(length, index)]
+        }
+    }
+}
+
+liblapzt.string.trim.left = (string: liblapzt.string) liblapzt.string {
+    liblapzt.string.trim.left.helper(string, liblapzt.u64.zero)
+}
+
+liblapzt.string.trim.right.helper = (string: liblapzt.string, length: liblapzt.u64) liblapzt.string {
+    [handle, offset, original] = string
+    done: liblapzt.bool = liblapzt.u64.is.zero(length)
+    BRANCH (done) {
+        [handle, offset, liblapzt.u64.zero]
+    } {
+        [ok, byte] = liblapzt.memory.read.byte(handle, liblapzt.u64.add(offset, liblapzt.u64.dec(length)))
+        space: liblapzt.bool = liblapzt.string.is.space(byte)
+        BRANCH (space) {
+            liblapzt.string.trim.right.helper(string, liblapzt.u64.dec(length))
+        } {
+            [handle, offset, length]
+        }
+    }
+}
+
+liblapzt.string.trim.right = (string: liblapzt.string) liblapzt.string {
+    [handle, offset, length] = string
+    liblapzt.string.trim.right.helper(string, length)
+}
+
+liblapzt.string.print.word.helper = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64, byte.index: liblapzt.u64, word: liblapzt.u64) liblapzt.u64 {
+    done: liblapzt.bool = liblapzt.u64.ge(byte.index, liblapzt.constants.eight)
+    BRANCH (done) {
+        word
+    } {
+        position: liblapzt.u64 = liblapzt.u64.add(index, byte.index)
+        in.bounds: liblapzt.bool = liblapzt.u64.lt(position, length)
+        next.word: liblapzt.u64 = BRANCH (in.bounds) {
+            [ok, byte] = liblapzt.memory.read.byte(handle, liblapzt.u64.add(offset, position))
+            liblapzt.u64.or(word, liblapzt.math.shl.u64(liblapzt.u8.to.u64(byte), liblapzt.u64.mul(byte.index, liblapzt.constants.eight)))
+        } {
+            word
+        }
+        liblapzt.string.print.word.helper(handle, offset, length, index, liblapzt.u64.inc(byte.index), next.word)
+    }
+}
+
+liblapzt.string.print.word = (string: liblapzt.string, index: liblapzt.u64) liblapzt.u64 {
+    [handle, offset, length] = string
+    liblapzt.string.print.word.helper(handle, offset, length, index, liblapzt.u64.zero, liblapzt.u64.zero)
+}
+
+liblapzt.string.print.helper = (string: liblapzt.string, index: liblapzt.u64) [] {
+    [handle, offset, length] = string
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        []
+    } {
+        word: liblapzt.u64 = liblapzt.string.print.word(string, index)
+        [ok] = liblapzt.io.write(liblapzt.io.stdout, liblapzt.u64.zero, word)
+        liblapzt.assert.true(ok)
+        liblapzt.string.print.helper(string, liblapzt.u64.add(index, liblapzt.constants.eight))
+    }
+}
+
+liblapzt.string.print = (string: liblapzt.string) [] {
+    liblapzt.string.print.helper(string, liblapzt.u64.zero)
+}
+
+liblapzt.string.write.helper = (handle: liblapzt.u64, string: liblapzt.string, index: liblapzt.u64) [BIT] {
+    [string.handle, string.offset, string.length] = string
+    done: liblapzt.bool = liblapzt.u64.ge(index, string.length)
+    BRANCH (done) {
+        [liblapzt.bool.true]
+    } {
+        word: liblapzt.u64 = liblapzt.string.print.word(string, index)
+        [ok] = liblapzt.io.write(handle, liblapzt.u64.zero, word)
+        BRANCH (ok) {
+            liblapzt.string.write.helper(handle, string, liblapzt.u64.add(index, liblapzt.constants.eight))
+        } {
+            [liblapzt.bool.false]
+        }
+    }
+}
+
+liblapzt.string.write = (handle: liblapzt.u64, string: liblapzt.string) [BIT] {
+    liblapzt.string.write.helper(handle, string, liblapzt.u64.zero)
+}
+
+liblapzt.print.string = (string: liblapzt.string) [] {
+    liblapzt.string.print(string)
+}
+
+liblapzt.io.write.string = (handle: liblapzt.u64, string: liblapzt.string) [BIT] {
+    liblapzt.string.write(handle, string)
+}

@@ -10,3 +10,11 @@ liblapzt.io.read = (handle: liblapzt.u64, offset: liblapzt.u64) [BIT, liblapzt.u
 liblapzt.io.write = (handle: liblapzt.u64, offset: liblapzt.u64, value: liblapzt.u64) [BIT] {
     EXTERN(OP.WRITE, handle, offset, value)
 }
+
+liblapzt.io.read.word = (handle: liblapzt.u64) [BIT, liblapzt.u64] {
+    liblapzt.io.read(handle, liblapzt.u64.zero)
+}
+
+liblapzt.io.write.word = (handle: liblapzt.u64, value: liblapzt.u64) [BIT] {
+    liblapzt.io.write(handle, liblapzt.u64.zero, value)
+}

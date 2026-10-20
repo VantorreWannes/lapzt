@@ -1,0 +1,43 @@
+liblapzt.search.linear.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, value: liblapzt.u64, index: liblapzt.u64) liblapzt.option {
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    BRANCH (done) {
+        liblapzt.option.none
+    } {
+        [ok, current] = liblapzt.memory.read(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(index, liblapzt.constants.eight)))
+        same: liblapzt.bool = liblapzt.u64.eq(current, value)
+        BRANCH (same) {
+            liblapzt.option.some(index)
+        } {
+            liblapzt.search.linear.u64.helper(handle, offset, length, value, liblapzt.u64.inc(index))
+        }
+    }
+}
+
+liblapzt.search.linear.u64 = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, value: liblapzt.u64) liblapzt.option {
+    liblapzt.search.linear.u64.helper(handle, offset, length, value, liblapzt.u64.zero)
+}
+
+liblapzt.search.binary.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, low: liblapzt.u64, high: liblapzt.u64, value: liblapzt.u64) liblapzt.option {
+    done: liblapzt.bool = liblapzt.u64.ge(low, high)
+    BRANCH (done) {
+        liblapzt.option.none
+    } {
+        mid: liblapzt.u64 = liblapzt.u64.div(liblapzt.u64.add(low, high), liblapzt.constants.two)
+        [ok, current] = liblapzt.memory.read(handle, liblapzt.u64.add(offset, liblapzt.u64.mul(mid, liblapzt.constants.eight)))
+        same: liblapzt.bool = liblapzt.u64.eq(current, value)
+        BRANCH (same) {
+            liblapzt.option.some(mid)
+        } {
+            less: liblapzt.bool = liblapzt.u64.lt(current, value)
+            BRANCH (less) {
+                liblapzt.search.binary.u64.helper(handle, offset, liblapzt.u64.inc(mid), high, value)
+            } {
+                liblapzt.search.binary.u64.helper(handle, offset, low, mid, value)
+            }
+        }
+    }
+}
+
+liblapzt.search.binary.u64 = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, value: liblapzt.u64) liblapzt.option {
+    liblapzt.search.binary.u64.helper(handle, offset, liblapzt.u64.zero, length, value)
+}

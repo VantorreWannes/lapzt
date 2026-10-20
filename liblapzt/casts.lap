@@ -1,0 +1,351 @@
+liblapzt.u1.to.u1 = (a: liblapzt.u1) liblapzt.u1 { a }
+liblapzt.u2.to.u2 = (a: liblapzt.u2) liblapzt.u2 { a }
+liblapzt.u4.to.u4 = (a: liblapzt.u4) liblapzt.u4 { a }
+liblapzt.u8.to.u8 = (a: liblapzt.u8) liblapzt.u8 { a }
+liblapzt.u16.to.u16 = (a: liblapzt.u16) liblapzt.u16 { a }
+liblapzt.u32.to.u32 = (a: liblapzt.u32) liblapzt.u32 { a }
+liblapzt.u64.to.u64 = (a: liblapzt.u64) liblapzt.u64 { a }
+liblapzt.u128.to.u128 = (a: liblapzt.u128) liblapzt.u128 { a }
+liblapzt.i2.to.i2 = (a: liblapzt.i2) liblapzt.i2 { a }
+liblapzt.i4.to.i4 = (a: liblapzt.i4) liblapzt.i4 { a }
+liblapzt.i8.to.i8 = (a: liblapzt.i8) liblapzt.i8 { a }
+liblapzt.i16.to.i16 = (a: liblapzt.i16) liblapzt.i16 { a }
+liblapzt.i32.to.i32 = (a: liblapzt.i32) liblapzt.i32 { a }
+liblapzt.i64.to.i64 = (a: liblapzt.i64) liblapzt.i64 { a }
+liblapzt.i128.to.i128 = (a: liblapzt.i128) liblapzt.i128 { a }
+
+liblapzt.u1.to.u2 = (a: liblapzt.u1) liblapzt.u2 { [a, liblapzt.u1.zero] }
+liblapzt.u2.to.u4 = (a: liblapzt.u2) liblapzt.u4 { [a, liblapzt.u2.zero] }
+liblapzt.u4.to.u8 = (a: liblapzt.u4) liblapzt.u8 { [a, liblapzt.u4.zero] }
+liblapzt.u8.to.u16 = (a: liblapzt.u8) liblapzt.u16 { [a, liblapzt.u8.zero] }
+liblapzt.u16.to.u32 = (a: liblapzt.u16) liblapzt.u32 { [a, liblapzt.u16.zero] }
+liblapzt.u32.to.u64 = (a: liblapzt.u32) liblapzt.u64 { [a, liblapzt.u32.zero] }
+liblapzt.u64.to.u128 = (a: liblapzt.u64) liblapzt.u128 { [a, liblapzt.u64.zero] }
+
+liblapzt.u2.to.u1 = (a: liblapzt.u2) liblapzt.u1 { [low, high] = a
+    low
+}
+liblapzt.u4.to.u2 = (a: liblapzt.u4) liblapzt.u2 { [low, high] = a
+    low
+}
+liblapzt.u8.to.u4 = (a: liblapzt.u8) liblapzt.u4 { [low, high] = a
+    low
+}
+liblapzt.u16.to.u8 = (a: liblapzt.u16) liblapzt.u8 { [low, high] = a
+    low
+}
+liblapzt.u32.to.u16 = (a: liblapzt.u32) liblapzt.u16 { [low, high] = a
+    low
+}
+liblapzt.u64.to.u32 = (a: liblapzt.u64) liblapzt.u32 { [low, high] = a
+    low
+}
+liblapzt.u128.to.u64 = (a: liblapzt.u128) liblapzt.u64 { [low, high] = a
+    low
+}
+
+liblapzt.u1.to.u4 = (a: liblapzt.u1) liblapzt.u4 { liblapzt.u2.to.u4(liblapzt.u1.to.u2(a)) }
+liblapzt.u1.to.u8 = (a: liblapzt.u1) liblapzt.u8 { liblapzt.u4.to.u8(liblapzt.u2.to.u4(liblapzt.u1.to.u2(a))) }
+liblapzt.u1.to.u16 = (a: liblapzt.u1) liblapzt.u16 { liblapzt.u8.to.u16(liblapzt.u4.to.u8(liblapzt.u2.to.u4(liblapzt.u1.to.u2(a)))) }
+liblapzt.u1.to.u32 = (a: liblapzt.u1) liblapzt.u32 { liblapzt.u16.to.u32(liblapzt.u8.to.u16(liblapzt.u4.to.u8(liblapzt.u2.to.u4(liblapzt.u1.to.u2(a))))) }
+liblapzt.u1.to.u64 = (a: liblapzt.u1) liblapzt.u64 { liblapzt.u32.to.u64(liblapzt.u16.to.u32(liblapzt.u8.to.u16(liblapzt.u4.to.u8(liblapzt.u2.to.u4(liblapzt.u1.to.u2(a)))))) }
+liblapzt.u1.to.u128 = (a: liblapzt.u1) liblapzt.u128 { liblapzt.u64.to.u128(liblapzt.u32.to.u64(liblapzt.u16.to.u32(liblapzt.u8.to.u16(liblapzt.u4.to.u8(liblapzt.u2.to.u4(liblapzt.u1.to.u2(a))))))) }
+liblapzt.u2.to.u8 = (a: liblapzt.u2) liblapzt.u8 { liblapzt.u4.to.u8(liblapzt.u2.to.u4(a)) }
+liblapzt.u2.to.u16 = (a: liblapzt.u2) liblapzt.u16 { liblapzt.u8.to.u16(liblapzt.u4.to.u8(liblapzt.u2.to.u4(a))) }
+liblapzt.u2.to.u32 = (a: liblapzt.u2) liblapzt.u32 { liblapzt.u16.to.u32(liblapzt.u8.to.u16(liblapzt.u4.to.u8(liblapzt.u2.to.u4(a)))) }
+liblapzt.u2.to.u64 = (a: liblapzt.u2) liblapzt.u64 { liblapzt.u32.to.u64(liblapzt.u16.to.u32(liblapzt.u8.to.u16(liblapzt.u4.to.u8(liblapzt.u2.to.u4(a))))) }
+liblapzt.u2.to.u128 = (a: liblapzt.u2) liblapzt.u128 { liblapzt.u64.to.u128(liblapzt.u32.to.u64(liblapzt.u16.to.u32(liblapzt.u8.to.u16(liblapzt.u4.to.u8(liblapzt.u2.to.u4(a)))))) }
+liblapzt.u4.to.u1 = (a: liblapzt.u4) liblapzt.u1 { liblapzt.u2.to.u1(liblapzt.u4.to.u2(a)) }
+liblapzt.u4.to.u16 = (a: liblapzt.u4) liblapzt.u16 { liblapzt.u8.to.u16(liblapzt.u4.to.u8(a)) }
+liblapzt.u4.to.u32 = (a: liblapzt.u4) liblapzt.u32 { liblapzt.u16.to.u32(liblapzt.u8.to.u16(liblapzt.u4.to.u8(a))) }
+liblapzt.u4.to.u64 = (a: liblapzt.u4) liblapzt.u64 { liblapzt.u32.to.u64(liblapzt.u16.to.u32(liblapzt.u8.to.u16(liblapzt.u4.to.u8(a)))) }
+liblapzt.u4.to.u128 = (a: liblapzt.u4) liblapzt.u128 { liblapzt.u64.to.u128(liblapzt.u32.to.u64(liblapzt.u16.to.u32(liblapzt.u8.to.u16(liblapzt.u4.to.u8(a))))) }
+liblapzt.u8.to.u1 = (a: liblapzt.u8) liblapzt.u1 { liblapzt.u2.to.u1(liblapzt.u4.to.u2(liblapzt.u8.to.u4(a))) }
+liblapzt.u8.to.u2 = (a: liblapzt.u8) liblapzt.u2 { liblapzt.u4.to.u2(liblapzt.u8.to.u4(a)) }
+liblapzt.u8.to.u32 = (a: liblapzt.u8) liblapzt.u32 { liblapzt.u16.to.u32(liblapzt.u8.to.u16(a)) }
+liblapzt.u8.to.u64 = (a: liblapzt.u8) liblapzt.u64 { liblapzt.u32.to.u64(liblapzt.u16.to.u32(liblapzt.u8.to.u16(a))) }
+liblapzt.u8.to.u128 = (a: liblapzt.u8) liblapzt.u128 { liblapzt.u64.to.u128(liblapzt.u32.to.u64(liblapzt.u16.to.u32(liblapzt.u8.to.u16(a)))) }
+liblapzt.u16.to.u1 = (a: liblapzt.u16) liblapzt.u1 { liblapzt.u2.to.u1(liblapzt.u4.to.u2(liblapzt.u8.to.u4(liblapzt.u16.to.u8(a)))) }
+liblapzt.u16.to.u2 = (a: liblapzt.u16) liblapzt.u2 { liblapzt.u4.to.u2(liblapzt.u8.to.u4(liblapzt.u16.to.u8(a))) }
+liblapzt.u16.to.u4 = (a: liblapzt.u16) liblapzt.u4 { liblapzt.u8.to.u4(liblapzt.u16.to.u8(a)) }
+liblapzt.u16.to.u64 = (a: liblapzt.u16) liblapzt.u64 { liblapzt.u32.to.u64(liblapzt.u16.to.u32(a)) }
+liblapzt.u16.to.u128 = (a: liblapzt.u16) liblapzt.u128 { liblapzt.u64.to.u128(liblapzt.u32.to.u64(liblapzt.u16.to.u32(a))) }
+liblapzt.u32.to.u1 = (a: liblapzt.u32) liblapzt.u1 { liblapzt.u2.to.u1(liblapzt.u4.to.u2(liblapzt.u8.to.u4(liblapzt.u16.to.u8(liblapzt.u32.to.u16(a))))) }
+liblapzt.u32.to.u2 = (a: liblapzt.u32) liblapzt.u2 { liblapzt.u4.to.u2(liblapzt.u8.to.u4(liblapzt.u16.to.u8(liblapzt.u32.to.u16(a)))) }
+liblapzt.u32.to.u4 = (a: liblapzt.u32) liblapzt.u4 { liblapzt.u8.to.u4(liblapzt.u16.to.u8(liblapzt.u32.to.u16(a))) }
+liblapzt.u32.to.u8 = (a: liblapzt.u32) liblapzt.u8 { liblapzt.u16.to.u8(liblapzt.u32.to.u16(a)) }
+liblapzt.u32.to.u128 = (a: liblapzt.u32) liblapzt.u128 { liblapzt.u64.to.u128(liblapzt.u32.to.u64(a)) }
+liblapzt.u64.to.u1 = (a: liblapzt.u64) liblapzt.u1 { liblapzt.u2.to.u1(liblapzt.u4.to.u2(liblapzt.u8.to.u4(liblapzt.u16.to.u8(liblapzt.u32.to.u16(liblapzt.u64.to.u32(a)))))) }
+liblapzt.u64.to.u2 = (a: liblapzt.u64) liblapzt.u2 { liblapzt.u4.to.u2(liblapzt.u8.to.u4(liblapzt.u16.to.u8(liblapzt.u32.to.u16(liblapzt.u64.to.u32(a))))) }
+liblapzt.u64.to.u4 = (a: liblapzt.u64) liblapzt.u4 { liblapzt.u8.to.u4(liblapzt.u16.to.u8(liblapzt.u32.to.u16(liblapzt.u64.to.u32(a)))) }
+liblapzt.u64.to.u8 = (a: liblapzt.u64) liblapzt.u8 { liblapzt.u16.to.u8(liblapzt.u32.to.u16(liblapzt.u64.to.u32(a))) }
+liblapzt.u64.to.u16 = (a: liblapzt.u64) liblapzt.u16 { liblapzt.u32.to.u16(liblapzt.u64.to.u32(a)) }
+liblapzt.u128.to.u1 = (a: liblapzt.u128) liblapzt.u1 { liblapzt.u2.to.u1(liblapzt.u4.to.u2(liblapzt.u8.to.u4(liblapzt.u16.to.u8(liblapzt.u32.to.u16(liblapzt.u64.to.u32(liblapzt.u128.to.u64(a))))))) }
+liblapzt.u128.to.u2 = (a: liblapzt.u128) liblapzt.u2 { liblapzt.u4.to.u2(liblapzt.u8.to.u4(liblapzt.u16.to.u8(liblapzt.u32.to.u16(liblapzt.u64.to.u32(liblapzt.u128.to.u64(a)))))) }
+liblapzt.u128.to.u4 = (a: liblapzt.u128) liblapzt.u4 { liblapzt.u8.to.u4(liblapzt.u16.to.u8(liblapzt.u32.to.u16(liblapzt.u64.to.u32(liblapzt.u128.to.u64(a))))) }
+liblapzt.u128.to.u8 = (a: liblapzt.u128) liblapzt.u8 { liblapzt.u16.to.u8(liblapzt.u32.to.u16(liblapzt.u64.to.u32(liblapzt.u128.to.u64(a)))) }
+liblapzt.u128.to.u16 = (a: liblapzt.u128) liblapzt.u16 { liblapzt.u32.to.u16(liblapzt.u64.to.u32(liblapzt.u128.to.u64(a))) }
+liblapzt.u128.to.u32 = (a: liblapzt.u128) liblapzt.u32 { liblapzt.u64.to.u32(liblapzt.u128.to.u64(a)) }
+
+liblapzt.i2.to.u1 = (a: liblapzt.i2) liblapzt.u1 { liblapzt.u2.to.u1(liblapzt.i2.to.u2(a)) }
+liblapzt.i2.to.u4 = (a: liblapzt.i2) liblapzt.u4 {
+    low: liblapzt.u4 = liblapzt.u2.to.u4(liblapzt.i2.to.u2(a))
+    negative: liblapzt.bool = liblapzt.i2.is.negative(a)
+    high.mask: liblapzt.u4 = liblapzt.u4.not(liblapzt.u2.to.u4(liblapzt.u2.maximum))
+    liblapzt.u4.or(low, liblapzt.u4.select(negative, high.mask, liblapzt.u4.zero))
+}
+liblapzt.i2.to.u8 = (a: liblapzt.i2) liblapzt.u8 {
+    low: liblapzt.u8 = liblapzt.u2.to.u8(liblapzt.i2.to.u2(a))
+    negative: liblapzt.bool = liblapzt.i2.is.negative(a)
+    high.mask: liblapzt.u8 = liblapzt.u8.not(liblapzt.u2.to.u8(liblapzt.u2.maximum))
+    liblapzt.u8.or(low, liblapzt.u8.select(negative, high.mask, liblapzt.u8.zero))
+}
+liblapzt.i2.to.u16 = (a: liblapzt.i2) liblapzt.u16 {
+    low: liblapzt.u16 = liblapzt.u2.to.u16(liblapzt.i2.to.u2(a))
+    negative: liblapzt.bool = liblapzt.i2.is.negative(a)
+    high.mask: liblapzt.u16 = liblapzt.u16.not(liblapzt.u2.to.u16(liblapzt.u2.maximum))
+    liblapzt.u16.or(low, liblapzt.u16.select(negative, high.mask, liblapzt.u16.zero))
+}
+liblapzt.i2.to.u32 = (a: liblapzt.i2) liblapzt.u32 {
+    low: liblapzt.u32 = liblapzt.u2.to.u32(liblapzt.i2.to.u2(a))
+    negative: liblapzt.bool = liblapzt.i2.is.negative(a)
+    high.mask: liblapzt.u32 = liblapzt.u32.not(liblapzt.u2.to.u32(liblapzt.u2.maximum))
+    liblapzt.u32.or(low, liblapzt.u32.select(negative, high.mask, liblapzt.u32.zero))
+}
+liblapzt.i2.to.u64 = (a: liblapzt.i2) liblapzt.u64 {
+    low: liblapzt.u64 = liblapzt.u2.to.u64(liblapzt.i2.to.u2(a))
+    negative: liblapzt.bool = liblapzt.i2.is.negative(a)
+    high.mask: liblapzt.u64 = liblapzt.u64.not(liblapzt.u2.to.u64(liblapzt.u2.maximum))
+    liblapzt.u64.or(low, liblapzt.u64.select(negative, high.mask, liblapzt.u64.zero))
+}
+liblapzt.i2.to.u128 = (a: liblapzt.i2) liblapzt.u128 {
+    low: liblapzt.u128 = liblapzt.u2.to.u128(liblapzt.i2.to.u2(a))
+    negative: liblapzt.bool = liblapzt.i2.is.negative(a)
+    high.mask: liblapzt.u128 = liblapzt.u128.not(liblapzt.u2.to.u128(liblapzt.u2.maximum))
+    liblapzt.u128.or(low, liblapzt.u128.select(negative, high.mask, liblapzt.u128.zero))
+}
+liblapzt.i4.to.u1 = (a: liblapzt.i4) liblapzt.u1 { liblapzt.u4.to.u1(liblapzt.i4.to.u4(a)) }
+liblapzt.i4.to.u2 = (a: liblapzt.i4) liblapzt.u2 { liblapzt.u4.to.u2(liblapzt.i4.to.u4(a)) }
+liblapzt.i4.to.u8 = (a: liblapzt.i4) liblapzt.u8 {
+    low: liblapzt.u8 = liblapzt.u4.to.u8(liblapzt.i4.to.u4(a))
+    negative: liblapzt.bool = liblapzt.i4.is.negative(a)
+    high.mask: liblapzt.u8 = liblapzt.u8.not(liblapzt.u4.to.u8(liblapzt.u4.maximum))
+    liblapzt.u8.or(low, liblapzt.u8.select(negative, high.mask, liblapzt.u8.zero))
+}
+liblapzt.i4.to.u16 = (a: liblapzt.i4) liblapzt.u16 {
+    low: liblapzt.u16 = liblapzt.u4.to.u16(liblapzt.i4.to.u4(a))
+    negative: liblapzt.bool = liblapzt.i4.is.negative(a)
+    high.mask: liblapzt.u16 = liblapzt.u16.not(liblapzt.u4.to.u16(liblapzt.u4.maximum))
+    liblapzt.u16.or(low, liblapzt.u16.select(negative, high.mask, liblapzt.u16.zero))
+}
+liblapzt.i4.to.u32 = (a: liblapzt.i4) liblapzt.u32 {
+    low: liblapzt.u32 = liblapzt.u4.to.u32(liblapzt.i4.to.u4(a))
+    negative: liblapzt.bool = liblapzt.i4.is.negative(a)
+    high.mask: liblapzt.u32 = liblapzt.u32.not(liblapzt.u4.to.u32(liblapzt.u4.maximum))
+    liblapzt.u32.or(low, liblapzt.u32.select(negative, high.mask, liblapzt.u32.zero))
+}
+liblapzt.i4.to.u64 = (a: liblapzt.i4) liblapzt.u64 {
+    low: liblapzt.u64 = liblapzt.u4.to.u64(liblapzt.i4.to.u4(a))
+    negative: liblapzt.bool = liblapzt.i4.is.negative(a)
+    high.mask: liblapzt.u64 = liblapzt.u64.not(liblapzt.u4.to.u64(liblapzt.u4.maximum))
+    liblapzt.u64.or(low, liblapzt.u64.select(negative, high.mask, liblapzt.u64.zero))
+}
+liblapzt.i4.to.u128 = (a: liblapzt.i4) liblapzt.u128 {
+    low: liblapzt.u128 = liblapzt.u4.to.u128(liblapzt.i4.to.u4(a))
+    negative: liblapzt.bool = liblapzt.i4.is.negative(a)
+    high.mask: liblapzt.u128 = liblapzt.u128.not(liblapzt.u4.to.u128(liblapzt.u4.maximum))
+    liblapzt.u128.or(low, liblapzt.u128.select(negative, high.mask, liblapzt.u128.zero))
+}
+liblapzt.i8.to.u1 = (a: liblapzt.i8) liblapzt.u1 { liblapzt.u8.to.u1(liblapzt.i8.to.u8(a)) }
+liblapzt.i8.to.u2 = (a: liblapzt.i8) liblapzt.u2 { liblapzt.u8.to.u2(liblapzt.i8.to.u8(a)) }
+liblapzt.i8.to.u4 = (a: liblapzt.i8) liblapzt.u4 { liblapzt.u8.to.u4(liblapzt.i8.to.u8(a)) }
+liblapzt.i8.to.u16 = (a: liblapzt.i8) liblapzt.u16 {
+    low: liblapzt.u16 = liblapzt.u8.to.u16(liblapzt.i8.to.u8(a))
+    negative: liblapzt.bool = liblapzt.i8.is.negative(a)
+    high.mask: liblapzt.u16 = liblapzt.u16.not(liblapzt.u8.to.u16(liblapzt.u8.maximum))
+    liblapzt.u16.or(low, liblapzt.u16.select(negative, high.mask, liblapzt.u16.zero))
+}
+liblapzt.i8.to.u32 = (a: liblapzt.i8) liblapzt.u32 {
+    low: liblapzt.u32 = liblapzt.u8.to.u32(liblapzt.i8.to.u8(a))
+    negative: liblapzt.bool = liblapzt.i8.is.negative(a)
+    high.mask: liblapzt.u32 = liblapzt.u32.not(liblapzt.u8.to.u32(liblapzt.u8.maximum))
+    liblapzt.u32.or(low, liblapzt.u32.select(negative, high.mask, liblapzt.u32.zero))
+}
+liblapzt.i8.to.u64 = (a: liblapzt.i8) liblapzt.u64 {
+    low: liblapzt.u64 = liblapzt.u8.to.u64(liblapzt.i8.to.u8(a))
+    negative: liblapzt.bool = liblapzt.i8.is.negative(a)
+    high.mask: liblapzt.u64 = liblapzt.u64.not(liblapzt.u8.to.u64(liblapzt.u8.maximum))
+    liblapzt.u64.or(low, liblapzt.u64.select(negative, high.mask, liblapzt.u64.zero))
+}
+liblapzt.i8.to.u128 = (a: liblapzt.i8) liblapzt.u128 {
+    low: liblapzt.u128 = liblapzt.u8.to.u128(liblapzt.i8.to.u8(a))
+    negative: liblapzt.bool = liblapzt.i8.is.negative(a)
+    high.mask: liblapzt.u128 = liblapzt.u128.not(liblapzt.u8.to.u128(liblapzt.u8.maximum))
+    liblapzt.u128.or(low, liblapzt.u128.select(negative, high.mask, liblapzt.u128.zero))
+}
+liblapzt.i16.to.u1 = (a: liblapzt.i16) liblapzt.u1 { liblapzt.u16.to.u1(liblapzt.i16.to.u16(a)) }
+liblapzt.i16.to.u2 = (a: liblapzt.i16) liblapzt.u2 { liblapzt.u16.to.u2(liblapzt.i16.to.u16(a)) }
+liblapzt.i16.to.u4 = (a: liblapzt.i16) liblapzt.u4 { liblapzt.u16.to.u4(liblapzt.i16.to.u16(a)) }
+liblapzt.i16.to.u8 = (a: liblapzt.i16) liblapzt.u8 { liblapzt.u16.to.u8(liblapzt.i16.to.u16(a)) }
+liblapzt.i16.to.u32 = (a: liblapzt.i16) liblapzt.u32 {
+    low: liblapzt.u32 = liblapzt.u16.to.u32(liblapzt.i16.to.u16(a))
+    negative: liblapzt.bool = liblapzt.i16.is.negative(a)
+    high.mask: liblapzt.u32 = liblapzt.u32.not(liblapzt.u16.to.u32(liblapzt.u16.maximum))
+    liblapzt.u32.or(low, liblapzt.u32.select(negative, high.mask, liblapzt.u32.zero))
+}
+liblapzt.i16.to.u64 = (a: liblapzt.i16) liblapzt.u64 {
+    low: liblapzt.u64 = liblapzt.u16.to.u64(liblapzt.i16.to.u16(a))
+    negative: liblapzt.bool = liblapzt.i16.is.negative(a)
+    high.mask: liblapzt.u64 = liblapzt.u64.not(liblapzt.u16.to.u64(liblapzt.u16.maximum))
+    liblapzt.u64.or(low, liblapzt.u64.select(negative, high.mask, liblapzt.u64.zero))
+}
+liblapzt.i16.to.u128 = (a: liblapzt.i16) liblapzt.u128 {
+    low: liblapzt.u128 = liblapzt.u16.to.u128(liblapzt.i16.to.u16(a))
+    negative: liblapzt.bool = liblapzt.i16.is.negative(a)
+    high.mask: liblapzt.u128 = liblapzt.u128.not(liblapzt.u16.to.u128(liblapzt.u16.maximum))
+    liblapzt.u128.or(low, liblapzt.u128.select(negative, high.mask, liblapzt.u128.zero))
+}
+liblapzt.i32.to.u1 = (a: liblapzt.i32) liblapzt.u1 { liblapzt.u32.to.u1(liblapzt.i32.to.u32(a)) }
+liblapzt.i32.to.u2 = (a: liblapzt.i32) liblapzt.u2 { liblapzt.u32.to.u2(liblapzt.i32.to.u32(a)) }
+liblapzt.i32.to.u4 = (a: liblapzt.i32) liblapzt.u4 { liblapzt.u32.to.u4(liblapzt.i32.to.u32(a)) }
+liblapzt.i32.to.u8 = (a: liblapzt.i32) liblapzt.u8 { liblapzt.u32.to.u8(liblapzt.i32.to.u32(a)) }
+liblapzt.i32.to.u16 = (a: liblapzt.i32) liblapzt.u16 { liblapzt.u32.to.u16(liblapzt.i32.to.u32(a)) }
+liblapzt.i32.to.u64 = (a: liblapzt.i32) liblapzt.u64 {
+    low: liblapzt.u64 = liblapzt.u32.to.u64(liblapzt.i32.to.u32(a))
+    negative: liblapzt.bool = liblapzt.i32.is.negative(a)
+    high.mask: liblapzt.u64 = liblapzt.u64.not(liblapzt.u32.to.u64(liblapzt.u32.maximum))
+    liblapzt.u64.or(low, liblapzt.u64.select(negative, high.mask, liblapzt.u64.zero))
+}
+liblapzt.i32.to.u128 = (a: liblapzt.i32) liblapzt.u128 {
+    low: liblapzt.u128 = liblapzt.u32.to.u128(liblapzt.i32.to.u32(a))
+    negative: liblapzt.bool = liblapzt.i32.is.negative(a)
+    high.mask: liblapzt.u128 = liblapzt.u128.not(liblapzt.u32.to.u128(liblapzt.u32.maximum))
+    liblapzt.u128.or(low, liblapzt.u128.select(negative, high.mask, liblapzt.u128.zero))
+}
+liblapzt.i64.to.u1 = (a: liblapzt.i64) liblapzt.u1 { liblapzt.u64.to.u1(liblapzt.i64.to.u64(a)) }
+liblapzt.i64.to.u2 = (a: liblapzt.i64) liblapzt.u2 { liblapzt.u64.to.u2(liblapzt.i64.to.u64(a)) }
+liblapzt.i64.to.u4 = (a: liblapzt.i64) liblapzt.u4 { liblapzt.u64.to.u4(liblapzt.i64.to.u64(a)) }
+liblapzt.i64.to.u8 = (a: liblapzt.i64) liblapzt.u8 { liblapzt.u64.to.u8(liblapzt.i64.to.u64(a)) }
+liblapzt.i64.to.u16 = (a: liblapzt.i64) liblapzt.u16 { liblapzt.u64.to.u16(liblapzt.i64.to.u64(a)) }
+liblapzt.i64.to.u32 = (a: liblapzt.i64) liblapzt.u32 { liblapzt.u64.to.u32(liblapzt.i64.to.u64(a)) }
+liblapzt.i64.to.u128 = (a: liblapzt.i64) liblapzt.u128 {
+    low: liblapzt.u128 = liblapzt.u64.to.u128(liblapzt.i64.to.u64(a))
+    negative: liblapzt.bool = liblapzt.i64.is.negative(a)
+    high.mask: liblapzt.u128 = liblapzt.u128.not(liblapzt.u64.to.u128(liblapzt.u64.maximum))
+    liblapzt.u128.or(low, liblapzt.u128.select(negative, high.mask, liblapzt.u128.zero))
+}
+liblapzt.i128.to.u1 = (a: liblapzt.i128) liblapzt.u1 { liblapzt.u128.to.u1(liblapzt.i128.to.u128(a)) }
+liblapzt.i128.to.u2 = (a: liblapzt.i128) liblapzt.u2 { liblapzt.u128.to.u2(liblapzt.i128.to.u128(a)) }
+liblapzt.i128.to.u4 = (a: liblapzt.i128) liblapzt.u4 { liblapzt.u128.to.u4(liblapzt.i128.to.u128(a)) }
+liblapzt.i128.to.u8 = (a: liblapzt.i128) liblapzt.u8 { liblapzt.u128.to.u8(liblapzt.i128.to.u128(a)) }
+liblapzt.i128.to.u16 = (a: liblapzt.i128) liblapzt.u16 { liblapzt.u128.to.u16(liblapzt.i128.to.u128(a)) }
+liblapzt.i128.to.u32 = (a: liblapzt.i128) liblapzt.u32 { liblapzt.u128.to.u32(liblapzt.i128.to.u128(a)) }
+liblapzt.i128.to.u64 = (a: liblapzt.i128) liblapzt.u64 { liblapzt.u128.to.u64(liblapzt.i128.to.u128(a)) }
+
+liblapzt.u1.to.i2 = (a: liblapzt.u1) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.u1.to.u2(a)) }
+liblapzt.u1.to.i4 = (a: liblapzt.u1) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.u1.to.u4(a)) }
+liblapzt.u1.to.i8 = (a: liblapzt.u1) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.u1.to.u8(a)) }
+liblapzt.u1.to.i16 = (a: liblapzt.u1) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.u1.to.u16(a)) }
+liblapzt.u1.to.i32 = (a: liblapzt.u1) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.u1.to.u32(a)) }
+liblapzt.u1.to.i64 = (a: liblapzt.u1) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.u1.to.u64(a)) }
+liblapzt.u1.to.i128 = (a: liblapzt.u1) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.u1.to.u128(a)) }
+liblapzt.u2.to.i2 = (a: liblapzt.u2) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.u2.to.u2(a)) }
+liblapzt.u2.to.i4 = (a: liblapzt.u2) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.u2.to.u4(a)) }
+liblapzt.u2.to.i8 = (a: liblapzt.u2) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.u2.to.u8(a)) }
+liblapzt.u2.to.i16 = (a: liblapzt.u2) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.u2.to.u16(a)) }
+liblapzt.u2.to.i32 = (a: liblapzt.u2) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.u2.to.u32(a)) }
+liblapzt.u2.to.i64 = (a: liblapzt.u2) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.u2.to.u64(a)) }
+liblapzt.u2.to.i128 = (a: liblapzt.u2) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.u2.to.u128(a)) }
+liblapzt.u4.to.i2 = (a: liblapzt.u4) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.u4.to.u2(a)) }
+liblapzt.u4.to.i4 = (a: liblapzt.u4) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.u4.to.u4(a)) }
+liblapzt.u4.to.i8 = (a: liblapzt.u4) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.u4.to.u8(a)) }
+liblapzt.u4.to.i16 = (a: liblapzt.u4) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.u4.to.u16(a)) }
+liblapzt.u4.to.i32 = (a: liblapzt.u4) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.u4.to.u32(a)) }
+liblapzt.u4.to.i64 = (a: liblapzt.u4) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.u4.to.u64(a)) }
+liblapzt.u4.to.i128 = (a: liblapzt.u4) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.u4.to.u128(a)) }
+liblapzt.u8.to.i2 = (a: liblapzt.u8) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.u8.to.u2(a)) }
+liblapzt.u8.to.i4 = (a: liblapzt.u8) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.u8.to.u4(a)) }
+liblapzt.u8.to.i8 = (a: liblapzt.u8) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.u8.to.u8(a)) }
+liblapzt.u8.to.i16 = (a: liblapzt.u8) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.u8.to.u16(a)) }
+liblapzt.u8.to.i32 = (a: liblapzt.u8) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.u8.to.u32(a)) }
+liblapzt.u8.to.i64 = (a: liblapzt.u8) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.u8.to.u64(a)) }
+liblapzt.u8.to.i128 = (a: liblapzt.u8) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.u8.to.u128(a)) }
+liblapzt.u16.to.i2 = (a: liblapzt.u16) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.u16.to.u2(a)) }
+liblapzt.u16.to.i4 = (a: liblapzt.u16) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.u16.to.u4(a)) }
+liblapzt.u16.to.i8 = (a: liblapzt.u16) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.u16.to.u8(a)) }
+liblapzt.u16.to.i16 = (a: liblapzt.u16) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.u16.to.u16(a)) }
+liblapzt.u16.to.i32 = (a: liblapzt.u16) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.u16.to.u32(a)) }
+liblapzt.u16.to.i64 = (a: liblapzt.u16) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.u16.to.u64(a)) }
+liblapzt.u16.to.i128 = (a: liblapzt.u16) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.u16.to.u128(a)) }
+liblapzt.u32.to.i2 = (a: liblapzt.u32) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.u32.to.u2(a)) }
+liblapzt.u32.to.i4 = (a: liblapzt.u32) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.u32.to.u4(a)) }
+liblapzt.u32.to.i8 = (a: liblapzt.u32) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.u32.to.u8(a)) }
+liblapzt.u32.to.i16 = (a: liblapzt.u32) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.u32.to.u16(a)) }
+liblapzt.u32.to.i32 = (a: liblapzt.u32) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.u32.to.u32(a)) }
+liblapzt.u32.to.i64 = (a: liblapzt.u32) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.u32.to.u64(a)) }
+liblapzt.u32.to.i128 = (a: liblapzt.u32) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.u32.to.u128(a)) }
+liblapzt.u64.to.i2 = (a: liblapzt.u64) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.u64.to.u2(a)) }
+liblapzt.u64.to.i4 = (a: liblapzt.u64) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.u64.to.u4(a)) }
+liblapzt.u64.to.i8 = (a: liblapzt.u64) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.u64.to.u8(a)) }
+liblapzt.u64.to.i16 = (a: liblapzt.u64) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.u64.to.u16(a)) }
+liblapzt.u64.to.i32 = (a: liblapzt.u64) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.u64.to.u32(a)) }
+liblapzt.u64.to.i64 = (a: liblapzt.u64) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.u64.to.u64(a)) }
+liblapzt.u64.to.i128 = (a: liblapzt.u64) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.u64.to.u128(a)) }
+liblapzt.u128.to.i2 = (a: liblapzt.u128) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.u128.to.u2(a)) }
+liblapzt.u128.to.i4 = (a: liblapzt.u128) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.u128.to.u4(a)) }
+liblapzt.u128.to.i8 = (a: liblapzt.u128) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.u128.to.u8(a)) }
+liblapzt.u128.to.i16 = (a: liblapzt.u128) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.u128.to.u16(a)) }
+liblapzt.u128.to.i32 = (a: liblapzt.u128) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.u128.to.u32(a)) }
+liblapzt.u128.to.i64 = (a: liblapzt.u128) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.u128.to.u64(a)) }
+liblapzt.u128.to.i128 = (a: liblapzt.u128) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.u128.to.u128(a)) }
+
+liblapzt.i2.to.i4 = (a: liblapzt.i2) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.i2.to.u4(a)) }
+liblapzt.i2.to.i8 = (a: liblapzt.i2) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.i2.to.u8(a)) }
+liblapzt.i2.to.i16 = (a: liblapzt.i2) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.i2.to.u16(a)) }
+liblapzt.i2.to.i32 = (a: liblapzt.i2) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.i2.to.u32(a)) }
+liblapzt.i2.to.i64 = (a: liblapzt.i2) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.i2.to.u64(a)) }
+liblapzt.i2.to.i128 = (a: liblapzt.i2) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.i2.to.u128(a)) }
+liblapzt.i4.to.i2 = (a: liblapzt.i4) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.i4.to.u2(a)) }
+liblapzt.i4.to.i8 = (a: liblapzt.i4) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.i4.to.u8(a)) }
+liblapzt.i4.to.i16 = (a: liblapzt.i4) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.i4.to.u16(a)) }
+liblapzt.i4.to.i32 = (a: liblapzt.i4) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.i4.to.u32(a)) }
+liblapzt.i4.to.i64 = (a: liblapzt.i4) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.i4.to.u64(a)) }
+liblapzt.i4.to.i128 = (a: liblapzt.i4) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.i4.to.u128(a)) }
+liblapzt.i8.to.i2 = (a: liblapzt.i8) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.i8.to.u2(a)) }
+liblapzt.i8.to.i4 = (a: liblapzt.i8) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.i8.to.u4(a)) }
+liblapzt.i8.to.i16 = (a: liblapzt.i8) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.i8.to.u16(a)) }
+liblapzt.i8.to.i32 = (a: liblapzt.i8) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.i8.to.u32(a)) }
+liblapzt.i8.to.i64 = (a: liblapzt.i8) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.i8.to.u64(a)) }
+liblapzt.i8.to.i128 = (a: liblapzt.i8) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.i8.to.u128(a)) }
+liblapzt.i16.to.i2 = (a: liblapzt.i16) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.i16.to.u2(a)) }
+liblapzt.i16.to.i4 = (a: liblapzt.i16) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.i16.to.u4(a)) }
+liblapzt.i16.to.i8 = (a: liblapzt.i16) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.i16.to.u8(a)) }
+liblapzt.i16.to.i32 = (a: liblapzt.i16) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.i16.to.u32(a)) }
+liblapzt.i16.to.i64 = (a: liblapzt.i16) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.i16.to.u64(a)) }
+liblapzt.i16.to.i128 = (a: liblapzt.i16) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.i16.to.u128(a)) }
+liblapzt.i32.to.i2 = (a: liblapzt.i32) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.i32.to.u2(a)) }
+liblapzt.i32.to.i4 = (a: liblapzt.i32) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.i32.to.u4(a)) }
+liblapzt.i32.to.i8 = (a: liblapzt.i32) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.i32.to.u8(a)) }
+liblapzt.i32.to.i16 = (a: liblapzt.i32) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.i32.to.u16(a)) }
+liblapzt.i32.to.i64 = (a: liblapzt.i32) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.i32.to.u64(a)) }
+liblapzt.i32.to.i128 = (a: liblapzt.i32) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.i32.to.u128(a)) }
+liblapzt.i64.to.i2 = (a: liblapzt.i64) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.i64.to.u2(a)) }
+liblapzt.i64.to.i4 = (a: liblapzt.i64) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.i64.to.u4(a)) }
+liblapzt.i64.to.i8 = (a: liblapzt.i64) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.i64.to.u8(a)) }
+liblapzt.i64.to.i16 = (a: liblapzt.i64) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.i64.to.u16(a)) }
+liblapzt.i64.to.i32 = (a: liblapzt.i64) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.i64.to.u32(a)) }
+liblapzt.i64.to.i128 = (a: liblapzt.i64) liblapzt.i128 { liblapzt.i128.from.u128(liblapzt.i64.to.u128(a)) }
+liblapzt.i128.to.i2 = (a: liblapzt.i128) liblapzt.i2 { liblapzt.i2.from.u2(liblapzt.i128.to.u2(a)) }
+liblapzt.i128.to.i4 = (a: liblapzt.i128) liblapzt.i4 { liblapzt.i4.from.u4(liblapzt.i128.to.u4(a)) }
+liblapzt.i128.to.i8 = (a: liblapzt.i128) liblapzt.i8 { liblapzt.i8.from.u8(liblapzt.i128.to.u8(a)) }
+liblapzt.i128.to.i16 = (a: liblapzt.i128) liblapzt.i16 { liblapzt.i16.from.u16(liblapzt.i128.to.u16(a)) }
+liblapzt.i128.to.i32 = (a: liblapzt.i128) liblapzt.i32 { liblapzt.i32.from.u32(liblapzt.i128.to.u32(a)) }
+liblapzt.i128.to.i64 = (a: liblapzt.i128) liblapzt.i64 { liblapzt.i64.from.u64(liblapzt.i128.to.u64(a)) }
+
+liblapzt.bool.to.u2 = (a: liblapzt.bool) liblapzt.u2 { liblapzt.u2.from.bool(a) }
+liblapzt.bool.to.u4 = (a: liblapzt.bool) liblapzt.u4 { liblapzt.u4.from.bool(a) }
+liblapzt.bool.to.u8 = (a: liblapzt.bool) liblapzt.u8 { liblapzt.u8.from.bool(a) }
+liblapzt.bool.to.u16 = (a: liblapzt.bool) liblapzt.u16 { liblapzt.u16.from.bool(a) }
+liblapzt.bool.to.u32 = (a: liblapzt.bool) liblapzt.u32 { liblapzt.u32.from.bool(a) }
+liblapzt.bool.to.u64 = (a: liblapzt.bool) liblapzt.u64 { liblapzt.u64.from.bool(a) }
+liblapzt.bool.to.u128 = (a: liblapzt.bool) liblapzt.u128 { liblapzt.u128.from.bool(a) }

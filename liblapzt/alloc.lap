@@ -1,0 +1,36 @@
+liblapzt.alloc = [liblapzt.u64, liblapzt.u64, liblapzt.u64]
+
+liblapzt.alloc.new = (size: liblapzt.u64) [BIT, liblapzt.alloc] {
+    [ok, handle] = liblapzt.memory.alloc(size)
+    [ok, [handle, liblapzt.u64.zero, size]]
+}
+
+liblapzt.alloc.alloc = (allocator: *liblapzt.alloc, size: liblapzt.u64) liblapzt.result {
+    [handle, offset, capacity] = allocator
+    end: liblapzt.u64 = liblapzt.u64.add(offset, size)
+    enough: liblapzt.bool = liblapzt.u64.le(end, capacity)
+    BRANCH (enough) {
+        allocator = [handle, end, capacity]
+        liblapzt.result.ok(offset)
+    } {
+        liblapzt.result.err(liblapzt.constants.one)
+    }
+}
+
+liblapzt.alloc.reset = (allocator: *liblapzt.alloc) [] {
+    [handle, offset, capacity] = allocator
+    allocator = [handle, liblapzt.u64.zero, capacity]
+    []
+}
+
+liblapzt.alloc.free = (allocator: *liblapzt.alloc) [BIT] {
+    [handle, offset, capacity] = allocator
+    [ok] = liblapzt.memory.free(handle)
+    allocator = [liblapzt.u64.zero, liblapzt.u64.zero, liblapzt.u64.zero]
+    [ok]
+}
+
+liblapzt.alloc.remaining = (allocator: liblapzt.alloc) liblapzt.u64 {
+    [handle, offset, capacity] = allocator
+    liblapzt.u64.sub(capacity, offset)
+}
