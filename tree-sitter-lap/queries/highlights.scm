@@ -7,14 +7,22 @@
 (branch_keyword) @keyword
 (extern_keyword) @keyword
 
-(call_expression function: (label) @function)
+; Namespaced labels, such as ttt.board and liblapzt.u64.zero.
+((label) @property
+ (#match? @property "[.]"))
 
+; Simple labels, such as choice and buffer.
+((label) @variable
+ (#match? @variable "^[a-zA-Z0-9_]+$"))
+
+; Parameters override the generic variable capture.
 (parameter name: (label) @variable.parameter)
 
-(typed_identifier name: (label) @property)
-
-(primary (label) @property)
-(reference (label) @property)
+; Function definitions and calls.
+(binding
+  target: (typed_identifier name: (label) @function)
+  value: (function_definition))
+(call_expression function: (label) @function)
 
 ; Uppercase labels are constants, such as IO.STDIN and OP.READ.
 ((label) @constant
@@ -24,26 +32,23 @@
 ((label) @boolean
  (#match? @boolean "[.](true|false)$"))
 
-; Function definitions override the generic property capture.
-(binding
-  target: (typed_identifier name: (label) @function)
-  value: (function_definition))
-
+; Types override the generic label captures.
 (parameter type: (label) @type)
 (typed_identifier type: (label) @type)
 (function_definition return_type: (label) @type)
 (reference_type (label) @type)
 (collection_type (label) @type)
 
+; Punctuation.
 "=" @operator
 "*" @operator
 
-":" @operator
-"," @operator
+":" @punctuation.delimiter
+"," @punctuation.delimiter
 
-"(" @operator
-")" @operator
-"[" @operator
-"]" @operator
-"{" @operator
-"}" @operator
+"(" @punctuation.bracket
+")" @punctuation.bracket
+"[" @punctuation.bracket
+"]" @punctuation.bracket
+"{" @punctuation.bracket
+"}" @punctuation.bracket

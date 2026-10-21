@@ -61,7 +61,7 @@ The server indexes every `.lap` file under the workspace root. It skips `target`
 
 Zed loads query files from the language directory, not from the grammar's `queries` directory. `editors/zed/languages/lap` holds the copies that Zed uses:
 
-- `highlights.scm` maps grammar nodes to Zed captures.
+- `highlights.scm` maps grammar nodes to Zed captures. Labels without a dot are `@variable`, labels with a dot are `@property`, function definitions and calls are `@function`, parameters are `@variable.parameter`, and types are `@type`.
 - `brackets.scm`, `indents.scm`, and `outline.scm` provide bracket matching, indentation, and the outline.
 
 Keep `tree-sitter-lap/queries` and `editors/zed/languages/lap` in sync. The grammar copies serve other tree-sitter consumers.
