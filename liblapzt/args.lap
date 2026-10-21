@@ -18,29 +18,46 @@ liblapzt.args.write.word = (buffer: liblapzt.u64, capacity: liblapzt.u64, index:
     }
 }
 
-liblapzt.args.read.all.helper = (buffer: liblapzt.u64, capacity: liblapzt.u64, index: liblapzt.u64) [BIT, liblapzt.u64] {
+// Copies words from the argument stream into buffer until length bytes
+// have been read or the buffer is full. Index is both the destination
+// position and the source offset, because each word advances both by
+// eight.
+liblapzt.args.read.all.helper = (buffer: liblapzt.u64, capacity: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64) [BIT] {
     full: liblapzt.bool = liblapzt.u64.ge(index, capacity)
-    BRANCH (full) {
-        [liblapzt.bool.true, index]
+    done: liblapzt.bool = liblapzt.u64.ge(index, length)
+    stop: liblapzt.bool = liblapzt.bool.or(full, done)
+    BRANCH (stop) {
+        [liblapzt.bool.true]
     } {
-        [ok, word] = liblapzt.io.read(liblapzt.io.args, liblapzt.u64.zero)
+        [ok, word] = liblapzt.io.read(liblapzt.io.args, index)
         BRANCH (ok) {
             [write.ok, next.index] = liblapzt.args.write.word(buffer, capacity, index, word, liblapzt.u64.zero)
             BRANCH (write.ok) {
-                liblapzt.args.read.all.helper(buffer, capacity, next.index)
+                liblapzt.args.read.all.helper(buffer, capacity, length, next.index)
             } {
-                [liblapzt.bool.false, index]
+                [liblapzt.bool.false]
             }
         } {
-            [liblapzt.bool.true, index]
+            [liblapzt.bool.true]
         }
     }
 }
 
 // Reads every argument into a buffer until the stream ends or the buffer
-// is full. Returns a status and the number of bytes written.
+// is full. Returns a status and the number of bytes written, which is the
+// argument stream length capped at capacity.
 liblapzt.args.read.all = (buffer: liblapzt.u64, capacity: liblapzt.u64) [BIT, liblapzt.u64] {
-    liblapzt.args.read.all.helper(buffer, capacity, liblapzt.u64.zero)
+    [ok, length] = liblapzt.io.args.length()
+    BRANCH (ok) {
+        [read.ok] = liblapzt.args.read.all.helper(buffer, capacity, length, liblapzt.u64.zero)
+        BRANCH (read.ok) {
+            [liblapzt.bool.true, liblapzt.u64.min(length, capacity)]
+        } {
+            [liblapzt.bool.false, liblapzt.u64.zero]
+        }
+    } {
+        [liblapzt.bool.false, liblapzt.u64.zero]
+    }
 }
 
 liblapzt.args.count.helper = (buffer: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64, count: liblapzt.u64) liblapzt.u64 {

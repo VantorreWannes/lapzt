@@ -12,6 +12,13 @@ liblapzt.io.stderr: liblapzt.u64 = IO.STDERR
 // Command-line arguments, a readable stream of zero-terminated bytes.
 liblapzt.io.args: liblapzt.u64 = IO.ARGS
 
+// Returns the byte length of the argument stream. The stream is zero
+// padded to a whole number of words, so this is the length without the
+// padding.
+liblapzt.io.args.length = () [BIT, liblapzt.u64] {
+    EXTERN(OP.ARGS.LENGTH)
+}
+
 // Reads a word from a memory handle at offset, or the next word from a
 // stream handle. Returns a status and the word. A stream read zero-pads
 // the final word and reports false at end of stream.

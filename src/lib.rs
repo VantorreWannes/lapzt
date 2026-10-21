@@ -1321,6 +1321,14 @@ const @"$lapzt" = struct {
         return word;
     }
 
+    pub fn @"OP.ARGS.LENGTH"() struct { bool, u64 } {
+        if (args_buffer == null) {
+            args_buffer = build_args() catch return .{ false, 0 };
+        }
+        const buffer = args_buffer.?;
+        return .{ true, @intCast(buffer.len) };
+    }
+
     fn memory_slice(handle: u64, offset: u64, length: u64) ?[]u8 {
         const index = memory_index(handle) orelse return null;
         const memory = blocks[index] orelse return null;
@@ -1781,6 +1789,7 @@ fn is_runtime_label(label: &Label) -> bool {
             | "OP.TIME.NOW"
             | "OP.TIME.SLEEP"
             | "OP.RANDOM"
+            | "OP.ARGS.LENGTH"
             | "IO.STDIN"
             | "IO.STDOUT"
             | "IO.STDERR"
@@ -2308,6 +2317,7 @@ impl Checker {
             "OP.TIME.NOW" => 0,
             "OP.TIME.SLEEP" => 1,
             "OP.RANDOM" => 0,
+            "OP.ARGS.LENGTH" => 0,
             _ => {
                 self.errors.push(ProgramError::InvalidExtern(format!(
                     "unknown operation: {operation}"
@@ -3791,7 +3801,7 @@ impl Emitter {
 
     fn emit_extern_result(&mut self, label: &Label, call: &str) -> String {
         match label.text().as_str() {
-            "OP.MEMORY.ACQUIRE" | "OP.READ" | "OP.FILE.OPEN" => {
+            "OP.MEMORY.ACQUIRE" | "OP.READ" | "OP.FILE.OPEN" | "OP.ARGS.LENGTH" => {
                 let temporary = self.temporary();
                 let word = Type::Label(Label::parse("liblapzt.u64").unwrap());
                 let unpacked = self.emit_unpack_runtime(&format!("{temporary}[1]"), &word);
