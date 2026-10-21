@@ -35,5 +35,6 @@ main = () [] {
 
 - [LAP.md](LAP.md): the language.
 - [LAPZT.md](LAPZT.md): compiler assumptions, erasure, and runtime.
+- [editor-support](editor-support): tree-sitter grammar and Zed extension.
 - [examples](examples): small programs.
 - [benchmarks](benchmarks): Lap compared to C.

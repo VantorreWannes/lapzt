@@ -1,0 +1,311 @@
+==================
+Constants and NAND
+==================
+
+BIT.ONE = NAND(BIT, NAND(BIT, BIT))
+BIT.ZERO = NAND(BIT.ONE, BIT.ONE)
+
+---
+
+(program
+  (binding
+    (typed_identifier
+      (label))
+    (expression
+      (nand_expression
+        (nand_keyword)
+        (expression
+          (primary
+            (bit
+              (bit_keyword))))
+        (expression
+          (nand_expression
+            (nand_keyword)
+            (expression
+              (primary
+                (bit
+                  (bit_keyword))))
+            (expression
+              (primary
+                (bit
+                  (bit_keyword)))))))))
+  (binding
+    (typed_identifier
+      (label))
+    (expression
+      (nand_expression
+        (nand_keyword)
+        (expression
+          (primary
+            (label)))
+        (expression
+          (primary
+            (label)))))))
+
+==================
+Function with reference parameter
+==================
+
+bit.toggle = (target: *BIT) [] {
+    target = bit.not(target)
+}
+
+---
+
+(program
+  (binding
+    (typed_identifier
+      (label))
+    (function_definition
+      (parameter_list
+        (parameter
+          (label)
+          (reference_type
+            (bit_type
+              (bit_keyword)))))
+      (collection_type)
+      (block
+        (binding
+          (typed_identifier
+            (label))
+          (expression
+            (call_expression
+              (label)
+              (expression
+                (primary
+                  (label))))))))))
+
+==================
+Branch
+==================
+
+u2.select = (flag: BIT, when.one: U2, when.zero: U2) U2 {
+    BRANCH (flag) {
+        when.one
+    } {
+        unused: BIT = BIT.ZERO
+        when.zero
+    }
+}
+
+---
+
+(program
+  (binding
+    (typed_identifier
+      (label))
+    (function_definition
+      (parameter_list
+        (parameter
+          (label)
+          (bit_type
+            (bit_keyword)))
+        (parameter
+          (label)
+          (label))
+        (parameter
+          (label)
+          (label)))
+      (label)
+      (block
+        (expression
+          (branch_expression
+            (branch_keyword)
+            (expression
+              (primary
+                (label)))
+            (block
+              (expression
+                (primary
+                  (label))))
+            (block
+              (binding
+                (typed_identifier
+                  (label)
+                  (bit_type
+                    (bit_keyword)))
+                (expression
+                  (primary
+                    (label))))
+              (expression
+                (primary
+                  (label))))))))))
+
+==================
+Destructuring
+==================
+
+main = () BIT {
+    bundle: TUPLE = [state, chosen, paired]
+    [head, *middle, last] = bundle
+    head
+}
+
+---
+
+(program
+  (binding
+    (typed_identifier
+      (label))
+    (function_definition
+      (bit_type
+        (bit_keyword))
+      (block
+        (binding
+          (typed_identifier
+            (label)
+            (label))
+          (expression
+            (collection_expression
+              (expression
+                (primary
+                  (label)))
+              (expression
+                (primary
+                  (label)))
+              (expression
+                (primary
+                  (label))))))
+        (binding
+          (collection_target
+            (typed_identifier
+              (label))
+            (reference_target
+              (typed_identifier
+                (label)))
+            (typed_identifier
+              (label)))
+          (expression
+            (primary
+              (label))))
+        (expression
+          (primary
+            (label)))))))
+
+==================
+Comments and empty collections
+==================
+
+// A comment.
+empty = []
+heap.alloc = () [BIT, U64] {
+    EXTERN(OP.MEMORY.ACQUIRE)
+}
+
+---
+
+(program
+  (comment)
+  (binding
+    (typed_identifier
+      (label))
+    (expression
+      (collection_expression)))
+  (binding
+    (typed_identifier
+      (label))
+    (function_definition
+      (collection_type
+        (bit_type
+          (bit_keyword))
+        (label))
+      (block
+        (expression
+          (extern_expression
+            (extern_keyword)
+            (expression
+              (primary
+                (label)))))))))
+
+==================
+Keyword prefixes are labels
+==================
+
+NAND.foo = BIT
+BRANCH.foo = BIT
+EXTERN.foo = BIT
+BIT.foo = BIT
+
+---
+
+(program
+  (binding
+    (typed_identifier
+      (label))
+    (expression
+      (primary
+        (bit
+          (bit_keyword)))))
+  (binding
+    (typed_identifier
+      (label))
+    (expression
+      (primary
+        (bit
+          (bit_keyword)))))
+  (binding
+    (typed_identifier
+      (label))
+    (expression
+      (primary
+        (bit
+          (bit_keyword)))))
+  (binding
+    (typed_identifier
+      (label))
+    (expression
+      (primary
+        (bit
+          (bit_keyword))))))
+
+==================
+Nested types and references
+==================
+
+ref.type = (target: *BIT) *BIT {
+    EXTERN()
+}
+
+nested.type = [[BIT, BIT], [BIT]]
+
+---
+
+(program
+  (binding
+    (typed_identifier
+      (label))
+    (function_definition
+      (parameter_list
+        (parameter
+          (label)
+          (reference_type
+            (bit_type
+              (bit_keyword)))))
+      (reference_type
+        (bit_type
+          (bit_keyword)))
+      (block
+        (expression
+          (extern_expression
+            (extern_keyword))))))
+  (binding
+    (typed_identifier
+      (label))
+    (expression
+      (collection_expression
+        (expression
+          (collection_expression
+            (expression
+              (primary
+                (bit
+                  (bit_keyword))))
+            (expression
+              (primary
+                (bit
+                  (bit_keyword))))))
+        (expression
+          (collection_expression
+            (expression
+              (primary
+                (bit
+                  (bit_keyword))))))))))

@@ -1,0 +1,25 @@
+{
+  "grammars": [
+    {
+      "name": "lap",
+      "camelcase": "Lap",
+      "scope": "source.lap",
+      "path": ".",
+      "file-types": [
+        "lap"
+      ],
+      "highlights": "queries/highlights.scm",
+      "injection-regex": "^lap$"
+    }
+  ],
+  "metadata": {
+    "version": "0.1.0",
+    "license": "MIT",
+    "description": "Tree-sitter grammar for Labels and Primitives (Lap)",
+    "authors": [
+      {
+        "name": "Wannes Vantorre"
+      }
+    ]
+  }
+}
