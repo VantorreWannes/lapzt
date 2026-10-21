@@ -1,3 +1,6 @@
+// Assertions that terminate the process with exit code one on failure.
+
+// Exits with code one when condition is false.
 liblapzt.assert.true = (condition: liblapzt.bool) [] {
     BRANCH (condition) {
         []
@@ -6,34 +9,42 @@ liblapzt.assert.true = (condition: liblapzt.bool) [] {
     }
 }
 
+// Exits with code one when condition is true.
 liblapzt.assert.false = (condition: liblapzt.bool) [] {
     liblapzt.assert.true(liblapzt.bool.not(condition))
 }
 
+// Exits with code one unless a equals b.
 liblapzt.assert.eq.u64 = (a: liblapzt.u64, b: liblapzt.u64) [] {
     liblapzt.assert.true(liblapzt.u64.eq(a, b))
 }
 
+// Exits with code one when a equals b.
 liblapzt.assert.ne.u64 = (a: liblapzt.u64, b: liblapzt.u64) [] {
     liblapzt.assert.true(liblapzt.u64.ne(a, b))
 }
 
+// Exits with code one unless a is less than b.
 liblapzt.assert.lt.u64 = (a: liblapzt.u64, b: liblapzt.u64) [] {
     liblapzt.assert.true(liblapzt.u64.lt(a, b))
 }
 
+// Exits with code one unless a is less than or equal to b.
 liblapzt.assert.le.u64 = (a: liblapzt.u64, b: liblapzt.u64) [] {
     liblapzt.assert.true(liblapzt.u64.le(a, b))
 }
 
+// Exits with code one unless a is greater than b.
 liblapzt.assert.gt.u64 = (a: liblapzt.u64, b: liblapzt.u64) [] {
     liblapzt.assert.true(liblapzt.u64.gt(a, b))
 }
 
+// Exits with code one unless a is greater than or equal to b.
 liblapzt.assert.ge.u64 = (a: liblapzt.u64, b: liblapzt.u64) [] {
     liblapzt.assert.true(liblapzt.u64.ge(a, b))
 }
 
+// Exits with code one unless a equals b.
 liblapzt.assert.eq.bool = (a: liblapzt.bool, b: liblapzt.bool) [] {
     liblapzt.assert.true(liblapzt.bool.eq(a, b))
 }

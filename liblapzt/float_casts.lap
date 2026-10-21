@@ -1,3 +1,5 @@
+// Converts an f16 to f32. The value is exact; zero, infinity, and
+// NaN patterns are preserved.
 liblapzt.f16.to.f32.finite = (a: liblapzt.f16) liblapzt.f32 {
     sign: liblapzt.bool = liblapzt.f16.sign(a)
     exponent: liblapzt.u16 = liblapzt.f16.exponent(a)
@@ -17,6 +19,8 @@ liblapzt.f16.to.f32.finite = (a: liblapzt.f16) liblapzt.f32 {
     }
 }
 
+// Converts an f32 to f64. The value is exact; zero, infinity, and
+// NaN patterns are preserved.
 liblapzt.f32.to.f64.finite = (a: liblapzt.f32) liblapzt.f64 {
     sign: liblapzt.bool = liblapzt.f32.sign(a)
     exponent: liblapzt.u32 = liblapzt.f32.exponent(a)
@@ -36,6 +40,8 @@ liblapzt.f32.to.f64.finite = (a: liblapzt.f32) liblapzt.f64 {
     }
 }
 
+// Converts an f64 to f128. The value is exact; zero, infinity, and
+// NaN patterns are preserved.
 liblapzt.f64.to.f128.finite = (a: liblapzt.f64) liblapzt.f128 {
     sign: liblapzt.bool = liblapzt.f64.sign(a)
     exponent: liblapzt.u64 = liblapzt.f64.exponent(a)
@@ -55,6 +61,8 @@ liblapzt.f64.to.f128.finite = (a: liblapzt.f64) liblapzt.f128 {
     }
 }
 
+// Converts an f32 to f16, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f32.to.f16.finite = (a: liblapzt.f32) liblapzt.f16 {
     sign: liblapzt.bool = liblapzt.f32.sign(a)
     exponent: liblapzt.u32 = liblapzt.f32.exponent(a)
@@ -99,6 +107,8 @@ liblapzt.f32.to.f16.finite = (a: liblapzt.f32) liblapzt.f16 {
     }
 }
 
+// Converts an f64 to f32, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f64.to.f32.finite = (a: liblapzt.f64) liblapzt.f32 {
     sign: liblapzt.bool = liblapzt.f64.sign(a)
     exponent: liblapzt.u64 = liblapzt.f64.exponent(a)
@@ -143,6 +153,8 @@ liblapzt.f64.to.f32.finite = (a: liblapzt.f64) liblapzt.f32 {
     }
 }
 
+// Converts an f128 to f64, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f128.to.f64.finite = (a: liblapzt.f128) liblapzt.f64 {
     sign: liblapzt.bool = liblapzt.f128.sign(a)
     exponent: liblapzt.u128 = liblapzt.f128.exponent(a)
@@ -187,26 +199,35 @@ liblapzt.f128.to.f64.finite = (a: liblapzt.f128) liblapzt.f64 {
     }
 }
 
+// Converts an f16 to f64 exactly, via f32.
 liblapzt.f16.to.f64.finite = (a: liblapzt.f16) liblapzt.f64 {
     liblapzt.f32.to.f64.finite(liblapzt.f16.to.f32.finite(a))
 }
 
+// Converts an f64 to f16, rounding to nearest, via f32. Values too
+// small become zero; values too large become infinity.
 liblapzt.f64.to.f16.finite = (a: liblapzt.f64) liblapzt.f16 {
     liblapzt.f32.to.f16.finite(liblapzt.f64.to.f32.finite(a))
 }
 
+// Converts an f16 to f128 exactly, via f64.
 liblapzt.f16.to.f128.finite = (a: liblapzt.f16) liblapzt.f128 {
     liblapzt.f64.to.f128.finite(liblapzt.f16.to.f64.finite(a))
 }
 
+// Converts an f128 to f16, rounding to nearest, via f64. Values too
+// small become zero; values too large become infinity.
 liblapzt.f128.to.f16.finite = (a: liblapzt.f128) liblapzt.f16 {
     liblapzt.f64.to.f16.finite(liblapzt.f128.to.f64.finite(a))
 }
 
+// Converts an f32 to f128 exactly, via f64.
 liblapzt.f32.to.f128.finite = (a: liblapzt.f32) liblapzt.f128 {
     liblapzt.f64.to.f128.finite(liblapzt.f32.to.f64.finite(a))
 }
 
+// Converts an f128 to f32, rounding to nearest, via f64. Values too
+// small become zero; values too large become infinity.
 liblapzt.f128.to.f32.finite = (a: liblapzt.f128) liblapzt.f32 {
     liblapzt.f64.to.f32.finite(liblapzt.f128.to.f64.finite(a))
 }
@@ -214,108 +235,144 @@ liblapzt.f128.to.f32.finite = (a: liblapzt.f128) liblapzt.f32 {
 liblapzt.f16.to.f32.erased = (a: liblapzt.f16) liblapzt.f32 {
     liblapzt.f16.to.f32.finite(a)
 }
+// Converts an f16 to f32. The value is exact.
 liblapzt.f16.to.f32 = liblapzt.f16.to.f32.erased
 liblapzt.f32.from.f16.erased = (a: liblapzt.f16) liblapzt.f32 {
     liblapzt.f16.to.f32.finite(a)
 }
+// Converts an f16 to f32. The value is exact.
 liblapzt.f32.from.f16 = liblapzt.f32.from.f16.erased
 
 liblapzt.f16.to.f64.erased = (a: liblapzt.f16) liblapzt.f64 {
     liblapzt.f16.to.f64.finite(a)
 }
+// Converts an f16 to f64. The value is exact.
 liblapzt.f16.to.f64 = liblapzt.f16.to.f64.erased
 liblapzt.f64.from.f16.erased = (a: liblapzt.f16) liblapzt.f64 {
     liblapzt.f16.to.f64.finite(a)
 }
+// Converts an f16 to f64. The value is exact.
 liblapzt.f64.from.f16 = liblapzt.f64.from.f16.erased
 
 liblapzt.f16.to.f128.erased = (a: liblapzt.f16) liblapzt.f128 {
     liblapzt.f16.to.f128.finite(a)
 }
+// Converts an f16 to f128. The value is exact.
 liblapzt.f16.to.f128 = liblapzt.f16.to.f128.erased
 liblapzt.f128.from.f16.erased = (a: liblapzt.f16) liblapzt.f128 {
     liblapzt.f16.to.f128.finite(a)
 }
+// Converts an f16 to f128. The value is exact.
 liblapzt.f128.from.f16 = liblapzt.f128.from.f16.erased
 
 liblapzt.f32.to.f16.erased = (a: liblapzt.f32) liblapzt.f16 {
     liblapzt.f32.to.f16.finite(a)
 }
+// Converts an f32 to f16, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f32.to.f16 = liblapzt.f32.to.f16.erased
 liblapzt.f16.from.f32.erased = (a: liblapzt.f32) liblapzt.f16 {
     liblapzt.f32.to.f16.finite(a)
 }
+// Converts an f32 to f16, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f16.from.f32 = liblapzt.f16.from.f32.erased
 
 liblapzt.f32.to.f64.erased = (a: liblapzt.f32) liblapzt.f64 {
     liblapzt.f32.to.f64.finite(a)
 }
+// Converts an f32 to f64. The value is exact.
 liblapzt.f32.to.f64 = liblapzt.f32.to.f64.erased
 liblapzt.f64.from.f32.erased = (a: liblapzt.f32) liblapzt.f64 {
     liblapzt.f32.to.f64.finite(a)
 }
+// Converts an f32 to f64. The value is exact.
 liblapzt.f64.from.f32 = liblapzt.f64.from.f32.erased
 
 liblapzt.f32.to.f128.erased = (a: liblapzt.f32) liblapzt.f128 {
     liblapzt.f32.to.f128.finite(a)
 }
+// Converts an f32 to f128. The value is exact.
 liblapzt.f32.to.f128 = liblapzt.f32.to.f128.erased
 liblapzt.f128.from.f32.erased = (a: liblapzt.f32) liblapzt.f128 {
     liblapzt.f32.to.f128.finite(a)
 }
+// Converts an f32 to f128. The value is exact.
 liblapzt.f128.from.f32 = liblapzt.f128.from.f32.erased
 
 liblapzt.f64.to.f16.erased = (a: liblapzt.f64) liblapzt.f16 {
     liblapzt.f64.to.f16.finite(a)
 }
+// Converts an f64 to f16, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f64.to.f16 = liblapzt.f64.to.f16.erased
 liblapzt.f16.from.f64.erased = (a: liblapzt.f64) liblapzt.f16 {
     liblapzt.f64.to.f16.finite(a)
 }
+// Converts an f64 to f16, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f16.from.f64 = liblapzt.f16.from.f64.erased
 
 liblapzt.f64.to.f32.erased = (a: liblapzt.f64) liblapzt.f32 {
     liblapzt.f64.to.f32.finite(a)
 }
+// Converts an f64 to f32, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f64.to.f32 = liblapzt.f64.to.f32.erased
 liblapzt.f32.from.f64.erased = (a: liblapzt.f64) liblapzt.f32 {
     liblapzt.f64.to.f32.finite(a)
 }
+// Converts an f64 to f32, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f32.from.f64 = liblapzt.f32.from.f64.erased
 
 liblapzt.f64.to.f128.erased = (a: liblapzt.f64) liblapzt.f128 {
     liblapzt.f64.to.f128.finite(a)
 }
+// Converts an f64 to f128. The value is exact.
 liblapzt.f64.to.f128 = liblapzt.f64.to.f128.erased
 liblapzt.f128.from.f64.erased = (a: liblapzt.f64) liblapzt.f128 {
     liblapzt.f64.to.f128.finite(a)
 }
+// Converts an f64 to f128. The value is exact.
 liblapzt.f128.from.f64 = liblapzt.f128.from.f64.erased
 
 liblapzt.f128.to.f16.erased = (a: liblapzt.f128) liblapzt.f16 {
     liblapzt.f128.to.f16.finite(a)
 }
+// Converts an f128 to f16, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f128.to.f16 = liblapzt.f128.to.f16.erased
 liblapzt.f16.from.f128.erased = (a: liblapzt.f128) liblapzt.f16 {
     liblapzt.f128.to.f16.finite(a)
 }
+// Converts an f128 to f16, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f16.from.f128 = liblapzt.f16.from.f128.erased
 
 liblapzt.f128.to.f32.erased = (a: liblapzt.f128) liblapzt.f32 {
     liblapzt.f128.to.f32.finite(a)
 }
+// Converts an f128 to f32, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f128.to.f32 = liblapzt.f128.to.f32.erased
 liblapzt.f32.from.f128.erased = (a: liblapzt.f128) liblapzt.f32 {
     liblapzt.f128.to.f32.finite(a)
 }
+// Converts an f128 to f32, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f32.from.f128 = liblapzt.f32.from.f128.erased
 
 liblapzt.f128.to.f64.erased = (a: liblapzt.f128) liblapzt.f64 {
     liblapzt.f128.to.f64.finite(a)
 }
+// Converts an f128 to f64, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f128.to.f64 = liblapzt.f128.to.f64.erased
 liblapzt.f64.from.f128.erased = (a: liblapzt.f128) liblapzt.f64 {
     liblapzt.f128.to.f64.finite(a)
 }
+// Converts an f128 to f64, rounding to nearest. Values too small
+// become zero; values too large become infinity.
 liblapzt.f64.from.f128 = liblapzt.f64.from.f128.erased
 

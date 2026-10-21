@@ -1,3 +1,7 @@
+// Saturating arithmetic that clamps to the type bounds instead of
+// wrapping.
+
+// Adds a and b, clamping to the maximum on overflow.
 liblapzt.saturating.add.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     [sum, carry] = liblapzt.u64.add.carry(a, b)
     BRANCH (carry) {
@@ -7,6 +11,7 @@ liblapzt.saturating.add.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     }
 }
 
+// Subtracts b from a, clamping to zero on underflow.
 liblapzt.saturating.sub.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     [difference, borrow] = liblapzt.u64.sub.borrow(a, b)
     BRANCH (borrow) {
@@ -16,6 +21,7 @@ liblapzt.saturating.sub.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     }
 }
 
+// Multiplies a and b, clamping to the maximum on overflow.
 liblapzt.saturating.mul.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     [low, high] = liblapzt.u64.mul.full(a, b)
     overflow: liblapzt.bool = liblapzt.bool.not(liblapzt.u64.is.zero(high))

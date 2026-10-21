@@ -1,3 +1,4 @@
+// Scans from index and returns the first matching position.
 liblapzt.search.linear.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, value: liblapzt.u64, index: liblapzt.u64) liblapzt.option {
     done: liblapzt.bool = liblapzt.u64.ge(index, length)
     BRANCH (done) {
@@ -13,10 +14,14 @@ liblapzt.search.linear.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64,
     }
 }
 
+// Scans length u64 words starting at byte offset for value and returns
+// the index of the first match as some, or none when the value is
+// absent. Runs in linear time and does not require sorted input.
 liblapzt.search.linear.u64 = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, value: liblapzt.u64) liblapzt.option {
     liblapzt.search.linear.u64.helper(handle, offset, length, value, liblapzt.u64.zero)
 }
 
+// Searches the half open range low to high.
 liblapzt.search.binary.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, low: liblapzt.u64, high: liblapzt.u64, value: liblapzt.u64) liblapzt.option {
     done: liblapzt.bool = liblapzt.u64.ge(low, high)
     BRANCH (done) {
@@ -38,6 +43,10 @@ liblapzt.search.binary.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64,
     }
 }
 
+// Searches length u64 words starting at byte offset, which must be
+// sorted in ascending order, and returns the index of a match as some,
+// or none when the value is absent. Runs in logarithmic time. With
+// duplicate values the index returned is unspecified.
 liblapzt.search.binary.u64 = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, value: liblapzt.u64) liblapzt.option {
     liblapzt.search.binary.u64.helper(handle, offset, liblapzt.u64.zero, length, value)
 }

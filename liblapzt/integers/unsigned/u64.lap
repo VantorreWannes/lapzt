@@ -1,13 +1,18 @@
 liblapzt.u64.erased = [liblapzt.u32.erased, liblapzt.u32.erased]
 
+// A 64-bit unsigned integer stored as a pair of u32 words.
+// Operations are defined in terms of the smaller word.
 liblapzt.u64 = liblapzt.u64.erased
 
 liblapzt.u64.zero.erased: liblapzt.u64.erased = [liblapzt.u32.zero.erased, liblapzt.u32.zero.erased]
 liblapzt.u64.one.erased: liblapzt.u64.erased = [liblapzt.u32.one.erased, liblapzt.u32.zero.erased]
 liblapzt.u64.maximum.erased: liblapzt.u64.erased = [liblapzt.u32.maximum.erased, liblapzt.u32.maximum.erased]
 
+// The additive identity, with every bit clear.
 liblapzt.u64.zero: liblapzt.u64 = liblapzt.u64.zero.erased
+// The value one, with only the least significant bit set.
 liblapzt.u64.one: liblapzt.u64 = liblapzt.u64.one.erased
+// The largest representable value, with every bit set.
 liblapzt.u64.maximum: liblapzt.u64 = liblapzt.u64.maximum.erased
 
 liblapzt.u64.not.erased = (a: liblapzt.u64) liblapzt.u64 {
@@ -15,6 +20,7 @@ liblapzt.u64.not.erased = (a: liblapzt.u64) liblapzt.u64 {
     [liblapzt.u32.not(low), liblapzt.u32.not(high)]
 }
 
+// Returns the bitwise complement of a, flipping every bit.
 liblapzt.u64.not = liblapzt.u64.not.erased
 
 liblapzt.u64.and.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
@@ -23,6 +29,7 @@ liblapzt.u64.and.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     [liblapzt.u32.and(al, bl), liblapzt.u32.and(ah, bh)]
 }
 
+// Returns the bitwise AND of a and b.
 liblapzt.u64.and = liblapzt.u64.and.erased
 
 liblapzt.u64.or.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
@@ -31,6 +38,7 @@ liblapzt.u64.or.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     [liblapzt.u32.or(al, bl), liblapzt.u32.or(ah, bh)]
 }
 
+// Returns the bitwise OR of a and b.
 liblapzt.u64.or = liblapzt.u64.or.erased
 
 liblapzt.u64.xor.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
@@ -39,6 +47,7 @@ liblapzt.u64.xor.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     [liblapzt.u32.xor(al, bl), liblapzt.u32.xor(ah, bh)]
 }
 
+// Returns the bitwise XOR of a and b.
 liblapzt.u64.xor = liblapzt.u64.xor.erased
 
 liblapzt.u64.nand.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
@@ -47,6 +56,7 @@ liblapzt.u64.nand.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     [liblapzt.u32.nand(al, bl), liblapzt.u32.nand(ah, bh)]
 }
 
+// Returns the bitwise NAND of a and b.
 liblapzt.u64.nand = liblapzt.u64.nand.erased
 
 liblapzt.u64.nor.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
@@ -55,6 +65,7 @@ liblapzt.u64.nor.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     [liblapzt.u32.nor(al, bl), liblapzt.u32.nor(ah, bh)]
 }
 
+// Returns the bitwise NOR of a and b.
 liblapzt.u64.nor = liblapzt.u64.nor.erased
 
 liblapzt.u64.xnor.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
@@ -63,14 +74,18 @@ liblapzt.u64.xnor.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     [liblapzt.u32.xnor(al, bl), liblapzt.u32.xnor(ah, bh)]
 }
 
+// Returns the bitwise XNOR of a and b.
 liblapzt.u64.xnor = liblapzt.u64.xnor.erased
 
 liblapzt.u64.from.bool.erased = (a: liblapzt.bool) liblapzt.u64 {
     [liblapzt.u32.from.bool(a), liblapzt.u32.zero]
 }
 
+// Returns one when a is true and zero when a is false.
 liblapzt.u64.from.bool = liblapzt.u64.from.bool.erased
 
+// Returns the sum of a and b as a pair [sum, carry], where carry is
+// the carry out of the top bit.
 liblapzt.u64.add.carry = (a: liblapzt.u64, b: liblapzt.u64) [liblapzt.u64, liblapzt.bool] {
     [al, ah] = a
     [bl, bh] = b
@@ -85,8 +100,12 @@ liblapzt.u64.add.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     sum
 }
 
+// Returns the sum of a and b, discarding the carry out of the top
+// bit.
 liblapzt.u64.add = liblapzt.u64.add.erased
 
+// Returns a - b as a pair [difference, borrow], where borrow is the
+// borrow out of the top bit.
 liblapzt.u64.sub.borrow = (a: liblapzt.u64, b: liblapzt.u64) [liblapzt.u64, liblapzt.bool] {
     [al, ah] = a
     [bl, bh] = b
@@ -101,8 +120,11 @@ liblapzt.u64.sub.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     difference
 }
 
+// Returns a - b modulo 2^64, discarding the borrow. Wraps when b is
+// greater than a.
 liblapzt.u64.sub = liblapzt.u64.sub.erased
 
+// Returns the sum of a, b and c as a pair [sum, carry].
 liblapzt.u64.add3 = (a: liblapzt.u64, b: liblapzt.u64, c: liblapzt.u64) [liblapzt.u64, liblapzt.u64] {
     [s1, c1] = liblapzt.u64.add.carry(a, b)
     [s2, c2] = liblapzt.u64.add.carry(s1, c)
@@ -110,6 +132,8 @@ liblapzt.u64.add3 = (a: liblapzt.u64, b: liblapzt.u64, c: liblapzt.u64) [liblapz
     [s2, carry]
 }
 
+// Returns the full 128-bit product of a and b as a pair
+// [low, high].
 liblapzt.u64.mul.full = (a: liblapzt.u64, b: liblapzt.u64) [liblapzt.u64, liblapzt.u64] {
     [al, ah] = a
     [bl, bh] = b
@@ -134,18 +158,24 @@ liblapzt.u64.mul.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     [ll, liblapzt.u32.add(lh, cross)]
 }
 
+// Returns the low 64 bits of the product of a and b, discarding the
+// high half.
 liblapzt.u64.mul = liblapzt.u64.mul.erased
 
+// Returns a shifted left by one bit. The top bit is discarded and
+// the low bit becomes zero.
 liblapzt.u64.shl1 = (a: liblapzt.u64) liblapzt.u64 {
     [low, high] = a
     [liblapzt.u32.shl1(low), liblapzt.u32.or(liblapzt.u32.shl1(high), liblapzt.u32.from.bool(liblapzt.u32.msb(low)))]
 }
 
+// Returns a with its least significant bit replaced by bit.
 liblapzt.u64.with.lsb = (a: liblapzt.u64, bit: liblapzt.bool) liblapzt.u64 {
     [low, high] = a
     [liblapzt.u32.with.lsb(low, bit), high]
 }
 
+// Returns the most significant bit of a as a u1.
 liblapzt.u64.msb = (a: liblapzt.u64) liblapzt.u1 {
     [low, high] = a
     liblapzt.u32.msb(high)
@@ -157,12 +187,14 @@ liblapzt.u64.eq.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u32.eq(al, bl), liblapzt.u32.eq(ah, bh))
 }
 
+// Returns true when a and b have the same value.
 liblapzt.u64.eq = liblapzt.u64.eq.erased
 
 liblapzt.u64.ne.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
     liblapzt.bool.not(liblapzt.u64.eq(a, b))
 }
 
+// Returns true when a and b differ.
 liblapzt.u64.ne = liblapzt.u64.ne.erased
 
 liblapzt.u64.lt.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
@@ -174,24 +206,28 @@ liblapzt.u64.lt.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
     liblapzt.bool.or(high.lt, liblapzt.bool.and(high.eq, low.lt))
 }
 
+// Returns true when a is less than b.
 liblapzt.u64.lt = liblapzt.u64.lt.erased
 
 liblapzt.u64.le.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
     liblapzt.bool.or(liblapzt.u64.lt(a, b), liblapzt.u64.eq(a, b))
 }
 
+// Returns true when a is less than or equal to b.
 liblapzt.u64.le = liblapzt.u64.le.erased
 
 liblapzt.u64.gt.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
     liblapzt.u64.lt(b, a)
 }
 
+// Returns true when a is greater than b.
 liblapzt.u64.gt = liblapzt.u64.gt.erased
 
 liblapzt.u64.ge.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.bool {
     liblapzt.u64.le(b, a)
 }
 
+// Returns true when a is greater than or equal to b.
 liblapzt.u64.ge = liblapzt.u64.ge.erased
 
 liblapzt.u64.select.erased = (flag: liblapzt.bool, when.true: liblapzt.u64, when.false: liblapzt.u64) liblapzt.u64 {
@@ -200,30 +236,35 @@ liblapzt.u64.select.erased = (flag: liblapzt.bool, when.true: liblapzt.u64, when
     [liblapzt.u32.select(flag, tl, fl), liblapzt.u32.select(flag, th, fh)]
 }
 
+// Returns when.true when flag is true, otherwise when.false.
 liblapzt.u64.select = liblapzt.u64.select.erased
 
 liblapzt.u64.min.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     liblapzt.u64.select(liblapzt.u64.lt(a, b), a, b)
 }
 
+// Returns the smaller of a and b.
 liblapzt.u64.min = liblapzt.u64.min.erased
 
 liblapzt.u64.max.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     liblapzt.u64.select(liblapzt.u64.gt(a, b), a, b)
 }
 
+// Returns the larger of a and b.
 liblapzt.u64.max = liblapzt.u64.max.erased
 
 liblapzt.u64.inc.erased = (a: liblapzt.u64) liblapzt.u64 {
     liblapzt.u64.add(a, liblapzt.u64.one)
 }
 
+// Returns a plus one, wrapping to zero at the maximum value.
 liblapzt.u64.inc = liblapzt.u64.inc.erased
 
 liblapzt.u64.dec.erased = (a: liblapzt.u64) liblapzt.u64 {
     liblapzt.u64.sub(a, liblapzt.u64.one)
 }
 
+// Returns a minus one, wrapping to the maximum value at zero.
 liblapzt.u64.dec = liblapzt.u64.dec.erased
 
 liblapzt.u64.is.zero.erased = (a: liblapzt.u64) liblapzt.bool {
@@ -231,6 +272,7 @@ liblapzt.u64.is.zero.erased = (a: liblapzt.u64) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u32.is.zero(low), liblapzt.u32.is.zero(high))
 }
 
+// Returns true when every bit of a is clear.
 liblapzt.u64.is.zero = liblapzt.u64.is.zero.erased
 
 liblapzt.u64.is.one.erased = (a: liblapzt.u64) liblapzt.bool {
@@ -238,12 +280,14 @@ liblapzt.u64.is.one.erased = (a: liblapzt.u64) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u32.is.one(low), liblapzt.u32.is.zero(high))
 }
 
+// Returns true when a equals one.
 liblapzt.u64.is.one = liblapzt.u64.is.one.erased
 
 liblapzt.u64.to.bool.erased = (a: liblapzt.u64) liblapzt.bool {
     liblapzt.bool.not(liblapzt.u64.is.zero(a))
 }
 
+// Returns true when a is nonzero.
 liblapzt.u64.to.bool = liblapzt.u64.to.bool.erased
 
 liblapzt.u64.div.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
@@ -449,6 +493,8 @@ liblapzt.u64.div.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     }
 }
 
+// Returns the quotient of a divided by b, rounding toward zero.
+// Returns zero when b is zero.
 liblapzt.u64.div = liblapzt.u64.div.erased
 
 liblapzt.u64.mod.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
@@ -654,4 +700,6 @@ liblapzt.u64.mod.erased = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     }
 }
 
+// Returns the remainder of a divided by b. Returns zero when b is
+// zero.
 liblapzt.u64.mod = liblapzt.u64.mod.erased

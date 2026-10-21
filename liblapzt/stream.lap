@@ -1,14 +1,22 @@
+// Byte streams over a readable handle.
+//
+// A stream is [handle, word, remaining, done]. It buffers one word at a
+// time and hands out bytes in little-endian order.
+
 liblapzt.stream = [liblapzt.u64, liblapzt.u64, liblapzt.u64, liblapzt.bool]
 
+// Builds a stream over a readable handle.
 liblapzt.stream.new = (handle: liblapzt.u64) liblapzt.stream {
     [handle, liblapzt.u64.zero, liblapzt.u64.zero, liblapzt.bool.false]
 }
 
+// Returns true once the stream has reached end of input.
 liblapzt.stream.eof = (stream: liblapzt.stream) liblapzt.bool {
     [handle, word, remaining, done] = stream
     done
 }
 
+// Reads one byte and advances the stream. Returns false at end of input.
 liblapzt.stream.read.byte = (stream: *liblapzt.stream) [liblapzt.bool, liblapzt.u8] {
     [handle, word, remaining, done] = stream
     BRANCH (done) {
@@ -36,6 +44,7 @@ liblapzt.stream.read.byte = (stream: *liblapzt.stream) [liblapzt.bool, liblapzt.
     }
 }
 
+// Accumulates eight bytes into a word, low byte first.
 liblapzt.stream.read.word.helper = (stream: *liblapzt.stream, index: liblapzt.u64, word: liblapzt.u64) [liblapzt.bool, liblapzt.u64] {
     done: liblapzt.bool = liblapzt.u64.ge(index, liblapzt.constants.eight)
     BRANCH (done) {
@@ -51,6 +60,7 @@ liblapzt.stream.read.word.helper = (stream: *liblapzt.stream, index: liblapzt.u6
     }
 }
 
+// Reads eight bytes and assembles them into a word, low byte first.
 liblapzt.stream.read.word = (stream: *liblapzt.stream) [liblapzt.bool, liblapzt.u64] {
     liblapzt.stream.read.word.helper(stream, liblapzt.u64.zero, liblapzt.u64.zero)
 }

@@ -1,26 +1,37 @@
+// Optional words.
+//
+// An option is [status, value]. A false status means none and the value
+// is zero.
+
 liblapzt.option = [liblapzt.bool, liblapzt.u64]
 
+// The empty option.
 liblapzt.option.none: liblapzt.option = [liblapzt.bool.false, liblapzt.u64.zero]
 
+// Wraps a value in a present option.
 liblapzt.option.some = (value: liblapzt.u64) [BIT, liblapzt.u64] {
     [liblapzt.bool.true, value]
 }
 
+// Returns true when the option holds a value.
 liblapzt.option.is.some = (option: [BIT, liblapzt.u64]) liblapzt.bool {
     [status, value] = option
     status
 }
 
+// Returns true when the option is empty.
 liblapzt.option.is.none = (option: [BIT, liblapzt.u64]) liblapzt.bool {
     [status, value] = option
     liblapzt.bool.not(status)
 }
 
+// Returns the value, or zero when the option is empty.
 liblapzt.option.unwrap = (option: [BIT, liblapzt.u64]) liblapzt.u64 {
     [status, value] = option
     value
 }
 
+// Returns the value, or default when the option is empty.
 liblapzt.option.unwrap.or = (option: liblapzt.option, default: liblapzt.u64) liblapzt.u64 {
     [status, value] = option
     BRANCH (status) {
@@ -30,6 +41,7 @@ liblapzt.option.unwrap.or = (option: liblapzt.option, default: liblapzt.u64) lib
     }
 }
 
+// Returns the value, or exits with code when the option is empty.
 liblapzt.option.expect = (option: liblapzt.option, code: liblapzt.u64) liblapzt.u64 {
     [status, value] = option
     BRANCH (status) {
@@ -40,6 +52,7 @@ liblapzt.option.expect = (option: liblapzt.option, code: liblapzt.u64) liblapzt.
     }
 }
 
+// Returns the first present option, preferring the left side.
 liblapzt.option.or.else = (option: liblapzt.option, other: liblapzt.option) liblapzt.option {
     [status, value] = option
     BRANCH (status) {
@@ -49,6 +62,7 @@ liblapzt.option.or.else = (option: liblapzt.option, other: liblapzt.option) libl
     }
 }
 
+// Returns other when both options are present, otherwise none.
 liblapzt.option.and.then = (option: liblapzt.option, other: liblapzt.option) liblapzt.option {
     [status, value] = option
     BRANCH (status) {
@@ -58,6 +72,7 @@ liblapzt.option.and.then = (option: liblapzt.option, other: liblapzt.option) lib
     }
 }
 
+// Pairs two options. The status is true only when both are present.
 liblapzt.option.zip = (a: liblapzt.option, b: liblapzt.option) [liblapzt.bool, liblapzt.u64, liblapzt.u64] {
     [a.status, a.value] = a
     [b.status, b.value] = b
@@ -65,6 +80,7 @@ liblapzt.option.zip = (a: liblapzt.option, b: liblapzt.option) [liblapzt.bool, l
     [both, a.value, b.value]
 }
 
+// Returns true when both options are empty or both hold the same value.
 liblapzt.option.eq = (a: liblapzt.option, b: liblapzt.option) liblapzt.bool {
     [a.status, a.value] = a
     [b.status, b.value] = b

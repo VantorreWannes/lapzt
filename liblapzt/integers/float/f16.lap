@@ -1,5 +1,6 @@
 liblapzt.f16.erased = [liblapzt.u8.erased, liblapzt.u8.erased]
 
+// A 16-bit IEEE 754 binary16 float stored as a u16.
 liblapzt.f16 = liblapzt.f16.erased
 
 liblapzt.f16.zero.erased: liblapzt.u16 = [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]
@@ -12,14 +13,27 @@ liblapzt.f16.maximum.erased: liblapzt.u16 = [[[[liblapzt.u1.one.erased, liblapzt
 liblapzt.f16.minimum.erased: liblapzt.u16 = [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]
 liblapzt.f16.epsilon.erased: liblapzt.u16 = [[[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]
 
+// Positive zero. It compares equal to negative zero, but the sign bit
+// differs and is observable through is.negative and through division.
 liblapzt.f16.zero: liblapzt.f16 = liblapzt.f16.zero.erased
+// The exact value 1.0.
 liblapzt.f16.one: liblapzt.f16 = liblapzt.f16.one.erased
+// The exact value -1.0.
 liblapzt.f16.negative.one: liblapzt.f16 = liblapzt.f16.negative.one.erased
+// Positive infinity. Produced by overflow and by dividing a nonzero
+// finite value by zero.
 liblapzt.f16.infinity: liblapzt.f16 = liblapzt.f16.infinity.erased
+// Negative infinity.
 liblapzt.f16.negative.infinity: liblapzt.f16 = liblapzt.f16.negative.infinity.erased
+// A quiet NaN. It is unequal to itself, every ordered comparison with
+// it is false, and arithmetic propagates it.
 liblapzt.f16.nan: liblapzt.f16 = liblapzt.f16.nan.erased
+// Largest finite value, (2 - 2^-10) * 2^15 = 65504.
 liblapzt.f16.maximum: liblapzt.f16 = liblapzt.f16.maximum.erased
+// Smallest positive normal value, 2^-14.
 liblapzt.f16.minimum: liblapzt.f16 = liblapzt.f16.minimum.erased
+// Smallest positive subnormal value, 2^-24. Adding it to 1.0 leaves
+// 1.0 unchanged.
 liblapzt.f16.epsilon: liblapzt.f16 = liblapzt.f16.epsilon.erased
 
 liblapzt.f16.hidden: liblapzt.u16 = [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]
@@ -64,16 +78,20 @@ liblapzt.f16.bit.8: liblapzt.u16 = [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero
 liblapzt.f16.bit.9: liblapzt.u16 = [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.one.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]
 liblapzt.f16.bit.10: liblapzt.u16 = [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.one.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]
 
+// Reinterprets the value as its 16-bit IEEE 754 encoding.
 liblapzt.f16.to.bits = (a: liblapzt.f16) liblapzt.u16 {
     [low, high] = a
     [low, high]
 }
 
+// Reinterprets a 16-bit IEEE 754 encoding as the value it denotes.
 liblapzt.f16.from.bits = (a: liblapzt.u16) liblapzt.f16 {
     [low, high] = a
     [low, high]
 }
 
+// Logical right shift of the bit pattern by amount, filling with
+// zeros. Bits shifted past the least significant end are discarded.
 liblapzt.f16.shr = (a: liblapzt.u16, amount: liblapzt.u16) liblapzt.u16 {
     s0: liblapzt.u16 = liblapzt.u16.select(liblapzt.u16.is.zero(liblapzt.u16.and(amount, liblapzt.f16.shift.1)), a, liblapzt.u16.div(a, liblapzt.f16.divisor.1))
     s1: liblapzt.u16 = liblapzt.u16.select(liblapzt.u16.is.zero(liblapzt.u16.and(amount, liblapzt.f16.shift.2)), s0, liblapzt.u16.div(s0, liblapzt.f16.divisor.2))
@@ -82,6 +100,8 @@ liblapzt.f16.shr = (a: liblapzt.u16, amount: liblapzt.u16) liblapzt.u16 {
     s3
 }
 
+// Logical left shift of the bit pattern by amount, filling with
+// zeros. Bits shifted past the most significant end are discarded.
 liblapzt.f16.shl = (a: liblapzt.u16, amount: liblapzt.u16) liblapzt.u16 {
     s0: liblapzt.u16 = liblapzt.u16.select(liblapzt.u16.is.zero(liblapzt.u16.and(amount, liblapzt.f16.shift.1)), a, liblapzt.u16.mul(a, liblapzt.f16.divisor.1))
     s1: liblapzt.u16 = liblapzt.u16.select(liblapzt.u16.is.zero(liblapzt.u16.and(amount, liblapzt.f16.shift.2)), s0, liblapzt.u16.mul(s0, liblapzt.f16.divisor.2))
@@ -90,18 +110,25 @@ liblapzt.f16.shl = (a: liblapzt.u16, amount: liblapzt.u16) liblapzt.u16 {
     s3
 }
 
+// True when the sign bit is set, so it is true for -0 and for NaNs
+// with the sign bit set.
 liblapzt.f16.sign = (a: liblapzt.f16) liblapzt.bool {
     liblapzt.u16.msb(liblapzt.f16.to.bits(a))
 }
 
+// The biased exponent field: 0 for zero and subnormals, all ones for
+// infinity and NaN, and bias + e for a normal value of magnitude 2^e.
 liblapzt.f16.exponent = (a: liblapzt.f16) liblapzt.u16 {
     liblapzt.u16.mod(liblapzt.u16.div(liblapzt.f16.to.bits(a), liblapzt.f16.two.pow.mantissa), liblapzt.f16.two.pow.exponent)
 }
 
+// The stored mantissa field, without the implicit leading bit.
 liblapzt.f16.mantissa = (a: liblapzt.f16) liblapzt.u16 {
     liblapzt.u16.mod(liblapzt.f16.to.bits(a), liblapzt.f16.two.pow.mantissa)
 }
 
+// Builds a value from a sign, a biased exponent field, and a mantissa
+// field. The fields are not validated or normalized.
 liblapzt.f16.pack = (sign: liblapzt.bool, exponent: liblapzt.u16, mantissa: liblapzt.u16) liblapzt.f16 {
     liblapzt.f16.from.bits(liblapzt.u16.or(liblapzt.u16.or(liblapzt.f16.shl(exponent, liblapzt.f16.mantissa.width), mantissa), liblapzt.u16.select(sign, liblapzt.f16.sign.mask, liblapzt.u16.zero)))
 }
@@ -114,24 +141,30 @@ liblapzt.f16.select.erased = (flag: liblapzt.bool, when.true: liblapzt.f16, when
     }
 }
 
+// Returns when.true if flag holds and when.false otherwise.
 liblapzt.f16.select = liblapzt.f16.select.erased
 
+// True for both positive and negative zero.
 liblapzt.f16.is.zero = (a: liblapzt.f16) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u16.is.zero(liblapzt.f16.exponent(a)), liblapzt.u16.is.zero(liblapzt.f16.mantissa(a)))
 }
 
+// True only for exactly +1.0.
 liblapzt.f16.is.one = (a: liblapzt.f16) liblapzt.bool {
     liblapzt.u16.eq(liblapzt.f16.to.bits(a), liblapzt.f16.one.bits)
 }
 
+// True for any NaN, whatever its payload or sign.
 liblapzt.f16.is.nan = (a: liblapzt.f16) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u16.eq(liblapzt.f16.exponent(a), liblapzt.f16.exponent.maximum), liblapzt.bool.not(liblapzt.u16.is.zero(liblapzt.f16.mantissa(a))))
 }
 
+// True for both positive and negative infinity.
 liblapzt.f16.is.infinite = (a: liblapzt.f16) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u16.eq(liblapzt.f16.exponent(a), liblapzt.f16.exponent.maximum), liblapzt.u16.is.zero(liblapzt.f16.mantissa(a)))
 }
 
+// True when the sign bit is set, including for -0 and negative NaN.
 liblapzt.f16.is.negative = (a: liblapzt.f16) liblapzt.bool {
     liblapzt.f16.sign(a)
 }
@@ -140,18 +173,23 @@ liblapzt.f16.neg.erased = (a: liblapzt.f16) liblapzt.f16 {
     liblapzt.f16.from.bits(liblapzt.u16.xor(liblapzt.f16.to.bits(a), liblapzt.f16.sign.mask))
 }
 
+// Flips the sign bit. neg(0) is -0, neg(NaN) is a NaN with the
+// opposite sign bit, and neg(infinity) is negative infinity.
 liblapzt.f16.neg = liblapzt.f16.neg.erased
 
 liblapzt.f16.abs.erased = (a: liblapzt.f16) liblapzt.f16 {
     liblapzt.f16.from.bits(liblapzt.u16.and(liblapzt.f16.to.bits(a), liblapzt.u16.not(liblapzt.f16.sign.mask)))
 }
 
+// Clears the sign bit. abs(-0) is +0 and abs(-infinity) is infinity.
 liblapzt.f16.abs = liblapzt.f16.abs.erased
 
+// False only for zero. NaN and infinity are true.
 liblapzt.f16.to.bool = (a: liblapzt.f16) liblapzt.bool {
     liblapzt.bool.not(liblapzt.f16.is.zero(a))
 }
 
+// Returns 1.0 for true and 0.0 for false.
 liblapzt.f16.from.bool = (a: liblapzt.bool) liblapzt.f16 {
     liblapzt.f16.select(a, liblapzt.f16.one, liblapzt.f16.zero)
 }
@@ -166,12 +204,15 @@ liblapzt.f16.eq.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.bool {
     }
 }
 
+// True when a and b denote the same value. False if either is NaN.
+// Positive and negative zero compare equal.
 liblapzt.f16.eq = liblapzt.f16.eq.erased
 
 liblapzt.f16.ne.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.bool {
     liblapzt.bool.not(liblapzt.f16.eq(a, b))
 }
 
+// The negation of eq, so it is true if either operand is NaN.
 liblapzt.f16.ne = liblapzt.f16.ne.erased
 
 liblapzt.f16.lt.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.bool {
@@ -195,24 +236,29 @@ liblapzt.f16.lt.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.bool {
     }
 }
 
+// True when a is less than b. False if either is NaN, and false for
+// -0 against +0.
 liblapzt.f16.lt = liblapzt.f16.lt.erased
 
 liblapzt.f16.le.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.bool {
     liblapzt.bool.or(liblapzt.f16.lt(a, b), liblapzt.f16.eq(a, b))
 }
 
+// True when a is less than or equal to b. False if either is NaN.
 liblapzt.f16.le = liblapzt.f16.le.erased
 
 liblapzt.f16.gt.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.bool {
     liblapzt.f16.lt(b, a)
 }
 
+// True when a is greater than b. False if either is NaN.
 liblapzt.f16.gt = liblapzt.f16.gt.erased
 
 liblapzt.f16.ge.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.bool {
     liblapzt.f16.le(b, a)
 }
 
+// True when a is greater than or equal to b. False if either is NaN.
 liblapzt.f16.ge = liblapzt.f16.ge.erased
 
 liblapzt.f16.min.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
@@ -225,6 +271,8 @@ liblapzt.f16.min.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
     }
 }
 
+// The smaller of a and b, or NaN if either is NaN. When the operands
+// compare equal, b is returned.
 liblapzt.f16.min = liblapzt.f16.min.erased
 
 liblapzt.f16.max.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
@@ -237,6 +285,8 @@ liblapzt.f16.max.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
     }
 }
 
+// The larger of a and b, or NaN if either is NaN. When the operands
+// compare equal, b is returned.
 liblapzt.f16.max = liblapzt.f16.max.erased
 
 liblapzt.f16.add.finite = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
@@ -372,12 +422,19 @@ liblapzt.f16.add.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
     }
 }
 
+// Returns a + b. NaN if either operand is NaN, and NaN for infinity
+// plus infinity of opposite signs. +0 + -0 is +0. Results that
+// overflow become infinity. Rounding is not round-to-nearest: when
+// aligning the operands discards any nonzero bits, the magnitude is
+// incremented by one unit in the last place.
 liblapzt.f16.add = liblapzt.f16.add.erased
 
 liblapzt.f16.sub.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
     liblapzt.f16.add(a, liblapzt.f16.neg(b))
 }
 
+// Returns a - b, computed as a + (-b). The same NaN, infinity, signed
+// zero, and rounding rules as add apply.
 liblapzt.f16.sub = liblapzt.f16.sub.erased
 
 liblapzt.f16.mul.finite = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
@@ -435,6 +492,10 @@ liblapzt.f16.mul.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
     }
 }
 
+// Returns a * b. NaN if either operand is NaN, and NaN for zero times
+// infinity. The sign is the exclusive or of the operand signs, so a
+// zero result keeps the correct sign. Results that overflow become
+// infinity; the exact product is truncated toward zero.
 liblapzt.f16.mul = liblapzt.f16.mul.erased
 
 liblapzt.f16.div.finite = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
@@ -543,8 +604,17 @@ liblapzt.f16.div.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
     }
 }
 
+// Returns a / b. NaN if either operand is NaN, and NaN for 0/0 and
+// infinity/infinity. A nonzero value divided by zero gives infinity,
+// a finite value divided by infinity gives zero, and both take the
+// sign from the operands. Results that overflow become infinity; the
+// quotient is rounded away from zero.
 liblapzt.f16.div = liblapzt.f16.div.erased
 
+// Rounds toward zero to an integer value. Values with magnitude below
+// 1 become a zero with the same sign, and values with magnitude of at
+// least 2^10 are returned unchanged. NaN and infinity are returned
+// unchanged.
 liblapzt.f16.trunc = (a: liblapzt.f16) liblapzt.f16 {
     exp: liblapzt.u16 = liblapzt.f16.exponent(a)
     small: liblapzt.bool = liblapzt.u16.lt(exp, liblapzt.f16.bias)
@@ -569,6 +639,8 @@ liblapzt.f16.mod.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {
     liblapzt.f16.sub(a, liblapzt.f16.mul(truncated, b))
 }
 
+// Returns a - trunc(a / b) * b, the remainder with the sign of a.
+// NaN if either operand is NaN or infinite, or if b is zero.
 liblapzt.f16.mod = liblapzt.f16.mod.erased
 
 liblapzt.f16.to.u16.erased = (a: liblapzt.f16) liblapzt.u16 {
@@ -592,6 +664,10 @@ liblapzt.f16.to.u16.erased = (a: liblapzt.f16) liblapzt.u16 {
     }
 }
 
+// Converts to u16 by truncating toward zero. Negative values,
+// including negative NaN, become 0, as do values with magnitude below
+// 1. Values of magnitude 2^16 or more, including positive NaN and
+// infinity, become u16.maximum.
 liblapzt.f16.to.u16 = liblapzt.f16.to.u16.erased
 
 liblapzt.f16.from.u16.erased = (a: liblapzt.u16) liblapzt.f16 {
@@ -701,6 +777,8 @@ liblapzt.f16.from.u16.erased = (a: liblapzt.u16) liblapzt.f16 {
     }
 }
 
+// Converts a u16 to the corresponding value, truncating toward zero
+// when the integer needs more than 11 significant bits.
 liblapzt.f16.from.u16 = liblapzt.f16.from.u16.erased
 
 liblapzt.f16.to.i16.erased = (a: liblapzt.f16) liblapzt.i16 {
@@ -713,6 +791,9 @@ liblapzt.f16.to.i16.erased = (a: liblapzt.f16) liblapzt.i16 {
     }
 }
 
+// Converts to i16 by truncating toward zero. The magnitude is
+// converted through u16 and reinterpreted, so values outside the i16
+// range wrap rather than saturate.
 liblapzt.f16.to.i16 = liblapzt.f16.to.i16.erased
 
 liblapzt.f16.from.i16.erased = (a: liblapzt.i16) liblapzt.f16 {
@@ -725,17 +806,23 @@ liblapzt.f16.from.i16.erased = (a: liblapzt.i16) liblapzt.f16 {
     }
 }
 
+// Converts an i16 to the corresponding value, truncating toward zero
+// when the integer needs more than 11 significant bits.
 liblapzt.f16.from.i16 = liblapzt.f16.from.i16.erased
 
 liblapzt.f16.inc.erased = (a: liblapzt.f16) liblapzt.f16 {
     liblapzt.f16.add(a, liblapzt.f16.one)
 }
 
+// Returns a + 1.0, with the same NaN, infinity, and rounding rules as
+// add.
 liblapzt.f16.inc = liblapzt.f16.inc.erased
 
 liblapzt.f16.dec.erased = (a: liblapzt.f16) liblapzt.f16 {
     liblapzt.f16.sub(a, liblapzt.f16.one)
 }
 
+// Returns a - 1.0, with the same NaN, infinity, and rounding rules as
+// sub.
 liblapzt.f16.dec = liblapzt.f16.dec.erased
 

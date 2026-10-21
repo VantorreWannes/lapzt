@@ -1,5 +1,6 @@
 liblapzt.i128.erased = [liblapzt.i64.erased, liblapzt.i64.erased]
 
+// A signed 128-bit integer stored in two's complement form.
 liblapzt.i128 = liblapzt.i128.erased
 
 liblapzt.i128.zero.erased: liblapzt.i128.erased = [liblapzt.i64.zero.erased, liblapzt.i64.zero.erased]
@@ -7,16 +8,24 @@ liblapzt.i128.one.erased: liblapzt.i128.erased = [liblapzt.i64.one.erased, libla
 liblapzt.i128.minimum.erased: liblapzt.i128.erased = [liblapzt.i64.zero.erased, liblapzt.i64.minimum.erased]
 liblapzt.i128.maximum.erased: liblapzt.i128.erased = [liblapzt.u64.maximum.erased, liblapzt.i64.maximum.erased]
 
+// The value 0.
 liblapzt.i128.zero: liblapzt.i128 = liblapzt.i128.zero.erased
+// The value 1.
 liblapzt.i128.one: liblapzt.i128 = liblapzt.i128.one.erased
+// The most negative value, -2^(N-1).
 liblapzt.i128.minimum: liblapzt.i128 = liblapzt.i128.minimum.erased
+// The largest positive value, 2^(N-1) - 1.
 liblapzt.i128.maximum: liblapzt.i128 = liblapzt.i128.maximum.erased
 
+// Reinterprets the bit pattern as unsigned; negative values map to
+// values at or above 2^(N-1).
 liblapzt.i128.to.u128 = (a: liblapzt.i128) liblapzt.u128 {
     [low, high] = a
     [liblapzt.i64.to.u64(low), liblapzt.i64.to.u64(high)]
 }
 
+// Reinterprets an unsigned bit pattern as signed; values at or above
+// 2^(N-1) become negative.
 liblapzt.i128.from.u128 = (a: liblapzt.u128) liblapzt.i128 {
     [low, high] = a
     [liblapzt.i64.from.u64(low), liblapzt.i64.from.u64(high)]
@@ -26,78 +35,93 @@ liblapzt.i128.from.bool.erased = (a: liblapzt.bool) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.from.bool(a))
 }
 
+// Returns one when a is true and zero otherwise.
 liblapzt.i128.from.bool = liblapzt.i128.from.bool.erased
 
 liblapzt.i128.not.erased = (a: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.not(liblapzt.i128.to.u128(a)))
 }
 
+// Returns the bitwise complement of a; equals -a - 1.
 liblapzt.i128.not = liblapzt.i128.not.erased
 
 liblapzt.i128.and.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.and(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
 }
 
+// Returns the bitwise AND of a and b.
 liblapzt.i128.and = liblapzt.i128.and.erased
 
 liblapzt.i128.or.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.or(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
 }
 
+// Returns the bitwise OR of a and b.
 liblapzt.i128.or = liblapzt.i128.or.erased
 
 liblapzt.i128.xor.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.xor(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
 }
 
+// Returns the bitwise XOR of a and b.
 liblapzt.i128.xor = liblapzt.i128.xor.erased
 
 liblapzt.i128.nand.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.nand(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
 }
 
+// Returns the bitwise complement of a AND b.
 liblapzt.i128.nand = liblapzt.i128.nand.erased
 
 liblapzt.i128.nor.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.nor(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
 }
 
+// Returns the bitwise complement of a OR b.
 liblapzt.i128.nor = liblapzt.i128.nor.erased
 
 liblapzt.i128.xnor.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.xnor(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
 }
 
+// Returns the bitwise complement of a XOR b; true per bit where equal.
 liblapzt.i128.xnor = liblapzt.i128.xnor.erased
 
 liblapzt.i128.add.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.add(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
 }
 
+// Returns a + b, wrapping modulo 2^N on overflow.
 liblapzt.i128.add = liblapzt.i128.add.erased
 
 liblapzt.i128.sub.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.sub(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
 }
 
+// Returns a - b, wrapping modulo 2^N on underflow.
 liblapzt.i128.sub = liblapzt.i128.sub.erased
 
 liblapzt.i128.mul.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.mul(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
 }
 
+// Returns the low N bits of a * b, wrapping modulo 2^N.
 liblapzt.i128.mul = liblapzt.i128.mul.erased
 
+// Returns [a + b, carry] where carry is the carry out of the top bit.
 liblapzt.i128.add.carry = (a: liblapzt.i128, b: liblapzt.i128) [liblapzt.i128, liblapzt.bool] {
     [sum, carry] = liblapzt.u128.add.carry(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
     [liblapzt.i128.from.u128(sum), carry]
 }
 
+// Returns [a - b, borrow], where borrow is the borrow out of the
+// top bit.
 liblapzt.i128.sub.borrow = (a: liblapzt.i128, b: liblapzt.i128) [liblapzt.i128, liblapzt.bool] {
     [difference, borrow] = liblapzt.u128.sub.borrow(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
     [liblapzt.i128.from.u128(difference), borrow]
 }
 
+// Returns [a + b + c mod 2^N, carry] where carry is 0, 1, or 2.
 liblapzt.i128.add3 = (a: liblapzt.i128, b: liblapzt.i128, c: liblapzt.i128) [liblapzt.i128, liblapzt.i128] {
     [s1, c1] = liblapzt.i128.add.carry(a, b)
     [s2, c2] = liblapzt.i128.add.carry(s1, c)
@@ -105,19 +129,23 @@ liblapzt.i128.add3 = (a: liblapzt.i128, b: liblapzt.i128, c: liblapzt.i128) [lib
     [s2, carry]
 }
 
+// Returns the full double-width product as [low, high] halves.
 liblapzt.i128.mul.full = (a: liblapzt.i128, b: liblapzt.i128) [liblapzt.i128, liblapzt.i128] {
     [low, high] = liblapzt.u128.mul.full(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
     [liblapzt.i128.from.u128(low), liblapzt.i128.from.u128(high)]
 }
 
+// Returns a shifted left by one bit, filling the low bit with zero.
 liblapzt.i128.shl1 = (a: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.shl1(liblapzt.i128.to.u128(a)))
 }
 
+// Returns a with its least significant bit replaced by bit.
 liblapzt.i128.with.lsb = (a: liblapzt.i128, bit: liblapzt.bool) liblapzt.i128 {
     liblapzt.i128.from.u128(liblapzt.u128.with.lsb(liblapzt.i128.to.u128(a), bit))
 }
 
+// Returns the most significant bit of a as a one-bit value.
 liblapzt.i128.msb = (a: liblapzt.i128) liblapzt.u1 {
     [low, high] = a
     liblapzt.i64.msb(high)
@@ -128,24 +156,28 @@ liblapzt.i128.sign.erased = (a: liblapzt.i128) liblapzt.bool {
     liblapzt.i64.sign(high)
 }
 
+// Returns true when the sign bit is set, meaning a is negative.
 liblapzt.i128.sign = liblapzt.i128.sign.erased
 
 liblapzt.i128.is.negative.erased = (a: liblapzt.i128) liblapzt.bool {
     liblapzt.i128.sign(a)
 }
 
+// Returns true when a is less than zero.
 liblapzt.i128.is.negative = liblapzt.i128.is.negative.erased
 
 liblapzt.i128.eq.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
     liblapzt.u128.eq(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
 }
 
+// Returns true when a and b have the same bit pattern.
 liblapzt.i128.eq = liblapzt.i128.eq.erased
 
 liblapzt.i128.ne.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
     liblapzt.bool.not(liblapzt.i128.eq(a, b))
 }
 
+// Returns true when a and b differ.
 liblapzt.i128.ne = liblapzt.i128.ne.erased
 
 liblapzt.i128.lt.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
@@ -159,24 +191,28 @@ liblapzt.i128.lt.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
     }
 }
 
+// Returns true when a is less than b under signed ordering.
 liblapzt.i128.lt = liblapzt.i128.lt.erased
 
 liblapzt.i128.le.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
     liblapzt.bool.or(liblapzt.i128.lt(a, b), liblapzt.i128.eq(a, b))
 }
 
+// Returns true when a is less than or equal to b.
 liblapzt.i128.le = liblapzt.i128.le.erased
 
 liblapzt.i128.gt.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
     liblapzt.i128.lt(b, a)
 }
 
+// Returns true when a is greater than b.
 liblapzt.i128.gt = liblapzt.i128.gt.erased
 
 liblapzt.i128.ge.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
     liblapzt.i128.le(b, a)
 }
 
+// Returns true when a is greater than or equal to b.
 liblapzt.i128.ge = liblapzt.i128.ge.erased
 
 liblapzt.i128.select.erased = (flag: liblapzt.bool, when.true: liblapzt.i128, when.false: liblapzt.i128) liblapzt.i128 {
@@ -185,54 +221,64 @@ liblapzt.i128.select.erased = (flag: liblapzt.bool, when.true: liblapzt.i128, wh
     [liblapzt.i64.select(flag, tl, fl), liblapzt.i64.select(flag, th, fh)]
 }
 
+// Returns when.true when flag is true, otherwise when.false.
 liblapzt.i128.select = liblapzt.i128.select.erased
 
 liblapzt.i128.min.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.select(liblapzt.i128.lt(a, b), a, b)
 }
 
+// Returns the smaller of a and b under signed ordering.
 liblapzt.i128.min = liblapzt.i128.min.erased
 
 liblapzt.i128.max.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.select(liblapzt.i128.gt(a, b), a, b)
 }
 
+// Returns the larger of a and b under signed ordering.
 liblapzt.i128.max = liblapzt.i128.max.erased
 
 liblapzt.i128.inc.erased = (a: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.add(a, liblapzt.i128.one)
 }
 
+// Returns a + 1, wrapping from maximum to minimum.
 liblapzt.i128.inc = liblapzt.i128.inc.erased
 
 liblapzt.i128.dec.erased = (a: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.sub(a, liblapzt.i128.one)
 }
 
+// Returns a - 1, wrapping from minimum to maximum.
 liblapzt.i128.dec = liblapzt.i128.dec.erased
 
 liblapzt.i128.is.zero.erased = (a: liblapzt.i128) liblapzt.bool {
     liblapzt.u128.is.zero(liblapzt.i128.to.u128(a))
 }
 
+// Returns true when a is zero.
 liblapzt.i128.is.zero = liblapzt.i128.is.zero.erased
 
 liblapzt.i128.is.one.erased = (a: liblapzt.i128) liblapzt.bool {
     liblapzt.u128.is.one(liblapzt.i128.to.u128(a))
 }
 
+// Returns true when a equals one.
 liblapzt.i128.is.one = liblapzt.i128.is.one.erased
 
 liblapzt.i128.to.bool.erased = (a: liblapzt.i128) liblapzt.bool {
     liblapzt.bool.not(liblapzt.i128.is.zero(a))
 }
 
+// Returns false when a is zero and true otherwise.
 liblapzt.i128.to.bool = liblapzt.i128.to.bool.erased
 
 liblapzt.i128.neg.erased = (a: liblapzt.i128) liblapzt.i128 {
     liblapzt.i128.inc(liblapzt.i128.not(a))
 }
 
+// Returns the two's complement negation of a, wrapping so that
+// negating minimum yields minimum.
 liblapzt.i128.neg = liblapzt.i128.neg.erased
 
 liblapzt.i128.abs.erased = (a: liblapzt.i128) liblapzt.i128 {
@@ -244,6 +290,8 @@ liblapzt.i128.abs.erased = (a: liblapzt.i128) liblapzt.i128 {
     }
 }
 
+// Returns the absolute value of a; the absolute value of minimum
+// wraps back to minimum.
 liblapzt.i128.abs = liblapzt.i128.abs.erased
 
 liblapzt.i128.div.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
@@ -262,6 +310,8 @@ liblapzt.i128.div.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     }
 }
 
+// Returns a divided by b, truncating toward zero. Returns zero when b
+// is zero; minimum divided by -1 wraps to minimum.
 liblapzt.i128.div = liblapzt.i128.div.erased
 
 liblapzt.i128.mod.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
@@ -280,4 +330,6 @@ liblapzt.i128.mod.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
     }
 }
 
+// Returns the remainder of a divided by b, with the sign of a.
+// Returns zero when b is zero.
 liblapzt.i128.mod = liblapzt.i128.mod.erased

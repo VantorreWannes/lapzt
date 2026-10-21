@@ -1,3 +1,5 @@
+// Moves the element at index left until its predecessor is not
+// greater, assuming everything before index is already sorted.
 liblapzt.sort.u64.inner = (handle: liblapzt.u64, offset: liblapzt.u64, index: liblapzt.u64) [BIT] {
     done: liblapzt.bool = liblapzt.u64.is.zero(index)
     BRANCH (done) {
@@ -22,6 +24,7 @@ liblapzt.sort.u64.inner = (handle: liblapzt.u64, offset: liblapzt.u64, index: li
     }
 }
 
+// Sorts the prefix ending at index, extending it one element per step.
 liblapzt.sort.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64) [BIT] {
     done: liblapzt.bool = liblapzt.u64.ge(index, length)
     BRANCH (done) {
@@ -36,10 +39,16 @@ liblapzt.sort.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, length: 
     }
 }
 
+// Sorts length u64 words in ascending order, starting at byte offset
+// inside the block. Uses insertion sort, so the cost is quadratic in
+// length. A length of zero or one is a no-op. Returns false on the
+// first failed read or write.
 liblapzt.sort.u64 = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64) [BIT] {
     liblapzt.sort.u64.helper(handle, offset, length, liblapzt.u64.one)
 }
 
+// Moves the element at index left until its predecessor is not
+// greater, comparing the words as signed values.
 liblapzt.sort.i64.inner = (handle: liblapzt.u64, offset: liblapzt.u64, index: liblapzt.u64) [BIT] {
     done: liblapzt.bool = liblapzt.u64.is.zero(index)
     BRANCH (done) {
@@ -64,6 +73,7 @@ liblapzt.sort.i64.inner = (handle: liblapzt.u64, offset: liblapzt.u64, index: li
     }
 }
 
+// Sorts the prefix ending at index, extending it one element per step.
 liblapzt.sort.i64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64) [BIT] {
     done: liblapzt.bool = liblapzt.u64.ge(index, length)
     BRANCH (done) {
@@ -78,10 +88,17 @@ liblapzt.sort.i64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, length: 
     }
 }
 
+// Sorts length i64 words in ascending order, starting at byte offset
+// inside the block. The words are read as u64 and compared as signed
+// values. Uses insertion sort, so the cost is quadratic in length. A
+// length of zero or one is a no-op. Returns false on the first failed
+// read or write.
 liblapzt.sort.i64 = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64) [BIT] {
     liblapzt.sort.i64.helper(handle, offset, length, liblapzt.u64.one)
 }
 
+// Compares adjacent words from index and returns false at the first
+// pair that is out of order.
 liblapzt.sort.is.sorted.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64) liblapzt.bool {
     done: liblapzt.bool = liblapzt.u64.ge(liblapzt.u64.inc(index), length)
     BRANCH (done) {
@@ -98,6 +115,8 @@ liblapzt.sort.is.sorted.u64.helper = (handle: liblapzt.u64, offset: liblapzt.u64
     }
 }
 
+// Returns true when length u64 words starting at byte offset are in
+// non-decreasing order. A length of zero or one is always sorted.
 liblapzt.sort.is.sorted.u64 = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64) liblapzt.bool {
     liblapzt.sort.is.sorted.u64.helper(handle, offset, length, liblapzt.u64.zero)
 }

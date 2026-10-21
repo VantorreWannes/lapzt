@@ -242,11 +242,12 @@ fn location(definition: &Definition) -> Option<Location> {
 }
 
 fn hover(definition: &Definition) -> Hover {
-    let mut value = format!("```lap\n{}\n```", definition.body);
+    let mut value = String::new();
     if !definition.doc.is_empty() {
-        value.push_str("\n\n");
         value.push_str(&definition.doc);
+        value.push_str("\n\n");
     }
+    value.push_str(&format!("```lap\n{}\n```", definition.body));
     Hover {
         contents: HoverContents::Markup(MarkupContent {
             kind: MarkupKind::Markdown,

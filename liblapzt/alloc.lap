@@ -1,10 +1,18 @@
+// A bump allocator over one memory block.
+//
+// An allocator is [handle, offset, capacity]. Allocation advances offset
+// and never frees individual allocations. Reset reuses the block.
+
 liblapzt.alloc = [liblapzt.u64, liblapzt.u64, liblapzt.u64]
 
+// Allocates a block of size bytes and builds an empty allocator over it.
 liblapzt.alloc.new = (size: liblapzt.u64) [BIT, liblapzt.alloc] {
     [ok, handle] = liblapzt.memory.alloc(size)
     [ok, [handle, liblapzt.u64.zero, size]]
 }
 
+// Reserves size bytes. Returns the offset of the reservation, or an error
+// when the block is full.
 liblapzt.alloc.alloc = (allocator: *liblapzt.alloc, size: liblapzt.u64) liblapzt.result {
     [handle, offset, capacity] = allocator
     end: liblapzt.u64 = liblapzt.u64.add(offset, size)
@@ -17,12 +25,14 @@ liblapzt.alloc.alloc = (allocator: *liblapzt.alloc, size: liblapzt.u64) liblapzt
     }
 }
 
+// Releases every reservation by moving the offset back to zero.
 liblapzt.alloc.reset = (allocator: *liblapzt.alloc) [] {
     [handle, offset, capacity] = allocator
     allocator = [handle, liblapzt.u64.zero, capacity]
     []
 }
 
+// Frees the underlying block and clears the allocator.
 liblapzt.alloc.free = (allocator: *liblapzt.alloc) [BIT] {
     [handle, offset, capacity] = allocator
     [ok] = liblapzt.memory.free(handle)
@@ -30,6 +40,7 @@ liblapzt.alloc.free = (allocator: *liblapzt.alloc) [BIT] {
     [ok]
 }
 
+// Returns the number of bytes not yet reserved.
 liblapzt.alloc.remaining = (allocator: liblapzt.alloc) liblapzt.u64 {
     [handle, offset, capacity] = allocator
     liblapzt.u64.sub(capacity, offset)

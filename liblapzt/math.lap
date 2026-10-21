@@ -1,109 +1,134 @@
+// Returns bit unchanged; a has only one bit.
 liblapzt.math.with.msb.u1 = (a: liblapzt.u1, bit: liblapzt.bool) liblapzt.u1 {
     bit
 }
 
+// Returns a with its most significant bit replaced by bit.
 liblapzt.math.with.msb.u2 = (a: liblapzt.u2, bit: liblapzt.bool) liblapzt.u2 {
     [low, high] = a
     [low, bit]
 }
 
+// Returns a with its most significant bit replaced by bit.
 liblapzt.math.with.msb.u4 = (a: liblapzt.u4, bit: liblapzt.bool) liblapzt.u4 {
     [low, high] = a
     [low, liblapzt.math.with.msb.u2(high, bit)]
 }
 
+// Returns a with its most significant bit replaced by bit.
 liblapzt.math.with.msb.u8 = (a: liblapzt.u8, bit: liblapzt.bool) liblapzt.u8 {
     [low, high] = a
     [low, liblapzt.math.with.msb.u4(high, bit)]
 }
 
+// Returns a with its most significant bit replaced by bit.
 liblapzt.math.with.msb.u16 = (a: liblapzt.u16, bit: liblapzt.bool) liblapzt.u16 {
     [low, high] = a
     [low, liblapzt.math.with.msb.u8(high, bit)]
 }
 
+// Returns a with its most significant bit replaced by bit.
 liblapzt.math.with.msb.u32 = (a: liblapzt.u32, bit: liblapzt.bool) liblapzt.u32 {
     [low, high] = a
     [low, liblapzt.math.with.msb.u16(high, bit)]
 }
 
+// Returns a with its most significant bit replaced by bit.
 liblapzt.math.with.msb.u64 = (a: liblapzt.u64, bit: liblapzt.bool) liblapzt.u64 {
     [low, high] = a
     [low, liblapzt.math.with.msb.u32(high, bit)]
 }
 
+// Returns a with its most significant bit replaced by bit.
 liblapzt.math.with.msb.u128 = (a: liblapzt.u128, bit: liblapzt.bool) liblapzt.u128 {
     [low, high] = a
     [low, liblapzt.math.with.msb.u64(high, bit)]
 }
 
+// Returns true when the least significant bit of a is set.
 liblapzt.math.lsb.u2 = (a: liblapzt.u2) liblapzt.bool {
     liblapzt.u2.is.one(liblapzt.u2.and(a, liblapzt.u2.one))
 }
 
+// Returns true when the least significant bit of a is set.
 liblapzt.math.lsb.u4 = (a: liblapzt.u4) liblapzt.bool {
     liblapzt.u4.is.one(liblapzt.u4.and(a, liblapzt.u4.one))
 }
 
+// Returns true when the least significant bit of a is set.
 liblapzt.math.lsb.u8 = (a: liblapzt.u8) liblapzt.bool {
     liblapzt.u8.is.one(liblapzt.u8.and(a, liblapzt.u8.one))
 }
 
+// Returns true when the least significant bit of a is set.
 liblapzt.math.lsb.u16 = (a: liblapzt.u16) liblapzt.bool {
     liblapzt.u16.is.one(liblapzt.u16.and(a, liblapzt.u16.one))
 }
 
+// Returns true when the least significant bit of a is set.
 liblapzt.math.lsb.u32 = (a: liblapzt.u32) liblapzt.bool {
     liblapzt.u32.is.one(liblapzt.u32.and(a, liblapzt.u32.one))
 }
 
+// Returns true when the least significant bit of a is set.
 liblapzt.math.lsb.u64 = (a: liblapzt.u64) liblapzt.bool {
     liblapzt.u64.is.one(liblapzt.u64.and(a, liblapzt.u64.one))
 }
 
+// Returns true when the least significant bit of a is set.
 liblapzt.math.lsb.u128 = (a: liblapzt.u128) liblapzt.bool {
     liblapzt.u128.is.one(liblapzt.u128.and(a, liblapzt.u128.one))
 }
 
+// Shifts a right by one bit, filling the top bit with zero.
 liblapzt.math.shr1.u1 = (a: liblapzt.u1) liblapzt.u1 {
     liblapzt.u1.zero
 }
 
+// Shifts a right by one bit, filling the top bit with zero.
 liblapzt.math.shr1.u2 = (a: liblapzt.u2) liblapzt.u2 {
     [low, high] = a
     [high, liblapzt.u1.zero]
 }
 
+// Shifts a right by one bit, filling the top bit with zero.
 liblapzt.math.shr1.u4 = (a: liblapzt.u4) liblapzt.u4 {
     [low, high] = a
     [liblapzt.math.with.msb.u2(liblapzt.math.shr1.u2(low), liblapzt.math.lsb.u2(high)), liblapzt.math.shr1.u2(high)]
 }
 
+// Shifts a right by one bit, filling the top bit with zero.
 liblapzt.math.shr1.u8 = (a: liblapzt.u8) liblapzt.u8 {
     [low, high] = a
     [liblapzt.math.with.msb.u4(liblapzt.math.shr1.u4(low), liblapzt.math.lsb.u4(high)), liblapzt.math.shr1.u4(high)]
 }
 
+// Shifts a right by one bit, filling the top bit with zero.
 liblapzt.math.shr1.u16 = (a: liblapzt.u16) liblapzt.u16 {
     [low, high] = a
     [liblapzt.math.with.msb.u8(liblapzt.math.shr1.u8(low), liblapzt.math.lsb.u8(high)), liblapzt.math.shr1.u8(high)]
 }
 
+// Shifts a right by one bit, filling the top bit with zero.
 liblapzt.math.shr1.u32 = (a: liblapzt.u32) liblapzt.u32 {
     [low, high] = a
     [liblapzt.math.with.msb.u16(liblapzt.math.shr1.u16(low), liblapzt.math.lsb.u16(high)), liblapzt.math.shr1.u16(high)]
 }
 
+// Shifts a right by one bit, filling the top bit with zero.
 liblapzt.math.shr1.u64 = (a: liblapzt.u64) liblapzt.u64 {
     [low, high] = a
     [liblapzt.math.with.msb.u32(liblapzt.math.shr1.u32(low), liblapzt.math.lsb.u32(high)), liblapzt.math.shr1.u32(high)]
 }
 
+// Shifts a right by one bit, filling the top bit with zero.
 liblapzt.math.shr1.u128 = (a: liblapzt.u128) liblapzt.u128 {
     [low, high] = a
     [liblapzt.math.with.msb.u64(liblapzt.math.shr1.u64(low), liblapzt.math.lsb.u64(high)), liblapzt.math.shr1.u64(high)]
 }
 
+// Shifts value left by amount bits. Bits shifted past the top are
+// lost; amounts of 64 or more yield zero.
 liblapzt.math.shl.u64 = (value: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
     done: liblapzt.bool = liblapzt.u64.is.zero(amount)
     BRANCH (done) {
@@ -113,6 +138,8 @@ liblapzt.math.shl.u64 = (value: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64
     }
 }
 
+// Shifts value right by amount bits, filling the top bits with
+// zero. Amounts of 64 or more yield zero.
 liblapzt.math.shr.u64 = (value: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
     done: liblapzt.bool = liblapzt.u64.is.zero(amount)
     BRANCH (done) {
@@ -122,6 +149,7 @@ liblapzt.math.shr.u64 = (value: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64
     }
 }
 
+// Returns the number of set bits in a, as a u64.
 liblapzt.math.popcount.u1 = (a: liblapzt.u1) liblapzt.u64 {
     BRANCH (a) {
         liblapzt.u64.one
@@ -130,41 +158,50 @@ liblapzt.math.popcount.u1 = (a: liblapzt.u1) liblapzt.u64 {
     }
 }
 
+// Returns the number of set bits in a, as a u64.
 liblapzt.math.popcount.u2 = (a: liblapzt.u2) liblapzt.u64 {
     [low, high] = a
     liblapzt.u64.add(liblapzt.math.popcount.u1(low), liblapzt.math.popcount.u1(high))
 }
 
+// Returns the number of set bits in a, as a u64.
 liblapzt.math.popcount.u4 = (a: liblapzt.u4) liblapzt.u64 {
     [low, high] = a
     liblapzt.u64.add(liblapzt.math.popcount.u2(low), liblapzt.math.popcount.u2(high))
 }
 
+// Returns the number of set bits in a, as a u64.
 liblapzt.math.popcount.u8 = (a: liblapzt.u8) liblapzt.u64 {
     [low, high] = a
     liblapzt.u64.add(liblapzt.math.popcount.u4(low), liblapzt.math.popcount.u4(high))
 }
 
+// Returns the number of set bits in a, as a u64.
 liblapzt.math.popcount.u16 = (a: liblapzt.u16) liblapzt.u64 {
     [low, high] = a
     liblapzt.u64.add(liblapzt.math.popcount.u8(low), liblapzt.math.popcount.u8(high))
 }
 
+// Returns the number of set bits in a, as a u64.
 liblapzt.math.popcount.u32 = (a: liblapzt.u32) liblapzt.u64 {
     [low, high] = a
     liblapzt.u64.add(liblapzt.math.popcount.u16(low), liblapzt.math.popcount.u16(high))
 }
 
+// Returns the number of set bits in a, as a u64.
 liblapzt.math.popcount.u64 = (a: liblapzt.u64) liblapzt.u64 {
     [low, high] = a
     liblapzt.u64.add(liblapzt.math.popcount.u32(low), liblapzt.math.popcount.u32(high))
 }
 
+// Returns the number of set bits in a, as a u64.
 liblapzt.math.popcount.u128 = (a: liblapzt.u128) liblapzt.u64 {
     [low, high] = a
     liblapzt.u64.add(liblapzt.math.popcount.u64(low), liblapzt.math.popcount.u64(high))
 }
 
+// Returns the number of leading zero bits in a, as a u64.
+// Returns 1 when a is zero.
 liblapzt.math.clz.u1 = (a: liblapzt.u1) liblapzt.u64 {
     BRANCH (a) {
         liblapzt.u64.zero
@@ -173,6 +210,8 @@ liblapzt.math.clz.u1 = (a: liblapzt.u1) liblapzt.u64 {
     }
 }
 
+// Returns the number of leading zero bits in a, as a u64.
+// Returns 2 when a is zero.
 liblapzt.math.clz.u2 = (a: liblapzt.u2) liblapzt.u64 {
     [low, high] = a
     high.zero: liblapzt.bool = liblapzt.u1.is.zero(high)
@@ -183,6 +222,8 @@ liblapzt.math.clz.u2 = (a: liblapzt.u2) liblapzt.u64 {
     }
 }
 
+// Returns the number of leading zero bits in a, as a u64.
+// Returns 4 when a is zero.
 liblapzt.math.clz.u4 = (a: liblapzt.u4) liblapzt.u64 {
     [low, high] = a
     high.zero: liblapzt.bool = liblapzt.u2.is.zero(high)
@@ -193,6 +234,8 @@ liblapzt.math.clz.u4 = (a: liblapzt.u4) liblapzt.u64 {
     }
 }
 
+// Returns the number of leading zero bits in a, as a u64.
+// Returns 8 when a is zero.
 liblapzt.math.clz.u8 = (a: liblapzt.u8) liblapzt.u64 {
     [low, high] = a
     high.zero: liblapzt.bool = liblapzt.u4.is.zero(high)
@@ -203,6 +246,8 @@ liblapzt.math.clz.u8 = (a: liblapzt.u8) liblapzt.u64 {
     }
 }
 
+// Returns the number of leading zero bits in a, as a u64.
+// Returns 16 when a is zero.
 liblapzt.math.clz.u16 = (a: liblapzt.u16) liblapzt.u64 {
     [low, high] = a
     high.zero: liblapzt.bool = liblapzt.u8.is.zero(high)
@@ -213,6 +258,8 @@ liblapzt.math.clz.u16 = (a: liblapzt.u16) liblapzt.u64 {
     }
 }
 
+// Returns the number of leading zero bits in a, as a u64.
+// Returns 32 when a is zero.
 liblapzt.math.clz.u32 = (a: liblapzt.u32) liblapzt.u64 {
     [low, high] = a
     high.zero: liblapzt.bool = liblapzt.u16.is.zero(high)
@@ -223,6 +270,8 @@ liblapzt.math.clz.u32 = (a: liblapzt.u32) liblapzt.u64 {
     }
 }
 
+// Returns the number of leading zero bits in a, as a u64.
+// Returns 64 when a is zero.
 liblapzt.math.clz.u64 = (a: liblapzt.u64) liblapzt.u64 {
     [low, high] = a
     high.zero: liblapzt.bool = liblapzt.u32.is.zero(high)
@@ -233,6 +282,8 @@ liblapzt.math.clz.u64 = (a: liblapzt.u64) liblapzt.u64 {
     }
 }
 
+// Returns the number of leading zero bits in a, as a u64.
+// Returns 128 when a is zero.
 liblapzt.math.clz.u128 = (a: liblapzt.u128) liblapzt.u64 {
     [low, high] = a
     high.zero: liblapzt.bool = liblapzt.u64.is.zero(high)
@@ -243,6 +294,8 @@ liblapzt.math.clz.u128 = (a: liblapzt.u128) liblapzt.u64 {
     }
 }
 
+// Returns the number of trailing zero bits in a, as a u64.
+// Returns 1 when a is zero.
 liblapzt.math.ctz.u1 = (a: liblapzt.u1) liblapzt.u64 {
     BRANCH (a) {
         liblapzt.u64.zero
@@ -251,6 +304,8 @@ liblapzt.math.ctz.u1 = (a: liblapzt.u1) liblapzt.u64 {
     }
 }
 
+// Returns the number of trailing zero bits in a, as a u64.
+// Returns 2 when a is zero.
 liblapzt.math.ctz.u2 = (a: liblapzt.u2) liblapzt.u64 {
     [low, high] = a
     low.zero: liblapzt.bool = liblapzt.u1.is.zero(low)
@@ -261,6 +316,8 @@ liblapzt.math.ctz.u2 = (a: liblapzt.u2) liblapzt.u64 {
     }
 }
 
+// Returns the number of trailing zero bits in a, as a u64.
+// Returns 4 when a is zero.
 liblapzt.math.ctz.u4 = (a: liblapzt.u4) liblapzt.u64 {
     [low, high] = a
     low.zero: liblapzt.bool = liblapzt.u2.is.zero(low)
@@ -271,6 +328,8 @@ liblapzt.math.ctz.u4 = (a: liblapzt.u4) liblapzt.u64 {
     }
 }
 
+// Returns the number of trailing zero bits in a, as a u64.
+// Returns 8 when a is zero.
 liblapzt.math.ctz.u8 = (a: liblapzt.u8) liblapzt.u64 {
     [low, high] = a
     low.zero: liblapzt.bool = liblapzt.u4.is.zero(low)
@@ -281,6 +340,8 @@ liblapzt.math.ctz.u8 = (a: liblapzt.u8) liblapzt.u64 {
     }
 }
 
+// Returns the number of trailing zero bits in a, as a u64.
+// Returns 16 when a is zero.
 liblapzt.math.ctz.u16 = (a: liblapzt.u16) liblapzt.u64 {
     [low, high] = a
     low.zero: liblapzt.bool = liblapzt.u8.is.zero(low)
@@ -291,6 +352,8 @@ liblapzt.math.ctz.u16 = (a: liblapzt.u16) liblapzt.u64 {
     }
 }
 
+// Returns the number of trailing zero bits in a, as a u64.
+// Returns 32 when a is zero.
 liblapzt.math.ctz.u32 = (a: liblapzt.u32) liblapzt.u64 {
     [low, high] = a
     low.zero: liblapzt.bool = liblapzt.u16.is.zero(low)
@@ -301,6 +364,8 @@ liblapzt.math.ctz.u32 = (a: liblapzt.u32) liblapzt.u64 {
     }
 }
 
+// Returns the number of trailing zero bits in a, as a u64.
+// Returns 64 when a is zero.
 liblapzt.math.ctz.u64 = (a: liblapzt.u64) liblapzt.u64 {
     [low, high] = a
     low.zero: liblapzt.bool = liblapzt.u32.is.zero(low)
@@ -311,6 +376,8 @@ liblapzt.math.ctz.u64 = (a: liblapzt.u64) liblapzt.u64 {
     }
 }
 
+// Returns the number of trailing zero bits in a, as a u64.
+// Returns 128 when a is zero.
 liblapzt.math.ctz.u128 = (a: liblapzt.u128) liblapzt.u64 {
     [low, high] = a
     low.zero: liblapzt.bool = liblapzt.u64.is.zero(low)
@@ -321,65 +388,79 @@ liblapzt.math.ctz.u128 = (a: liblapzt.u128) liblapzt.u64 {
     }
 }
 
+// Returns a with its bit order reversed.
 liblapzt.math.reverse.bits.u1 = (a: liblapzt.u1) liblapzt.u1 {
     a
 }
 
+// Returns a with its bit order reversed.
 liblapzt.math.reverse.bits.u2 = (a: liblapzt.u2) liblapzt.u2 {
     [low, high] = a
     [liblapzt.math.reverse.bits.u1(high), liblapzt.math.reverse.bits.u1(low)]
 }
 
+// Returns a with its bit order reversed.
 liblapzt.math.reverse.bits.u4 = (a: liblapzt.u4) liblapzt.u4 {
     [low, high] = a
     [liblapzt.math.reverse.bits.u2(high), liblapzt.math.reverse.bits.u2(low)]
 }
 
+// Returns a with its bit order reversed.
 liblapzt.math.reverse.bits.u8 = (a: liblapzt.u8) liblapzt.u8 {
     [low, high] = a
     [liblapzt.math.reverse.bits.u4(high), liblapzt.math.reverse.bits.u4(low)]
 }
 
+// Returns a with its bit order reversed.
 liblapzt.math.reverse.bits.u16 = (a: liblapzt.u16) liblapzt.u16 {
     [low, high] = a
     [liblapzt.math.reverse.bits.u8(high), liblapzt.math.reverse.bits.u8(low)]
 }
 
+// Returns a with its bit order reversed.
 liblapzt.math.reverse.bits.u32 = (a: liblapzt.u32) liblapzt.u32 {
     [low, high] = a
     [liblapzt.math.reverse.bits.u16(high), liblapzt.math.reverse.bits.u16(low)]
 }
 
+// Returns a with its bit order reversed.
 liblapzt.math.reverse.bits.u64 = (a: liblapzt.u64) liblapzt.u64 {
     [low, high] = a
     [liblapzt.math.reverse.bits.u32(high), liblapzt.math.reverse.bits.u32(low)]
 }
 
+// Returns a with its bit order reversed.
 liblapzt.math.reverse.bits.u128 = (a: liblapzt.u128) liblapzt.u128 {
     [low, high] = a
     [liblapzt.math.reverse.bits.u64(high), liblapzt.math.reverse.bits.u64(low)]
 }
 
+// Returns a with its byte order reversed.
 liblapzt.math.bswap.u16 = (a: liblapzt.u16) liblapzt.u16 {
     [low, high] = a
     [high, low]
 }
 
+// Returns a with its byte order reversed.
 liblapzt.math.bswap.u32 = (a: liblapzt.u32) liblapzt.u32 {
     [low, high] = a
     [liblapzt.math.bswap.u16(high), liblapzt.math.bswap.u16(low)]
 }
 
+// Returns a with its byte order reversed.
 liblapzt.math.bswap.u64 = (a: liblapzt.u64) liblapzt.u64 {
     [low, high] = a
     [liblapzt.math.bswap.u32(high), liblapzt.math.bswap.u32(low)]
 }
 
+// Returns a with its byte order reversed.
 liblapzt.math.bswap.u128 = (a: liblapzt.u128) liblapzt.u128 {
     [low, high] = a
     [liblapzt.math.bswap.u64(high), liblapzt.math.bswap.u64(low)]
 }
 
+// Rotates value left by amount bits. amount is reduced modulo 64,
+// so any amount is valid.
 liblapzt.math.rotate.left.u64 = (value: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
     amount.mod: liblapzt.u64 = liblapzt.u64.mod(amount, liblapzt.constants.sixty.four)
     left: liblapzt.u64 = liblapzt.math.shl.u64(value, amount.mod)
@@ -387,6 +468,8 @@ liblapzt.math.rotate.left.u64 = (value: liblapzt.u64, amount: liblapzt.u64) libl
     liblapzt.u64.or(left, right)
 }
 
+// Rotates value right by amount bits. amount is reduced modulo 64,
+// so any amount is valid.
 liblapzt.math.rotate.right.u64 = (value: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
     amount.mod: liblapzt.u64 = liblapzt.u64.mod(amount, liblapzt.constants.sixty.four)
     right: liblapzt.u64 = liblapzt.math.shr.u64(value, amount.mod)
@@ -394,14 +477,18 @@ liblapzt.math.rotate.right.u64 = (value: liblapzt.u64, amount: liblapzt.u64) lib
     liblapzt.u64.or(left, right)
 }
 
+// Returns true when value is divisible by two.
 liblapzt.math.is.even.u64 = (value: liblapzt.u64) liblapzt.bool {
     liblapzt.u64.is.zero(liblapzt.u64.and(value, liblapzt.u64.one))
 }
 
+// Returns true when value is not divisible by two.
 liblapzt.math.is.odd.u64 = (value: liblapzt.u64) liblapzt.bool {
     liblapzt.bool.not(liblapzt.math.is.even.u64(value))
 }
 
+// Returns the smallest power of two at least value, starting from
+// power.
 liblapzt.math.next.power.of.two.u64.helper = (value: liblapzt.u64, power: liblapzt.u64) liblapzt.u64 {
     enough: liblapzt.bool = liblapzt.u64.ge(power, value)
     BRANCH (enough) {
@@ -411,6 +498,8 @@ liblapzt.math.next.power.of.two.u64.helper = (value: liblapzt.u64, power: liblap
     }
 }
 
+// Returns the smallest power of two greater than or equal to value.
+// Returns one for values of zero or one.
 liblapzt.math.next.power.of.two.u64 = (value: liblapzt.u64) liblapzt.u64 {
     small: liblapzt.bool = liblapzt.u64.le(value, liblapzt.u64.one)
     BRANCH (small) {
@@ -420,6 +509,8 @@ liblapzt.math.next.power.of.two.u64 = (value: liblapzt.u64) liblapzt.u64 {
     }
 }
 
+// Rounds value up to the next multiple of alignment. Returns value
+// unchanged when alignment is zero or value is already aligned.
 liblapzt.math.align.up.u64 = (value: liblapzt.u64, alignment: liblapzt.u64) liblapzt.u64 {
     zero: liblapzt.bool = liblapzt.u64.is.zero(alignment)
     BRANCH (zero) {
@@ -435,6 +526,8 @@ liblapzt.math.align.up.u64 = (value: liblapzt.u64, alignment: liblapzt.u64) libl
     }
 }
 
+// Rounds value down to the previous multiple of alignment. Returns
+// value unchanged when alignment is zero.
 liblapzt.math.align.down.u64 = (value: liblapzt.u64, alignment: liblapzt.u64) liblapzt.u64 {
     zero: liblapzt.bool = liblapzt.u64.is.zero(alignment)
     BRANCH (zero) {
@@ -444,6 +537,7 @@ liblapzt.math.align.down.u64 = (value: liblapzt.u64, alignment: liblapzt.u64) li
     }
 }
 
+// Returns the greatest common divisor of a and b. gcd(a, 0) is a.
 liblapzt.math.gcd.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     zero: liblapzt.bool = liblapzt.u64.is.zero(b)
     BRANCH (zero) {
@@ -453,6 +547,8 @@ liblapzt.math.gcd.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     }
 }
 
+// Returns the least common multiple of a and b. Returns zero when
+// either is zero.
 liblapzt.math.lcm.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     zero: liblapzt.bool = liblapzt.bool.or(liblapzt.u64.is.zero(a), liblapzt.u64.is.zero(b))
     BRANCH (zero) {
@@ -462,6 +558,8 @@ liblapzt.math.lcm.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.u64 {
     }
 }
 
+// Raises base to exponent by repeated squaring, starting from
+// accumulator.
 liblapzt.math.pow.u64.helper = (base: liblapzt.u64, exponent: liblapzt.u64, accumulator: liblapzt.u64) liblapzt.u64 {
     done: liblapzt.bool = liblapzt.u64.is.zero(exponent)
     BRANCH (done) {
@@ -477,10 +575,14 @@ liblapzt.math.pow.u64.helper = (base: liblapzt.u64, exponent: liblapzt.u64, accu
     }
 }
 
+// Returns base raised to exponent. An exponent of zero yields one.
+// Overflow wraps modulo 2^64.
 liblapzt.math.pow.u64 = (base: liblapzt.u64, exponent: liblapzt.u64) liblapzt.u64 {
     liblapzt.math.pow.u64.helper(base, exponent, liblapzt.u64.one)
 }
 
+// Binary-searches the floor square root of value in the half-open
+// range low to high.
 liblapzt.math.isqrt.u64.helper = (value: liblapzt.u64, low: liblapzt.u64, high: liblapzt.u64) liblapzt.u64 {
     done: liblapzt.bool = liblapzt.u64.ge(low, high)
     BRANCH (done) {
@@ -501,10 +603,13 @@ liblapzt.math.isqrt.u64.helper = (value: liblapzt.u64, low: liblapzt.u64, high: 
     }
 }
 
+// Returns the integer square root of value, rounded down.
 liblapzt.math.isqrt.u64 = (value: liblapzt.u64) liblapzt.u64 {
     liblapzt.math.isqrt.u64.helper(value, liblapzt.u64.zero, liblapzt.u64.add(value, liblapzt.u64.one))
 }
 
+// Adds to count the number of times value can be halved before
+// reaching one.
 liblapzt.math.log2.u64.helper = (value: liblapzt.u64, count: liblapzt.u64) liblapzt.u64 {
     done: liblapzt.bool = liblapzt.u64.le(value, liblapzt.u64.one)
     BRANCH (done) {
@@ -514,6 +619,8 @@ liblapzt.math.log2.u64.helper = (value: liblapzt.u64, count: liblapzt.u64) libla
     }
 }
 
+// Returns the base-two logarithm of value, rounded down. Returns
+// zero for value zero or one.
 liblapzt.math.log2.u64 = (value: liblapzt.u64) liblapzt.u64 {
     zero: liblapzt.bool = liblapzt.u64.is.zero(value)
     BRANCH (zero) {
@@ -523,6 +630,8 @@ liblapzt.math.log2.u64 = (value: liblapzt.u64) liblapzt.u64 {
     }
 }
 
+// Returns value limited to the inclusive range low to high. Returns
+// low when value is below low and high when above high.
 liblapzt.math.clamp.u64 = (value: liblapzt.u64, low: liblapzt.u64, high: liblapzt.u64) liblapzt.u64 {
     below: liblapzt.bool = liblapzt.u64.lt(value, low)
     above: liblapzt.bool = liblapzt.u64.gt(value, high)
@@ -537,18 +646,35 @@ liblapzt.math.clamp.u64 = (value: liblapzt.u64, low: liblapzt.u64, high: liblapz
     }
 }
 
+// Returns the absolute value of a. The minimum value has no
+// positive counterpart and is returned unchanged.
 liblapzt.math.abs.i8 = liblapzt.i8.abs
+// Returns the absolute value of a. The minimum value has no
+// positive counterpart and is returned unchanged.
 liblapzt.math.abs.i16 = liblapzt.i16.abs
+// Returns the absolute value of a. The minimum value has no
+// positive counterpart and is returned unchanged.
 liblapzt.math.abs.i32 = liblapzt.i32.abs
+// Returns the absolute value of a. The minimum value has no
+// positive counterpart and is returned unchanged.
 liblapzt.math.abs.i64 = liblapzt.i64.abs
+// Returns the absolute value of a. The minimum value has no
+// positive counterpart and is returned unchanged.
 liblapzt.math.abs.i128 = liblapzt.i128.abs
 
+// Returns true when a is negative.
 liblapzt.math.sign.i8 = liblapzt.i8.sign
+// Returns true when a is negative.
 liblapzt.math.sign.i16 = liblapzt.i16.sign
+// Returns true when a is negative.
 liblapzt.math.sign.i32 = liblapzt.i32.sign
+// Returns true when a is negative.
 liblapzt.math.sign.i64 = liblapzt.i64.sign
+// Returns true when a is negative.
 liblapzt.math.sign.i128 = liblapzt.i128.sign
 
+// Shifts value left by amount bits. Bits shifted past the top are
+// lost; amounts of 128 or more yield zero.
 liblapzt.math.shl.u128 = (value: liblapzt.u128, amount: liblapzt.u64) liblapzt.u128 {
     zero: liblapzt.bool = liblapzt.u64.is.zero(amount)
     BRANCH (zero) {
@@ -558,6 +684,8 @@ liblapzt.math.shl.u128 = (value: liblapzt.u128, amount: liblapzt.u64) liblapzt.u
     }
 }
 
+// Shifts value right by amount bits, filling the top bits with
+// zero. Amounts of 128 or more yield zero.
 liblapzt.math.shr.u128 = (value: liblapzt.u128, amount: liblapzt.u64) liblapzt.u128 {
     zero: liblapzt.bool = liblapzt.u64.is.zero(amount)
     BRANCH (zero) {

@@ -1,29 +1,41 @@
+// Three-way ordering and comparison helpers.
+//
+// An ordering is [less, greater]. Both false means equal.
+
 liblapzt.ordering = [liblapzt.bool, liblapzt.bool]
 
+// The less-than ordering.
 liblapzt.ordering.less: liblapzt.ordering = [liblapzt.bool.true, liblapzt.bool.false]
+// The equal ordering.
 liblapzt.ordering.equal: liblapzt.ordering = [liblapzt.bool.false, liblapzt.bool.false]
+// The greater-than ordering.
 liblapzt.ordering.greater: liblapzt.ordering = [liblapzt.bool.false, liblapzt.bool.true]
 
+// Returns true when the ordering is less-than.
 liblapzt.ordering.is.less = (ordering: liblapzt.ordering) liblapzt.bool {
     [less, greater] = ordering
     less
 }
 
+// Returns true when the ordering is equal.
 liblapzt.ordering.is.equal = (ordering: liblapzt.ordering) liblapzt.bool {
     [less, greater] = ordering
     liblapzt.bool.and(liblapzt.bool.not(less), liblapzt.bool.not(greater))
 }
 
+// Returns true when the ordering is greater-than.
 liblapzt.ordering.is.greater = (ordering: liblapzt.ordering) liblapzt.bool {
     [less, greater] = ordering
     greater
 }
 
+// Swaps less-than and greater-than.
 liblapzt.ordering.reverse = (ordering: liblapzt.ordering) liblapzt.ordering {
     [less, greater] = ordering
     [greater, less]
 }
 
+// Returns second when first is equal, otherwise first.
 liblapzt.ordering.then = (first: liblapzt.ordering, second: liblapzt.ordering) liblapzt.ordering {
     equal: liblapzt.bool = liblapzt.ordering.is.equal(first)
     BRANCH (equal) {
@@ -33,64 +45,79 @@ liblapzt.ordering.then = (first: liblapzt.ordering, second: liblapzt.ordering) l
     }
 }
 
+// Orders two booleans with false before true.
 liblapzt.compare.bool = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.ordering {
     less: liblapzt.bool = liblapzt.bool.and(a, liblapzt.bool.not(b))
     greater: liblapzt.bool = liblapzt.bool.and(liblapzt.bool.not(a), b)
     [less, greater]
 }
 
+// Orders two unsigned 8-bit integers.
 liblapzt.compare.u8 = (a: liblapzt.u8, b: liblapzt.u8) liblapzt.ordering {
     [liblapzt.u8.lt(a, b), liblapzt.u8.gt(a, b)]
 }
 
+// Orders two unsigned 16-bit integers.
 liblapzt.compare.u16 = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.ordering {
     [liblapzt.u16.lt(a, b), liblapzt.u16.gt(a, b)]
 }
 
+// Orders two unsigned 32-bit integers.
 liblapzt.compare.u32 = (a: liblapzt.u32, b: liblapzt.u32) liblapzt.ordering {
     [liblapzt.u32.lt(a, b), liblapzt.u32.gt(a, b)]
 }
 
+// Orders two unsigned 64-bit integers.
 liblapzt.compare.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.ordering {
     [liblapzt.u64.lt(a, b), liblapzt.u64.gt(a, b)]
 }
 
+// Orders two unsigned 128-bit integers.
 liblapzt.compare.u128 = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.ordering {
     [liblapzt.u128.lt(a, b), liblapzt.u128.gt(a, b)]
 }
 
+// Orders two signed 8-bit integers.
 liblapzt.compare.i8 = (a: liblapzt.i8, b: liblapzt.i8) liblapzt.ordering {
     [liblapzt.i8.lt(a, b), liblapzt.i8.gt(a, b)]
 }
 
+// Orders two signed 16-bit integers.
 liblapzt.compare.i16 = (a: liblapzt.i16, b: liblapzt.i16) liblapzt.ordering {
     [liblapzt.i16.lt(a, b), liblapzt.i16.gt(a, b)]
 }
 
+// Orders two signed 32-bit integers.
 liblapzt.compare.i32 = (a: liblapzt.i32, b: liblapzt.i32) liblapzt.ordering {
     [liblapzt.i32.lt(a, b), liblapzt.i32.gt(a, b)]
 }
 
+// Orders two signed 64-bit integers.
 liblapzt.compare.i64 = (a: liblapzt.i64, b: liblapzt.i64) liblapzt.ordering {
     [liblapzt.i64.lt(a, b), liblapzt.i64.gt(a, b)]
 }
 
+// Orders two signed 128-bit integers.
 liblapzt.compare.i128 = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.ordering {
     [liblapzt.i128.lt(a, b), liblapzt.i128.gt(a, b)]
 }
 
+// Orders two 16-bit floats. NaN compares as equal to everything.
 liblapzt.compare.f16 = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.ordering {
     [liblapzt.f16.lt(a, b), liblapzt.f16.gt(a, b)]
 }
 
+// Orders two 32-bit floats. NaN compares as equal to everything.
 liblapzt.compare.f32 = (a: liblapzt.f32, b: liblapzt.f32) liblapzt.ordering {
     [liblapzt.f32.lt(a, b), liblapzt.f32.gt(a, b)]
 }
 
+// Orders two 64-bit floats. NaN compares as equal to everything.
 liblapzt.compare.f64 = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.ordering {
     [liblapzt.f64.lt(a, b), liblapzt.f64.gt(a, b)]
 }
 
+// Orders two 128-bit floats. NaN compares as equal to everything.
 liblapzt.compare.f128 = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.ordering {
     [liblapzt.f128.lt(a, b), liblapzt.f128.gt(a, b)]
 }

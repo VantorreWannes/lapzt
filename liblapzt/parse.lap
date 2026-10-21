@@ -1,3 +1,5 @@
+// Returns the value of a decimal ASCII digit, or none when byte is not
+// between zero and nine.
 liblapzt.parse.digit = (byte: liblapzt.u8) liblapzt.option {
     below.zero: liblapzt.bool = liblapzt.u8.lt(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.zero))
     above.nine: liblapzt.bool = liblapzt.u8.gt(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.nine))
@@ -9,6 +11,8 @@ liblapzt.parse.digit = (byte: liblapzt.u8) liblapzt.option {
     }
 }
 
+// Returns the value of a hexadecimal ASCII digit in either case, or
+// none when byte is not a hex digit.
 liblapzt.parse.hex.digit = (byte: liblapzt.u8) liblapzt.option {
     below.zero: liblapzt.bool = liblapzt.u8.lt(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.zero))
     above.nine: liblapzt.bool = liblapzt.u8.gt(byte, liblapzt.u64.to.u8(liblapzt.constants.ascii.nine))
@@ -34,6 +38,8 @@ liblapzt.parse.hex.digit = (byte: liblapzt.u8) liblapzt.option {
     }
 }
 
+// Accumulates decimal digits from index into value. Returns err with
+// code one on the first non digit.
 liblapzt.parse.u64.helper = (string: liblapzt.string, index: liblapzt.u64, value: liblapzt.u64) liblapzt.result {
     [handle, offset, length] = string
     done: liblapzt.bool = liblapzt.u64.ge(index, length)
@@ -50,6 +56,9 @@ liblapzt.parse.u64.helper = (string: liblapzt.string, index: liblapzt.u64, value
     }
 }
 
+// Parses the whole view as an unsigned decimal number. Returns ok with
+// the value, or err with code one when the view is empty or holds a
+// non digit. Overflow is not detected.
 liblapzt.parse.u64 = (string: liblapzt.string) liblapzt.result {
     [handle, offset, length] = string
     empty: liblapzt.bool = liblapzt.u64.is.zero(length)
@@ -60,6 +69,9 @@ liblapzt.parse.u64 = (string: liblapzt.string) liblapzt.result {
     }
 }
 
+// Parses the whole view as a signed decimal number with an optional
+// leading plus or minus. Returns ok with the value, or err with code
+// one when the view is empty or malformed.
 liblapzt.parse.i64 = (string: liblapzt.string) liblapzt.result {
     [handle, offset, length] = string
     empty: liblapzt.bool = liblapzt.u64.is.zero(length)
@@ -94,6 +106,8 @@ liblapzt.parse.i64 = (string: liblapzt.string) liblapzt.result {
     }
 }
 
+// Accumulates hexadecimal digits from index into value. Returns err
+// with code one on the first non digit.
 liblapzt.parse.hex.u64.helper = (string: liblapzt.string, index: liblapzt.u64, value: liblapzt.u64) liblapzt.result {
     [handle, offset, length] = string
     done: liblapzt.bool = liblapzt.u64.ge(index, length)
@@ -110,6 +124,9 @@ liblapzt.parse.hex.u64.helper = (string: liblapzt.string, index: liblapzt.u64, v
     }
 }
 
+// Parses the whole view as an unsigned hexadecimal number without a
+// prefix. Returns ok with the value, or err with code one when the
+// view is empty or holds a non digit.
 liblapzt.parse.hex.u64 = (string: liblapzt.string) liblapzt.result {
     [handle, offset, length] = string
     empty: liblapzt.bool = liblapzt.u64.is.zero(length)
@@ -120,11 +137,15 @@ liblapzt.parse.hex.u64 = (string: liblapzt.string) liblapzt.result {
     }
 }
 
+// Reports whether the byte at index equals ascii. Out of range reads
+// compare false.
 liblapzt.parse.bool.byte = (string: liblapzt.string, index: liblapzt.u64, ascii: liblapzt.u64) liblapzt.bool {
     [ok, byte] = liblapzt.string.byte(string, index)
     liblapzt.u8.eq(byte, liblapzt.u64.to.u8(ascii))
 }
 
+// Reports whether the view starts with true. The length is not
+// checked.
 liblapzt.parse.bool.true = (string: liblapzt.string) liblapzt.bool {
     t: liblapzt.bool = liblapzt.parse.bool.byte(string, liblapzt.u64.zero, liblapzt.constants.ascii.lower.t)
     r: liblapzt.bool = liblapzt.parse.bool.byte(string, liblapzt.u64.one, liblapzt.constants.ascii.lower.r)
@@ -133,6 +154,8 @@ liblapzt.parse.bool.true = (string: liblapzt.string) liblapzt.bool {
     liblapzt.bool.and(liblapzt.bool.and(t, r), liblapzt.bool.and(u, e))
 }
 
+// Reports whether the view starts with false. The length is not
+// checked.
 liblapzt.parse.bool.false = (string: liblapzt.string) liblapzt.bool {
     f: liblapzt.bool = liblapzt.parse.bool.byte(string, liblapzt.u64.zero, liblapzt.constants.ascii.lower.f)
     a: liblapzt.bool = liblapzt.parse.bool.byte(string, liblapzt.u64.one, liblapzt.constants.ascii.lower.a)
@@ -142,6 +165,8 @@ liblapzt.parse.bool.false = (string: liblapzt.string) liblapzt.bool {
     liblapzt.bool.and(liblapzt.bool.and(f, a), liblapzt.bool.and(l, liblapzt.bool.and(s, e)))
 }
 
+// Parses the whole view as true or false. Returns ok with one for true
+// and zero for false, or err with code one for any other input.
 liblapzt.parse.bool = (string: liblapzt.string) liblapzt.result {
     [handle, offset, length] = string
     is.true: liblapzt.bool = liblapzt.u64.eq(length, liblapzt.constants.four)
@@ -159,6 +184,9 @@ liblapzt.parse.bool = (string: liblapzt.string) liblapzt.result {
     }
 }
 
+// Accumulates digits from index into value, switching to fractional
+// scaling after the first dot. Returns [ok, value]; ok is false on a
+// second dot or a non digit.
 liblapzt.parse.f64.helper = (string: liblapzt.string, index: liblapzt.u64, value: liblapzt.f64, scale: liblapzt.f64, fractional: liblapzt.bool) [liblapzt.bool, liblapzt.f64] {
     [handle, offset, length] = string
     done: liblapzt.bool = liblapzt.u64.ge(index, length)
@@ -195,6 +223,9 @@ liblapzt.parse.f64.helper = (string: liblapzt.string, index: liblapzt.u64, value
     }
 }
 
+// Parses the whole view as a decimal floating point number with an
+// optional leading sign and at most one dot. Returns [ok, value]; ok
+// is false when the view is empty or malformed.
 liblapzt.parse.f64 = (string: liblapzt.string) [liblapzt.bool, liblapzt.f64] {
     [handle, offset, length] = string
     empty: liblapzt.bool = liblapzt.u64.is.zero(length)
@@ -223,16 +254,22 @@ liblapzt.parse.f64 = (string: liblapzt.string) [liblapzt.bool, liblapzt.f64] {
     }
 }
 
+// Parses the view as a decimal number and narrows it to 32 bits.
+// Returns [ok, value]; ok is false when the input is malformed.
 liblapzt.parse.f32 = (string: liblapzt.string) [liblapzt.bool, liblapzt.f32] {
     [ok, value] = liblapzt.parse.f64(string)
     [ok, liblapzt.f64.to.f32(value)]
 }
 
+// Parses the view as a decimal number and narrows it to 16 bits.
+// Returns [ok, value]; ok is false when the input is malformed.
 liblapzt.parse.f16 = (string: liblapzt.string) [liblapzt.bool, liblapzt.f16] {
     [ok, value] = liblapzt.parse.f64(string)
     [ok, liblapzt.f64.to.f16(value)]
 }
 
+// Parses the view as a decimal number and widens it to 128 bits.
+// Returns [ok, value]; ok is false when the input is malformed.
 liblapzt.parse.f128 = (string: liblapzt.string) [liblapzt.bool, liblapzt.f128] {
     [ok, value] = liblapzt.parse.f64(string)
     [ok, liblapzt.f64.to.f128(value)]

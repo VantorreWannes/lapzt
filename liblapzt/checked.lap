@@ -1,3 +1,6 @@
+// Checked arithmetic that reports overflow as a result error.
+
+// Adds a and b. Returns an error when the sum overflows.
 liblapzt.checked.add.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
     [sum, carry] = liblapzt.u64.add.carry(a, b)
     BRANCH (carry) {
@@ -7,6 +10,7 @@ liblapzt.checked.add.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
     }
 }
 
+// Subtracts b from a. Returns an error when the difference underflows.
 liblapzt.checked.sub.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
     [difference, borrow] = liblapzt.u64.sub.borrow(a, b)
     BRANCH (borrow) {
@@ -16,6 +20,7 @@ liblapzt.checked.sub.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
     }
 }
 
+// Multiplies a and b. Returns an error when the product overflows.
 liblapzt.checked.mul.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
     [low, high] = liblapzt.u64.mul.full(a, b)
     overflow: liblapzt.bool = liblapzt.bool.not(liblapzt.u64.is.zero(high))
@@ -26,6 +31,7 @@ liblapzt.checked.mul.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
     }
 }
 
+// Divides a by b. Returns an error when b is zero.
 liblapzt.checked.div.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
     zero: liblapzt.bool = liblapzt.u64.is.zero(b)
     BRANCH (zero) {
@@ -35,6 +41,8 @@ liblapzt.checked.div.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
     }
 }
 
+// Returns the remainder of a divided by b. Returns an error when b is
+// zero.
 liblapzt.checked.mod.u64 = (a: liblapzt.u64, b: liblapzt.u64) liblapzt.result {
     zero: liblapzt.bool = liblapzt.u64.is.zero(b)
     BRANCH (zero) {

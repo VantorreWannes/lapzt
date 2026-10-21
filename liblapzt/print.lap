@@ -1,8 +1,13 @@
+// The decimal radix as a word.
 liblapzt.print.ten: liblapzt.u64 = [[[[[[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]]]
+// The ASCII code of the digit zero.
 liblapzt.print.forty.eight: liblapzt.u64 = [[[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.true, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]]]
+// A word holding a single newline byte.
 liblapzt.print.newline.word: liblapzt.u64 = [[[[[[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]]]
+// The decimal radix as a 128-bit value.
 liblapzt.print.ten.u128: liblapzt.u128 = [[[[[[[liblapzt.bool.false, liblapzt.bool.true], [liblapzt.bool.false, liblapzt.bool.true]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]]], [[[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]], [[[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]], [[[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]], [[[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]], [[liblapzt.bool.false, liblapzt.bool.false], [liblapzt.bool.false, liblapzt.bool.false]]]]]]]
 
+// Writes one decimal digit for a value below ten to standard output.
 liblapzt.print.digit = (digit: liblapzt.u64) [] {
     ascii: liblapzt.u64 = liblapzt.u64.add(digit, liblapzt.print.forty.eight)
     [ok] = liblapzt.io.write(liblapzt.io.stdout, liblapzt.u64.zero, ascii)
@@ -10,6 +15,8 @@ liblapzt.print.digit = (digit: liblapzt.u64) [] {
     []
 }
 
+// Writes value in decimal to standard output. Zero prints as a single
+// zero digit.
 liblapzt.print.u64 = (value: liblapzt.u64) [] {
     quotient: liblapzt.u64 = liblapzt.u64.div(value, liblapzt.print.ten)
     remainder: liblapzt.u64 = liblapzt.u64.mod(value, liblapzt.print.ten)
@@ -22,11 +29,13 @@ liblapzt.print.u64 = (value: liblapzt.u64) [] {
     }
 }
 
+// Returns the low 64 bits of a 128 bit value.
 liblapzt.print.to.u64 = (value: liblapzt.u128) liblapzt.u64 {
     [low, high] = value
     low
 }
 
+// Writes value in decimal to standard output.
 liblapzt.print.u128 = (value: liblapzt.u128) [] {
     quotient: liblapzt.u128 = liblapzt.u128.div(value, liblapzt.print.ten.u128)
     remainder: liblapzt.u128 = liblapzt.u128.mod(value, liblapzt.print.ten.u128)
@@ -40,18 +49,22 @@ liblapzt.print.u128 = (value: liblapzt.u128) [] {
     }
 }
 
+// Writes a newline to standard output.
 liblapzt.print.newline = () [] {
     [ok] = liblapzt.io.write(liblapzt.io.stdout, liblapzt.u64.zero, liblapzt.print.newline.word)
     liblapzt.assert.true(ok)
     []
 }
 
+// Writes the byte ascii to standard output. The value is not checked
+// against the ASCII range.
 liblapzt.print.char = (ascii: liblapzt.u64) [] {
     [ok] = liblapzt.io.write(liblapzt.io.stdout, liblapzt.u64.zero, ascii)
     liblapzt.assert.true(ok)
     []
 }
 
+// Writes true or false to standard output.
 liblapzt.print.bool = (value: liblapzt.bool) [] {
     BRANCH (value) {
         liblapzt.print.char(liblapzt.constants.ascii.lower.t)
@@ -69,18 +82,23 @@ liblapzt.print.bool = (value: liblapzt.bool) [] {
     }
 }
 
+// Writes value in decimal to standard output.
 liblapzt.print.u8 = (value: liblapzt.u8) [] {
     liblapzt.print.u64(liblapzt.u8.to.u64(value))
 }
 
+// Writes value in decimal to standard output.
 liblapzt.print.u16 = (value: liblapzt.u16) [] {
     liblapzt.print.u64(liblapzt.u16.to.u64(value))
 }
 
+// Writes value in decimal to standard output.
 liblapzt.print.u32 = (value: liblapzt.u32) [] {
     liblapzt.print.u64(liblapzt.u32.to.u64(value))
 }
 
+// Writes value in decimal to standard output, with a leading minus for
+// negative values.
 liblapzt.print.i64 = (value: liblapzt.i64) [] {
     negative: liblapzt.bool = liblapzt.i64.is.negative(value)
     BRANCH (negative) {
@@ -91,6 +109,7 @@ liblapzt.print.i64 = (value: liblapzt.i64) [] {
     }
 }
 
+// Writes one lowercase hexadecimal digit for a value below sixteen.
 liblapzt.print.hex.digit = (digit: liblapzt.u64) [] {
     below.ten: liblapzt.bool = liblapzt.u64.lt(digit, liblapzt.constants.ten)
     BRANCH (below.ten) {
@@ -100,6 +119,7 @@ liblapzt.print.hex.digit = (digit: liblapzt.u64) [] {
     }
 }
 
+// Writes the sixteen hexadecimal digits of value from index.
 liblapzt.print.hex.u64.helper = (value: liblapzt.u64, index: liblapzt.u64) [] {
     done: liblapzt.bool = liblapzt.u64.ge(index, liblapzt.constants.sixteen)
     BRANCH (done) {
@@ -112,10 +132,14 @@ liblapzt.print.hex.u64.helper = (value: liblapzt.u64, index: liblapzt.u64) [] {
     }
 }
 
+// Writes value as sixteen lowercase hexadecimal digits to standard
+// output, including leading zeros.
 liblapzt.print.hex.u64 = (value: liblapzt.u64) [] {
     liblapzt.print.hex.u64.helper(value, liblapzt.u64.zero)
 }
 
+// Writes the sixty four bits of value from index, most significant
+// first.
 liblapzt.print.bin.u64.helper = (value: liblapzt.u64, index: liblapzt.u64) [] {
     done: liblapzt.bool = liblapzt.u64.ge(index, liblapzt.constants.sixty.four)
     BRANCH (done) {
@@ -128,10 +152,13 @@ liblapzt.print.bin.u64.helper = (value: liblapzt.u64, index: liblapzt.u64) [] {
     }
 }
 
+// Writes value as sixty four binary digits to standard output,
+// including leading zeros.
 liblapzt.print.bin.u64 = (value: liblapzt.u64) [] {
     liblapzt.print.bin.u64.helper(value, liblapzt.u64.zero)
 }
 
+// Counts the decimal digits of value, which must be non zero.
 liblapzt.print.u64.digits.helper = (value: liblapzt.u64, count: liblapzt.u64) liblapzt.u64 {
     done: liblapzt.bool = liblapzt.u64.is.zero(value)
     BRANCH (done) {
@@ -141,6 +168,8 @@ liblapzt.print.u64.digits.helper = (value: liblapzt.u64, count: liblapzt.u64) li
     }
 }
 
+// Returns the number of decimal digits needed to print value. Zero has
+// one digit.
 liblapzt.print.u64.digits = (value: liblapzt.u64) liblapzt.u64 {
     zero: liblapzt.bool = liblapzt.u64.is.zero(value)
     BRANCH (zero) {
@@ -150,6 +179,7 @@ liblapzt.print.u64.digits = (value: liblapzt.u64) liblapzt.u64 {
     }
 }
 
+// Writes count copies of pad to standard output.
 liblapzt.print.u64.pad.helper = (count: liblapzt.u64, pad: liblapzt.u8) [] {
     done: liblapzt.bool = liblapzt.u64.is.zero(count)
     BRANCH (done) {
@@ -160,6 +190,8 @@ liblapzt.print.u64.pad.helper = (count: liblapzt.u64, pad: liblapzt.u8) [] {
     }
 }
 
+// Writes value in decimal, left padded with pad to at least width
+// characters. Values wider than width are printed in full.
 liblapzt.print.u64.padded = (value: liblapzt.u64, width: liblapzt.u64, pad: liblapzt.u8) [] {
     digits: liblapzt.u64 = liblapzt.print.u64.digits(value)
     enough: liblapzt.bool = liblapzt.u64.ge(digits, width)
@@ -171,6 +203,7 @@ liblapzt.print.u64.padded = (value: liblapzt.u64, width: liblapzt.u64, pad: libl
     }
 }
 
+// Writes six fractional digits of fraction, which must be below one.
 liblapzt.print.f64.fraction = (fraction: liblapzt.f64, index: liblapzt.u64) [] {
     done: liblapzt.bool = liblapzt.u64.ge(index, liblapzt.constants.six)
     BRANCH (done) {
@@ -185,6 +218,8 @@ liblapzt.print.f64.fraction = (fraction: liblapzt.f64, index: liblapzt.u64) [] {
     }
 }
 
+// Writes a non negative value as whole.fraction with six fractional
+// digits.
 liblapzt.print.f64.positive = (value: liblapzt.f64) [] {
     whole: liblapzt.f64 = liblapzt.f64.trunc(value)
     fraction: liblapzt.f64 = liblapzt.f64.sub(value, whole)
@@ -193,6 +228,8 @@ liblapzt.print.f64.positive = (value: liblapzt.f64) [] {
     liblapzt.print.f64.fraction(fraction, liblapzt.u64.zero)
 }
 
+// Writes value in decimal with six fractional digits. NaN prints as
+// nan and infinities as inf with a leading minus when negative.
 liblapzt.print.f64 = (value: liblapzt.f64) [] {
     nan: liblapzt.bool = liblapzt.f64.is.nan(value)
     infinite: liblapzt.bool = liblapzt.f64.is.infinite(value)
@@ -224,14 +261,17 @@ liblapzt.print.f64 = (value: liblapzt.f64) [] {
     }
 }
 
+// Writes value in decimal with six fractional digits.
 liblapzt.print.f32 = (value: liblapzt.f32) [] {
     liblapzt.print.f64(liblapzt.f32.to.f64(value))
 }
 
+// Writes value in decimal with six fractional digits.
 liblapzt.print.f16 = (value: liblapzt.f16) [] {
     liblapzt.print.f64(liblapzt.f16.to.f64(value))
 }
 
+// Writes value in decimal with six fractional digits.
 liblapzt.print.f128 = (value: liblapzt.f128) [] {
     liblapzt.print.f64(liblapzt.f128.to.f64(value))
 }

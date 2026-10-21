@@ -1,24 +1,32 @@
+// Boolean logic built from NAND.
+
 liblapzt.bool.true.erased = liblapzt.u1.one.erased
 liblapzt.bool.false.erased = liblapzt.u1.zero.erased
 
+// The true value.
 liblapzt.bool.true = liblapzt.bool.true.erased
+// The false value.
 liblapzt.bool.false = liblapzt.bool.false.erased
 
+// Returns the logical negation of a.
 liblapzt.bool.not = (a: liblapzt.bool) liblapzt.bool {
     NAND(a, a)
 }
 
+// Returns the logical conjunction of a and b.
 liblapzt.bool.and = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
     n: liblapzt.bool = NAND(a, b)
     liblapzt.bool.not(n)
 }
 
+// Returns the logical disjunction of a and b.
 liblapzt.bool.or = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
     na: liblapzt.bool = NAND(a, a)
     nb: liblapzt.bool = NAND(b, b)
     NAND(na, nb)
 }
 
+// Returns true when exactly one of a and b is true.
 liblapzt.bool.xor = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
     n: liblapzt.bool = NAND(a, b)
     na: liblapzt.bool = NAND(a, n)
@@ -26,41 +34,50 @@ liblapzt.bool.xor = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
     NAND(na, nb)
 }
 
+// Returns the negation of the conjunction of a and b.
 liblapzt.bool.nand = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
     NAND(a, b)
 }
 
+// Returns true when neither a nor b is true.
 liblapzt.bool.nor = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
     na: liblapzt.bool = NAND(a, a)
     nb: liblapzt.bool = NAND(b, b)
     liblapzt.bool.and(na, nb)
 }
 
+// Returns true when a and b are equal.
 liblapzt.bool.xnor = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
     liblapzt.bool.not(liblapzt.bool.xor(a, b))
 }
 
+// Returns true when a implies b, that is, when a is false or b is true.
 liblapzt.bool.implies = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
     na: liblapzt.bool = NAND(a, a)
     liblapzt.bool.or(na, b)
 }
 
+// Returns true when a and b are equal.
 liblapzt.bool.eq = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
     liblapzt.bool.not(liblapzt.bool.xor(a, b))
 }
 
+// Returns true when a and b differ.
 liblapzt.bool.ne = (a: liblapzt.bool, b: liblapzt.bool) liblapzt.bool {
     liblapzt.bool.xor(a, b)
 }
 
+// Returns when.true when flag is true, otherwise when.false.
 liblapzt.bool.select = (flag: liblapzt.bool, when.true: liblapzt.bool, when.false: liblapzt.bool) liblapzt.bool {
     BRANCH (flag) { when.true } { when.false }
 }
 
+// Widens a boolean to a one-bit unsigned integer.
 liblapzt.bool.to.u1 = (a: liblapzt.bool) liblapzt.u1 {
     a
 }
 
+// Narrows a one-bit unsigned integer to a boolean.
 liblapzt.bool.from.u1 = (a: liblapzt.u1) liblapzt.bool {
     a
 }

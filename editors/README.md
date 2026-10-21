@@ -47,7 +47,7 @@ Install it once:
 cargo install --path .
 ```
 
-Hover shows the full binding body and the comment block immediately above the binding. Go to definition works on labels.
+Hover shows the comment block immediately above the binding, then the full binding body. Go to definition works on labels.
 
 The server indexes every `.lap` file under the workspace root. It skips `target`, `.git`, `node_modules`, `grammars`, and `tree-sitter-lap`.
 

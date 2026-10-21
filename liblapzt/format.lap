@@ -1,3 +1,5 @@
+// Writes the decimal digits of value right aligned in the digits wide
+// slot at offset. Returns [ok], false when a write fails.
 liblapzt.format.u64.helper = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, digits: liblapzt.u64, index: liblapzt.u64) [BIT] {
     done: liblapzt.bool = liblapzt.u64.is.zero(value)
     BRANCH (done) {
@@ -14,6 +16,9 @@ liblapzt.format.u64.helper = (value: liblapzt.u64, handle: liblapzt.u64, offset:
     }
 }
 
+// Writes value in decimal into capacity bytes at offset in handle.
+// Returns ok with the number of bytes written, or err with code one
+// when capacity is too small or a write fails.
 liblapzt.format.u64 = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, capacity: liblapzt.u64) liblapzt.result {
     zero: liblapzt.bool = liblapzt.u64.is.zero(value)
     BRANCH (zero) {
@@ -44,6 +49,9 @@ liblapzt.format.u64 = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblap
     }
 }
 
+// Writes value in decimal with a leading minus when negative. Returns
+// ok with the number of bytes written including the sign, or err with
+// code one when capacity is too small or a write fails.
 liblapzt.format.i64 = (value: liblapzt.i64, handle: liblapzt.u64, offset: liblapzt.u64, capacity: liblapzt.u64) liblapzt.result {
     negative: liblapzt.bool = liblapzt.i64.is.negative(value)
     BRANCH (negative) {
@@ -68,6 +76,8 @@ liblapzt.format.i64 = (value: liblapzt.i64, handle: liblapzt.u64, offset: liblap
     }
 }
 
+// Returns the lowercase hexadecimal character for a value below
+// sixteen.
 liblapzt.format.hex.digit = (digit: liblapzt.u64) liblapzt.u8 {
     below.ten: liblapzt.bool = liblapzt.u64.lt(digit, liblapzt.constants.ten)
     BRANCH (below.ten) {
@@ -77,6 +87,8 @@ liblapzt.format.hex.digit = (digit: liblapzt.u64) liblapzt.u8 {
     }
 }
 
+// Writes digits hexadecimal characters of value at offset. Returns
+// [ok], false when a write fails.
 liblapzt.format.hex.u64.helper = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, digits: liblapzt.u64, index: liblapzt.u64) [BIT] {
     done: liblapzt.bool = liblapzt.u64.ge(index, digits)
     BRANCH (done) {
@@ -93,6 +105,9 @@ liblapzt.format.hex.u64.helper = (value: liblapzt.u64, handle: liblapzt.u64, off
     }
 }
 
+// Writes value as lowercase hexadecimal without leading zeros into
+// capacity bytes at offset. Returns ok with the digit count, or err
+// with code one when capacity is too small or a write fails.
 liblapzt.format.hex.u64 = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, capacity: liblapzt.u64) liblapzt.result {
     leading: liblapzt.u64 = liblapzt.math.clz.u64(value)
     significant: liblapzt.u64 = liblapzt.u64.sub(liblapzt.constants.sixty.four, leading)
@@ -116,6 +131,8 @@ liblapzt.format.hex.u64 = (value: liblapzt.u64, handle: liblapzt.u64, offset: li
     }
 }
 
+// Writes digits binary characters of value at offset, most significant
+// first. Returns [ok], false when a write fails.
 liblapzt.format.bin.u64.helper = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, digits: liblapzt.u64, index: liblapzt.u64) [BIT] {
     done: liblapzt.bool = liblapzt.u64.ge(index, digits)
     BRANCH (done) {
@@ -132,6 +149,9 @@ liblapzt.format.bin.u64.helper = (value: liblapzt.u64, handle: liblapzt.u64, off
     }
 }
 
+// Writes value as binary without leading zeros into capacity bytes at
+// offset. Returns ok with the digit count, or err with code one when
+// capacity is too small or a write fails.
 liblapzt.format.bin.u64 = (value: liblapzt.u64, handle: liblapzt.u64, offset: liblapzt.u64, capacity: liblapzt.u64) liblapzt.result {
     leading: liblapzt.u64 = liblapzt.math.clz.u64(value)
     significant: liblapzt.u64 = liblapzt.u64.sub(liblapzt.constants.sixty.four, leading)

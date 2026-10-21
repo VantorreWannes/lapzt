@@ -1,3 +1,5 @@
+// Copies the bytes of one word into a buffer, stopping at capacity.
+// Returns a status and the next free index.
 liblapzt.args.write.word = (buffer: liblapzt.u64, capacity: liblapzt.u64, index: liblapzt.u64, word: liblapzt.u64, byte.index: liblapzt.u64) [BIT, liblapzt.u64] {
     done.bytes: liblapzt.bool = liblapzt.u64.ge(byte.index, liblapzt.constants.eight)
     done.capacity: liblapzt.bool = liblapzt.u64.ge(index, capacity)
@@ -35,6 +37,8 @@ liblapzt.args.read.all.helper = (buffer: liblapzt.u64, capacity: liblapzt.u64, i
     }
 }
 
+// Reads every argument into a buffer until the stream ends or the buffer
+// is full. Returns a status and the number of bytes written.
 liblapzt.args.read.all = (buffer: liblapzt.u64, capacity: liblapzt.u64) [BIT, liblapzt.u64] {
     liblapzt.args.read.all.helper(buffer, capacity, liblapzt.u64.zero)
 }
@@ -55,6 +59,7 @@ liblapzt.args.count.helper = (buffer: liblapzt.u64, length: liblapzt.u64, index:
     }
 }
 
+// Counts the zero-terminated arguments in a buffer.
 liblapzt.args.count = (buffer: liblapzt.u64, length: liblapzt.u64) liblapzt.u64 {
     liblapzt.args.count.helper(buffer, length, liblapzt.u64.zero, liblapzt.u64.zero)
 }
@@ -84,6 +89,8 @@ liblapzt.args.at.helper = (buffer: liblapzt.u64, length: liblapzt.u64, index: li
     }
 }
 
+// Returns the argument at index as a string view. Returns false when the
+// index is out of range.
 liblapzt.args.at = (buffer: liblapzt.u64, length: liblapzt.u64, index: liblapzt.u64) [BIT, liblapzt.string] {
     liblapzt.args.at.helper(buffer, length, index, liblapzt.u64.zero, liblapzt.u64.zero, liblapzt.u64.zero)
 }
@@ -99,6 +106,7 @@ liblapzt.args.print.helper = (buffer: liblapzt.u64, length: liblapzt.u64, index:
     }
 }
 
+// Prints each argument on its own line.
 liblapzt.args.print = (buffer: liblapzt.u64, length: liblapzt.u64) [] {
     liblapzt.args.print.helper(buffer, length, liblapzt.u64.zero)
 }

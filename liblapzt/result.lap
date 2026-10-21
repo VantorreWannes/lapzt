@@ -1,39 +1,52 @@
+// Results carrying a value or an error code.
+//
+// A result is [ok, value, code]. Exactly one of value and code is
+// meaningful, depending on ok.
+
 liblapzt.result = [liblapzt.bool, liblapzt.u64, liblapzt.u64]
 
+// Builds a successful result holding value.
 liblapzt.result.ok = (value: liblapzt.u64) liblapzt.result {
     [liblapzt.bool.true, value, liblapzt.u64.zero]
 }
 
+// Builds a failed result holding code.
 liblapzt.result.err = (code: liblapzt.u64) liblapzt.result {
     [liblapzt.bool.false, liblapzt.u64.zero, code]
 }
 
+// Returns true when the result is successful.
 liblapzt.result.is.ok = (result: liblapzt.result) liblapzt.bool {
     [ok, value, code] = result
     ok
 }
 
+// Returns true when the result is failed.
 liblapzt.result.is.err = (result: liblapzt.result) liblapzt.bool {
     [ok, value, code] = result
     liblapzt.bool.not(ok)
 }
 
+// Returns the value. The value is zero when the result is failed.
 liblapzt.result.value = (result: liblapzt.result) liblapzt.u64 {
     [ok, value, code] = result
     value
 }
 
+// Returns the error code. The code is zero when the result is successful.
 liblapzt.result.code = (result: liblapzt.result) liblapzt.u64 {
     [ok, value, code] = result
     code
 }
 
+// Returns the value, or exits with code one when the result is failed.
 liblapzt.result.unwrap = (result: liblapzt.result) liblapzt.u64 {
     [ok, value, code] = result
     liblapzt.assert.true(ok)
     value
 }
 
+// Returns the value, or default when the result is failed.
 liblapzt.result.unwrap.or = (result: liblapzt.result, default: liblapzt.u64) liblapzt.u64 {
     [ok, value, code] = result
     BRANCH (ok) {

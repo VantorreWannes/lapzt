@@ -1,5 +1,6 @@
 liblapzt.f128.erased = [liblapzt.u64.erased, liblapzt.u64.erased]
 
+// A 128-bit IEEE 754 binary128 float stored as a u128.
 liblapzt.f128 = liblapzt.f128.erased
 
 liblapzt.f128.zero.erased: liblapzt.u128 = [[[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]], [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]]
@@ -12,14 +13,27 @@ liblapzt.f128.maximum.erased: liblapzt.u128 = [[[[[[[liblapzt.u1.one.erased, lib
 liblapzt.f128.minimum.erased: liblapzt.u128 = [[[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]], [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]]
 liblapzt.f128.epsilon.erased: liblapzt.u128 = [[[[[[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]], [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]]
 
+// Positive zero. It compares equal to negative zero, but the sign bit
+// differs and is observable through is.negative and through division.
 liblapzt.f128.zero: liblapzt.f128 = liblapzt.f128.zero.erased
+// The exact value 1.0.
 liblapzt.f128.one: liblapzt.f128 = liblapzt.f128.one.erased
+// The exact value -1.0.
 liblapzt.f128.negative.one: liblapzt.f128 = liblapzt.f128.negative.one.erased
+// Positive infinity. Produced by overflow and by dividing a nonzero
+// finite value by zero.
 liblapzt.f128.infinity: liblapzt.f128 = liblapzt.f128.infinity.erased
+// Negative infinity.
 liblapzt.f128.negative.infinity: liblapzt.f128 = liblapzt.f128.negative.infinity.erased
+// A quiet NaN. It is unequal to itself, every ordered comparison with
+// it is false, and arithmetic propagates it.
 liblapzt.f128.nan: liblapzt.f128 = liblapzt.f128.nan.erased
+// Largest finite value, (2 - 2^-112) * 2^16383.
 liblapzt.f128.maximum: liblapzt.f128 = liblapzt.f128.maximum.erased
+// Smallest positive normal value, 2^-16382.
 liblapzt.f128.minimum: liblapzt.f128 = liblapzt.f128.minimum.erased
+// Smallest positive subnormal value, 2^-16494. Adding it to 1.0
+// leaves 1.0 unchanged.
 liblapzt.f128.epsilon: liblapzt.f128 = liblapzt.f128.epsilon.erased
 
 liblapzt.f128.hidden: liblapzt.u128 = [[[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]], [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]]
@@ -172,16 +186,20 @@ liblapzt.f128.bit.110: liblapzt.u128 = [[[[[[[liblapzt.u1.zero.erased, liblapzt.
 liblapzt.f128.bit.111: liblapzt.u128 = [[[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]], [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]]
 liblapzt.f128.bit.112: liblapzt.u128 = [[[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]], [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]]
 
+// Reinterprets the value as its 128-bit IEEE 754 encoding.
 liblapzt.f128.to.bits = (a: liblapzt.f128) liblapzt.u128 {
     [low, high] = a
     [low, high]
 }
 
+// Reinterprets a 128-bit IEEE 754 encoding as the value it denotes.
 liblapzt.f128.from.bits = (a: liblapzt.u128) liblapzt.f128 {
     [low, high] = a
     [low, high]
 }
 
+// Logical right shift of the bit pattern by amount, filling with
+// zeros. Bits shifted past the least significant end are discarded.
 liblapzt.f128.shr = (a: liblapzt.u128, amount: liblapzt.u128) liblapzt.u128 {
     s0: liblapzt.u128 = liblapzt.u128.select(liblapzt.u128.is.zero(liblapzt.u128.and(amount, liblapzt.f128.shift.1)), a, liblapzt.u128.div(a, liblapzt.f128.divisor.1))
     s1: liblapzt.u128 = liblapzt.u128.select(liblapzt.u128.is.zero(liblapzt.u128.and(amount, liblapzt.f128.shift.2)), s0, liblapzt.u128.div(s0, liblapzt.f128.divisor.2))
@@ -193,6 +211,8 @@ liblapzt.f128.shr = (a: liblapzt.u128, amount: liblapzt.u128) liblapzt.u128 {
     s6
 }
 
+// Logical left shift of the bit pattern by amount, filling with
+// zeros. Bits shifted past the most significant end are discarded.
 liblapzt.f128.shl = (a: liblapzt.u128, amount: liblapzt.u128) liblapzt.u128 {
     s0: liblapzt.u128 = liblapzt.u128.select(liblapzt.u128.is.zero(liblapzt.u128.and(amount, liblapzt.f128.shift.1)), a, liblapzt.u128.mul(a, liblapzt.f128.divisor.1))
     s1: liblapzt.u128 = liblapzt.u128.select(liblapzt.u128.is.zero(liblapzt.u128.and(amount, liblapzt.f128.shift.2)), s0, liblapzt.u128.mul(s0, liblapzt.f128.divisor.2))
@@ -204,18 +224,25 @@ liblapzt.f128.shl = (a: liblapzt.u128, amount: liblapzt.u128) liblapzt.u128 {
     s6
 }
 
+// True when the sign bit is set, so it is true for -0 and for NaNs
+// with the sign bit set.
 liblapzt.f128.sign = (a: liblapzt.f128) liblapzt.bool {
     liblapzt.u128.msb(liblapzt.f128.to.bits(a))
 }
 
+// The biased exponent field: 0 for zero and subnormals, all ones for
+// infinity and NaN, and bias + e for a normal value of magnitude 2^e.
 liblapzt.f128.exponent = (a: liblapzt.f128) liblapzt.u128 {
     liblapzt.u128.mod(liblapzt.u128.div(liblapzt.f128.to.bits(a), liblapzt.f128.two.pow.mantissa), liblapzt.f128.two.pow.exponent)
 }
 
+// The stored mantissa field, without the implicit leading bit.
 liblapzt.f128.mantissa = (a: liblapzt.f128) liblapzt.u128 {
     liblapzt.u128.mod(liblapzt.f128.to.bits(a), liblapzt.f128.two.pow.mantissa)
 }
 
+// Builds a value from a sign, a biased exponent field, and a mantissa
+// field. The fields are not validated or normalized.
 liblapzt.f128.pack = (sign: liblapzt.bool, exponent: liblapzt.u128, mantissa: liblapzt.u128) liblapzt.f128 {
     liblapzt.f128.from.bits(liblapzt.u128.or(liblapzt.u128.or(liblapzt.f128.shl(exponent, liblapzt.f128.mantissa.width), mantissa), liblapzt.u128.select(sign, liblapzt.f128.sign.mask, liblapzt.u128.zero)))
 }
@@ -228,24 +255,30 @@ liblapzt.f128.select.erased = (flag: liblapzt.bool, when.true: liblapzt.f128, wh
     }
 }
 
+// Returns when.true if flag holds and when.false otherwise.
 liblapzt.f128.select = liblapzt.f128.select.erased
 
+// True for both positive and negative zero.
 liblapzt.f128.is.zero = (a: liblapzt.f128) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u128.is.zero(liblapzt.f128.exponent(a)), liblapzt.u128.is.zero(liblapzt.f128.mantissa(a)))
 }
 
+// True only for exactly +1.0.
 liblapzt.f128.is.one = (a: liblapzt.f128) liblapzt.bool {
     liblapzt.u128.eq(liblapzt.f128.to.bits(a), liblapzt.f128.one.bits)
 }
 
+// True for any NaN, whatever its payload or sign.
 liblapzt.f128.is.nan = (a: liblapzt.f128) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u128.eq(liblapzt.f128.exponent(a), liblapzt.f128.exponent.maximum), liblapzt.bool.not(liblapzt.u128.is.zero(liblapzt.f128.mantissa(a))))
 }
 
+// True for both positive and negative infinity.
 liblapzt.f128.is.infinite = (a: liblapzt.f128) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u128.eq(liblapzt.f128.exponent(a), liblapzt.f128.exponent.maximum), liblapzt.u128.is.zero(liblapzt.f128.mantissa(a)))
 }
 
+// True when the sign bit is set, including for -0 and negative NaN.
 liblapzt.f128.is.negative = (a: liblapzt.f128) liblapzt.bool {
     liblapzt.f128.sign(a)
 }
@@ -254,18 +287,23 @@ liblapzt.f128.neg.erased = (a: liblapzt.f128) liblapzt.f128 {
     liblapzt.f128.from.bits(liblapzt.u128.xor(liblapzt.f128.to.bits(a), liblapzt.f128.sign.mask))
 }
 
+// Flips the sign bit. neg(0) is -0, neg(NaN) is a NaN with the
+// opposite sign bit, and neg(infinity) is negative infinity.
 liblapzt.f128.neg = liblapzt.f128.neg.erased
 
 liblapzt.f128.abs.erased = (a: liblapzt.f128) liblapzt.f128 {
     liblapzt.f128.from.bits(liblapzt.u128.and(liblapzt.f128.to.bits(a), liblapzt.u128.not(liblapzt.f128.sign.mask)))
 }
 
+// Clears the sign bit. abs(-0) is +0 and abs(-infinity) is infinity.
 liblapzt.f128.abs = liblapzt.f128.abs.erased
 
+// False only for zero. NaN and infinity are true.
 liblapzt.f128.to.bool = (a: liblapzt.f128) liblapzt.bool {
     liblapzt.bool.not(liblapzt.f128.is.zero(a))
 }
 
+// Returns 1.0 for true and 0.0 for false.
 liblapzt.f128.from.bool = (a: liblapzt.bool) liblapzt.f128 {
     liblapzt.f128.select(a, liblapzt.f128.one, liblapzt.f128.zero)
 }
@@ -280,12 +318,15 @@ liblapzt.f128.eq.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.bool {
     }
 }
 
+// True when a and b denote the same value. False if either is NaN.
+// Positive and negative zero compare equal.
 liblapzt.f128.eq = liblapzt.f128.eq.erased
 
 liblapzt.f128.ne.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.bool {
     liblapzt.bool.not(liblapzt.f128.eq(a, b))
 }
 
+// The negation of eq, so it is true if either operand is NaN.
 liblapzt.f128.ne = liblapzt.f128.ne.erased
 
 liblapzt.f128.lt.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.bool {
@@ -309,24 +350,29 @@ liblapzt.f128.lt.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.bool {
     }
 }
 
+// True when a is less than b. False if either is NaN, and false for
+// -0 against +0.
 liblapzt.f128.lt = liblapzt.f128.lt.erased
 
 liblapzt.f128.le.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.bool {
     liblapzt.bool.or(liblapzt.f128.lt(a, b), liblapzt.f128.eq(a, b))
 }
 
+// True when a is less than or equal to b. False if either is NaN.
 liblapzt.f128.le = liblapzt.f128.le.erased
 
 liblapzt.f128.gt.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.bool {
     liblapzt.f128.lt(b, a)
 }
 
+// True when a is greater than b. False if either is NaN.
 liblapzt.f128.gt = liblapzt.f128.gt.erased
 
 liblapzt.f128.ge.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.bool {
     liblapzt.f128.le(b, a)
 }
 
+// True when a is greater than or equal to b. False if either is NaN.
 liblapzt.f128.ge = liblapzt.f128.ge.erased
 
 liblapzt.f128.min.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
@@ -339,6 +385,8 @@ liblapzt.f128.min.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
     }
 }
 
+// The smaller of a and b, or NaN if either is NaN. When the operands
+// compare equal, b is returned.
 liblapzt.f128.min = liblapzt.f128.min.erased
 
 liblapzt.f128.max.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
@@ -351,6 +399,8 @@ liblapzt.f128.max.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
     }
 }
 
+// The larger of a and b, or NaN if either is NaN. When the operands
+// compare equal, b is returned.
 liblapzt.f128.max = liblapzt.f128.max.erased
 
 liblapzt.f128.add.finite = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
@@ -792,12 +842,19 @@ liblapzt.f128.add.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
     }
 }
 
+// Returns a + b. NaN if either operand is NaN, and NaN for infinity
+// plus infinity of opposite signs. +0 + -0 is +0. Results that
+// overflow become infinity. Rounding is not round-to-nearest: when
+// aligning the operands discards any nonzero bits, the magnitude is
+// incremented by one unit in the last place.
 liblapzt.f128.add = liblapzt.f128.add.erased
 
 liblapzt.f128.sub.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
     liblapzt.f128.add(a, liblapzt.f128.neg(b))
 }
 
+// Returns a - b, computed as a + (-b). The same NaN, infinity, signed
+// zero, and rounding rules as add apply.
 liblapzt.f128.sub = liblapzt.f128.sub.erased
 
 liblapzt.f128.mul.finite = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
@@ -855,6 +912,10 @@ liblapzt.f128.mul.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
     }
 }
 
+// Returns a * b. NaN if either operand is NaN, and NaN for zero times
+// infinity. The sign is the exclusive or of the operand signs, so a
+// zero result keeps the correct sign. Results that overflow become
+// infinity; the exact product is truncated toward zero.
 liblapzt.f128.mul = liblapzt.f128.mul.erased
 
 liblapzt.f128.div.finite = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
@@ -1371,8 +1432,17 @@ liblapzt.f128.div.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
     }
 }
 
+// Returns a / b. NaN if either operand is NaN, and NaN for 0/0 and
+// infinity/infinity. A nonzero value divided by zero gives infinity,
+// a finite value divided by infinity gives zero, and both take the
+// sign from the operands. Results that overflow become infinity; the
+// quotient is rounded away from zero.
 liblapzt.f128.div = liblapzt.f128.div.erased
 
+// Rounds toward zero to an integer value. Values with magnitude below
+// 1 become a zero with the same sign, and values with magnitude of at
+// least 2^112 are returned unchanged. NaN and infinity are returned
+// unchanged.
 liblapzt.f128.trunc = (a: liblapzt.f128) liblapzt.f128 {
     exp: liblapzt.u128 = liblapzt.f128.exponent(a)
     small: liblapzt.bool = liblapzt.u128.lt(exp, liblapzt.f128.bias)
@@ -1397,6 +1467,8 @@ liblapzt.f128.mod.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
     liblapzt.f128.sub(a, liblapzt.f128.mul(truncated, b))
 }
 
+// Returns a - trunc(a / b) * b, the remainder with the sign of a.
+// NaN if either operand is NaN or infinite, or if b is zero.
 liblapzt.f128.mod = liblapzt.f128.mod.erased
 
 liblapzt.f128.to.u128.erased = (a: liblapzt.f128) liblapzt.u128 {
@@ -1420,6 +1492,10 @@ liblapzt.f128.to.u128.erased = (a: liblapzt.f128) liblapzt.u128 {
     }
 }
 
+// Converts to u128 by truncating toward zero. Negative values,
+// including negative NaN, become 0, as do values with magnitude below
+// 1. Values of magnitude 2^128 or more, including positive NaN and
+// infinity, become u128.maximum.
 liblapzt.f128.to.u128 = liblapzt.f128.to.u128.erased
 
 liblapzt.f128.from.u128.erased = (a: liblapzt.u128) liblapzt.f128 {
@@ -2201,6 +2277,8 @@ liblapzt.f128.from.u128.erased = (a: liblapzt.u128) liblapzt.f128 {
     }
 }
 
+// Converts a u128 to the corresponding value, truncating toward zero
+// when the integer needs more than 113 significant bits.
 liblapzt.f128.from.u128 = liblapzt.f128.from.u128.erased
 
 liblapzt.f128.to.i128.erased = (a: liblapzt.f128) liblapzt.i128 {
@@ -2213,6 +2291,9 @@ liblapzt.f128.to.i128.erased = (a: liblapzt.f128) liblapzt.i128 {
     }
 }
 
+// Converts to i128 by truncating toward zero. The magnitude is
+// converted through u128 and reinterpreted, so values outside the
+// i128 range wrap rather than saturate.
 liblapzt.f128.to.i128 = liblapzt.f128.to.i128.erased
 
 liblapzt.f128.from.i128.erased = (a: liblapzt.i128) liblapzt.f128 {
@@ -2225,17 +2306,23 @@ liblapzt.f128.from.i128.erased = (a: liblapzt.i128) liblapzt.f128 {
     }
 }
 
+// Converts an i128 to the corresponding value, truncating toward zero
+// when the integer needs more than 113 significant bits.
 liblapzt.f128.from.i128 = liblapzt.f128.from.i128.erased
 
 liblapzt.f128.inc.erased = (a: liblapzt.f128) liblapzt.f128 {
     liblapzt.f128.add(a, liblapzt.f128.one)
 }
 
+// Returns a + 1.0, with the same NaN, infinity, and rounding rules as
+// add.
 liblapzt.f128.inc = liblapzt.f128.inc.erased
 
 liblapzt.f128.dec.erased = (a: liblapzt.f128) liblapzt.f128 {
     liblapzt.f128.sub(a, liblapzt.f128.one)
 }
 
+// Returns a - 1.0, with the same NaN, infinity, and rounding rules as
+// sub.
 liblapzt.f128.dec = liblapzt.f128.dec.erased
 

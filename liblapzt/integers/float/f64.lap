@@ -1,5 +1,6 @@
 liblapzt.f64.erased = [liblapzt.u32.erased, liblapzt.u32.erased]
 
+// A 64-bit IEEE 754 binary64 float stored as a u64.
 liblapzt.f64 = liblapzt.f64.erased
 
 liblapzt.f64.zero.erased: liblapzt.u64 = [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]
@@ -12,14 +13,27 @@ liblapzt.f64.maximum.erased: liblapzt.u64 = [[[[[[liblapzt.u1.one.erased, liblap
 liblapzt.f64.minimum.erased: liblapzt.u64 = [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]
 liblapzt.f64.epsilon.erased: liblapzt.u64 = [[[[[[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]
 
+// Positive zero. It compares equal to negative zero, but the sign bit
+// differs and is observable through is.negative and through division.
 liblapzt.f64.zero: liblapzt.f64 = liblapzt.f64.zero.erased
+// The exact value 1.0.
 liblapzt.f64.one: liblapzt.f64 = liblapzt.f64.one.erased
+// The exact value -1.0.
 liblapzt.f64.negative.one: liblapzt.f64 = liblapzt.f64.negative.one.erased
+// Positive infinity. Produced by overflow and by dividing a nonzero
+// finite value by zero.
 liblapzt.f64.infinity: liblapzt.f64 = liblapzt.f64.infinity.erased
+// Negative infinity.
 liblapzt.f64.negative.infinity: liblapzt.f64 = liblapzt.f64.negative.infinity.erased
+// A quiet NaN. It is unequal to itself, every ordered comparison with
+// it is false, and arithmetic propagates it.
 liblapzt.f64.nan: liblapzt.f64 = liblapzt.f64.nan.erased
+// Largest finite value, (2 - 2^-52) * 2^1023.
 liblapzt.f64.maximum: liblapzt.f64 = liblapzt.f64.maximum.erased
+// Smallest positive normal value, 2^-1022.
 liblapzt.f64.minimum: liblapzt.f64 = liblapzt.f64.minimum.erased
+// Smallest positive subnormal value, 2^-1074. Adding it to 1.0 leaves
+// 1.0 unchanged.
 liblapzt.f64.epsilon: liblapzt.f64 = liblapzt.f64.epsilon.erased
 
 liblapzt.f64.hidden: liblapzt.u64 = [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]
@@ -110,16 +124,20 @@ liblapzt.f64.bit.50: liblapzt.u64 = [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.z
 liblapzt.f64.bit.51: liblapzt.u64 = [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.one.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]
 liblapzt.f64.bit.52: liblapzt.u64 = [[[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]], [[[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]], [[[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.one.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]], [[[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]], [[liblapzt.u1.zero.erased, liblapzt.u1.zero.erased], [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]]]]]]
 
+// Reinterprets the value as its 64-bit IEEE 754 encoding.
 liblapzt.f64.to.bits = (a: liblapzt.f64) liblapzt.u64 {
     [low, high] = a
     [low, high]
 }
 
+// Reinterprets a 64-bit IEEE 754 encoding as the value it denotes.
 liblapzt.f64.from.bits = (a: liblapzt.u64) liblapzt.f64 {
     [low, high] = a
     [low, high]
 }
 
+// Logical right shift of the bit pattern by amount, filling with
+// zeros. Bits shifted past the least significant end are discarded.
 liblapzt.f64.shr = (a: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
     s0: liblapzt.u64 = liblapzt.u64.select(liblapzt.u64.is.zero(liblapzt.u64.and(amount, liblapzt.f64.shift.1)), a, liblapzt.u64.div(a, liblapzt.f64.divisor.1))
     s1: liblapzt.u64 = liblapzt.u64.select(liblapzt.u64.is.zero(liblapzt.u64.and(amount, liblapzt.f64.shift.2)), s0, liblapzt.u64.div(s0, liblapzt.f64.divisor.2))
@@ -130,6 +148,8 @@ liblapzt.f64.shr = (a: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
     s5
 }
 
+// Logical left shift of the bit pattern by amount, filling with
+// zeros. Bits shifted past the most significant end are discarded.
 liblapzt.f64.shl = (a: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
     s0: liblapzt.u64 = liblapzt.u64.select(liblapzt.u64.is.zero(liblapzt.u64.and(amount, liblapzt.f64.shift.1)), a, liblapzt.u64.mul(a, liblapzt.f64.divisor.1))
     s1: liblapzt.u64 = liblapzt.u64.select(liblapzt.u64.is.zero(liblapzt.u64.and(amount, liblapzt.f64.shift.2)), s0, liblapzt.u64.mul(s0, liblapzt.f64.divisor.2))
@@ -140,18 +160,25 @@ liblapzt.f64.shl = (a: liblapzt.u64, amount: liblapzt.u64) liblapzt.u64 {
     s5
 }
 
+// True when the sign bit is set, so it is true for -0 and for NaNs
+// with the sign bit set.
 liblapzt.f64.sign = (a: liblapzt.f64) liblapzt.bool {
     liblapzt.u64.msb(liblapzt.f64.to.bits(a))
 }
 
+// The biased exponent field: 0 for zero and subnormals, all ones for
+// infinity and NaN, and bias + e for a normal value of magnitude 2^e.
 liblapzt.f64.exponent = (a: liblapzt.f64) liblapzt.u64 {
     liblapzt.u64.mod(liblapzt.u64.div(liblapzt.f64.to.bits(a), liblapzt.f64.two.pow.mantissa), liblapzt.f64.two.pow.exponent)
 }
 
+// The stored mantissa field, without the implicit leading bit.
 liblapzt.f64.mantissa = (a: liblapzt.f64) liblapzt.u64 {
     liblapzt.u64.mod(liblapzt.f64.to.bits(a), liblapzt.f64.two.pow.mantissa)
 }
 
+// Builds a value from a sign, a biased exponent field, and a mantissa
+// field. The fields are not validated or normalized.
 liblapzt.f64.pack = (sign: liblapzt.bool, exponent: liblapzt.u64, mantissa: liblapzt.u64) liblapzt.f64 {
     liblapzt.f64.from.bits(liblapzt.u64.or(liblapzt.u64.or(liblapzt.f64.shl(exponent, liblapzt.f64.mantissa.width), mantissa), liblapzt.u64.select(sign, liblapzt.f64.sign.mask, liblapzt.u64.zero)))
 }
@@ -164,24 +191,30 @@ liblapzt.f64.select.erased = (flag: liblapzt.bool, when.true: liblapzt.f64, when
     }
 }
 
+// Returns when.true if flag holds and when.false otherwise.
 liblapzt.f64.select = liblapzt.f64.select.erased
 
+// True for both positive and negative zero.
 liblapzt.f64.is.zero = (a: liblapzt.f64) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u64.is.zero(liblapzt.f64.exponent(a)), liblapzt.u64.is.zero(liblapzt.f64.mantissa(a)))
 }
 
+// True only for exactly +1.0.
 liblapzt.f64.is.one = (a: liblapzt.f64) liblapzt.bool {
     liblapzt.u64.eq(liblapzt.f64.to.bits(a), liblapzt.f64.one.bits)
 }
 
+// True for any NaN, whatever its payload or sign.
 liblapzt.f64.is.nan = (a: liblapzt.f64) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u64.eq(liblapzt.f64.exponent(a), liblapzt.f64.exponent.maximum), liblapzt.bool.not(liblapzt.u64.is.zero(liblapzt.f64.mantissa(a))))
 }
 
+// True for both positive and negative infinity.
 liblapzt.f64.is.infinite = (a: liblapzt.f64) liblapzt.bool {
     liblapzt.bool.and(liblapzt.u64.eq(liblapzt.f64.exponent(a), liblapzt.f64.exponent.maximum), liblapzt.u64.is.zero(liblapzt.f64.mantissa(a)))
 }
 
+// True when the sign bit is set, including for -0 and negative NaN.
 liblapzt.f64.is.negative = (a: liblapzt.f64) liblapzt.bool {
     liblapzt.f64.sign(a)
 }
@@ -190,18 +223,23 @@ liblapzt.f64.neg.erased = (a: liblapzt.f64) liblapzt.f64 {
     liblapzt.f64.from.bits(liblapzt.u64.xor(liblapzt.f64.to.bits(a), liblapzt.f64.sign.mask))
 }
 
+// Flips the sign bit. neg(0) is -0, neg(NaN) is a NaN with the
+// opposite sign bit, and neg(infinity) is negative infinity.
 liblapzt.f64.neg = liblapzt.f64.neg.erased
 
 liblapzt.f64.abs.erased = (a: liblapzt.f64) liblapzt.f64 {
     liblapzt.f64.from.bits(liblapzt.u64.and(liblapzt.f64.to.bits(a), liblapzt.u64.not(liblapzt.f64.sign.mask)))
 }
 
+// Clears the sign bit. abs(-0) is +0 and abs(-infinity) is infinity.
 liblapzt.f64.abs = liblapzt.f64.abs.erased
 
+// False only for zero. NaN and infinity are true.
 liblapzt.f64.to.bool = (a: liblapzt.f64) liblapzt.bool {
     liblapzt.bool.not(liblapzt.f64.is.zero(a))
 }
 
+// Returns 1.0 for true and 0.0 for false.
 liblapzt.f64.from.bool = (a: liblapzt.bool) liblapzt.f64 {
     liblapzt.f64.select(a, liblapzt.f64.one, liblapzt.f64.zero)
 }
@@ -216,12 +254,15 @@ liblapzt.f64.eq.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.bool {
     }
 }
 
+// True when a and b denote the same value. False if either is NaN.
+// Positive and negative zero compare equal.
 liblapzt.f64.eq = liblapzt.f64.eq.erased
 
 liblapzt.f64.ne.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.bool {
     liblapzt.bool.not(liblapzt.f64.eq(a, b))
 }
 
+// The negation of eq, so it is true if either operand is NaN.
 liblapzt.f64.ne = liblapzt.f64.ne.erased
 
 liblapzt.f64.lt.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.bool {
@@ -245,24 +286,29 @@ liblapzt.f64.lt.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.bool {
     }
 }
 
+// True when a is less than b. False if either is NaN, and false for
+// -0 against +0.
 liblapzt.f64.lt = liblapzt.f64.lt.erased
 
 liblapzt.f64.le.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.bool {
     liblapzt.bool.or(liblapzt.f64.lt(a, b), liblapzt.f64.eq(a, b))
 }
 
+// True when a is less than or equal to b. False if either is NaN.
 liblapzt.f64.le = liblapzt.f64.le.erased
 
 liblapzt.f64.gt.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.bool {
     liblapzt.f64.lt(b, a)
 }
 
+// True when a is greater than b. False if either is NaN.
 liblapzt.f64.gt = liblapzt.f64.gt.erased
 
 liblapzt.f64.ge.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.bool {
     liblapzt.f64.le(b, a)
 }
 
+// True when a is greater than or equal to b. False if either is NaN.
 liblapzt.f64.ge = liblapzt.f64.ge.erased
 
 liblapzt.f64.min.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
@@ -275,6 +321,8 @@ liblapzt.f64.min.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
     }
 }
 
+// The smaller of a and b, or NaN if either is NaN. When the operands
+// compare equal, b is returned.
 liblapzt.f64.min = liblapzt.f64.min.erased
 
 liblapzt.f64.max.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
@@ -287,6 +335,8 @@ liblapzt.f64.max.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
     }
 }
 
+// The larger of a and b, or NaN if either is NaN. When the operands
+// compare equal, b is returned.
 liblapzt.f64.max = liblapzt.f64.max.erased
 
 liblapzt.f64.add.finite = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
@@ -548,12 +598,19 @@ liblapzt.f64.add.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
     }
 }
 
+// Returns a + b. NaN if either operand is NaN, and NaN for infinity
+// plus infinity of opposite signs. +0 + -0 is +0. Results that
+// overflow become infinity. Rounding is not round-to-nearest: when
+// aligning the operands discards any nonzero bits, the magnitude is
+// incremented by one unit in the last place.
 liblapzt.f64.add = liblapzt.f64.add.erased
 
 liblapzt.f64.sub.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
     liblapzt.f64.add(a, liblapzt.f64.neg(b))
 }
 
+// Returns a - b, computed as a + (-b). The same NaN, infinity, signed
+// zero, and rounding rules as add apply.
 liblapzt.f64.sub = liblapzt.f64.sub.erased
 
 liblapzt.f64.mul.finite = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
@@ -611,6 +668,10 @@ liblapzt.f64.mul.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
     }
 }
 
+// Returns a * b. NaN if either operand is NaN, and NaN for zero times
+// infinity. The sign is the exclusive or of the operand signs, so a
+// zero result keeps the correct sign. Results that overflow become
+// infinity; the exact product is truncated toward zero.
 liblapzt.f64.mul = liblapzt.f64.mul.erased
 
 liblapzt.f64.div.finite = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
@@ -887,8 +948,17 @@ liblapzt.f64.div.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
     }
 }
 
+// Returns a / b. NaN if either operand is NaN, and NaN for 0/0 and
+// infinity/infinity. A nonzero value divided by zero gives infinity,
+// a finite value divided by infinity gives zero, and both take the
+// sign from the operands. Results that overflow become infinity; the
+// quotient is rounded away from zero.
 liblapzt.f64.div = liblapzt.f64.div.erased
 
+// Rounds toward zero to an integer value. Values with magnitude below
+// 1 become a zero with the same sign, and values with magnitude of at
+// least 2^52 are returned unchanged. NaN and infinity are returned
+// unchanged.
 liblapzt.f64.trunc = (a: liblapzt.f64) liblapzt.f64 {
     exp: liblapzt.u64 = liblapzt.f64.exponent(a)
     small: liblapzt.bool = liblapzt.u64.lt(exp, liblapzt.f64.bias)
@@ -913,6 +983,8 @@ liblapzt.f64.mod.erased = (a: liblapzt.f64, b: liblapzt.f64) liblapzt.f64 {
     liblapzt.f64.sub(a, liblapzt.f64.mul(truncated, b))
 }
 
+// Returns a - trunc(a / b) * b, the remainder with the sign of a.
+// NaN if either operand is NaN or infinite, or if b is zero.
 liblapzt.f64.mod = liblapzt.f64.mod.erased
 
 liblapzt.f64.to.u64.erased = (a: liblapzt.f64) liblapzt.u64 {
@@ -936,6 +1008,10 @@ liblapzt.f64.to.u64.erased = (a: liblapzt.f64) liblapzt.u64 {
     }
 }
 
+// Converts to u64 by truncating toward zero. Negative values,
+// including negative NaN, become 0, as do values with magnitude below
+// 1. Values of magnitude 2^64 or more, including positive NaN and
+// infinity, become u64.maximum.
 liblapzt.f64.to.u64 = liblapzt.f64.to.u64.erased
 
 liblapzt.f64.from.u64.erased = (a: liblapzt.u64) liblapzt.f64 {
@@ -1333,6 +1409,8 @@ liblapzt.f64.from.u64.erased = (a: liblapzt.u64) liblapzt.f64 {
     }
 }
 
+// Converts a u64 to the corresponding value, truncating toward zero
+// when the integer needs more than 53 significant bits.
 liblapzt.f64.from.u64 = liblapzt.f64.from.u64.erased
 
 liblapzt.f64.to.i64.erased = (a: liblapzt.f64) liblapzt.i64 {
@@ -1345,6 +1423,9 @@ liblapzt.f64.to.i64.erased = (a: liblapzt.f64) liblapzt.i64 {
     }
 }
 
+// Converts to i64 by truncating toward zero. The magnitude is
+// converted through u64 and reinterpreted, so values outside the i64
+// range wrap rather than saturate.
 liblapzt.f64.to.i64 = liblapzt.f64.to.i64.erased
 
 liblapzt.f64.from.i64.erased = (a: liblapzt.i64) liblapzt.f64 {
@@ -1357,17 +1438,23 @@ liblapzt.f64.from.i64.erased = (a: liblapzt.i64) liblapzt.f64 {
     }
 }
 
+// Converts an i64 to the corresponding value, truncating toward zero
+// when the integer needs more than 53 significant bits.
 liblapzt.f64.from.i64 = liblapzt.f64.from.i64.erased
 
 liblapzt.f64.inc.erased = (a: liblapzt.f64) liblapzt.f64 {
     liblapzt.f64.add(a, liblapzt.f64.one)
 }
 
+// Returns a + 1.0, with the same NaN, infinity, and rounding rules as
+// add.
 liblapzt.f64.inc = liblapzt.f64.inc.erased
 
 liblapzt.f64.dec.erased = (a: liblapzt.f64) liblapzt.f64 {
     liblapzt.f64.sub(a, liblapzt.f64.one)
 }
 
+// Returns a - 1.0, with the same NaN, infinity, and rounding rules as
+// sub.
 liblapzt.f64.dec = liblapzt.f64.dec.erased
 
