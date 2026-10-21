@@ -1,417 +1,435 @@
-liblapzt.u16.erased = [liblapzt.u8.erased, liblapzt.u8.erased]
+//! 16-bit unsigned integer type
 
-// A 16-bit unsigned integer stored as a pair of u8 words.
-// Operations are defined in terms of the smaller word.
-liblapzt.u16 = liblapzt.u16.erased
+// --- Erased ---
 
-liblapzt.u16.zero.erased: liblapzt.u16.erased = [liblapzt.u8.zero.erased, liblapzt.u8.zero.erased]
-liblapzt.u16.one.erased: liblapzt.u16.erased = [liblapzt.u8.one.erased, liblapzt.u8.zero.erased]
-liblapzt.u16.maximum.erased: liblapzt.u16.erased = [liblapzt.u8.maximum.erased, liblapzt.u8.maximum.erased]
+__liblapzt.integer.u16.erased = [liblapzt.integer.u8, liblapzt.integer.u8]
+__liblapzt.integer.u16.MIN.erased = [liblapzt.integer.u8.MIN, liblapzt.integer.u8.MIN]
+__liblapzt.integer.u16.MAX.erased = [liblapzt.integer.u8.MAX, liblapzt.integer.u8.MAX]
 
-// The additive identity, with every bit clear.
-liblapzt.u16.zero: liblapzt.u16 = liblapzt.u16.zero.erased
-// The value one, with only the least significant bit set.
-liblapzt.u16.one: liblapzt.u16 = liblapzt.u16.one.erased
-// The largest representable value, with every bit set.
-liblapzt.u16.maximum: liblapzt.u16 = liblapzt.u16.maximum.erased
+// --- Types ---
 
-liblapzt.u16.not.erased = (a: liblapzt.u16) liblapzt.u16 {
-    [low, high] = a
-    [liblapzt.u8.not(low), liblapzt.u8.not(high)]
+liblapzt.integer.u16 = __liblapzt.integer.u16.erased
+liblapzt.integer.u16.MIN = __liblapzt.integer.u16.MIN.erased
+liblapzt.integer.u16.MAX = __liblapzt.integer.u16.MAX.erased
+
+// --- Functions ---
+
+// Returns the bitwise complement of self.
+liblapzt.integer.u16.not = (self: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [self_low, self_high] = self
+    [liblapzt.integer.u8.not(self_low), liblapzt.integer.u8.not(self_high)]
 }
 
-// Returns the bitwise complement of a, flipping every bit.
-liblapzt.u16.not = liblapzt.u16.not.erased
-
-liblapzt.u16.and.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u8.and(al, bl), liblapzt.u8.and(ah, bh)]
+// Returns the bitwise and of self and other.
+liblapzt.integer.u16.and = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u8.and(self_low, other_low), liblapzt.integer.u8.and(self_high, other_high)]
 }
 
-// Returns the bitwise AND of a and b.
-liblapzt.u16.and = liblapzt.u16.and.erased
-
-liblapzt.u16.or.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u8.or(al, bl), liblapzt.u8.or(ah, bh)]
+// Returns the bitwise or of self and other.
+liblapzt.integer.u16.or = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u8.or(self_low, other_low), liblapzt.integer.u8.or(self_high, other_high)]
 }
 
-// Returns the bitwise OR of a and b.
-liblapzt.u16.or = liblapzt.u16.or.erased
-
-liblapzt.u16.xor.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u8.xor(al, bl), liblapzt.u8.xor(ah, bh)]
+// Returns the bitwise not.and of self and other.
+liblapzt.integer.u16.not.and = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u8.not.and(self_low, other_low), liblapzt.integer.u8.not.and(self_high, other_high)]
 }
 
-// Returns the bitwise XOR of a and b.
-liblapzt.u16.xor = liblapzt.u16.xor.erased
-
-liblapzt.u16.nand.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u8.nand(al, bl), liblapzt.u8.nand(ah, bh)]
+// Returns the bitwise not.or of self and other.
+liblapzt.integer.u16.not.or = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u8.not.or(self_low, other_low), liblapzt.integer.u8.not.or(self_high, other_high)]
 }
 
-// Returns the bitwise NAND of a and b.
-liblapzt.u16.nand = liblapzt.u16.nand.erased
-
-liblapzt.u16.nor.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u8.nor(al, bl), liblapzt.u8.nor(ah, bh)]
+// Returns the bitwise exclusive.or of self and other.
+liblapzt.integer.u16.exclusive.or = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u8.exclusive.or(self_low, other_low), liblapzt.integer.u8.exclusive.or(self_high, other_high)]
 }
 
-// Returns the bitwise NOR of a and b.
-liblapzt.u16.nor = liblapzt.u16.nor.erased
-
-liblapzt.u16.xnor.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u8.xnor(al, bl), liblapzt.u8.xnor(ah, bh)]
+// Returns true when self and other have the same value.
+liblapzt.integer.u16.equal = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.boolean {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    low_equal: liblapzt.boolean = liblapzt.integer.u8.equal(self_low, other_low)
+    high_equal: liblapzt.boolean = liblapzt.integer.u8.equal(self_high, other_high)
+    liblapzt.boolean.and(low_equal, high_equal)
 }
 
-// Returns the bitwise XNOR of a and b.
-liblapzt.u16.xnor = liblapzt.u16.xnor.erased
-
-liblapzt.u16.from.bool.erased = (a: liblapzt.bool) liblapzt.u16 {
-    [liblapzt.u8.from.bool(a), liblapzt.u8.zero]
+// Returns true when self and other differ.
+liblapzt.integer.u16.not.equal = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.boolean {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    low_differ: liblapzt.boolean = liblapzt.integer.u8.not.equal(self_low, other_low)
+    high_differ: liblapzt.boolean = liblapzt.integer.u8.not.equal(self_high, other_high)
+    liblapzt.boolean.or(low_differ, high_differ)
 }
 
-// Returns one when a is true and zero when a is false.
-liblapzt.u16.from.bool = liblapzt.u16.from.bool.erased
-
-// Returns the sum of a and b as a pair [sum, carry], where carry is
-// the carry out of the top bit.
-liblapzt.u16.add.carry = (a: liblapzt.u16, b: liblapzt.u16) [liblapzt.u16, liblapzt.bool] {
-    [al, ah] = a
-    [bl, bh] = b
-    [sl, cl] = liblapzt.u8.add.carry(al, bl)
-    [sh, ch] = liblapzt.u8.add.carry(ah, bh)
-    [sh2, ch2] = liblapzt.u8.add.carry(sh, liblapzt.u8.from.bool(cl))
-    [[sl, sh2], liblapzt.bool.or(ch, ch2)]
+// Returns true when self is greater than other.
+liblapzt.integer.u16.greater_than = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.boolean {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    high_greater: liblapzt.boolean = liblapzt.integer.u8.greater_than(self_high, other_high)
+    high_equal: liblapzt.boolean = liblapzt.integer.u8.equal(self_high, other_high)
+    low_greater: liblapzt.boolean = liblapzt.integer.u8.greater_than(self_low, other_low)
+    liblapzt.boolean.or(high_greater, liblapzt.boolean.and(high_equal, low_greater))
 }
 
-liblapzt.u16.add.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    [sum, carry] = liblapzt.u16.add.carry(a, b)
-    sum
+// Returns true when self is less than other.
+liblapzt.integer.u16.less_than = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.boolean {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    high_less: liblapzt.boolean = liblapzt.integer.u8.less_than(self_high, other_high)
+    high_equal: liblapzt.boolean = liblapzt.integer.u8.equal(self_high, other_high)
+    low_less: liblapzt.boolean = liblapzt.integer.u8.less_than(self_low, other_low)
+    liblapzt.boolean.or(high_less, liblapzt.boolean.and(high_equal, low_less))
 }
 
-// Returns the sum of a and b, discarding the carry out of the top
-// bit.
-liblapzt.u16.add = liblapzt.u16.add.erased
-
-// Returns a - b as a pair [difference, borrow], where borrow is the
-// borrow out of the top bit.
-liblapzt.u16.sub.borrow = (a: liblapzt.u16, b: liblapzt.u16) [liblapzt.u16, liblapzt.bool] {
-    [al, ah] = a
-    [bl, bh] = b
-    [sl, blw] = liblapzt.u8.sub.borrow(al, bl)
-    [sh, bhw] = liblapzt.u8.sub.borrow(ah, bh)
-    [sh2, bhw2] = liblapzt.u8.sub.borrow(sh, liblapzt.u8.from.bool(blw))
-    [[sl, sh2], liblapzt.bool.or(bhw, bhw2)]
+// Returns the smaller of self and other.
+liblapzt.integer.u16.min = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    less: liblapzt.boolean = liblapzt.integer.u16.less_than(self, other)
+    BRANCH (less) { self } { other }
 }
 
-liblapzt.u16.sub.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    [difference, borrow] = liblapzt.u16.sub.borrow(a, b)
-    difference
+// Returns the larger of self and other.
+liblapzt.integer.u16.max = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    greater: liblapzt.boolean = liblapzt.integer.u16.greater_than(self, other)
+    BRANCH (greater) { self } { other }
 }
 
-// Returns a - b modulo 65536, discarding the borrow. Wraps when b is
-// greater than a.
-liblapzt.u16.sub = liblapzt.u16.sub.erased
-
-// Returns the sum of a, b and c as a pair [sum, carry].
-liblapzt.u16.add3 = (a: liblapzt.u16, b: liblapzt.u16, c: liblapzt.u16) [liblapzt.u16, liblapzt.u16] {
-    [s1, c1] = liblapzt.u16.add.carry(a, b)
-    [s2, c2] = liblapzt.u16.add.carry(s1, c)
-    carry: liblapzt.u16 = liblapzt.u16.add(liblapzt.u16.from.bool(c1), liblapzt.u16.from.bool(c2))
-    [s2, carry]
+// Returns the sum of self and other modulo 2^16.
+liblapzt.integer.u16.add.wrapping = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    sum_low: liblapzt.integer.u8 = liblapzt.integer.u8.add.wrapping(self_low, other_low)
+    carry_low: liblapzt.integer.u8 = liblapzt.integer.u8.and(self_low, other_low)
+    xor_high: liblapzt.integer.u8 = liblapzt.integer.u8.add.wrapping(self_high, other_high)
+    sum_high: liblapzt.integer.u8 = liblapzt.integer.u8.add.wrapping(xor_high, carry_low)
+    [sum_low, sum_high]
 }
 
-// Returns the full 32-bit product of a and b as a pair
+// Returns [ok, sum]. Ok is false when the sum overflows, and
+// the value is then MIN.
+liblapzt.integer.u16.add.checked = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) [liblapzt.boolean, liblapzt.integer.u16] {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    sum_low: liblapzt.integer.u8 = liblapzt.integer.u8.add.wrapping(self_low, other_low)
+    carry_low: liblapzt.integer.u8 = liblapzt.integer.u8.and(self_low, other_low)
+    xor_high: liblapzt.integer.u8 = liblapzt.integer.u8.add.wrapping(self_high, other_high)
+    sum_high: liblapzt.integer.u8 = liblapzt.integer.u8.add.wrapping(xor_high, carry_low)
+    carry_high: liblapzt.integer.u8 = liblapzt.integer.u8.or(liblapzt.integer.u8.and(self_high, other_high), liblapzt.integer.u8.and(carry_low, xor_high))
+    BRANCH (carry_high) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.u16.MIN]
+    } {
+        [liblapzt.boolean.TRUE, [sum_low, sum_high]]
+    }
+}
+
+// Returns the sum of self and other, saturated at MAX.
+liblapzt.integer.u16.add.saturating = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [ok, sum] = liblapzt.integer.u16.add.checked(self, other)
+    BRANCH (ok) { sum } { liblapzt.integer.u16.MAX }
+}
+
+// Returns the difference of self and other modulo 2^16.
+liblapzt.integer.u16.subtract.wrapping = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    diff_low: liblapzt.integer.u8 = liblapzt.integer.u8.subtract.wrapping(self_low, other_low)
+    borrow_low: liblapzt.boolean = liblapzt.integer.u8.less_than(self_low, other_low)
+    xor_high: liblapzt.integer.u8 = liblapzt.integer.u8.subtract.wrapping(self_high, other_high)
+    diff_high: liblapzt.integer.u8 = liblapzt.integer.u8.subtract.wrapping(xor_high, borrow_low)
+    [diff_low, diff_high]
+}
+
+// Returns [ok, difference]. Ok is false when the difference
+// underflows, and the value is then MIN.
+liblapzt.integer.u16.subtract.checked = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) [liblapzt.boolean, liblapzt.integer.u16] {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    diff_low: liblapzt.integer.u8 = liblapzt.integer.u8.subtract.wrapping(self_low, other_low)
+    borrow_low: liblapzt.boolean = liblapzt.integer.u8.less_than(self_low, other_low)
+    xor_high: liblapzt.integer.u8 = liblapzt.integer.u8.subtract.wrapping(self_high, other_high)
+    diff_high: liblapzt.integer.u8 = liblapzt.integer.u8.subtract.wrapping(xor_high, borrow_low)
+    borrow_high: liblapzt.boolean = liblapzt.boolean.or(liblapzt.integer.u8.less_than(self_high, other_high), liblapzt.boolean.and(borrow_low, liblapzt.integer.u8.not(xor_high)))
+    BRANCH (borrow_high) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.u16.MIN]
+    } {
+        [liblapzt.boolean.TRUE, [diff_low, diff_high]]
+    }
+}
+
+// Returns the difference of self and other, saturated at MIN.
+liblapzt.integer.u16.subtract.saturating = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [ok, difference] = liblapzt.integer.u16.subtract.checked(self, other)
+    BRANCH (ok) { difference } { liblapzt.integer.u16.MIN }
+}
+
+// Returns the full 2*16-bit product of self and other as a pair
 // [low, high].
-liblapzt.u16.mul.full = (a: liblapzt.u16, b: liblapzt.u16) [liblapzt.u16, liblapzt.u16] {
-    [al, ah] = a
-    [bl, bh] = b
-    [ll, lh] = liblapzt.u8.mul.full(al, bl)
-    [cl, ch] = liblapzt.u8.mul.full(al, bh)
-    [dl, dh] = liblapzt.u8.mul.full(ah, bl)
-    [el, eh] = liblapzt.u8.mul.full(ah, bh)
-    [low.sum, low.carry] = liblapzt.u8.add3(lh, cl, dl)
-    low: liblapzt.u16 = [ll, low.sum]
-    [high.sum, high.carry] = liblapzt.u8.add3(ch, dh, el)
-    [high.sum2, high.carry2] = liblapzt.u8.add.carry(high.sum, low.carry)
-    high.high: liblapzt.u8 = liblapzt.u8.add(liblapzt.u8.add(eh, high.carry), liblapzt.u8.from.bool(high.carry2))
-    high: liblapzt.u16 = [high.sum2, high.high]
-    [low, high]
+liblapzt.integer.u16.multiply.full = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) [liblapzt.integer.u16, liblapzt.integer.u16] {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [p_low, p_high] = liblapzt.integer.u8.multiply.full(self_low, other_low)
+    lh: liblapzt.integer.u16 = liblapzt.integer.u8.multiply.full(self_low, other_high)
+    hl: liblapzt.integer.u16 = liblapzt.integer.u8.multiply.full(self_high, other_low)
+    [q_ok, q] = liblapzt.integer.u16.add.checked(lh, hl)
+    [q_low, q_high] = q
+    [low_ok, low] = liblapzt.integer.u16.add.checked([p_low, p_high], [liblapzt.integer.u8.MIN, q_low])
+    carry_low: liblapzt.boolean = liblapzt.boolean.not(low_ok)
+    [r_low, r_high] = liblapzt.integer.u8.multiply.full(self_high, other_high)
+    [high_ok, high] = liblapzt.integer.u16.add.checked([q_high, liblapzt.integer.u8.MIN], [r_low, r_high])
+    one: liblapzt.integer.u16 = liblapzt.integer.u16.subtract.wrapping(liblapzt.integer.u16.MIN, liblapzt.integer.u16.MAX)
+    high2: liblapzt.integer.u16 = BRANCH (carry_low) { liblapzt.integer.u16.add.wrapping(high, one) } { high }
+    carry_high: liblapzt.integer.u16 = BRANCH (liblapzt.boolean.not(q_ok)) { [liblapzt.integer.u8.MIN, liblapzt.integer.u8.MAX] } { liblapzt.integer.u16.MIN }
+    high3: liblapzt.integer.u16 = liblapzt.integer.u16.add.wrapping(high2, carry_high)
+    [low, high3]
 }
 
-liblapzt.u16.mul.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    [al, ah] = a
-    [bl, bh] = b
-    [ll, lh] = liblapzt.u8.mul.full(al, bl)
-    cross: liblapzt.u8 = liblapzt.u8.add(liblapzt.u8.mul(al, bh), liblapzt.u8.mul(ah, bl))
-    [ll, liblapzt.u8.add(lh, cross)]
+// Returns the low 16 bits of the product of self and other.
+liblapzt.integer.u16.multiply.wrapping = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [low, high] = liblapzt.integer.u16.multiply.full(self, other)
+    low
 }
 
-// Returns the low 16 bits of the product of a and b, discarding the
-// high half.
-liblapzt.u16.mul = liblapzt.u16.mul.erased
-
-// Returns a shifted left by one bit. The top bit is discarded and
-// the low bit becomes zero.
-liblapzt.u16.shl1 = (a: liblapzt.u16) liblapzt.u16 {
-    [low, high] = a
-    [liblapzt.u8.shl1(low), liblapzt.u8.or(liblapzt.u8.shl1(high), liblapzt.u8.from.bool(liblapzt.u8.msb(low)))]
+// Returns [ok, product]. Ok is false when the product overflows,
+// and the value is then MIN.
+liblapzt.integer.u16.multiply.checked = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) [liblapzt.boolean, liblapzt.integer.u16] {
+    [low, high] = liblapzt.integer.u16.multiply.full(self, other)
+    [liblapzt.integer.u16.equal(high, liblapzt.integer.u16.MIN), low]
 }
 
-// Returns a with its least significant bit replaced by bit.
-liblapzt.u16.with.lsb = (a: liblapzt.u16, bit: liblapzt.bool) liblapzt.u16 {
-    [low, high] = a
-    [liblapzt.u8.with.lsb(low, bit), high]
+// Returns the product of self and other, saturated at MAX.
+liblapzt.integer.u16.multiply.saturating = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [ok, low] = liblapzt.integer.u16.multiply.checked(self, other)
+    BRANCH (ok) { low } { liblapzt.integer.u16.MAX }
 }
 
-// Returns the most significant bit of a as a u1.
-liblapzt.u16.msb = (a: liblapzt.u16) liblapzt.u1 {
-    [low, high] = a
-    liblapzt.u8.msb(high)
-}
-
-liblapzt.u16.eq.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.bool {
-    [al, ah] = a
-    [bl, bh] = b
-    liblapzt.bool.and(liblapzt.u8.eq(al, bl), liblapzt.u8.eq(ah, bh))
-}
-
-// Returns true when a and b have the same value.
-liblapzt.u16.eq = liblapzt.u16.eq.erased
-
-liblapzt.u16.ne.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.bool {
-    liblapzt.bool.not(liblapzt.u16.eq(a, b))
-}
-
-// Returns true when a and b differ.
-liblapzt.u16.ne = liblapzt.u16.ne.erased
-
-liblapzt.u16.lt.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.bool {
-    [al, ah] = a
-    [bl, bh] = b
-    high.lt: liblapzt.bool = liblapzt.u8.lt(ah, bh)
-    high.eq: liblapzt.bool = liblapzt.u8.eq(ah, bh)
-    low.lt: liblapzt.bool = liblapzt.u8.lt(al, bl)
-    liblapzt.bool.or(high.lt, liblapzt.bool.and(high.eq, low.lt))
-}
-
-// Returns true when a is less than b.
-liblapzt.u16.lt = liblapzt.u16.lt.erased
-
-liblapzt.u16.le.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.bool {
-    liblapzt.bool.or(liblapzt.u16.lt(a, b), liblapzt.u16.eq(a, b))
-}
-
-// Returns true when a is less than or equal to b.
-liblapzt.u16.le = liblapzt.u16.le.erased
-
-liblapzt.u16.gt.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.bool {
-    liblapzt.u16.lt(b, a)
-}
-
-// Returns true when a is greater than b.
-liblapzt.u16.gt = liblapzt.u16.gt.erased
-
-liblapzt.u16.ge.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.bool {
-    liblapzt.u16.le(b, a)
-}
-
-// Returns true when a is greater than or equal to b.
-liblapzt.u16.ge = liblapzt.u16.ge.erased
-
-liblapzt.u16.select.erased = (flag: liblapzt.bool, when.true: liblapzt.u16, when.false: liblapzt.u16) liblapzt.u16 {
-    [tl, th] = when.true
-    [fl, fh] = when.false
-    [liblapzt.u8.select(flag, tl, fl), liblapzt.u8.select(flag, th, fh)]
-}
-
-// Returns when.true when flag is true, otherwise when.false.
-liblapzt.u16.select = liblapzt.u16.select.erased
-
-liblapzt.u16.min.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    liblapzt.u16.select(liblapzt.u16.lt(a, b), a, b)
-}
-
-// Returns the smaller of a and b.
-liblapzt.u16.min = liblapzt.u16.min.erased
-
-liblapzt.u16.max.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    liblapzt.u16.select(liblapzt.u16.gt(a, b), a, b)
-}
-
-// Returns the larger of a and b.
-liblapzt.u16.max = liblapzt.u16.max.erased
-
-liblapzt.u16.inc.erased = (a: liblapzt.u16) liblapzt.u16 {
-    liblapzt.u16.add(a, liblapzt.u16.one)
-}
-
-// Returns a plus one, wrapping to zero at the maximum value.
-liblapzt.u16.inc = liblapzt.u16.inc.erased
-
-liblapzt.u16.dec.erased = (a: liblapzt.u16) liblapzt.u16 {
-    liblapzt.u16.sub(a, liblapzt.u16.one)
-}
-
-// Returns a minus one, wrapping to the maximum value at zero.
-liblapzt.u16.dec = liblapzt.u16.dec.erased
-
-liblapzt.u16.is.zero.erased = (a: liblapzt.u16) liblapzt.bool {
-    [low, high] = a
-    liblapzt.bool.and(liblapzt.u8.is.zero(low), liblapzt.u8.is.zero(high))
-}
-
-// Returns true when every bit of a is clear.
-liblapzt.u16.is.zero = liblapzt.u16.is.zero.erased
-
-liblapzt.u16.is.one.erased = (a: liblapzt.u16) liblapzt.bool {
-    [low, high] = a
-    liblapzt.bool.and(liblapzt.u8.is.one(low), liblapzt.u8.is.zero(high))
-}
-
-// Returns true when a equals one.
-liblapzt.u16.is.one = liblapzt.u16.is.one.erased
-
-liblapzt.u16.to.bool.erased = (a: liblapzt.u16) liblapzt.bool {
-    liblapzt.bool.not(liblapzt.u16.is.zero(a))
-}
-
-// Returns true when a is nonzero.
-liblapzt.u16.to.bool = liblapzt.u16.to.bool.erased
-
-liblapzt.u16.div.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    zero: liblapzt.bool = liblapzt.u16.is.zero(b)
+// Returns [quotient, remainder] of self divided by other. Returns
+// [MAX, MIN] when other is zero.
+liblapzt.integer.u16.divide.full = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) [liblapzt.integer.u16, liblapzt.integer.u16] {
+    zero: liblapzt.boolean = liblapzt.integer.u16.equal(other, liblapzt.integer.u16.MIN)
     BRANCH (zero) {
-        liblapzt.u16.zero
+        [liblapzt.integer.u16.MAX, liblapzt.integer.u16.MIN]
     } {
-        [[[[a0, a1], [a2, a3]], [[a4, a5], [a6, a7]]], [[[a8, a9], [a10, a11]], [[a12, a13], [a14, a15]]]] = a
-        r0: liblapzt.u16 = liblapzt.u16.zero
-        r1: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r0), a15)
-        q15: liblapzt.bool = liblapzt.u16.ge(r1, b)
-        r2: liblapzt.u16 = liblapzt.u16.select(q15, liblapzt.u16.sub(r1, b), r1)
-        r3: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r2), a14)
-        q14: liblapzt.bool = liblapzt.u16.ge(r3, b)
-        r4: liblapzt.u16 = liblapzt.u16.select(q14, liblapzt.u16.sub(r3, b), r3)
-        r5: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r4), a13)
-        q13: liblapzt.bool = liblapzt.u16.ge(r5, b)
-        r6: liblapzt.u16 = liblapzt.u16.select(q13, liblapzt.u16.sub(r5, b), r5)
-        r7: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r6), a12)
-        q12: liblapzt.bool = liblapzt.u16.ge(r7, b)
-        r8: liblapzt.u16 = liblapzt.u16.select(q12, liblapzt.u16.sub(r7, b), r7)
-        r9: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r8), a11)
-        q11: liblapzt.bool = liblapzt.u16.ge(r9, b)
-        r10: liblapzt.u16 = liblapzt.u16.select(q11, liblapzt.u16.sub(r9, b), r9)
-        r11: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r10), a10)
-        q10: liblapzt.bool = liblapzt.u16.ge(r11, b)
-        r12: liblapzt.u16 = liblapzt.u16.select(q10, liblapzt.u16.sub(r11, b), r11)
-        r13: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r12), a9)
-        q9: liblapzt.bool = liblapzt.u16.ge(r13, b)
-        r14: liblapzt.u16 = liblapzt.u16.select(q9, liblapzt.u16.sub(r13, b), r13)
-        r15: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r14), a8)
-        q8: liblapzt.bool = liblapzt.u16.ge(r15, b)
-        r16: liblapzt.u16 = liblapzt.u16.select(q8, liblapzt.u16.sub(r15, b), r15)
-        r17: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r16), a7)
-        q7: liblapzt.bool = liblapzt.u16.ge(r17, b)
-        r18: liblapzt.u16 = liblapzt.u16.select(q7, liblapzt.u16.sub(r17, b), r17)
-        r19: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r18), a6)
-        q6: liblapzt.bool = liblapzt.u16.ge(r19, b)
-        r20: liblapzt.u16 = liblapzt.u16.select(q6, liblapzt.u16.sub(r19, b), r19)
-        r21: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r20), a5)
-        q5: liblapzt.bool = liblapzt.u16.ge(r21, b)
-        r22: liblapzt.u16 = liblapzt.u16.select(q5, liblapzt.u16.sub(r21, b), r21)
-        r23: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r22), a4)
-        q4: liblapzt.bool = liblapzt.u16.ge(r23, b)
-        r24: liblapzt.u16 = liblapzt.u16.select(q4, liblapzt.u16.sub(r23, b), r23)
-        r25: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r24), a3)
-        q3: liblapzt.bool = liblapzt.u16.ge(r25, b)
-        r26: liblapzt.u16 = liblapzt.u16.select(q3, liblapzt.u16.sub(r25, b), r25)
-        r27: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r26), a2)
-        q2: liblapzt.bool = liblapzt.u16.ge(r27, b)
-        r28: liblapzt.u16 = liblapzt.u16.select(q2, liblapzt.u16.sub(r27, b), r27)
-        r29: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r28), a1)
-        q1: liblapzt.bool = liblapzt.u16.ge(r29, b)
-        r30: liblapzt.u16 = liblapzt.u16.select(q1, liblapzt.u16.sub(r29, b), r29)
-        r31: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r30), a0)
-        q0: liblapzt.bool = liblapzt.u16.ge(r31, b)
-        r32: liblapzt.u16 = liblapzt.u16.select(q0, liblapzt.u16.sub(r31, b), r31)
-        [[[[q0, q1], [q2, q3]], [[q4, q5], [q6, q7]]], [[[q8, q9], [q10, q11]], [[q12, q13], [q14, q15]]]]
+        [[[[a0, a1], [a2, a3]], [[a4, a5], [a6, a7]]], [[[a8, a9], [a10, a11]], [[a12, a13], [a14, a15]]]] = self
+        one: liblapzt.integer.u16 = liblapzt.integer.u16.subtract.wrapping(liblapzt.integer.u16.MIN, liblapzt.integer.u16.MAX)
+        mask: liblapzt.integer.u16 = liblapzt.integer.u16.not(one)
+        r0: liblapzt.integer.u16 = liblapzt.integer.u16.MIN
+        r1: liblapzt.integer.u16 = BRANCH (a15) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r0, r0), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r0, r0), mask) }
+        q15: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r1, other))
+        r2: liblapzt.integer.u16 = BRANCH (q15) { liblapzt.integer.u16.subtract.wrapping(r1, other) } { r1 }
+        r3: liblapzt.integer.u16 = BRANCH (a14) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r2, r2), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r2, r2), mask) }
+        q14: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r3, other))
+        r4: liblapzt.integer.u16 = BRANCH (q14) { liblapzt.integer.u16.subtract.wrapping(r3, other) } { r3 }
+        r5: liblapzt.integer.u16 = BRANCH (a13) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r4, r4), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r4, r4), mask) }
+        q13: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r5, other))
+        r6: liblapzt.integer.u16 = BRANCH (q13) { liblapzt.integer.u16.subtract.wrapping(r5, other) } { r5 }
+        r7: liblapzt.integer.u16 = BRANCH (a12) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r6, r6), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r6, r6), mask) }
+        q12: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r7, other))
+        r8: liblapzt.integer.u16 = BRANCH (q12) { liblapzt.integer.u16.subtract.wrapping(r7, other) } { r7 }
+        r9: liblapzt.integer.u16 = BRANCH (a11) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r8, r8), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r8, r8), mask) }
+        q11: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r9, other))
+        r10: liblapzt.integer.u16 = BRANCH (q11) { liblapzt.integer.u16.subtract.wrapping(r9, other) } { r9 }
+        r11: liblapzt.integer.u16 = BRANCH (a10) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r10, r10), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r10, r10), mask) }
+        q10: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r11, other))
+        r12: liblapzt.integer.u16 = BRANCH (q10) { liblapzt.integer.u16.subtract.wrapping(r11, other) } { r11 }
+        r13: liblapzt.integer.u16 = BRANCH (a9) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r12, r12), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r12, r12), mask) }
+        q9: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r13, other))
+        r14: liblapzt.integer.u16 = BRANCH (q9) { liblapzt.integer.u16.subtract.wrapping(r13, other) } { r13 }
+        r15: liblapzt.integer.u16 = BRANCH (a8) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r14, r14), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r14, r14), mask) }
+        q8: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r15, other))
+        r16: liblapzt.integer.u16 = BRANCH (q8) { liblapzt.integer.u16.subtract.wrapping(r15, other) } { r15 }
+        r17: liblapzt.integer.u16 = BRANCH (a7) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r16, r16), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r16, r16), mask) }
+        q7: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r17, other))
+        r18: liblapzt.integer.u16 = BRANCH (q7) { liblapzt.integer.u16.subtract.wrapping(r17, other) } { r17 }
+        r19: liblapzt.integer.u16 = BRANCH (a6) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r18, r18), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r18, r18), mask) }
+        q6: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r19, other))
+        r20: liblapzt.integer.u16 = BRANCH (q6) { liblapzt.integer.u16.subtract.wrapping(r19, other) } { r19 }
+        r21: liblapzt.integer.u16 = BRANCH (a5) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r20, r20), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r20, r20), mask) }
+        q5: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r21, other))
+        r22: liblapzt.integer.u16 = BRANCH (q5) { liblapzt.integer.u16.subtract.wrapping(r21, other) } { r21 }
+        r23: liblapzt.integer.u16 = BRANCH (a4) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r22, r22), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r22, r22), mask) }
+        q4: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r23, other))
+        r24: liblapzt.integer.u16 = BRANCH (q4) { liblapzt.integer.u16.subtract.wrapping(r23, other) } { r23 }
+        r25: liblapzt.integer.u16 = BRANCH (a3) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r24, r24), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r24, r24), mask) }
+        q3: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r25, other))
+        r26: liblapzt.integer.u16 = BRANCH (q3) { liblapzt.integer.u16.subtract.wrapping(r25, other) } { r25 }
+        r27: liblapzt.integer.u16 = BRANCH (a2) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r26, r26), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r26, r26), mask) }
+        q2: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r27, other))
+        r28: liblapzt.integer.u16 = BRANCH (q2) { liblapzt.integer.u16.subtract.wrapping(r27, other) } { r27 }
+        r29: liblapzt.integer.u16 = BRANCH (a1) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r28, r28), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r28, r28), mask) }
+        q1: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r29, other))
+        r30: liblapzt.integer.u16 = BRANCH (q1) { liblapzt.integer.u16.subtract.wrapping(r29, other) } { r29 }
+        r31: liblapzt.integer.u16 = BRANCH (a0) { liblapzt.integer.u16.or(liblapzt.integer.u16.add.wrapping(r30, r30), one) } { liblapzt.integer.u16.and(liblapzt.integer.u16.add.wrapping(r30, r30), mask) }
+        q0: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u16.less_than(r31, other))
+        r32: liblapzt.integer.u16 = BRANCH (q0) { liblapzt.integer.u16.subtract.wrapping(r31, other) } { r31 }
+        quotient: liblapzt.integer.u16 = [[[[q0, q1], [q2, q3]], [[q4, q5], [q6, q7]]], [[[q8, q9], [q10, q11]], [[q12, q13], [q14, q15]]]]
+        [quotient, r32]
     }
 }
 
-// Returns the quotient of a divided by b, rounding toward zero.
-// Returns zero when b is zero.
-liblapzt.u16.div = liblapzt.u16.div.erased
+// Returns self divided by other. Division cannot overflow, so this
+// matches saturating. Division by zero saturates to MAX.
+liblapzt.integer.u16.divide.wrapping = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [quotient, remainder] = liblapzt.integer.u16.divide.full(self, other)
+    quotient
+}
 
-liblapzt.u16.mod.erased = (a: liblapzt.u16, b: liblapzt.u16) liblapzt.u16 {
-    zero: liblapzt.bool = liblapzt.u16.is.zero(b)
+// Returns self divided by other, saturated at MAX.
+liblapzt.integer.u16.divide.saturating = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    [quotient, remainder] = liblapzt.integer.u16.divide.full(self, other)
+    quotient
+}
+
+// Returns [ok, quotient]. Ok is false when other is zero, and the
+// value is then MIN.
+liblapzt.integer.u16.divide.checked = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) [liblapzt.boolean, liblapzt.integer.u16] {
+    zero: liblapzt.boolean = liblapzt.integer.u16.equal(other, liblapzt.integer.u16.MIN)
     BRANCH (zero) {
-        liblapzt.u16.zero
+        [liblapzt.boolean.FALSE, liblapzt.integer.u16.MIN]
     } {
-        [[[[a0, a1], [a2, a3]], [[a4, a5], [a6, a7]]], [[[a8, a9], [a10, a11]], [[a12, a13], [a14, a15]]]] = a
-        r0: liblapzt.u16 = liblapzt.u16.zero
-        r1: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r0), a15)
-        q15: liblapzt.bool = liblapzt.u16.ge(r1, b)
-        r2: liblapzt.u16 = liblapzt.u16.select(q15, liblapzt.u16.sub(r1, b), r1)
-        r3: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r2), a14)
-        q14: liblapzt.bool = liblapzt.u16.ge(r3, b)
-        r4: liblapzt.u16 = liblapzt.u16.select(q14, liblapzt.u16.sub(r3, b), r3)
-        r5: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r4), a13)
-        q13: liblapzt.bool = liblapzt.u16.ge(r5, b)
-        r6: liblapzt.u16 = liblapzt.u16.select(q13, liblapzt.u16.sub(r5, b), r5)
-        r7: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r6), a12)
-        q12: liblapzt.bool = liblapzt.u16.ge(r7, b)
-        r8: liblapzt.u16 = liblapzt.u16.select(q12, liblapzt.u16.sub(r7, b), r7)
-        r9: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r8), a11)
-        q11: liblapzt.bool = liblapzt.u16.ge(r9, b)
-        r10: liblapzt.u16 = liblapzt.u16.select(q11, liblapzt.u16.sub(r9, b), r9)
-        r11: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r10), a10)
-        q10: liblapzt.bool = liblapzt.u16.ge(r11, b)
-        r12: liblapzt.u16 = liblapzt.u16.select(q10, liblapzt.u16.sub(r11, b), r11)
-        r13: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r12), a9)
-        q9: liblapzt.bool = liblapzt.u16.ge(r13, b)
-        r14: liblapzt.u16 = liblapzt.u16.select(q9, liblapzt.u16.sub(r13, b), r13)
-        r15: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r14), a8)
-        q8: liblapzt.bool = liblapzt.u16.ge(r15, b)
-        r16: liblapzt.u16 = liblapzt.u16.select(q8, liblapzt.u16.sub(r15, b), r15)
-        r17: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r16), a7)
-        q7: liblapzt.bool = liblapzt.u16.ge(r17, b)
-        r18: liblapzt.u16 = liblapzt.u16.select(q7, liblapzt.u16.sub(r17, b), r17)
-        r19: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r18), a6)
-        q6: liblapzt.bool = liblapzt.u16.ge(r19, b)
-        r20: liblapzt.u16 = liblapzt.u16.select(q6, liblapzt.u16.sub(r19, b), r19)
-        r21: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r20), a5)
-        q5: liblapzt.bool = liblapzt.u16.ge(r21, b)
-        r22: liblapzt.u16 = liblapzt.u16.select(q5, liblapzt.u16.sub(r21, b), r21)
-        r23: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r22), a4)
-        q4: liblapzt.bool = liblapzt.u16.ge(r23, b)
-        r24: liblapzt.u16 = liblapzt.u16.select(q4, liblapzt.u16.sub(r23, b), r23)
-        r25: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r24), a3)
-        q3: liblapzt.bool = liblapzt.u16.ge(r25, b)
-        r26: liblapzt.u16 = liblapzt.u16.select(q3, liblapzt.u16.sub(r25, b), r25)
-        r27: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r26), a2)
-        q2: liblapzt.bool = liblapzt.u16.ge(r27, b)
-        r28: liblapzt.u16 = liblapzt.u16.select(q2, liblapzt.u16.sub(r27, b), r27)
-        r29: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r28), a1)
-        q1: liblapzt.bool = liblapzt.u16.ge(r29, b)
-        r30: liblapzt.u16 = liblapzt.u16.select(q1, liblapzt.u16.sub(r29, b), r29)
-        r31: liblapzt.u16 = liblapzt.u16.with.lsb(liblapzt.u16.shl1(r30), a0)
-        q0: liblapzt.bool = liblapzt.u16.ge(r31, b)
-        r32: liblapzt.u16 = liblapzt.u16.select(q0, liblapzt.u16.sub(r31, b), r31)
-        r32
+        [quotient, remainder] = liblapzt.integer.u16.divide.full(self, other)
+        [liblapzt.boolean.TRUE, quotient]
     }
 }
 
-// Returns the remainder of a divided by b. Returns zero when b is
-// zero.
-liblapzt.u16.mod = liblapzt.u16.mod.erased
+// Returns the remainder of self divided by other. Division by zero
+// saturates to MAX.
+liblapzt.integer.u16.remainder.wrapping = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    zero: liblapzt.boolean = liblapzt.integer.u16.equal(other, liblapzt.integer.u16.MIN)
+    BRANCH (zero) {
+        liblapzt.integer.u16.MAX
+    } {
+        [quotient, remainder] = liblapzt.integer.u16.divide.full(self, other)
+        remainder
+    }
+}
+
+// Returns the remainder of self divided by other, saturated at MAX.
+liblapzt.integer.u16.remainder.saturating = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) liblapzt.integer.u16 {
+    zero: liblapzt.boolean = liblapzt.integer.u16.equal(other, liblapzt.integer.u16.MIN)
+    BRANCH (zero) {
+        liblapzt.integer.u16.MAX
+    } {
+        [quotient, remainder] = liblapzt.integer.u16.divide.full(self, other)
+        remainder
+    }
+}
+
+// Returns [ok, remainder]. Ok is false when other is zero, and the
+// value is then MIN.
+liblapzt.integer.u16.remainder.checked = (self: liblapzt.integer.u16, other: liblapzt.integer.u16) [liblapzt.boolean, liblapzt.integer.u16] {
+    zero: liblapzt.boolean = liblapzt.integer.u16.equal(other, liblapzt.integer.u16.MIN)
+    BRANCH (zero) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.u16.MIN]
+    } {
+        [quotient, remainder] = liblapzt.integer.u16.divide.full(self, other)
+        [liblapzt.boolean.TRUE, remainder]
+    }
+}
+
+// Converts self to void, truncating or zero extending.
+liblapzt.integer.u16.to.void = (self: liblapzt.integer.u16) liblapzt.integer.void {
+    []
+}
+
+// Converts a void to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.void = (value: liblapzt.integer.void) liblapzt.integer.u16 {
+    liblapzt.integer.u16.MIN
+}
+
+// Converts self to u1, truncating or zero extending.
+liblapzt.integer.u16.to.u1 = (self: liblapzt.integer.u16) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u8.to.u1(low)
+}
+
+// Converts a u1 to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u1 = (value: liblapzt.integer.u1) liblapzt.integer.u16 {
+    [liblapzt.integer.u1.to.u8(value), liblapzt.integer.u8.MIN]
+}
+
+// Converts self to u2, truncating or zero extending.
+liblapzt.integer.u16.to.u2 = (self: liblapzt.integer.u16) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u8.to.u2(low)
+}
+
+// Converts a u2 to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u2 = (value: liblapzt.integer.u2) liblapzt.integer.u16 {
+    [liblapzt.integer.u2.to.u8(value), liblapzt.integer.u8.MIN]
+}
+
+// Converts self to u4, truncating or zero extending.
+liblapzt.integer.u16.to.u4 = (self: liblapzt.integer.u16) liblapzt.integer.u4 {
+    [low, high] = self
+    liblapzt.integer.u8.to.u4(low)
+}
+
+// Converts a u4 to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u4 = (value: liblapzt.integer.u4) liblapzt.integer.u16 {
+    [liblapzt.integer.u4.to.u8(value), liblapzt.integer.u8.MIN]
+}
+
+// Converts self to u8, truncating or zero extending.
+liblapzt.integer.u16.to.u8 = (self: liblapzt.integer.u16) liblapzt.integer.u8 {
+    [low, high] = self
+    low
+}
+
+// Converts a u8 to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u8 = (value: liblapzt.integer.u8) liblapzt.integer.u16 {
+    [liblapzt.integer.u8.to.u8(value), liblapzt.integer.u8.MIN]
+}
+
+// Converts self to u16, truncating or zero extending.
+liblapzt.integer.u16.to.u16 = (self: liblapzt.integer.u16) liblapzt.integer.u16 {
+    self
+}
+
+// Converts a u16 to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u16 = (value: liblapzt.integer.u16) liblapzt.integer.u16 {
+    value
+}
+
+// Converts self to u32, truncating or zero extending.
+liblapzt.integer.u16.to.u32 = (self: liblapzt.integer.u16) liblapzt.integer.u32 {
+    [liblapzt.integer.u16.to.u16(self), liblapzt.integer.u16.MIN]
+}
+
+// Converts a u32 to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u32 = (value: liblapzt.integer.u32) liblapzt.integer.u16 {
+    [low, high] = value
+    low
+}
+
+// Converts self to u64, truncating or zero extending.
+liblapzt.integer.u16.to.u64 = (self: liblapzt.integer.u16) liblapzt.integer.u64 {
+    [liblapzt.integer.u16.to.u32(self), liblapzt.integer.u32.MIN]
+}
+
+// Converts a u64 to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u64 = (value: liblapzt.integer.u64) liblapzt.integer.u16 {
+    [low, high] = value
+    liblapzt.integer.u32.to.u16(low)
+}
+
+// Converts self to u128, truncating or zero extending.
+liblapzt.integer.u16.to.u128 = (self: liblapzt.integer.u16) liblapzt.integer.u128 {
+    [liblapzt.integer.u16.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts a u128 to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u128 = (value: liblapzt.integer.u128) liblapzt.integer.u16 {
+    [low, high] = value
+    liblapzt.integer.u64.to.u16(low)
+}

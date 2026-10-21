@@ -1,20 +1,64 @@
+// --- Internal helpers ---
+
+_liblapzt.float_casts.ONE: liblapzt.integer.u64 = liblapzt.integer.u64.from.u1(liblapzt.integer.u1.MAX)
+
+// Shifts value left by amount bits, filling the low bits with zero.
+_liblapzt.float_casts.shl.u64 = (value: liblapzt.integer.u64, amount: liblapzt.integer.u64) liblapzt.integer.u64 {
+    done: liblapzt.boolean = liblapzt.integer.u64.equal(amount, liblapzt.integer.u64.MIN)
+    BRANCH (done) {
+        value
+    } {
+        _liblapzt.float_casts.shl.u64(liblapzt.integer.u64.add.wrapping(value, value), liblapzt.integer.u64.subtract.wrapping(amount, _liblapzt.float_casts.ONE))
+    }
+}
+
+// Shifts value right by amount bits, filling the high bits with zero.
+_liblapzt.float_casts.shr.u64 = (value: liblapzt.integer.u64, amount: liblapzt.integer.u64) liblapzt.integer.u64 {
+    done: liblapzt.boolean = liblapzt.integer.u64.equal(amount, liblapzt.integer.u64.MIN)
+    BRANCH (done) {
+        value
+    } {
+        _liblapzt.float_casts.shr.u64(liblapzt.integer.u64.divide.wrapping(value, liblapzt.integer.u64.add.wrapping(_liblapzt.float_casts.ONE, _liblapzt.float_casts.ONE)), liblapzt.integer.u64.subtract.wrapping(amount, _liblapzt.float_casts.ONE))
+    }
+}
+
+// Shifts value left by amount bits, filling the low bits with zero.
+_liblapzt.float_casts.shl.u128 = (value: liblapzt.integer.u128, amount: liblapzt.integer.u64) liblapzt.integer.u128 {
+    done: liblapzt.boolean = liblapzt.integer.u64.equal(amount, liblapzt.integer.u64.MIN)
+    BRANCH (done) {
+        value
+    } {
+        _liblapzt.float_casts.shl.u128(liblapzt.integer.u128.add.wrapping(value, value), liblapzt.integer.u64.subtract.wrapping(amount, _liblapzt.float_casts.ONE))
+    }
+}
+
+// Shifts value right by amount bits, filling the high bits with zero.
+_liblapzt.float_casts.shr.u128 = (value: liblapzt.integer.u128, amount: liblapzt.integer.u64) liblapzt.integer.u128 {
+    done: liblapzt.boolean = liblapzt.integer.u64.equal(amount, liblapzt.integer.u64.MIN)
+    BRANCH (done) {
+        value
+    } {
+        _liblapzt.float_casts.shr.u128(liblapzt.integer.u128.divide.wrapping(value, liblapzt.integer.u128.add.wrapping(liblapzt.integer.u128.from.u1(liblapzt.integer.u1.MAX), liblapzt.integer.u128.from.u1(liblapzt.integer.u1.MAX))), liblapzt.integer.u64.subtract.wrapping(amount, _liblapzt.float_casts.ONE))
+    }
+}
+
 // Converts an f16 to f32. The value is exact; zero, infinity, and
 // NaN patterns are preserved.
 liblapzt.f16.to.f32.finite = (a: liblapzt.f16) liblapzt.f32 {
-    sign: liblapzt.bool = liblapzt.f16.sign(a)
-    exponent: liblapzt.u16 = liblapzt.f16.exponent(a)
-    mantissa: liblapzt.u16 = liblapzt.f16.mantissa(a)
-    zero: liblapzt.bool = liblapzt.u16.is.zero(exponent)
-    maximum: liblapzt.bool = liblapzt.u16.eq(exponent, liblapzt.f16.exponent.maximum)
+    sign: liblapzt.boolean = liblapzt.f16.sign(a)
+    exponent: liblapzt.integer.u16 = liblapzt.f16.exponent(a)
+    mantissa: liblapzt.integer.u16 = liblapzt.f16.mantissa(a)
+    zero: liblapzt.boolean = liblapzt.integer.u16.equal(exponent, liblapzt.integer.u16.MIN)
+    maximum: liblapzt.boolean = liblapzt.integer.u16.equal(exponent, _liblapzt.f16.EXPONENT_MAX)
     BRANCH (zero) {
-        liblapzt.f32.pack(sign, liblapzt.u32.zero, liblapzt.u32.zero)
+        liblapzt.f32.pack(sign, liblapzt.integer.u32.MIN, liblapzt.integer.u32.MIN)
     } {
         BRANCH (maximum) {
-            liblapzt.f32.pack(sign, liblapzt.f32.exponent.maximum, liblapzt.u64.to.u32(liblapzt.math.shl.u64(liblapzt.u16.to.u64(mantissa), liblapzt.constants.n13)))
+            liblapzt.f32.pack(sign, _liblapzt.f32.EXPONENT_MAX, liblapzt.integer.u64.to.u32(_liblapzt.float_casts.shl.u64(liblapzt.integer.u16.to.u64(mantissa), liblapzt.constants.n13)))
         } {
-            new.exponent: liblapzt.u64 = liblapzt.u64.add(liblapzt.u64.sub(liblapzt.u16.to.u64(exponent), liblapzt.u16.to.u64(liblapzt.f16.bias)), liblapzt.u32.to.u64(liblapzt.f32.bias))
-            new.mantissa: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u16.to.u64(mantissa), liblapzt.constants.n13)
-            liblapzt.f32.pack(sign, liblapzt.u64.to.u32(new.exponent), liblapzt.u64.to.u32(new.mantissa))
+            new.exponent: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(liblapzt.integer.u64.subtract.wrapping(liblapzt.integer.u16.to.u64(exponent), liblapzt.integer.u16.to.u64(_liblapzt.f16.BIAS)), liblapzt.integer.u32.to.u64(_liblapzt.f32.BIAS))
+            new.mantissa: liblapzt.integer.u64 = _liblapzt.float_casts.shl.u64(liblapzt.integer.u16.to.u64(mantissa), liblapzt.constants.n13)
+            liblapzt.f32.pack(sign, liblapzt.integer.u64.to.u32(new.exponent), liblapzt.integer.u64.to.u32(new.mantissa))
         }
     }
 }
@@ -22,20 +66,20 @@ liblapzt.f16.to.f32.finite = (a: liblapzt.f16) liblapzt.f32 {
 // Converts an f32 to f64. The value is exact; zero, infinity, and
 // NaN patterns are preserved.
 liblapzt.f32.to.f64.finite = (a: liblapzt.f32) liblapzt.f64 {
-    sign: liblapzt.bool = liblapzt.f32.sign(a)
-    exponent: liblapzt.u32 = liblapzt.f32.exponent(a)
-    mantissa: liblapzt.u32 = liblapzt.f32.mantissa(a)
-    zero: liblapzt.bool = liblapzt.u32.is.zero(exponent)
-    maximum: liblapzt.bool = liblapzt.u32.eq(exponent, liblapzt.f32.exponent.maximum)
+    sign: liblapzt.boolean = liblapzt.f32.sign(a)
+    exponent: liblapzt.integer.u32 = liblapzt.f32.exponent(a)
+    mantissa: liblapzt.integer.u32 = liblapzt.f32.mantissa(a)
+    zero: liblapzt.boolean = liblapzt.integer.u32.equal(exponent, liblapzt.integer.u32.MIN)
+    maximum: liblapzt.boolean = liblapzt.integer.u32.equal(exponent, _liblapzt.f32.EXPONENT_MAX)
     BRANCH (zero) {
-        liblapzt.f64.pack(sign, liblapzt.u64.zero, liblapzt.u64.zero)
+        liblapzt.f64.pack(sign, liblapzt.integer.u64.MIN, liblapzt.integer.u64.MIN)
     } {
         BRANCH (maximum) {
-            liblapzt.f64.pack(sign, liblapzt.f64.exponent.maximum, liblapzt.math.shl.u64(liblapzt.u32.to.u64(mantissa), liblapzt.constants.n29))
+            liblapzt.f64.pack(sign, _liblapzt.f64.EXPONENT_MAX, _liblapzt.float_casts.shl.u64(liblapzt.integer.u32.to.u64(mantissa), liblapzt.constants.n29))
         } {
-            new.exponent: liblapzt.u64 = liblapzt.u64.add(liblapzt.u64.sub(liblapzt.u32.to.u64(exponent), liblapzt.u32.to.u64(liblapzt.f32.bias)), liblapzt.u64.to.u64(liblapzt.f64.bias))
-            new.mantissa: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u32.to.u64(mantissa), liblapzt.constants.n29)
-            liblapzt.f64.pack(sign, liblapzt.u64.to.u64(new.exponent), new.mantissa)
+            new.exponent: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(liblapzt.integer.u64.subtract.wrapping(liblapzt.integer.u32.to.u64(exponent), liblapzt.integer.u32.to.u64(_liblapzt.f32.BIAS)), liblapzt.integer.u64.to.u64(_liblapzt.f64.BIAS))
+            new.mantissa: liblapzt.integer.u64 = _liblapzt.float_casts.shl.u64(liblapzt.integer.u32.to.u64(mantissa), liblapzt.constants.n29)
+            liblapzt.f64.pack(sign, liblapzt.integer.u64.to.u64(new.exponent), new.mantissa)
         }
     }
 }
@@ -43,20 +87,20 @@ liblapzt.f32.to.f64.finite = (a: liblapzt.f32) liblapzt.f64 {
 // Converts an f64 to f128. The value is exact; zero, infinity, and
 // NaN patterns are preserved.
 liblapzt.f64.to.f128.finite = (a: liblapzt.f64) liblapzt.f128 {
-    sign: liblapzt.bool = liblapzt.f64.sign(a)
-    exponent: liblapzt.u64 = liblapzt.f64.exponent(a)
-    mantissa: liblapzt.u64 = liblapzt.f64.mantissa(a)
-    zero: liblapzt.bool = liblapzt.u64.is.zero(exponent)
-    maximum: liblapzt.bool = liblapzt.u64.eq(exponent, liblapzt.f64.exponent.maximum)
+    sign: liblapzt.boolean = liblapzt.f64.sign(a)
+    exponent: liblapzt.integer.u64 = liblapzt.f64.exponent(a)
+    mantissa: liblapzt.integer.u64 = liblapzt.f64.mantissa(a)
+    zero: liblapzt.boolean = liblapzt.integer.u64.equal(exponent, liblapzt.integer.u64.MIN)
+    maximum: liblapzt.boolean = liblapzt.integer.u64.equal(exponent, _liblapzt.f64.EXPONENT_MAX)
     BRANCH (zero) {
-        liblapzt.f128.pack(sign, liblapzt.u128.zero, liblapzt.u128.zero)
+        liblapzt.f128.pack(sign, liblapzt.integer.u128.MIN, liblapzt.integer.u128.MIN)
     } {
         BRANCH (maximum) {
-            liblapzt.f128.pack(sign, liblapzt.f128.exponent.maximum, liblapzt.math.shl.u128(liblapzt.u64.to.u128(mantissa), liblapzt.constants.n60))
+            liblapzt.f128.pack(sign, _liblapzt.f128.EXPONENT_MAX, _liblapzt.float_casts.shl.u128(liblapzt.integer.u64.to.u128(mantissa), liblapzt.constants.n60))
         } {
-            new.exponent: liblapzt.u64 = liblapzt.u64.add(liblapzt.u64.sub(liblapzt.u64.to.u64(exponent), liblapzt.u64.to.u64(liblapzt.f64.bias)), liblapzt.u128.to.u64(liblapzt.f128.bias))
-            new.mantissa: liblapzt.u128 = liblapzt.math.shl.u128(liblapzt.u64.to.u128(mantissa), liblapzt.constants.n60)
-            liblapzt.f128.pack(sign, liblapzt.u64.to.u128(new.exponent), new.mantissa)
+            new.exponent: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(liblapzt.integer.u64.subtract.wrapping(liblapzt.integer.u64.to.u64(exponent), liblapzt.integer.u64.to.u64(_liblapzt.f64.BIAS)), liblapzt.integer.u128.to.u64(_liblapzt.f128.BIAS))
+            new.mantissa: liblapzt.integer.u128 = _liblapzt.float_casts.shl.u128(liblapzt.integer.u64.to.u128(mantissa), liblapzt.constants.n60)
+            liblapzt.f128.pack(sign, liblapzt.integer.u64.to.u128(new.exponent), new.mantissa)
         }
     }
 }
@@ -64,42 +108,42 @@ liblapzt.f64.to.f128.finite = (a: liblapzt.f64) liblapzt.f128 {
 // Converts an f32 to f16, rounding to nearest. Values too small
 // become zero; values too large become infinity.
 liblapzt.f32.to.f16.finite = (a: liblapzt.f32) liblapzt.f16 {
-    sign: liblapzt.bool = liblapzt.f32.sign(a)
-    exponent: liblapzt.u32 = liblapzt.f32.exponent(a)
-    mantissa: liblapzt.u32 = liblapzt.f32.mantissa(a)
-    zero: liblapzt.bool = liblapzt.u32.is.zero(exponent)
-    maximum: liblapzt.bool = liblapzt.u32.eq(exponent, liblapzt.f32.exponent.maximum)
-    difference: liblapzt.u32 = liblapzt.u32.sub(liblapzt.f32.bias, liblapzt.u16.to.u32(liblapzt.f16.bias))
-    underflow: liblapzt.bool = liblapzt.u32.le(exponent, difference)
-    overflow: liblapzt.bool = liblapzt.u32.ge(exponent, liblapzt.u32.add(difference, liblapzt.u16.to.u32(liblapzt.f16.exponent.maximum)))
-    rounding: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u64.one, liblapzt.constants.n12)
-    rounded: liblapzt.u64 = liblapzt.u64.add(liblapzt.u32.to.u64(mantissa), rounding)
-    shifted: liblapzt.u64 = liblapzt.math.shr.u64(rounded, liblapzt.constants.n13)
-    mantissa.limit: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u64.one, liblapzt.constants.n10)
-    carry: liblapzt.bool = liblapzt.u64.ge(shifted, mantissa.limit)
+    sign: liblapzt.boolean = liblapzt.f32.sign(a)
+    exponent: liblapzt.integer.u32 = liblapzt.f32.exponent(a)
+    mantissa: liblapzt.integer.u32 = liblapzt.f32.mantissa(a)
+    zero: liblapzt.boolean = liblapzt.integer.u32.equal(exponent, liblapzt.integer.u32.MIN)
+    maximum: liblapzt.boolean = liblapzt.integer.u32.equal(exponent, _liblapzt.f32.EXPONENT_MAX)
+    difference: liblapzt.integer.u32 = liblapzt.integer.u32.subtract.wrapping(_liblapzt.f32.BIAS, liblapzt.integer.u16.to.u32(_liblapzt.f16.BIAS))
+    underflow: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u32.greater_than(exponent, difference))
+    overflow: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u32.less_than(exponent, liblapzt.integer.u32.add.wrapping(difference, liblapzt.integer.u16.to.u32(_liblapzt.f16.EXPONENT_MAX))))
+    rounding: liblapzt.integer.u64 = _liblapzt.float_casts.shl.u64(liblapzt.integer.u64.from.u1(liblapzt.integer.u1.MAX), liblapzt.constants.n12)
+    rounded: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(liblapzt.integer.u32.to.u64(mantissa), rounding)
+    shifted: liblapzt.integer.u64 = _liblapzt.float_casts.shr.u64(rounded, liblapzt.constants.n13)
+    mantissa.limit: liblapzt.integer.u64 = _liblapzt.float_casts.shl.u64(liblapzt.integer.u64.from.u1(liblapzt.integer.u1.MAX), liblapzt.constants.n10)
+    carry: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u64.less_than(shifted, mantissa.limit))
     BRANCH (zero) {
-        liblapzt.f16.pack(sign, liblapzt.u16.zero, liblapzt.u16.zero)
+        liblapzt.f16.pack(sign, liblapzt.integer.u16.MIN, liblapzt.integer.u16.MIN)
     } {
         BRANCH (maximum) {
-            liblapzt.f16.pack(sign, liblapzt.f16.exponent.maximum, liblapzt.u64.to.u16(shifted))
+            liblapzt.f16.pack(sign, _liblapzt.f16.EXPONENT_MAX, liblapzt.integer.u64.to.u16(shifted))
         } {
             BRANCH (underflow) {
-                liblapzt.f16.pack(sign, liblapzt.u16.zero, liblapzt.u16.zero)
+                liblapzt.f16.pack(sign, liblapzt.integer.u16.MIN, liblapzt.integer.u16.MIN)
             } {
                 BRANCH (overflow) {
-                    liblapzt.f16.pack(sign, liblapzt.f16.exponent.maximum, liblapzt.u16.zero)
+                    liblapzt.f16.pack(sign, _liblapzt.f16.EXPONENT_MAX, liblapzt.integer.u16.MIN)
                 } {
-                    new.exponent: liblapzt.u32 = liblapzt.u32.sub(exponent, difference)
+                    new.exponent: liblapzt.integer.u32 = liblapzt.integer.u32.subtract.wrapping(exponent, difference)
                     BRANCH (carry) {
-                        incremented: liblapzt.u32 = liblapzt.u32.inc(new.exponent)
-                        at.maximum: liblapzt.bool = liblapzt.u32.ge(incremented, liblapzt.u16.to.u32(liblapzt.f16.exponent.maximum))
+                        incremented: liblapzt.integer.u32 = liblapzt.integer.u32.inc(new.exponent)
+                        at.maximum: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u32.less_than(incremented, liblapzt.integer.u16.to.u32(_liblapzt.f16.EXPONENT_MAX)))
                         BRANCH (at.maximum) {
-                            liblapzt.f16.pack(sign, liblapzt.f16.exponent.maximum, liblapzt.u16.zero)
+                            liblapzt.f16.pack(sign, _liblapzt.f16.EXPONENT_MAX, liblapzt.integer.u16.MIN)
                         } {
-                            liblapzt.f16.pack(sign, liblapzt.u32.to.u16(incremented), liblapzt.u16.zero)
+                            liblapzt.f16.pack(sign, liblapzt.integer.u32.to.u16(incremented), liblapzt.integer.u16.MIN)
                         }
                     } {
-                        liblapzt.f16.pack(sign, liblapzt.u32.to.u16(new.exponent), liblapzt.u64.to.u16(shifted))
+                        liblapzt.f16.pack(sign, liblapzt.integer.u32.to.u16(new.exponent), liblapzt.integer.u64.to.u16(shifted))
                     }
                 }
             }
@@ -110,42 +154,42 @@ liblapzt.f32.to.f16.finite = (a: liblapzt.f32) liblapzt.f16 {
 // Converts an f64 to f32, rounding to nearest. Values too small
 // become zero; values too large become infinity.
 liblapzt.f64.to.f32.finite = (a: liblapzt.f64) liblapzt.f32 {
-    sign: liblapzt.bool = liblapzt.f64.sign(a)
-    exponent: liblapzt.u64 = liblapzt.f64.exponent(a)
-    mantissa: liblapzt.u64 = liblapzt.f64.mantissa(a)
-    zero: liblapzt.bool = liblapzt.u64.is.zero(exponent)
-    maximum: liblapzt.bool = liblapzt.u64.eq(exponent, liblapzt.f64.exponent.maximum)
-    difference: liblapzt.u64 = liblapzt.u64.sub(liblapzt.f64.bias, liblapzt.u32.to.u64(liblapzt.f32.bias))
-    underflow: liblapzt.bool = liblapzt.u64.le(exponent, difference)
-    overflow: liblapzt.bool = liblapzt.u64.ge(exponent, liblapzt.u64.add(difference, liblapzt.u32.to.u64(liblapzt.f32.exponent.maximum)))
-    rounding: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u64.one, liblapzt.constants.n28)
-    rounded: liblapzt.u64 = liblapzt.u64.add(liblapzt.u64.to.u64(mantissa), rounding)
-    shifted: liblapzt.u64 = liblapzt.math.shr.u64(rounded, liblapzt.constants.n29)
-    mantissa.limit: liblapzt.u64 = liblapzt.math.shl.u64(liblapzt.u64.one, liblapzt.constants.n23)
-    carry: liblapzt.bool = liblapzt.u64.ge(shifted, mantissa.limit)
+    sign: liblapzt.boolean = liblapzt.f64.sign(a)
+    exponent: liblapzt.integer.u64 = liblapzt.f64.exponent(a)
+    mantissa: liblapzt.integer.u64 = liblapzt.f64.mantissa(a)
+    zero: liblapzt.boolean = liblapzt.integer.u64.equal(exponent, liblapzt.integer.u64.MIN)
+    maximum: liblapzt.boolean = liblapzt.integer.u64.equal(exponent, _liblapzt.f64.EXPONENT_MAX)
+    difference: liblapzt.integer.u64 = liblapzt.integer.u64.subtract.wrapping(_liblapzt.f64.BIAS, liblapzt.integer.u32.to.u64(_liblapzt.f32.BIAS))
+    underflow: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u64.greater_than(exponent, difference))
+    overflow: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u64.less_than(exponent, liblapzt.integer.u64.add.wrapping(difference, liblapzt.integer.u32.to.u64(_liblapzt.f32.EXPONENT_MAX))))
+    rounding: liblapzt.integer.u64 = _liblapzt.float_casts.shl.u64(liblapzt.integer.u64.from.u1(liblapzt.integer.u1.MAX), liblapzt.constants.n28)
+    rounded: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(liblapzt.integer.u64.to.u64(mantissa), rounding)
+    shifted: liblapzt.integer.u64 = _liblapzt.float_casts.shr.u64(rounded, liblapzt.constants.n29)
+    mantissa.limit: liblapzt.integer.u64 = _liblapzt.float_casts.shl.u64(liblapzt.integer.u64.from.u1(liblapzt.integer.u1.MAX), liblapzt.constants.n23)
+    carry: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u64.less_than(shifted, mantissa.limit))
     BRANCH (zero) {
-        liblapzt.f32.pack(sign, liblapzt.u32.zero, liblapzt.u32.zero)
+        liblapzt.f32.pack(sign, liblapzt.integer.u32.MIN, liblapzt.integer.u32.MIN)
     } {
         BRANCH (maximum) {
-            liblapzt.f32.pack(sign, liblapzt.f32.exponent.maximum, liblapzt.u64.to.u32(shifted))
+            liblapzt.f32.pack(sign, _liblapzt.f32.EXPONENT_MAX, liblapzt.integer.u64.to.u32(shifted))
         } {
             BRANCH (underflow) {
-                liblapzt.f32.pack(sign, liblapzt.u32.zero, liblapzt.u32.zero)
+                liblapzt.f32.pack(sign, liblapzt.integer.u32.MIN, liblapzt.integer.u32.MIN)
             } {
                 BRANCH (overflow) {
-                    liblapzt.f32.pack(sign, liblapzt.f32.exponent.maximum, liblapzt.u32.zero)
+                    liblapzt.f32.pack(sign, _liblapzt.f32.EXPONENT_MAX, liblapzt.integer.u32.MIN)
                 } {
-                    new.exponent: liblapzt.u64 = liblapzt.u64.sub(exponent, difference)
+                    new.exponent: liblapzt.integer.u64 = liblapzt.integer.u64.subtract.wrapping(exponent, difference)
                     BRANCH (carry) {
-                        incremented: liblapzt.u64 = liblapzt.u64.inc(new.exponent)
-                        at.maximum: liblapzt.bool = liblapzt.u64.ge(incremented, liblapzt.u32.to.u64(liblapzt.f32.exponent.maximum))
+                        incremented: liblapzt.integer.u64 = liblapzt.integer.u64.inc(new.exponent)
+                        at.maximum: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u64.less_than(incremented, liblapzt.integer.u32.to.u64(_liblapzt.f32.EXPONENT_MAX)))
                         BRANCH (at.maximum) {
-                            liblapzt.f32.pack(sign, liblapzt.f32.exponent.maximum, liblapzt.u32.zero)
+                            liblapzt.f32.pack(sign, _liblapzt.f32.EXPONENT_MAX, liblapzt.integer.u32.MIN)
                         } {
-                            liblapzt.f32.pack(sign, liblapzt.u64.to.u32(incremented), liblapzt.u32.zero)
+                            liblapzt.f32.pack(sign, liblapzt.integer.u64.to.u32(incremented), liblapzt.integer.u32.MIN)
                         }
                     } {
-                        liblapzt.f32.pack(sign, liblapzt.u64.to.u32(new.exponent), liblapzt.u64.to.u32(shifted))
+                        liblapzt.f32.pack(sign, liblapzt.integer.u64.to.u32(new.exponent), liblapzt.integer.u64.to.u32(shifted))
                     }
                 }
             }
@@ -156,42 +200,42 @@ liblapzt.f64.to.f32.finite = (a: liblapzt.f64) liblapzt.f32 {
 // Converts an f128 to f64, rounding to nearest. Values too small
 // become zero; values too large become infinity.
 liblapzt.f128.to.f64.finite = (a: liblapzt.f128) liblapzt.f64 {
-    sign: liblapzt.bool = liblapzt.f128.sign(a)
-    exponent: liblapzt.u128 = liblapzt.f128.exponent(a)
-    mantissa: liblapzt.u128 = liblapzt.f128.mantissa(a)
-    zero: liblapzt.bool = liblapzt.u128.is.zero(exponent)
-    maximum: liblapzt.bool = liblapzt.u128.eq(exponent, liblapzt.f128.exponent.maximum)
-    difference: liblapzt.u128 = liblapzt.u128.sub(liblapzt.f128.bias, liblapzt.u64.to.u128(liblapzt.f64.bias))
-    underflow: liblapzt.bool = liblapzt.u128.le(exponent, difference)
-    overflow: liblapzt.bool = liblapzt.u128.ge(exponent, liblapzt.u128.add(difference, liblapzt.u64.to.u128(liblapzt.f64.exponent.maximum)))
-    rounding: liblapzt.u128 = liblapzt.math.shl.u128(liblapzt.u128.one, liblapzt.constants.n59)
-    rounded: liblapzt.u128 = liblapzt.u128.add(liblapzt.u128.to.u128(mantissa), rounding)
-    shifted: liblapzt.u128 = liblapzt.math.shr.u128(rounded, liblapzt.constants.n60)
-    mantissa.limit: liblapzt.u128 = liblapzt.math.shl.u128(liblapzt.u128.one, liblapzt.constants.n52)
-    carry: liblapzt.bool = liblapzt.u128.ge(shifted, mantissa.limit)
+    sign: liblapzt.boolean = liblapzt.f128.sign(a)
+    exponent: liblapzt.integer.u128 = liblapzt.f128.exponent(a)
+    mantissa: liblapzt.integer.u128 = liblapzt.f128.mantissa(a)
+    zero: liblapzt.boolean = liblapzt.integer.u128.equal(exponent, liblapzt.integer.u128.MIN)
+    maximum: liblapzt.boolean = liblapzt.integer.u128.equal(exponent, _liblapzt.f128.EXPONENT_MAX)
+    difference: liblapzt.integer.u128 = liblapzt.integer.u128.subtract.wrapping(_liblapzt.f128.BIAS, liblapzt.integer.u64.to.u128(_liblapzt.f64.BIAS))
+    underflow: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.greater_than(exponent, difference))
+    overflow: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(exponent, liblapzt.integer.u128.add.wrapping(difference, liblapzt.integer.u64.to.u128(_liblapzt.f64.EXPONENT_MAX))))
+    rounding: liblapzt.integer.u128 = _liblapzt.float_casts.shl.u128(liblapzt.integer.u128.from.u1(liblapzt.integer.u1.MAX), liblapzt.constants.n59)
+    rounded: liblapzt.integer.u128 = liblapzt.integer.u128.add.wrapping(liblapzt.integer.u128.to.u128(mantissa), rounding)
+    shifted: liblapzt.integer.u128 = _liblapzt.float_casts.shr.u128(rounded, liblapzt.constants.n60)
+    mantissa.limit: liblapzt.integer.u128 = _liblapzt.float_casts.shl.u128(liblapzt.integer.u128.from.u1(liblapzt.integer.u1.MAX), liblapzt.constants.n52)
+    carry: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(shifted, mantissa.limit))
     BRANCH (zero) {
-        liblapzt.f64.pack(sign, liblapzt.u64.zero, liblapzt.u64.zero)
+        liblapzt.f64.pack(sign, liblapzt.integer.u64.MIN, liblapzt.integer.u64.MIN)
     } {
         BRANCH (maximum) {
-            liblapzt.f64.pack(sign, liblapzt.f64.exponent.maximum, liblapzt.u128.to.u64(shifted))
+            liblapzt.f64.pack(sign, _liblapzt.f64.EXPONENT_MAX, liblapzt.integer.u128.to.u64(shifted))
         } {
             BRANCH (underflow) {
-                liblapzt.f64.pack(sign, liblapzt.u64.zero, liblapzt.u64.zero)
+                liblapzt.f64.pack(sign, liblapzt.integer.u64.MIN, liblapzt.integer.u64.MIN)
             } {
                 BRANCH (overflow) {
-                    liblapzt.f64.pack(sign, liblapzt.f64.exponent.maximum, liblapzt.u64.zero)
+                    liblapzt.f64.pack(sign, _liblapzt.f64.EXPONENT_MAX, liblapzt.integer.u64.MIN)
                 } {
-                    new.exponent: liblapzt.u128 = liblapzt.u128.sub(exponent, difference)
+                    new.exponent: liblapzt.integer.u128 = liblapzt.integer.u128.subtract.wrapping(exponent, difference)
                     BRANCH (carry) {
-                        incremented: liblapzt.u128 = liblapzt.u128.inc(new.exponent)
-                        at.maximum: liblapzt.bool = liblapzt.u128.ge(incremented, liblapzt.u64.to.u128(liblapzt.f64.exponent.maximum))
+                        incremented: liblapzt.integer.u128 = liblapzt.integer.u128.inc(new.exponent)
+                        at.maximum: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(incremented, liblapzt.integer.u64.to.u128(_liblapzt.f64.EXPONENT_MAX)))
                         BRANCH (at.maximum) {
-                            liblapzt.f64.pack(sign, liblapzt.f64.exponent.maximum, liblapzt.u64.zero)
+                            liblapzt.f64.pack(sign, _liblapzt.f64.EXPONENT_MAX, liblapzt.integer.u64.MIN)
                         } {
-                            liblapzt.f64.pack(sign, liblapzt.u128.to.u64(incremented), liblapzt.u64.zero)
+                            liblapzt.f64.pack(sign, liblapzt.integer.u128.to.u64(incremented), liblapzt.integer.u64.MIN)
                         }
                     } {
-                        liblapzt.f64.pack(sign, liblapzt.u128.to.u64(new.exponent), liblapzt.u128.to.u64(shifted))
+                        liblapzt.f64.pack(sign, liblapzt.integer.u128.to.u64(new.exponent), liblapzt.integer.u128.to.u64(shifted))
                     }
                 }
             }

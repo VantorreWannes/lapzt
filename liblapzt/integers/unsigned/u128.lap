@@ -1,1089 +1,771 @@
-liblapzt.u128.erased = [liblapzt.u64.erased, liblapzt.u64.erased]
+//! 128-bit unsigned integer type
 
-// A 128-bit unsigned integer stored as a pair of u64 words.
-// Operations are defined in terms of the smaller word.
-liblapzt.u128 = liblapzt.u128.erased
+// --- Erased ---
 
-liblapzt.u128.zero.erased: liblapzt.u128.erased = [liblapzt.u64.zero.erased, liblapzt.u64.zero.erased]
-liblapzt.u128.one.erased: liblapzt.u128.erased = [liblapzt.u64.one.erased, liblapzt.u64.zero.erased]
-liblapzt.u128.maximum.erased: liblapzt.u128.erased = [liblapzt.u64.maximum.erased, liblapzt.u64.maximum.erased]
+__liblapzt.integer.u128.erased = [liblapzt.integer.u64, liblapzt.integer.u64]
+__liblapzt.integer.u128.MIN.erased = [liblapzt.integer.u64.MIN, liblapzt.integer.u64.MIN]
+__liblapzt.integer.u128.MAX.erased = [liblapzt.integer.u64.MAX, liblapzt.integer.u64.MAX]
 
-// The additive identity, with every bit clear.
-liblapzt.u128.zero: liblapzt.u128 = liblapzt.u128.zero.erased
-// The value one, with only the least significant bit set.
-liblapzt.u128.one: liblapzt.u128 = liblapzt.u128.one.erased
-// The largest representable value, with every bit set.
-liblapzt.u128.maximum: liblapzt.u128 = liblapzt.u128.maximum.erased
+// --- Types ---
 
-liblapzt.u128.not.erased = (a: liblapzt.u128) liblapzt.u128 {
-    [low, high] = a
-    [liblapzt.u64.not(low), liblapzt.u64.not(high)]
+liblapzt.integer.u128 = __liblapzt.integer.u128.erased
+liblapzt.integer.u128.MIN = __liblapzt.integer.u128.MIN.erased
+liblapzt.integer.u128.MAX = __liblapzt.integer.u128.MAX.erased
+
+// --- Functions ---
+
+// Returns the bitwise complement of self.
+liblapzt.integer.u128.not = (self: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [self_low, self_high] = self
+    [liblapzt.integer.u64.not(self_low), liblapzt.integer.u64.not(self_high)]
 }
 
-// Returns the bitwise complement of a, flipping every bit.
-liblapzt.u128.not = liblapzt.u128.not.erased
-
-liblapzt.u128.and.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u64.and(al, bl), liblapzt.u64.and(ah, bh)]
+// Returns the bitwise and of self and other.
+liblapzt.integer.u128.and = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u64.and(self_low, other_low), liblapzt.integer.u64.and(self_high, other_high)]
 }
 
-// Returns the bitwise AND of a and b.
-liblapzt.u128.and = liblapzt.u128.and.erased
-
-liblapzt.u128.or.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u64.or(al, bl), liblapzt.u64.or(ah, bh)]
+// Returns the bitwise or of self and other.
+liblapzt.integer.u128.or = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u64.or(self_low, other_low), liblapzt.integer.u64.or(self_high, other_high)]
 }
 
-// Returns the bitwise OR of a and b.
-liblapzt.u128.or = liblapzt.u128.or.erased
-
-liblapzt.u128.xor.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u64.xor(al, bl), liblapzt.u64.xor(ah, bh)]
+// Returns the bitwise not.and of self and other.
+liblapzt.integer.u128.not.and = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u64.not.and(self_low, other_low), liblapzt.integer.u64.not.and(self_high, other_high)]
 }
 
-// Returns the bitwise XOR of a and b.
-liblapzt.u128.xor = liblapzt.u128.xor.erased
-
-liblapzt.u128.nand.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u64.nand(al, bl), liblapzt.u64.nand(ah, bh)]
+// Returns the bitwise not.or of self and other.
+liblapzt.integer.u128.not.or = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u64.not.or(self_low, other_low), liblapzt.integer.u64.not.or(self_high, other_high)]
 }
 
-// Returns the bitwise NAND of a and b.
-liblapzt.u128.nand = liblapzt.u128.nand.erased
-
-liblapzt.u128.nor.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u64.nor(al, bl), liblapzt.u64.nor(ah, bh)]
+// Returns the bitwise exclusive.or of self and other.
+liblapzt.integer.u128.exclusive.or = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u64.exclusive.or(self_low, other_low), liblapzt.integer.u64.exclusive.or(self_high, other_high)]
 }
 
-// Returns the bitwise NOR of a and b.
-liblapzt.u128.nor = liblapzt.u128.nor.erased
-
-liblapzt.u128.xnor.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    [al, ah] = a
-    [bl, bh] = b
-    [liblapzt.u64.xnor(al, bl), liblapzt.u64.xnor(ah, bh)]
+// Returns true when self and other have the same value.
+liblapzt.integer.u128.equal = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.boolean {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    low_equal: liblapzt.boolean = liblapzt.integer.u64.equal(self_low, other_low)
+    high_equal: liblapzt.boolean = liblapzt.integer.u64.equal(self_high, other_high)
+    liblapzt.boolean.and(low_equal, high_equal)
 }
 
-// Returns the bitwise XNOR of a and b.
-liblapzt.u128.xnor = liblapzt.u128.xnor.erased
-
-liblapzt.u128.from.bool.erased = (a: liblapzt.bool) liblapzt.u128 {
-    [liblapzt.u64.from.bool(a), liblapzt.u64.zero]
+// Returns true when self and other differ.
+liblapzt.integer.u128.not.equal = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.boolean {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    low_differ: liblapzt.boolean = liblapzt.integer.u64.not.equal(self_low, other_low)
+    high_differ: liblapzt.boolean = liblapzt.integer.u64.not.equal(self_high, other_high)
+    liblapzt.boolean.or(low_differ, high_differ)
 }
 
-// Returns one when a is true and zero when a is false.
-liblapzt.u128.from.bool = liblapzt.u128.from.bool.erased
-
-// Returns the sum of a and b as a pair [sum, carry], where carry is
-// the carry out of the top bit.
-liblapzt.u128.add.carry = (a: liblapzt.u128, b: liblapzt.u128) [liblapzt.u128, liblapzt.bool] {
-    [al, ah] = a
-    [bl, bh] = b
-    [sl, cl] = liblapzt.u64.add.carry(al, bl)
-    [sh, ch] = liblapzt.u64.add.carry(ah, bh)
-    [sh2, ch2] = liblapzt.u64.add.carry(sh, liblapzt.u64.from.bool(cl))
-    [[sl, sh2], liblapzt.bool.or(ch, ch2)]
+// Returns true when self is greater than other.
+liblapzt.integer.u128.greater_than = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.boolean {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    high_greater: liblapzt.boolean = liblapzt.integer.u64.greater_than(self_high, other_high)
+    high_equal: liblapzt.boolean = liblapzt.integer.u64.equal(self_high, other_high)
+    low_greater: liblapzt.boolean = liblapzt.integer.u64.greater_than(self_low, other_low)
+    liblapzt.boolean.or(high_greater, liblapzt.boolean.and(high_equal, low_greater))
 }
 
-liblapzt.u128.add.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    [sum, carry] = liblapzt.u128.add.carry(a, b)
-    sum
+// Returns true when self is less than other.
+liblapzt.integer.u128.less_than = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.boolean {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    high_less: liblapzt.boolean = liblapzt.integer.u64.less_than(self_high, other_high)
+    high_equal: liblapzt.boolean = liblapzt.integer.u64.equal(self_high, other_high)
+    low_less: liblapzt.boolean = liblapzt.integer.u64.less_than(self_low, other_low)
+    liblapzt.boolean.or(high_less, liblapzt.boolean.and(high_equal, low_less))
 }
 
-// Returns the sum of a and b, discarding the carry out of the top
-// bit.
-liblapzt.u128.add = liblapzt.u128.add.erased
-
-// Returns a - b as a pair [difference, borrow], where borrow is the
-// borrow out of the top bit.
-liblapzt.u128.sub.borrow = (a: liblapzt.u128, b: liblapzt.u128) [liblapzt.u128, liblapzt.bool] {
-    [al, ah] = a
-    [bl, bh] = b
-    [sl, blw] = liblapzt.u64.sub.borrow(al, bl)
-    [sh, bhw] = liblapzt.u64.sub.borrow(ah, bh)
-    [sh2, bhw2] = liblapzt.u64.sub.borrow(sh, liblapzt.u64.from.bool(blw))
-    [[sl, sh2], liblapzt.bool.or(bhw, bhw2)]
+// Returns the smaller of self and other.
+liblapzt.integer.u128.min = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    less: liblapzt.boolean = liblapzt.integer.u128.less_than(self, other)
+    BRANCH (less) { self } { other }
 }
 
-liblapzt.u128.sub.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    [difference, borrow] = liblapzt.u128.sub.borrow(a, b)
-    difference
+// Returns the larger of self and other.
+liblapzt.integer.u128.max = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    greater: liblapzt.boolean = liblapzt.integer.u128.greater_than(self, other)
+    BRANCH (greater) { self } { other }
 }
 
-// Returns a - b modulo 2^128, discarding the borrow. Wraps when b is
-// greater than a.
-liblapzt.u128.sub = liblapzt.u128.sub.erased
-
-// Returns the sum of a, b and c as a pair [sum, carry].
-liblapzt.u128.add3 = (a: liblapzt.u128, b: liblapzt.u128, c: liblapzt.u128) [liblapzt.u128, liblapzt.u128] {
-    [s1, c1] = liblapzt.u128.add.carry(a, b)
-    [s2, c2] = liblapzt.u128.add.carry(s1, c)
-    carry: liblapzt.u128 = liblapzt.u128.add(liblapzt.u128.from.bool(c1), liblapzt.u128.from.bool(c2))
-    [s2, carry]
+// Returns the sum of self and other modulo 2^128.
+liblapzt.integer.u128.add.wrapping = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    sum_low: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(self_low, other_low)
+    carry_low: liblapzt.integer.u64 = liblapzt.integer.u64.and(self_low, other_low)
+    xor_high: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(self_high, other_high)
+    sum_high: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(xor_high, carry_low)
+    [sum_low, sum_high]
 }
 
-// Returns the full 256-bit product of a and b as a pair
+// Returns [ok, sum]. Ok is false when the sum overflows, and
+// the value is then MIN.
+liblapzt.integer.u128.add.checked = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) [liblapzt.boolean, liblapzt.integer.u128] {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    sum_low: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(self_low, other_low)
+    carry_low: liblapzt.integer.u64 = liblapzt.integer.u64.and(self_low, other_low)
+    xor_high: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(self_high, other_high)
+    sum_high: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(xor_high, carry_low)
+    carry_high: liblapzt.integer.u64 = liblapzt.integer.u64.or(liblapzt.integer.u64.and(self_high, other_high), liblapzt.integer.u64.and(carry_low, xor_high))
+    BRANCH (carry_high) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.u128.MIN]
+    } {
+        [liblapzt.boolean.TRUE, [sum_low, sum_high]]
+    }
+}
+
+// Returns the sum of self and other, saturated at MAX.
+liblapzt.integer.u128.add.saturating = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [ok, sum] = liblapzt.integer.u128.add.checked(self, other)
+    BRANCH (ok) { sum } { liblapzt.integer.u128.MAX }
+}
+
+// Returns the difference of self and other modulo 2^128.
+liblapzt.integer.u128.subtract.wrapping = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    diff_low: liblapzt.integer.u64 = liblapzt.integer.u64.subtract.wrapping(self_low, other_low)
+    borrow_low: liblapzt.boolean = liblapzt.integer.u64.less_than(self_low, other_low)
+    xor_high: liblapzt.integer.u64 = liblapzt.integer.u64.subtract.wrapping(self_high, other_high)
+    diff_high: liblapzt.integer.u64 = liblapzt.integer.u64.subtract.wrapping(xor_high, borrow_low)
+    [diff_low, diff_high]
+}
+
+// Returns [ok, difference]. Ok is false when the difference
+// underflows, and the value is then MIN.
+liblapzt.integer.u128.subtract.checked = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) [liblapzt.boolean, liblapzt.integer.u128] {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    diff_low: liblapzt.integer.u64 = liblapzt.integer.u64.subtract.wrapping(self_low, other_low)
+    borrow_low: liblapzt.boolean = liblapzt.integer.u64.less_than(self_low, other_low)
+    xor_high: liblapzt.integer.u64 = liblapzt.integer.u64.subtract.wrapping(self_high, other_high)
+    diff_high: liblapzt.integer.u64 = liblapzt.integer.u64.subtract.wrapping(xor_high, borrow_low)
+    borrow_high: liblapzt.boolean = liblapzt.boolean.or(liblapzt.integer.u64.less_than(self_high, other_high), liblapzt.boolean.and(borrow_low, liblapzt.integer.u64.not(xor_high)))
+    BRANCH (borrow_high) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.u128.MIN]
+    } {
+        [liblapzt.boolean.TRUE, [diff_low, diff_high]]
+    }
+}
+
+// Returns the difference of self and other, saturated at MIN.
+liblapzt.integer.u128.subtract.saturating = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [ok, difference] = liblapzt.integer.u128.subtract.checked(self, other)
+    BRANCH (ok) { difference } { liblapzt.integer.u128.MIN }
+}
+
+// Returns the full 2*128-bit product of self and other as a pair
 // [low, high].
-liblapzt.u128.mul.full = (a: liblapzt.u128, b: liblapzt.u128) [liblapzt.u128, liblapzt.u128] {
-    [al, ah] = a
-    [bl, bh] = b
-    [ll, lh] = liblapzt.u64.mul.full(al, bl)
-    [cl, ch] = liblapzt.u64.mul.full(al, bh)
-    [dl, dh] = liblapzt.u64.mul.full(ah, bl)
-    [el, eh] = liblapzt.u64.mul.full(ah, bh)
-    [low.sum, low.carry] = liblapzt.u64.add3(lh, cl, dl)
-    low: liblapzt.u128 = [ll, low.sum]
-    [high.sum, high.carry] = liblapzt.u64.add3(ch, dh, el)
-    [high.sum2, high.carry2] = liblapzt.u64.add.carry(high.sum, low.carry)
-    high.high: liblapzt.u64 = liblapzt.u64.add(liblapzt.u64.add(eh, high.carry), liblapzt.u64.from.bool(high.carry2))
-    high: liblapzt.u128 = [high.sum2, high.high]
-    [low, high]
+liblapzt.integer.u128.multiply.full = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) [liblapzt.integer.u128, liblapzt.integer.u128] {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [p_low, p_high] = liblapzt.integer.u64.multiply.full(self_low, other_low)
+    lh: liblapzt.integer.u128 = liblapzt.integer.u64.multiply.full(self_low, other_high)
+    hl: liblapzt.integer.u128 = liblapzt.integer.u64.multiply.full(self_high, other_low)
+    [q_ok, q] = liblapzt.integer.u128.add.checked(lh, hl)
+    [q_low, q_high] = q
+    [low_ok, low] = liblapzt.integer.u128.add.checked([p_low, p_high], [liblapzt.integer.u64.MIN, q_low])
+    carry_low: liblapzt.boolean = liblapzt.boolean.not(low_ok)
+    [r_low, r_high] = liblapzt.integer.u64.multiply.full(self_high, other_high)
+    [high_ok, high] = liblapzt.integer.u128.add.checked([q_high, liblapzt.integer.u64.MIN], [r_low, r_high])
+    one: liblapzt.integer.u128 = liblapzt.integer.u128.subtract.wrapping(liblapzt.integer.u128.MIN, liblapzt.integer.u128.MAX)
+    high2: liblapzt.integer.u128 = BRANCH (carry_low) { liblapzt.integer.u128.add.wrapping(high, one) } { high }
+    carry_high: liblapzt.integer.u128 = BRANCH (liblapzt.boolean.not(q_ok)) { [liblapzt.integer.u64.MIN, liblapzt.integer.u64.MAX] } { liblapzt.integer.u128.MIN }
+    high3: liblapzt.integer.u128 = liblapzt.integer.u128.add.wrapping(high2, carry_high)
+    [low, high3]
 }
 
-liblapzt.u128.mul.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    [al, ah] = a
-    [bl, bh] = b
-    [ll, lh] = liblapzt.u64.mul.full(al, bl)
-    cross: liblapzt.u64 = liblapzt.u64.add(liblapzt.u64.mul(al, bh), liblapzt.u64.mul(ah, bl))
-    [ll, liblapzt.u64.add(lh, cross)]
+// Returns the low 128 bits of the product of self and other.
+liblapzt.integer.u128.multiply.wrapping = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [low, high] = liblapzt.integer.u128.multiply.full(self, other)
+    low
 }
 
-// Returns the low 128 bits of the product of a and b, discarding the
-// high half.
-liblapzt.u128.mul = liblapzt.u128.mul.erased
-
-// Returns a shifted left by one bit. The top bit is discarded and
-// the low bit becomes zero.
-liblapzt.u128.shl1 = (a: liblapzt.u128) liblapzt.u128 {
-    [low, high] = a
-    [liblapzt.u64.shl1(low), liblapzt.u64.or(liblapzt.u64.shl1(high), liblapzt.u64.from.bool(liblapzt.u64.msb(low)))]
+// Returns [ok, product]. Ok is false when the product overflows,
+// and the value is then MIN.
+liblapzt.integer.u128.multiply.checked = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) [liblapzt.boolean, liblapzt.integer.u128] {
+    [low, high] = liblapzt.integer.u128.multiply.full(self, other)
+    [liblapzt.integer.u128.equal(high, liblapzt.integer.u128.MIN), low]
 }
 
-// Returns a with its least significant bit replaced by bit.
-liblapzt.u128.with.lsb = (a: liblapzt.u128, bit: liblapzt.bool) liblapzt.u128 {
-    [low, high] = a
-    [liblapzt.u64.with.lsb(low, bit), high]
+// Returns the product of self and other, saturated at MAX.
+liblapzt.integer.u128.multiply.saturating = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [ok, low] = liblapzt.integer.u128.multiply.checked(self, other)
+    BRANCH (ok) { low } { liblapzt.integer.u128.MAX }
 }
 
-// Returns the most significant bit of a as a u1.
-liblapzt.u128.msb = (a: liblapzt.u128) liblapzt.u1 {
-    [low, high] = a
-    liblapzt.u64.msb(high)
-}
-
-liblapzt.u128.eq.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.bool {
-    [al, ah] = a
-    [bl, bh] = b
-    liblapzt.bool.and(liblapzt.u64.eq(al, bl), liblapzt.u64.eq(ah, bh))
-}
-
-// Returns true when a and b have the same value.
-liblapzt.u128.eq = liblapzt.u128.eq.erased
-
-liblapzt.u128.ne.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.bool {
-    liblapzt.bool.not(liblapzt.u128.eq(a, b))
-}
-
-// Returns true when a and b differ.
-liblapzt.u128.ne = liblapzt.u128.ne.erased
-
-liblapzt.u128.lt.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.bool {
-    [al, ah] = a
-    [bl, bh] = b
-    high.lt: liblapzt.bool = liblapzt.u64.lt(ah, bh)
-    high.eq: liblapzt.bool = liblapzt.u64.eq(ah, bh)
-    low.lt: liblapzt.bool = liblapzt.u64.lt(al, bl)
-    liblapzt.bool.or(high.lt, liblapzt.bool.and(high.eq, low.lt))
-}
-
-// Returns true when a is less than b.
-liblapzt.u128.lt = liblapzt.u128.lt.erased
-
-liblapzt.u128.le.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.bool {
-    liblapzt.bool.or(liblapzt.u128.lt(a, b), liblapzt.u128.eq(a, b))
-}
-
-// Returns true when a is less than or equal to b.
-liblapzt.u128.le = liblapzt.u128.le.erased
-
-liblapzt.u128.gt.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.bool {
-    liblapzt.u128.lt(b, a)
-}
-
-// Returns true when a is greater than b.
-liblapzt.u128.gt = liblapzt.u128.gt.erased
-
-liblapzt.u128.ge.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.bool {
-    liblapzt.u128.le(b, a)
-}
-
-// Returns true when a is greater than or equal to b.
-liblapzt.u128.ge = liblapzt.u128.ge.erased
-
-liblapzt.u128.select.erased = (flag: liblapzt.bool, when.true: liblapzt.u128, when.false: liblapzt.u128) liblapzt.u128 {
-    [tl, th] = when.true
-    [fl, fh] = when.false
-    [liblapzt.u64.select(flag, tl, fl), liblapzt.u64.select(flag, th, fh)]
-}
-
-// Returns when.true when flag is true, otherwise when.false.
-liblapzt.u128.select = liblapzt.u128.select.erased
-
-liblapzt.u128.min.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    liblapzt.u128.select(liblapzt.u128.lt(a, b), a, b)
-}
-
-// Returns the smaller of a and b.
-liblapzt.u128.min = liblapzt.u128.min.erased
-
-liblapzt.u128.max.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    liblapzt.u128.select(liblapzt.u128.gt(a, b), a, b)
-}
-
-// Returns the larger of a and b.
-liblapzt.u128.max = liblapzt.u128.max.erased
-
-liblapzt.u128.inc.erased = (a: liblapzt.u128) liblapzt.u128 {
-    liblapzt.u128.add(a, liblapzt.u128.one)
-}
-
-// Returns a plus one, wrapping to zero at the maximum value.
-liblapzt.u128.inc = liblapzt.u128.inc.erased
-
-liblapzt.u128.dec.erased = (a: liblapzt.u128) liblapzt.u128 {
-    liblapzt.u128.sub(a, liblapzt.u128.one)
-}
-
-// Returns a minus one, wrapping to the maximum value at zero.
-liblapzt.u128.dec = liblapzt.u128.dec.erased
-
-liblapzt.u128.is.zero.erased = (a: liblapzt.u128) liblapzt.bool {
-    [low, high] = a
-    liblapzt.bool.and(liblapzt.u64.is.zero(low), liblapzt.u64.is.zero(high))
-}
-
-// Returns true when every bit of a is clear.
-liblapzt.u128.is.zero = liblapzt.u128.is.zero.erased
-
-liblapzt.u128.is.one.erased = (a: liblapzt.u128) liblapzt.bool {
-    [low, high] = a
-    liblapzt.bool.and(liblapzt.u64.is.one(low), liblapzt.u64.is.zero(high))
-}
-
-// Returns true when a equals one.
-liblapzt.u128.is.one = liblapzt.u128.is.one.erased
-
-liblapzt.u128.to.bool.erased = (a: liblapzt.u128) liblapzt.bool {
-    liblapzt.bool.not(liblapzt.u128.is.zero(a))
-}
-
-// Returns true when a is nonzero.
-liblapzt.u128.to.bool = liblapzt.u128.to.bool.erased
-
-liblapzt.u128.div.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    zero: liblapzt.bool = liblapzt.u128.is.zero(b)
+// Returns [quotient, remainder] of self divided by other. Returns
+// [MAX, MIN] when other is zero.
+liblapzt.integer.u128.divide.full = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) [liblapzt.integer.u128, liblapzt.integer.u128] {
+    zero: liblapzt.boolean = liblapzt.integer.u128.equal(other, liblapzt.integer.u128.MIN)
     BRANCH (zero) {
-        liblapzt.u128.zero
+        [liblapzt.integer.u128.MAX, liblapzt.integer.u128.MIN]
     } {
-        [[[[[[[a0, a1], [a2, a3]], [[a4, a5], [a6, a7]]], [[[a8, a9], [a10, a11]], [[a12, a13], [a14, a15]]]], [[[[a16, a17], [a18, a19]], [[a20, a21], [a22, a23]]], [[[a24, a25], [a26, a27]], [[a28, a29], [a30, a31]]]]], [[[[[a32, a33], [a34, a35]], [[a36, a37], [a38, a39]]], [[[a40, a41], [a42, a43]], [[a44, a45], [a46, a47]]]], [[[[a48, a49], [a50, a51]], [[a52, a53], [a54, a55]]], [[[a56, a57], [a58, a59]], [[a60, a61], [a62, a63]]]]]], [[[[[[a64, a65], [a66, a67]], [[a68, a69], [a70, a71]]], [[[a72, a73], [a74, a75]], [[a76, a77], [a78, a79]]]], [[[[a80, a81], [a82, a83]], [[a84, a85], [a86, a87]]], [[[a88, a89], [a90, a91]], [[a92, a93], [a94, a95]]]]], [[[[[a96, a97], [a98, a99]], [[a100, a101], [a102, a103]]], [[[a104, a105], [a106, a107]], [[a108, a109], [a110, a111]]]], [[[[a112, a113], [a114, a115]], [[a116, a117], [a118, a119]]], [[[a120, a121], [a122, a123]], [[a124, a125], [a126, a127]]]]]]] = a
-        r0: liblapzt.u128 = liblapzt.u128.zero
-        r1: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r0), a127)
-        q127: liblapzt.bool = liblapzt.u128.ge(r1, b)
-        r2: liblapzt.u128 = liblapzt.u128.select(q127, liblapzt.u128.sub(r1, b), r1)
-        r3: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r2), a126)
-        q126: liblapzt.bool = liblapzt.u128.ge(r3, b)
-        r4: liblapzt.u128 = liblapzt.u128.select(q126, liblapzt.u128.sub(r3, b), r3)
-        r5: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r4), a125)
-        q125: liblapzt.bool = liblapzt.u128.ge(r5, b)
-        r6: liblapzt.u128 = liblapzt.u128.select(q125, liblapzt.u128.sub(r5, b), r5)
-        r7: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r6), a124)
-        q124: liblapzt.bool = liblapzt.u128.ge(r7, b)
-        r8: liblapzt.u128 = liblapzt.u128.select(q124, liblapzt.u128.sub(r7, b), r7)
-        r9: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r8), a123)
-        q123: liblapzt.bool = liblapzt.u128.ge(r9, b)
-        r10: liblapzt.u128 = liblapzt.u128.select(q123, liblapzt.u128.sub(r9, b), r9)
-        r11: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r10), a122)
-        q122: liblapzt.bool = liblapzt.u128.ge(r11, b)
-        r12: liblapzt.u128 = liblapzt.u128.select(q122, liblapzt.u128.sub(r11, b), r11)
-        r13: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r12), a121)
-        q121: liblapzt.bool = liblapzt.u128.ge(r13, b)
-        r14: liblapzt.u128 = liblapzt.u128.select(q121, liblapzt.u128.sub(r13, b), r13)
-        r15: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r14), a120)
-        q120: liblapzt.bool = liblapzt.u128.ge(r15, b)
-        r16: liblapzt.u128 = liblapzt.u128.select(q120, liblapzt.u128.sub(r15, b), r15)
-        r17: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r16), a119)
-        q119: liblapzt.bool = liblapzt.u128.ge(r17, b)
-        r18: liblapzt.u128 = liblapzt.u128.select(q119, liblapzt.u128.sub(r17, b), r17)
-        r19: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r18), a118)
-        q118: liblapzt.bool = liblapzt.u128.ge(r19, b)
-        r20: liblapzt.u128 = liblapzt.u128.select(q118, liblapzt.u128.sub(r19, b), r19)
-        r21: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r20), a117)
-        q117: liblapzt.bool = liblapzt.u128.ge(r21, b)
-        r22: liblapzt.u128 = liblapzt.u128.select(q117, liblapzt.u128.sub(r21, b), r21)
-        r23: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r22), a116)
-        q116: liblapzt.bool = liblapzt.u128.ge(r23, b)
-        r24: liblapzt.u128 = liblapzt.u128.select(q116, liblapzt.u128.sub(r23, b), r23)
-        r25: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r24), a115)
-        q115: liblapzt.bool = liblapzt.u128.ge(r25, b)
-        r26: liblapzt.u128 = liblapzt.u128.select(q115, liblapzt.u128.sub(r25, b), r25)
-        r27: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r26), a114)
-        q114: liblapzt.bool = liblapzt.u128.ge(r27, b)
-        r28: liblapzt.u128 = liblapzt.u128.select(q114, liblapzt.u128.sub(r27, b), r27)
-        r29: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r28), a113)
-        q113: liblapzt.bool = liblapzt.u128.ge(r29, b)
-        r30: liblapzt.u128 = liblapzt.u128.select(q113, liblapzt.u128.sub(r29, b), r29)
-        r31: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r30), a112)
-        q112: liblapzt.bool = liblapzt.u128.ge(r31, b)
-        r32: liblapzt.u128 = liblapzt.u128.select(q112, liblapzt.u128.sub(r31, b), r31)
-        r33: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r32), a111)
-        q111: liblapzt.bool = liblapzt.u128.ge(r33, b)
-        r34: liblapzt.u128 = liblapzt.u128.select(q111, liblapzt.u128.sub(r33, b), r33)
-        r35: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r34), a110)
-        q110: liblapzt.bool = liblapzt.u128.ge(r35, b)
-        r36: liblapzt.u128 = liblapzt.u128.select(q110, liblapzt.u128.sub(r35, b), r35)
-        r37: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r36), a109)
-        q109: liblapzt.bool = liblapzt.u128.ge(r37, b)
-        r38: liblapzt.u128 = liblapzt.u128.select(q109, liblapzt.u128.sub(r37, b), r37)
-        r39: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r38), a108)
-        q108: liblapzt.bool = liblapzt.u128.ge(r39, b)
-        r40: liblapzt.u128 = liblapzt.u128.select(q108, liblapzt.u128.sub(r39, b), r39)
-        r41: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r40), a107)
-        q107: liblapzt.bool = liblapzt.u128.ge(r41, b)
-        r42: liblapzt.u128 = liblapzt.u128.select(q107, liblapzt.u128.sub(r41, b), r41)
-        r43: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r42), a106)
-        q106: liblapzt.bool = liblapzt.u128.ge(r43, b)
-        r44: liblapzt.u128 = liblapzt.u128.select(q106, liblapzt.u128.sub(r43, b), r43)
-        r45: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r44), a105)
-        q105: liblapzt.bool = liblapzt.u128.ge(r45, b)
-        r46: liblapzt.u128 = liblapzt.u128.select(q105, liblapzt.u128.sub(r45, b), r45)
-        r47: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r46), a104)
-        q104: liblapzt.bool = liblapzt.u128.ge(r47, b)
-        r48: liblapzt.u128 = liblapzt.u128.select(q104, liblapzt.u128.sub(r47, b), r47)
-        r49: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r48), a103)
-        q103: liblapzt.bool = liblapzt.u128.ge(r49, b)
-        r50: liblapzt.u128 = liblapzt.u128.select(q103, liblapzt.u128.sub(r49, b), r49)
-        r51: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r50), a102)
-        q102: liblapzt.bool = liblapzt.u128.ge(r51, b)
-        r52: liblapzt.u128 = liblapzt.u128.select(q102, liblapzt.u128.sub(r51, b), r51)
-        r53: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r52), a101)
-        q101: liblapzt.bool = liblapzt.u128.ge(r53, b)
-        r54: liblapzt.u128 = liblapzt.u128.select(q101, liblapzt.u128.sub(r53, b), r53)
-        r55: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r54), a100)
-        q100: liblapzt.bool = liblapzt.u128.ge(r55, b)
-        r56: liblapzt.u128 = liblapzt.u128.select(q100, liblapzt.u128.sub(r55, b), r55)
-        r57: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r56), a99)
-        q99: liblapzt.bool = liblapzt.u128.ge(r57, b)
-        r58: liblapzt.u128 = liblapzt.u128.select(q99, liblapzt.u128.sub(r57, b), r57)
-        r59: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r58), a98)
-        q98: liblapzt.bool = liblapzt.u128.ge(r59, b)
-        r60: liblapzt.u128 = liblapzt.u128.select(q98, liblapzt.u128.sub(r59, b), r59)
-        r61: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r60), a97)
-        q97: liblapzt.bool = liblapzt.u128.ge(r61, b)
-        r62: liblapzt.u128 = liblapzt.u128.select(q97, liblapzt.u128.sub(r61, b), r61)
-        r63: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r62), a96)
-        q96: liblapzt.bool = liblapzt.u128.ge(r63, b)
-        r64: liblapzt.u128 = liblapzt.u128.select(q96, liblapzt.u128.sub(r63, b), r63)
-        r65: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r64), a95)
-        q95: liblapzt.bool = liblapzt.u128.ge(r65, b)
-        r66: liblapzt.u128 = liblapzt.u128.select(q95, liblapzt.u128.sub(r65, b), r65)
-        r67: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r66), a94)
-        q94: liblapzt.bool = liblapzt.u128.ge(r67, b)
-        r68: liblapzt.u128 = liblapzt.u128.select(q94, liblapzt.u128.sub(r67, b), r67)
-        r69: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r68), a93)
-        q93: liblapzt.bool = liblapzt.u128.ge(r69, b)
-        r70: liblapzt.u128 = liblapzt.u128.select(q93, liblapzt.u128.sub(r69, b), r69)
-        r71: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r70), a92)
-        q92: liblapzt.bool = liblapzt.u128.ge(r71, b)
-        r72: liblapzt.u128 = liblapzt.u128.select(q92, liblapzt.u128.sub(r71, b), r71)
-        r73: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r72), a91)
-        q91: liblapzt.bool = liblapzt.u128.ge(r73, b)
-        r74: liblapzt.u128 = liblapzt.u128.select(q91, liblapzt.u128.sub(r73, b), r73)
-        r75: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r74), a90)
-        q90: liblapzt.bool = liblapzt.u128.ge(r75, b)
-        r76: liblapzt.u128 = liblapzt.u128.select(q90, liblapzt.u128.sub(r75, b), r75)
-        r77: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r76), a89)
-        q89: liblapzt.bool = liblapzt.u128.ge(r77, b)
-        r78: liblapzt.u128 = liblapzt.u128.select(q89, liblapzt.u128.sub(r77, b), r77)
-        r79: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r78), a88)
-        q88: liblapzt.bool = liblapzt.u128.ge(r79, b)
-        r80: liblapzt.u128 = liblapzt.u128.select(q88, liblapzt.u128.sub(r79, b), r79)
-        r81: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r80), a87)
-        q87: liblapzt.bool = liblapzt.u128.ge(r81, b)
-        r82: liblapzt.u128 = liblapzt.u128.select(q87, liblapzt.u128.sub(r81, b), r81)
-        r83: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r82), a86)
-        q86: liblapzt.bool = liblapzt.u128.ge(r83, b)
-        r84: liblapzt.u128 = liblapzt.u128.select(q86, liblapzt.u128.sub(r83, b), r83)
-        r85: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r84), a85)
-        q85: liblapzt.bool = liblapzt.u128.ge(r85, b)
-        r86: liblapzt.u128 = liblapzt.u128.select(q85, liblapzt.u128.sub(r85, b), r85)
-        r87: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r86), a84)
-        q84: liblapzt.bool = liblapzt.u128.ge(r87, b)
-        r88: liblapzt.u128 = liblapzt.u128.select(q84, liblapzt.u128.sub(r87, b), r87)
-        r89: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r88), a83)
-        q83: liblapzt.bool = liblapzt.u128.ge(r89, b)
-        r90: liblapzt.u128 = liblapzt.u128.select(q83, liblapzt.u128.sub(r89, b), r89)
-        r91: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r90), a82)
-        q82: liblapzt.bool = liblapzt.u128.ge(r91, b)
-        r92: liblapzt.u128 = liblapzt.u128.select(q82, liblapzt.u128.sub(r91, b), r91)
-        r93: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r92), a81)
-        q81: liblapzt.bool = liblapzt.u128.ge(r93, b)
-        r94: liblapzt.u128 = liblapzt.u128.select(q81, liblapzt.u128.sub(r93, b), r93)
-        r95: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r94), a80)
-        q80: liblapzt.bool = liblapzt.u128.ge(r95, b)
-        r96: liblapzt.u128 = liblapzt.u128.select(q80, liblapzt.u128.sub(r95, b), r95)
-        r97: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r96), a79)
-        q79: liblapzt.bool = liblapzt.u128.ge(r97, b)
-        r98: liblapzt.u128 = liblapzt.u128.select(q79, liblapzt.u128.sub(r97, b), r97)
-        r99: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r98), a78)
-        q78: liblapzt.bool = liblapzt.u128.ge(r99, b)
-        r100: liblapzt.u128 = liblapzt.u128.select(q78, liblapzt.u128.sub(r99, b), r99)
-        r101: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r100), a77)
-        q77: liblapzt.bool = liblapzt.u128.ge(r101, b)
-        r102: liblapzt.u128 = liblapzt.u128.select(q77, liblapzt.u128.sub(r101, b), r101)
-        r103: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r102), a76)
-        q76: liblapzt.bool = liblapzt.u128.ge(r103, b)
-        r104: liblapzt.u128 = liblapzt.u128.select(q76, liblapzt.u128.sub(r103, b), r103)
-        r105: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r104), a75)
-        q75: liblapzt.bool = liblapzt.u128.ge(r105, b)
-        r106: liblapzt.u128 = liblapzt.u128.select(q75, liblapzt.u128.sub(r105, b), r105)
-        r107: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r106), a74)
-        q74: liblapzt.bool = liblapzt.u128.ge(r107, b)
-        r108: liblapzt.u128 = liblapzt.u128.select(q74, liblapzt.u128.sub(r107, b), r107)
-        r109: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r108), a73)
-        q73: liblapzt.bool = liblapzt.u128.ge(r109, b)
-        r110: liblapzt.u128 = liblapzt.u128.select(q73, liblapzt.u128.sub(r109, b), r109)
-        r111: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r110), a72)
-        q72: liblapzt.bool = liblapzt.u128.ge(r111, b)
-        r112: liblapzt.u128 = liblapzt.u128.select(q72, liblapzt.u128.sub(r111, b), r111)
-        r113: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r112), a71)
-        q71: liblapzt.bool = liblapzt.u128.ge(r113, b)
-        r114: liblapzt.u128 = liblapzt.u128.select(q71, liblapzt.u128.sub(r113, b), r113)
-        r115: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r114), a70)
-        q70: liblapzt.bool = liblapzt.u128.ge(r115, b)
-        r116: liblapzt.u128 = liblapzt.u128.select(q70, liblapzt.u128.sub(r115, b), r115)
-        r117: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r116), a69)
-        q69: liblapzt.bool = liblapzt.u128.ge(r117, b)
-        r118: liblapzt.u128 = liblapzt.u128.select(q69, liblapzt.u128.sub(r117, b), r117)
-        r119: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r118), a68)
-        q68: liblapzt.bool = liblapzt.u128.ge(r119, b)
-        r120: liblapzt.u128 = liblapzt.u128.select(q68, liblapzt.u128.sub(r119, b), r119)
-        r121: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r120), a67)
-        q67: liblapzt.bool = liblapzt.u128.ge(r121, b)
-        r122: liblapzt.u128 = liblapzt.u128.select(q67, liblapzt.u128.sub(r121, b), r121)
-        r123: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r122), a66)
-        q66: liblapzt.bool = liblapzt.u128.ge(r123, b)
-        r124: liblapzt.u128 = liblapzt.u128.select(q66, liblapzt.u128.sub(r123, b), r123)
-        r125: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r124), a65)
-        q65: liblapzt.bool = liblapzt.u128.ge(r125, b)
-        r126: liblapzt.u128 = liblapzt.u128.select(q65, liblapzt.u128.sub(r125, b), r125)
-        r127: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r126), a64)
-        q64: liblapzt.bool = liblapzt.u128.ge(r127, b)
-        r128: liblapzt.u128 = liblapzt.u128.select(q64, liblapzt.u128.sub(r127, b), r127)
-        r129: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r128), a63)
-        q63: liblapzt.bool = liblapzt.u128.ge(r129, b)
-        r130: liblapzt.u128 = liblapzt.u128.select(q63, liblapzt.u128.sub(r129, b), r129)
-        r131: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r130), a62)
-        q62: liblapzt.bool = liblapzt.u128.ge(r131, b)
-        r132: liblapzt.u128 = liblapzt.u128.select(q62, liblapzt.u128.sub(r131, b), r131)
-        r133: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r132), a61)
-        q61: liblapzt.bool = liblapzt.u128.ge(r133, b)
-        r134: liblapzt.u128 = liblapzt.u128.select(q61, liblapzt.u128.sub(r133, b), r133)
-        r135: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r134), a60)
-        q60: liblapzt.bool = liblapzt.u128.ge(r135, b)
-        r136: liblapzt.u128 = liblapzt.u128.select(q60, liblapzt.u128.sub(r135, b), r135)
-        r137: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r136), a59)
-        q59: liblapzt.bool = liblapzt.u128.ge(r137, b)
-        r138: liblapzt.u128 = liblapzt.u128.select(q59, liblapzt.u128.sub(r137, b), r137)
-        r139: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r138), a58)
-        q58: liblapzt.bool = liblapzt.u128.ge(r139, b)
-        r140: liblapzt.u128 = liblapzt.u128.select(q58, liblapzt.u128.sub(r139, b), r139)
-        r141: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r140), a57)
-        q57: liblapzt.bool = liblapzt.u128.ge(r141, b)
-        r142: liblapzt.u128 = liblapzt.u128.select(q57, liblapzt.u128.sub(r141, b), r141)
-        r143: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r142), a56)
-        q56: liblapzt.bool = liblapzt.u128.ge(r143, b)
-        r144: liblapzt.u128 = liblapzt.u128.select(q56, liblapzt.u128.sub(r143, b), r143)
-        r145: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r144), a55)
-        q55: liblapzt.bool = liblapzt.u128.ge(r145, b)
-        r146: liblapzt.u128 = liblapzt.u128.select(q55, liblapzt.u128.sub(r145, b), r145)
-        r147: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r146), a54)
-        q54: liblapzt.bool = liblapzt.u128.ge(r147, b)
-        r148: liblapzt.u128 = liblapzt.u128.select(q54, liblapzt.u128.sub(r147, b), r147)
-        r149: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r148), a53)
-        q53: liblapzt.bool = liblapzt.u128.ge(r149, b)
-        r150: liblapzt.u128 = liblapzt.u128.select(q53, liblapzt.u128.sub(r149, b), r149)
-        r151: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r150), a52)
-        q52: liblapzt.bool = liblapzt.u128.ge(r151, b)
-        r152: liblapzt.u128 = liblapzt.u128.select(q52, liblapzt.u128.sub(r151, b), r151)
-        r153: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r152), a51)
-        q51: liblapzt.bool = liblapzt.u128.ge(r153, b)
-        r154: liblapzt.u128 = liblapzt.u128.select(q51, liblapzt.u128.sub(r153, b), r153)
-        r155: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r154), a50)
-        q50: liblapzt.bool = liblapzt.u128.ge(r155, b)
-        r156: liblapzt.u128 = liblapzt.u128.select(q50, liblapzt.u128.sub(r155, b), r155)
-        r157: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r156), a49)
-        q49: liblapzt.bool = liblapzt.u128.ge(r157, b)
-        r158: liblapzt.u128 = liblapzt.u128.select(q49, liblapzt.u128.sub(r157, b), r157)
-        r159: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r158), a48)
-        q48: liblapzt.bool = liblapzt.u128.ge(r159, b)
-        r160: liblapzt.u128 = liblapzt.u128.select(q48, liblapzt.u128.sub(r159, b), r159)
-        r161: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r160), a47)
-        q47: liblapzt.bool = liblapzt.u128.ge(r161, b)
-        r162: liblapzt.u128 = liblapzt.u128.select(q47, liblapzt.u128.sub(r161, b), r161)
-        r163: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r162), a46)
-        q46: liblapzt.bool = liblapzt.u128.ge(r163, b)
-        r164: liblapzt.u128 = liblapzt.u128.select(q46, liblapzt.u128.sub(r163, b), r163)
-        r165: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r164), a45)
-        q45: liblapzt.bool = liblapzt.u128.ge(r165, b)
-        r166: liblapzt.u128 = liblapzt.u128.select(q45, liblapzt.u128.sub(r165, b), r165)
-        r167: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r166), a44)
-        q44: liblapzt.bool = liblapzt.u128.ge(r167, b)
-        r168: liblapzt.u128 = liblapzt.u128.select(q44, liblapzt.u128.sub(r167, b), r167)
-        r169: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r168), a43)
-        q43: liblapzt.bool = liblapzt.u128.ge(r169, b)
-        r170: liblapzt.u128 = liblapzt.u128.select(q43, liblapzt.u128.sub(r169, b), r169)
-        r171: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r170), a42)
-        q42: liblapzt.bool = liblapzt.u128.ge(r171, b)
-        r172: liblapzt.u128 = liblapzt.u128.select(q42, liblapzt.u128.sub(r171, b), r171)
-        r173: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r172), a41)
-        q41: liblapzt.bool = liblapzt.u128.ge(r173, b)
-        r174: liblapzt.u128 = liblapzt.u128.select(q41, liblapzt.u128.sub(r173, b), r173)
-        r175: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r174), a40)
-        q40: liblapzt.bool = liblapzt.u128.ge(r175, b)
-        r176: liblapzt.u128 = liblapzt.u128.select(q40, liblapzt.u128.sub(r175, b), r175)
-        r177: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r176), a39)
-        q39: liblapzt.bool = liblapzt.u128.ge(r177, b)
-        r178: liblapzt.u128 = liblapzt.u128.select(q39, liblapzt.u128.sub(r177, b), r177)
-        r179: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r178), a38)
-        q38: liblapzt.bool = liblapzt.u128.ge(r179, b)
-        r180: liblapzt.u128 = liblapzt.u128.select(q38, liblapzt.u128.sub(r179, b), r179)
-        r181: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r180), a37)
-        q37: liblapzt.bool = liblapzt.u128.ge(r181, b)
-        r182: liblapzt.u128 = liblapzt.u128.select(q37, liblapzt.u128.sub(r181, b), r181)
-        r183: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r182), a36)
-        q36: liblapzt.bool = liblapzt.u128.ge(r183, b)
-        r184: liblapzt.u128 = liblapzt.u128.select(q36, liblapzt.u128.sub(r183, b), r183)
-        r185: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r184), a35)
-        q35: liblapzt.bool = liblapzt.u128.ge(r185, b)
-        r186: liblapzt.u128 = liblapzt.u128.select(q35, liblapzt.u128.sub(r185, b), r185)
-        r187: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r186), a34)
-        q34: liblapzt.bool = liblapzt.u128.ge(r187, b)
-        r188: liblapzt.u128 = liblapzt.u128.select(q34, liblapzt.u128.sub(r187, b), r187)
-        r189: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r188), a33)
-        q33: liblapzt.bool = liblapzt.u128.ge(r189, b)
-        r190: liblapzt.u128 = liblapzt.u128.select(q33, liblapzt.u128.sub(r189, b), r189)
-        r191: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r190), a32)
-        q32: liblapzt.bool = liblapzt.u128.ge(r191, b)
-        r192: liblapzt.u128 = liblapzt.u128.select(q32, liblapzt.u128.sub(r191, b), r191)
-        r193: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r192), a31)
-        q31: liblapzt.bool = liblapzt.u128.ge(r193, b)
-        r194: liblapzt.u128 = liblapzt.u128.select(q31, liblapzt.u128.sub(r193, b), r193)
-        r195: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r194), a30)
-        q30: liblapzt.bool = liblapzt.u128.ge(r195, b)
-        r196: liblapzt.u128 = liblapzt.u128.select(q30, liblapzt.u128.sub(r195, b), r195)
-        r197: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r196), a29)
-        q29: liblapzt.bool = liblapzt.u128.ge(r197, b)
-        r198: liblapzt.u128 = liblapzt.u128.select(q29, liblapzt.u128.sub(r197, b), r197)
-        r199: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r198), a28)
-        q28: liblapzt.bool = liblapzt.u128.ge(r199, b)
-        r200: liblapzt.u128 = liblapzt.u128.select(q28, liblapzt.u128.sub(r199, b), r199)
-        r201: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r200), a27)
-        q27: liblapzt.bool = liblapzt.u128.ge(r201, b)
-        r202: liblapzt.u128 = liblapzt.u128.select(q27, liblapzt.u128.sub(r201, b), r201)
-        r203: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r202), a26)
-        q26: liblapzt.bool = liblapzt.u128.ge(r203, b)
-        r204: liblapzt.u128 = liblapzt.u128.select(q26, liblapzt.u128.sub(r203, b), r203)
-        r205: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r204), a25)
-        q25: liblapzt.bool = liblapzt.u128.ge(r205, b)
-        r206: liblapzt.u128 = liblapzt.u128.select(q25, liblapzt.u128.sub(r205, b), r205)
-        r207: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r206), a24)
-        q24: liblapzt.bool = liblapzt.u128.ge(r207, b)
-        r208: liblapzt.u128 = liblapzt.u128.select(q24, liblapzt.u128.sub(r207, b), r207)
-        r209: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r208), a23)
-        q23: liblapzt.bool = liblapzt.u128.ge(r209, b)
-        r210: liblapzt.u128 = liblapzt.u128.select(q23, liblapzt.u128.sub(r209, b), r209)
-        r211: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r210), a22)
-        q22: liblapzt.bool = liblapzt.u128.ge(r211, b)
-        r212: liblapzt.u128 = liblapzt.u128.select(q22, liblapzt.u128.sub(r211, b), r211)
-        r213: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r212), a21)
-        q21: liblapzt.bool = liblapzt.u128.ge(r213, b)
-        r214: liblapzt.u128 = liblapzt.u128.select(q21, liblapzt.u128.sub(r213, b), r213)
-        r215: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r214), a20)
-        q20: liblapzt.bool = liblapzt.u128.ge(r215, b)
-        r216: liblapzt.u128 = liblapzt.u128.select(q20, liblapzt.u128.sub(r215, b), r215)
-        r217: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r216), a19)
-        q19: liblapzt.bool = liblapzt.u128.ge(r217, b)
-        r218: liblapzt.u128 = liblapzt.u128.select(q19, liblapzt.u128.sub(r217, b), r217)
-        r219: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r218), a18)
-        q18: liblapzt.bool = liblapzt.u128.ge(r219, b)
-        r220: liblapzt.u128 = liblapzt.u128.select(q18, liblapzt.u128.sub(r219, b), r219)
-        r221: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r220), a17)
-        q17: liblapzt.bool = liblapzt.u128.ge(r221, b)
-        r222: liblapzt.u128 = liblapzt.u128.select(q17, liblapzt.u128.sub(r221, b), r221)
-        r223: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r222), a16)
-        q16: liblapzt.bool = liblapzt.u128.ge(r223, b)
-        r224: liblapzt.u128 = liblapzt.u128.select(q16, liblapzt.u128.sub(r223, b), r223)
-        r225: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r224), a15)
-        q15: liblapzt.bool = liblapzt.u128.ge(r225, b)
-        r226: liblapzt.u128 = liblapzt.u128.select(q15, liblapzt.u128.sub(r225, b), r225)
-        r227: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r226), a14)
-        q14: liblapzt.bool = liblapzt.u128.ge(r227, b)
-        r228: liblapzt.u128 = liblapzt.u128.select(q14, liblapzt.u128.sub(r227, b), r227)
-        r229: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r228), a13)
-        q13: liblapzt.bool = liblapzt.u128.ge(r229, b)
-        r230: liblapzt.u128 = liblapzt.u128.select(q13, liblapzt.u128.sub(r229, b), r229)
-        r231: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r230), a12)
-        q12: liblapzt.bool = liblapzt.u128.ge(r231, b)
-        r232: liblapzt.u128 = liblapzt.u128.select(q12, liblapzt.u128.sub(r231, b), r231)
-        r233: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r232), a11)
-        q11: liblapzt.bool = liblapzt.u128.ge(r233, b)
-        r234: liblapzt.u128 = liblapzt.u128.select(q11, liblapzt.u128.sub(r233, b), r233)
-        r235: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r234), a10)
-        q10: liblapzt.bool = liblapzt.u128.ge(r235, b)
-        r236: liblapzt.u128 = liblapzt.u128.select(q10, liblapzt.u128.sub(r235, b), r235)
-        r237: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r236), a9)
-        q9: liblapzt.bool = liblapzt.u128.ge(r237, b)
-        r238: liblapzt.u128 = liblapzt.u128.select(q9, liblapzt.u128.sub(r237, b), r237)
-        r239: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r238), a8)
-        q8: liblapzt.bool = liblapzt.u128.ge(r239, b)
-        r240: liblapzt.u128 = liblapzt.u128.select(q8, liblapzt.u128.sub(r239, b), r239)
-        r241: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r240), a7)
-        q7: liblapzt.bool = liblapzt.u128.ge(r241, b)
-        r242: liblapzt.u128 = liblapzt.u128.select(q7, liblapzt.u128.sub(r241, b), r241)
-        r243: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r242), a6)
-        q6: liblapzt.bool = liblapzt.u128.ge(r243, b)
-        r244: liblapzt.u128 = liblapzt.u128.select(q6, liblapzt.u128.sub(r243, b), r243)
-        r245: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r244), a5)
-        q5: liblapzt.bool = liblapzt.u128.ge(r245, b)
-        r246: liblapzt.u128 = liblapzt.u128.select(q5, liblapzt.u128.sub(r245, b), r245)
-        r247: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r246), a4)
-        q4: liblapzt.bool = liblapzt.u128.ge(r247, b)
-        r248: liblapzt.u128 = liblapzt.u128.select(q4, liblapzt.u128.sub(r247, b), r247)
-        r249: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r248), a3)
-        q3: liblapzt.bool = liblapzt.u128.ge(r249, b)
-        r250: liblapzt.u128 = liblapzt.u128.select(q3, liblapzt.u128.sub(r249, b), r249)
-        r251: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r250), a2)
-        q2: liblapzt.bool = liblapzt.u128.ge(r251, b)
-        r252: liblapzt.u128 = liblapzt.u128.select(q2, liblapzt.u128.sub(r251, b), r251)
-        r253: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r252), a1)
-        q1: liblapzt.bool = liblapzt.u128.ge(r253, b)
-        r254: liblapzt.u128 = liblapzt.u128.select(q1, liblapzt.u128.sub(r253, b), r253)
-        r255: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r254), a0)
-        q0: liblapzt.bool = liblapzt.u128.ge(r255, b)
-        r256: liblapzt.u128 = liblapzt.u128.select(q0, liblapzt.u128.sub(r255, b), r255)
-        [[[[[[[q0, q1], [q2, q3]], [[q4, q5], [q6, q7]]], [[[q8, q9], [q10, q11]], [[q12, q13], [q14, q15]]]], [[[[q16, q17], [q18, q19]], [[q20, q21], [q22, q23]]], [[[q24, q25], [q26, q27]], [[q28, q29], [q30, q31]]]]], [[[[[q32, q33], [q34, q35]], [[q36, q37], [q38, q39]]], [[[q40, q41], [q42, q43]], [[q44, q45], [q46, q47]]]], [[[[q48, q49], [q50, q51]], [[q52, q53], [q54, q55]]], [[[q56, q57], [q58, q59]], [[q60, q61], [q62, q63]]]]]], [[[[[[q64, q65], [q66, q67]], [[q68, q69], [q70, q71]]], [[[q72, q73], [q74, q75]], [[q76, q77], [q78, q79]]]], [[[[q80, q81], [q82, q83]], [[q84, q85], [q86, q87]]], [[[q88, q89], [q90, q91]], [[q92, q93], [q94, q95]]]]], [[[[[q96, q97], [q98, q99]], [[q100, q101], [q102, q103]]], [[[q104, q105], [q106, q107]], [[q108, q109], [q110, q111]]]], [[[[q112, q113], [q114, q115]], [[q116, q117], [q118, q119]]], [[[q120, q121], [q122, q123]], [[q124, q125], [q126, q127]]]]]]]
+        [[[[[[[a0, a1], [a2, a3]], [[a4, a5], [a6, a7]]], [[[a8, a9], [a10, a11]], [[a12, a13], [a14, a15]]]], [[[[a16, a17], [a18, a19]], [[a20, a21], [a22, a23]]], [[[a24, a25], [a26, a27]], [[a28, a29], [a30, a31]]]]], [[[[[a32, a33], [a34, a35]], [[a36, a37], [a38, a39]]], [[[a40, a41], [a42, a43]], [[a44, a45], [a46, a47]]]], [[[[a48, a49], [a50, a51]], [[a52, a53], [a54, a55]]], [[[a56, a57], [a58, a59]], [[a60, a61], [a62, a63]]]]]], [[[[[[a64, a65], [a66, a67]], [[a68, a69], [a70, a71]]], [[[a72, a73], [a74, a75]], [[a76, a77], [a78, a79]]]], [[[[a80, a81], [a82, a83]], [[a84, a85], [a86, a87]]], [[[a88, a89], [a90, a91]], [[a92, a93], [a94, a95]]]]], [[[[[a96, a97], [a98, a99]], [[a100, a101], [a102, a103]]], [[[a104, a105], [a106, a107]], [[a108, a109], [a110, a111]]]], [[[[a112, a113], [a114, a115]], [[a116, a117], [a118, a119]]], [[[a120, a121], [a122, a123]], [[a124, a125], [a126, a127]]]]]]] = self
+        one: liblapzt.integer.u128 = liblapzt.integer.u128.subtract.wrapping(liblapzt.integer.u128.MIN, liblapzt.integer.u128.MAX)
+        mask: liblapzt.integer.u128 = liblapzt.integer.u128.not(one)
+        r0: liblapzt.integer.u128 = liblapzt.integer.u128.MIN
+        r1: liblapzt.integer.u128 = BRANCH (a127) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r0, r0), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r0, r0), mask) }
+        q127: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r1, other))
+        r2: liblapzt.integer.u128 = BRANCH (q127) { liblapzt.integer.u128.subtract.wrapping(r1, other) } { r1 }
+        r3: liblapzt.integer.u128 = BRANCH (a126) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r2, r2), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r2, r2), mask) }
+        q126: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r3, other))
+        r4: liblapzt.integer.u128 = BRANCH (q126) { liblapzt.integer.u128.subtract.wrapping(r3, other) } { r3 }
+        r5: liblapzt.integer.u128 = BRANCH (a125) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r4, r4), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r4, r4), mask) }
+        q125: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r5, other))
+        r6: liblapzt.integer.u128 = BRANCH (q125) { liblapzt.integer.u128.subtract.wrapping(r5, other) } { r5 }
+        r7: liblapzt.integer.u128 = BRANCH (a124) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r6, r6), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r6, r6), mask) }
+        q124: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r7, other))
+        r8: liblapzt.integer.u128 = BRANCH (q124) { liblapzt.integer.u128.subtract.wrapping(r7, other) } { r7 }
+        r9: liblapzt.integer.u128 = BRANCH (a123) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r8, r8), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r8, r8), mask) }
+        q123: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r9, other))
+        r10: liblapzt.integer.u128 = BRANCH (q123) { liblapzt.integer.u128.subtract.wrapping(r9, other) } { r9 }
+        r11: liblapzt.integer.u128 = BRANCH (a122) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r10, r10), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r10, r10), mask) }
+        q122: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r11, other))
+        r12: liblapzt.integer.u128 = BRANCH (q122) { liblapzt.integer.u128.subtract.wrapping(r11, other) } { r11 }
+        r13: liblapzt.integer.u128 = BRANCH (a121) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r12, r12), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r12, r12), mask) }
+        q121: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r13, other))
+        r14: liblapzt.integer.u128 = BRANCH (q121) { liblapzt.integer.u128.subtract.wrapping(r13, other) } { r13 }
+        r15: liblapzt.integer.u128 = BRANCH (a120) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r14, r14), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r14, r14), mask) }
+        q120: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r15, other))
+        r16: liblapzt.integer.u128 = BRANCH (q120) { liblapzt.integer.u128.subtract.wrapping(r15, other) } { r15 }
+        r17: liblapzt.integer.u128 = BRANCH (a119) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r16, r16), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r16, r16), mask) }
+        q119: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r17, other))
+        r18: liblapzt.integer.u128 = BRANCH (q119) { liblapzt.integer.u128.subtract.wrapping(r17, other) } { r17 }
+        r19: liblapzt.integer.u128 = BRANCH (a118) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r18, r18), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r18, r18), mask) }
+        q118: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r19, other))
+        r20: liblapzt.integer.u128 = BRANCH (q118) { liblapzt.integer.u128.subtract.wrapping(r19, other) } { r19 }
+        r21: liblapzt.integer.u128 = BRANCH (a117) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r20, r20), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r20, r20), mask) }
+        q117: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r21, other))
+        r22: liblapzt.integer.u128 = BRANCH (q117) { liblapzt.integer.u128.subtract.wrapping(r21, other) } { r21 }
+        r23: liblapzt.integer.u128 = BRANCH (a116) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r22, r22), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r22, r22), mask) }
+        q116: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r23, other))
+        r24: liblapzt.integer.u128 = BRANCH (q116) { liblapzt.integer.u128.subtract.wrapping(r23, other) } { r23 }
+        r25: liblapzt.integer.u128 = BRANCH (a115) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r24, r24), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r24, r24), mask) }
+        q115: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r25, other))
+        r26: liblapzt.integer.u128 = BRANCH (q115) { liblapzt.integer.u128.subtract.wrapping(r25, other) } { r25 }
+        r27: liblapzt.integer.u128 = BRANCH (a114) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r26, r26), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r26, r26), mask) }
+        q114: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r27, other))
+        r28: liblapzt.integer.u128 = BRANCH (q114) { liblapzt.integer.u128.subtract.wrapping(r27, other) } { r27 }
+        r29: liblapzt.integer.u128 = BRANCH (a113) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r28, r28), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r28, r28), mask) }
+        q113: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r29, other))
+        r30: liblapzt.integer.u128 = BRANCH (q113) { liblapzt.integer.u128.subtract.wrapping(r29, other) } { r29 }
+        r31: liblapzt.integer.u128 = BRANCH (a112) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r30, r30), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r30, r30), mask) }
+        q112: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r31, other))
+        r32: liblapzt.integer.u128 = BRANCH (q112) { liblapzt.integer.u128.subtract.wrapping(r31, other) } { r31 }
+        r33: liblapzt.integer.u128 = BRANCH (a111) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r32, r32), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r32, r32), mask) }
+        q111: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r33, other))
+        r34: liblapzt.integer.u128 = BRANCH (q111) { liblapzt.integer.u128.subtract.wrapping(r33, other) } { r33 }
+        r35: liblapzt.integer.u128 = BRANCH (a110) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r34, r34), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r34, r34), mask) }
+        q110: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r35, other))
+        r36: liblapzt.integer.u128 = BRANCH (q110) { liblapzt.integer.u128.subtract.wrapping(r35, other) } { r35 }
+        r37: liblapzt.integer.u128 = BRANCH (a109) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r36, r36), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r36, r36), mask) }
+        q109: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r37, other))
+        r38: liblapzt.integer.u128 = BRANCH (q109) { liblapzt.integer.u128.subtract.wrapping(r37, other) } { r37 }
+        r39: liblapzt.integer.u128 = BRANCH (a108) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r38, r38), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r38, r38), mask) }
+        q108: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r39, other))
+        r40: liblapzt.integer.u128 = BRANCH (q108) { liblapzt.integer.u128.subtract.wrapping(r39, other) } { r39 }
+        r41: liblapzt.integer.u128 = BRANCH (a107) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r40, r40), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r40, r40), mask) }
+        q107: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r41, other))
+        r42: liblapzt.integer.u128 = BRANCH (q107) { liblapzt.integer.u128.subtract.wrapping(r41, other) } { r41 }
+        r43: liblapzt.integer.u128 = BRANCH (a106) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r42, r42), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r42, r42), mask) }
+        q106: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r43, other))
+        r44: liblapzt.integer.u128 = BRANCH (q106) { liblapzt.integer.u128.subtract.wrapping(r43, other) } { r43 }
+        r45: liblapzt.integer.u128 = BRANCH (a105) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r44, r44), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r44, r44), mask) }
+        q105: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r45, other))
+        r46: liblapzt.integer.u128 = BRANCH (q105) { liblapzt.integer.u128.subtract.wrapping(r45, other) } { r45 }
+        r47: liblapzt.integer.u128 = BRANCH (a104) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r46, r46), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r46, r46), mask) }
+        q104: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r47, other))
+        r48: liblapzt.integer.u128 = BRANCH (q104) { liblapzt.integer.u128.subtract.wrapping(r47, other) } { r47 }
+        r49: liblapzt.integer.u128 = BRANCH (a103) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r48, r48), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r48, r48), mask) }
+        q103: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r49, other))
+        r50: liblapzt.integer.u128 = BRANCH (q103) { liblapzt.integer.u128.subtract.wrapping(r49, other) } { r49 }
+        r51: liblapzt.integer.u128 = BRANCH (a102) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r50, r50), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r50, r50), mask) }
+        q102: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r51, other))
+        r52: liblapzt.integer.u128 = BRANCH (q102) { liblapzt.integer.u128.subtract.wrapping(r51, other) } { r51 }
+        r53: liblapzt.integer.u128 = BRANCH (a101) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r52, r52), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r52, r52), mask) }
+        q101: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r53, other))
+        r54: liblapzt.integer.u128 = BRANCH (q101) { liblapzt.integer.u128.subtract.wrapping(r53, other) } { r53 }
+        r55: liblapzt.integer.u128 = BRANCH (a100) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r54, r54), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r54, r54), mask) }
+        q100: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r55, other))
+        r56: liblapzt.integer.u128 = BRANCH (q100) { liblapzt.integer.u128.subtract.wrapping(r55, other) } { r55 }
+        r57: liblapzt.integer.u128 = BRANCH (a99) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r56, r56), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r56, r56), mask) }
+        q99: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r57, other))
+        r58: liblapzt.integer.u128 = BRANCH (q99) { liblapzt.integer.u128.subtract.wrapping(r57, other) } { r57 }
+        r59: liblapzt.integer.u128 = BRANCH (a98) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r58, r58), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r58, r58), mask) }
+        q98: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r59, other))
+        r60: liblapzt.integer.u128 = BRANCH (q98) { liblapzt.integer.u128.subtract.wrapping(r59, other) } { r59 }
+        r61: liblapzt.integer.u128 = BRANCH (a97) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r60, r60), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r60, r60), mask) }
+        q97: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r61, other))
+        r62: liblapzt.integer.u128 = BRANCH (q97) { liblapzt.integer.u128.subtract.wrapping(r61, other) } { r61 }
+        r63: liblapzt.integer.u128 = BRANCH (a96) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r62, r62), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r62, r62), mask) }
+        q96: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r63, other))
+        r64: liblapzt.integer.u128 = BRANCH (q96) { liblapzt.integer.u128.subtract.wrapping(r63, other) } { r63 }
+        r65: liblapzt.integer.u128 = BRANCH (a95) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r64, r64), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r64, r64), mask) }
+        q95: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r65, other))
+        r66: liblapzt.integer.u128 = BRANCH (q95) { liblapzt.integer.u128.subtract.wrapping(r65, other) } { r65 }
+        r67: liblapzt.integer.u128 = BRANCH (a94) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r66, r66), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r66, r66), mask) }
+        q94: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r67, other))
+        r68: liblapzt.integer.u128 = BRANCH (q94) { liblapzt.integer.u128.subtract.wrapping(r67, other) } { r67 }
+        r69: liblapzt.integer.u128 = BRANCH (a93) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r68, r68), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r68, r68), mask) }
+        q93: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r69, other))
+        r70: liblapzt.integer.u128 = BRANCH (q93) { liblapzt.integer.u128.subtract.wrapping(r69, other) } { r69 }
+        r71: liblapzt.integer.u128 = BRANCH (a92) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r70, r70), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r70, r70), mask) }
+        q92: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r71, other))
+        r72: liblapzt.integer.u128 = BRANCH (q92) { liblapzt.integer.u128.subtract.wrapping(r71, other) } { r71 }
+        r73: liblapzt.integer.u128 = BRANCH (a91) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r72, r72), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r72, r72), mask) }
+        q91: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r73, other))
+        r74: liblapzt.integer.u128 = BRANCH (q91) { liblapzt.integer.u128.subtract.wrapping(r73, other) } { r73 }
+        r75: liblapzt.integer.u128 = BRANCH (a90) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r74, r74), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r74, r74), mask) }
+        q90: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r75, other))
+        r76: liblapzt.integer.u128 = BRANCH (q90) { liblapzt.integer.u128.subtract.wrapping(r75, other) } { r75 }
+        r77: liblapzt.integer.u128 = BRANCH (a89) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r76, r76), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r76, r76), mask) }
+        q89: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r77, other))
+        r78: liblapzt.integer.u128 = BRANCH (q89) { liblapzt.integer.u128.subtract.wrapping(r77, other) } { r77 }
+        r79: liblapzt.integer.u128 = BRANCH (a88) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r78, r78), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r78, r78), mask) }
+        q88: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r79, other))
+        r80: liblapzt.integer.u128 = BRANCH (q88) { liblapzt.integer.u128.subtract.wrapping(r79, other) } { r79 }
+        r81: liblapzt.integer.u128 = BRANCH (a87) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r80, r80), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r80, r80), mask) }
+        q87: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r81, other))
+        r82: liblapzt.integer.u128 = BRANCH (q87) { liblapzt.integer.u128.subtract.wrapping(r81, other) } { r81 }
+        r83: liblapzt.integer.u128 = BRANCH (a86) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r82, r82), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r82, r82), mask) }
+        q86: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r83, other))
+        r84: liblapzt.integer.u128 = BRANCH (q86) { liblapzt.integer.u128.subtract.wrapping(r83, other) } { r83 }
+        r85: liblapzt.integer.u128 = BRANCH (a85) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r84, r84), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r84, r84), mask) }
+        q85: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r85, other))
+        r86: liblapzt.integer.u128 = BRANCH (q85) { liblapzt.integer.u128.subtract.wrapping(r85, other) } { r85 }
+        r87: liblapzt.integer.u128 = BRANCH (a84) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r86, r86), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r86, r86), mask) }
+        q84: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r87, other))
+        r88: liblapzt.integer.u128 = BRANCH (q84) { liblapzt.integer.u128.subtract.wrapping(r87, other) } { r87 }
+        r89: liblapzt.integer.u128 = BRANCH (a83) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r88, r88), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r88, r88), mask) }
+        q83: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r89, other))
+        r90: liblapzt.integer.u128 = BRANCH (q83) { liblapzt.integer.u128.subtract.wrapping(r89, other) } { r89 }
+        r91: liblapzt.integer.u128 = BRANCH (a82) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r90, r90), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r90, r90), mask) }
+        q82: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r91, other))
+        r92: liblapzt.integer.u128 = BRANCH (q82) { liblapzt.integer.u128.subtract.wrapping(r91, other) } { r91 }
+        r93: liblapzt.integer.u128 = BRANCH (a81) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r92, r92), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r92, r92), mask) }
+        q81: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r93, other))
+        r94: liblapzt.integer.u128 = BRANCH (q81) { liblapzt.integer.u128.subtract.wrapping(r93, other) } { r93 }
+        r95: liblapzt.integer.u128 = BRANCH (a80) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r94, r94), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r94, r94), mask) }
+        q80: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r95, other))
+        r96: liblapzt.integer.u128 = BRANCH (q80) { liblapzt.integer.u128.subtract.wrapping(r95, other) } { r95 }
+        r97: liblapzt.integer.u128 = BRANCH (a79) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r96, r96), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r96, r96), mask) }
+        q79: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r97, other))
+        r98: liblapzt.integer.u128 = BRANCH (q79) { liblapzt.integer.u128.subtract.wrapping(r97, other) } { r97 }
+        r99: liblapzt.integer.u128 = BRANCH (a78) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r98, r98), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r98, r98), mask) }
+        q78: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r99, other))
+        r100: liblapzt.integer.u128 = BRANCH (q78) { liblapzt.integer.u128.subtract.wrapping(r99, other) } { r99 }
+        r101: liblapzt.integer.u128 = BRANCH (a77) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r100, r100), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r100, r100), mask) }
+        q77: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r101, other))
+        r102: liblapzt.integer.u128 = BRANCH (q77) { liblapzt.integer.u128.subtract.wrapping(r101, other) } { r101 }
+        r103: liblapzt.integer.u128 = BRANCH (a76) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r102, r102), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r102, r102), mask) }
+        q76: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r103, other))
+        r104: liblapzt.integer.u128 = BRANCH (q76) { liblapzt.integer.u128.subtract.wrapping(r103, other) } { r103 }
+        r105: liblapzt.integer.u128 = BRANCH (a75) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r104, r104), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r104, r104), mask) }
+        q75: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r105, other))
+        r106: liblapzt.integer.u128 = BRANCH (q75) { liblapzt.integer.u128.subtract.wrapping(r105, other) } { r105 }
+        r107: liblapzt.integer.u128 = BRANCH (a74) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r106, r106), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r106, r106), mask) }
+        q74: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r107, other))
+        r108: liblapzt.integer.u128 = BRANCH (q74) { liblapzt.integer.u128.subtract.wrapping(r107, other) } { r107 }
+        r109: liblapzt.integer.u128 = BRANCH (a73) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r108, r108), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r108, r108), mask) }
+        q73: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r109, other))
+        r110: liblapzt.integer.u128 = BRANCH (q73) { liblapzt.integer.u128.subtract.wrapping(r109, other) } { r109 }
+        r111: liblapzt.integer.u128 = BRANCH (a72) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r110, r110), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r110, r110), mask) }
+        q72: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r111, other))
+        r112: liblapzt.integer.u128 = BRANCH (q72) { liblapzt.integer.u128.subtract.wrapping(r111, other) } { r111 }
+        r113: liblapzt.integer.u128 = BRANCH (a71) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r112, r112), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r112, r112), mask) }
+        q71: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r113, other))
+        r114: liblapzt.integer.u128 = BRANCH (q71) { liblapzt.integer.u128.subtract.wrapping(r113, other) } { r113 }
+        r115: liblapzt.integer.u128 = BRANCH (a70) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r114, r114), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r114, r114), mask) }
+        q70: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r115, other))
+        r116: liblapzt.integer.u128 = BRANCH (q70) { liblapzt.integer.u128.subtract.wrapping(r115, other) } { r115 }
+        r117: liblapzt.integer.u128 = BRANCH (a69) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r116, r116), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r116, r116), mask) }
+        q69: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r117, other))
+        r118: liblapzt.integer.u128 = BRANCH (q69) { liblapzt.integer.u128.subtract.wrapping(r117, other) } { r117 }
+        r119: liblapzt.integer.u128 = BRANCH (a68) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r118, r118), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r118, r118), mask) }
+        q68: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r119, other))
+        r120: liblapzt.integer.u128 = BRANCH (q68) { liblapzt.integer.u128.subtract.wrapping(r119, other) } { r119 }
+        r121: liblapzt.integer.u128 = BRANCH (a67) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r120, r120), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r120, r120), mask) }
+        q67: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r121, other))
+        r122: liblapzt.integer.u128 = BRANCH (q67) { liblapzt.integer.u128.subtract.wrapping(r121, other) } { r121 }
+        r123: liblapzt.integer.u128 = BRANCH (a66) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r122, r122), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r122, r122), mask) }
+        q66: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r123, other))
+        r124: liblapzt.integer.u128 = BRANCH (q66) { liblapzt.integer.u128.subtract.wrapping(r123, other) } { r123 }
+        r125: liblapzt.integer.u128 = BRANCH (a65) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r124, r124), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r124, r124), mask) }
+        q65: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r125, other))
+        r126: liblapzt.integer.u128 = BRANCH (q65) { liblapzt.integer.u128.subtract.wrapping(r125, other) } { r125 }
+        r127: liblapzt.integer.u128 = BRANCH (a64) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r126, r126), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r126, r126), mask) }
+        q64: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r127, other))
+        r128: liblapzt.integer.u128 = BRANCH (q64) { liblapzt.integer.u128.subtract.wrapping(r127, other) } { r127 }
+        r129: liblapzt.integer.u128 = BRANCH (a63) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r128, r128), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r128, r128), mask) }
+        q63: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r129, other))
+        r130: liblapzt.integer.u128 = BRANCH (q63) { liblapzt.integer.u128.subtract.wrapping(r129, other) } { r129 }
+        r131: liblapzt.integer.u128 = BRANCH (a62) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r130, r130), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r130, r130), mask) }
+        q62: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r131, other))
+        r132: liblapzt.integer.u128 = BRANCH (q62) { liblapzt.integer.u128.subtract.wrapping(r131, other) } { r131 }
+        r133: liblapzt.integer.u128 = BRANCH (a61) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r132, r132), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r132, r132), mask) }
+        q61: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r133, other))
+        r134: liblapzt.integer.u128 = BRANCH (q61) { liblapzt.integer.u128.subtract.wrapping(r133, other) } { r133 }
+        r135: liblapzt.integer.u128 = BRANCH (a60) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r134, r134), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r134, r134), mask) }
+        q60: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r135, other))
+        r136: liblapzt.integer.u128 = BRANCH (q60) { liblapzt.integer.u128.subtract.wrapping(r135, other) } { r135 }
+        r137: liblapzt.integer.u128 = BRANCH (a59) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r136, r136), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r136, r136), mask) }
+        q59: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r137, other))
+        r138: liblapzt.integer.u128 = BRANCH (q59) { liblapzt.integer.u128.subtract.wrapping(r137, other) } { r137 }
+        r139: liblapzt.integer.u128 = BRANCH (a58) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r138, r138), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r138, r138), mask) }
+        q58: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r139, other))
+        r140: liblapzt.integer.u128 = BRANCH (q58) { liblapzt.integer.u128.subtract.wrapping(r139, other) } { r139 }
+        r141: liblapzt.integer.u128 = BRANCH (a57) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r140, r140), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r140, r140), mask) }
+        q57: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r141, other))
+        r142: liblapzt.integer.u128 = BRANCH (q57) { liblapzt.integer.u128.subtract.wrapping(r141, other) } { r141 }
+        r143: liblapzt.integer.u128 = BRANCH (a56) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r142, r142), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r142, r142), mask) }
+        q56: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r143, other))
+        r144: liblapzt.integer.u128 = BRANCH (q56) { liblapzt.integer.u128.subtract.wrapping(r143, other) } { r143 }
+        r145: liblapzt.integer.u128 = BRANCH (a55) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r144, r144), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r144, r144), mask) }
+        q55: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r145, other))
+        r146: liblapzt.integer.u128 = BRANCH (q55) { liblapzt.integer.u128.subtract.wrapping(r145, other) } { r145 }
+        r147: liblapzt.integer.u128 = BRANCH (a54) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r146, r146), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r146, r146), mask) }
+        q54: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r147, other))
+        r148: liblapzt.integer.u128 = BRANCH (q54) { liblapzt.integer.u128.subtract.wrapping(r147, other) } { r147 }
+        r149: liblapzt.integer.u128 = BRANCH (a53) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r148, r148), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r148, r148), mask) }
+        q53: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r149, other))
+        r150: liblapzt.integer.u128 = BRANCH (q53) { liblapzt.integer.u128.subtract.wrapping(r149, other) } { r149 }
+        r151: liblapzt.integer.u128 = BRANCH (a52) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r150, r150), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r150, r150), mask) }
+        q52: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r151, other))
+        r152: liblapzt.integer.u128 = BRANCH (q52) { liblapzt.integer.u128.subtract.wrapping(r151, other) } { r151 }
+        r153: liblapzt.integer.u128 = BRANCH (a51) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r152, r152), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r152, r152), mask) }
+        q51: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r153, other))
+        r154: liblapzt.integer.u128 = BRANCH (q51) { liblapzt.integer.u128.subtract.wrapping(r153, other) } { r153 }
+        r155: liblapzt.integer.u128 = BRANCH (a50) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r154, r154), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r154, r154), mask) }
+        q50: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r155, other))
+        r156: liblapzt.integer.u128 = BRANCH (q50) { liblapzt.integer.u128.subtract.wrapping(r155, other) } { r155 }
+        r157: liblapzt.integer.u128 = BRANCH (a49) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r156, r156), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r156, r156), mask) }
+        q49: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r157, other))
+        r158: liblapzt.integer.u128 = BRANCH (q49) { liblapzt.integer.u128.subtract.wrapping(r157, other) } { r157 }
+        r159: liblapzt.integer.u128 = BRANCH (a48) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r158, r158), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r158, r158), mask) }
+        q48: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r159, other))
+        r160: liblapzt.integer.u128 = BRANCH (q48) { liblapzt.integer.u128.subtract.wrapping(r159, other) } { r159 }
+        r161: liblapzt.integer.u128 = BRANCH (a47) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r160, r160), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r160, r160), mask) }
+        q47: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r161, other))
+        r162: liblapzt.integer.u128 = BRANCH (q47) { liblapzt.integer.u128.subtract.wrapping(r161, other) } { r161 }
+        r163: liblapzt.integer.u128 = BRANCH (a46) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r162, r162), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r162, r162), mask) }
+        q46: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r163, other))
+        r164: liblapzt.integer.u128 = BRANCH (q46) { liblapzt.integer.u128.subtract.wrapping(r163, other) } { r163 }
+        r165: liblapzt.integer.u128 = BRANCH (a45) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r164, r164), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r164, r164), mask) }
+        q45: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r165, other))
+        r166: liblapzt.integer.u128 = BRANCH (q45) { liblapzt.integer.u128.subtract.wrapping(r165, other) } { r165 }
+        r167: liblapzt.integer.u128 = BRANCH (a44) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r166, r166), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r166, r166), mask) }
+        q44: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r167, other))
+        r168: liblapzt.integer.u128 = BRANCH (q44) { liblapzt.integer.u128.subtract.wrapping(r167, other) } { r167 }
+        r169: liblapzt.integer.u128 = BRANCH (a43) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r168, r168), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r168, r168), mask) }
+        q43: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r169, other))
+        r170: liblapzt.integer.u128 = BRANCH (q43) { liblapzt.integer.u128.subtract.wrapping(r169, other) } { r169 }
+        r171: liblapzt.integer.u128 = BRANCH (a42) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r170, r170), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r170, r170), mask) }
+        q42: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r171, other))
+        r172: liblapzt.integer.u128 = BRANCH (q42) { liblapzt.integer.u128.subtract.wrapping(r171, other) } { r171 }
+        r173: liblapzt.integer.u128 = BRANCH (a41) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r172, r172), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r172, r172), mask) }
+        q41: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r173, other))
+        r174: liblapzt.integer.u128 = BRANCH (q41) { liblapzt.integer.u128.subtract.wrapping(r173, other) } { r173 }
+        r175: liblapzt.integer.u128 = BRANCH (a40) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r174, r174), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r174, r174), mask) }
+        q40: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r175, other))
+        r176: liblapzt.integer.u128 = BRANCH (q40) { liblapzt.integer.u128.subtract.wrapping(r175, other) } { r175 }
+        r177: liblapzt.integer.u128 = BRANCH (a39) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r176, r176), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r176, r176), mask) }
+        q39: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r177, other))
+        r178: liblapzt.integer.u128 = BRANCH (q39) { liblapzt.integer.u128.subtract.wrapping(r177, other) } { r177 }
+        r179: liblapzt.integer.u128 = BRANCH (a38) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r178, r178), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r178, r178), mask) }
+        q38: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r179, other))
+        r180: liblapzt.integer.u128 = BRANCH (q38) { liblapzt.integer.u128.subtract.wrapping(r179, other) } { r179 }
+        r181: liblapzt.integer.u128 = BRANCH (a37) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r180, r180), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r180, r180), mask) }
+        q37: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r181, other))
+        r182: liblapzt.integer.u128 = BRANCH (q37) { liblapzt.integer.u128.subtract.wrapping(r181, other) } { r181 }
+        r183: liblapzt.integer.u128 = BRANCH (a36) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r182, r182), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r182, r182), mask) }
+        q36: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r183, other))
+        r184: liblapzt.integer.u128 = BRANCH (q36) { liblapzt.integer.u128.subtract.wrapping(r183, other) } { r183 }
+        r185: liblapzt.integer.u128 = BRANCH (a35) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r184, r184), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r184, r184), mask) }
+        q35: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r185, other))
+        r186: liblapzt.integer.u128 = BRANCH (q35) { liblapzt.integer.u128.subtract.wrapping(r185, other) } { r185 }
+        r187: liblapzt.integer.u128 = BRANCH (a34) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r186, r186), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r186, r186), mask) }
+        q34: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r187, other))
+        r188: liblapzt.integer.u128 = BRANCH (q34) { liblapzt.integer.u128.subtract.wrapping(r187, other) } { r187 }
+        r189: liblapzt.integer.u128 = BRANCH (a33) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r188, r188), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r188, r188), mask) }
+        q33: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r189, other))
+        r190: liblapzt.integer.u128 = BRANCH (q33) { liblapzt.integer.u128.subtract.wrapping(r189, other) } { r189 }
+        r191: liblapzt.integer.u128 = BRANCH (a32) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r190, r190), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r190, r190), mask) }
+        q32: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r191, other))
+        r192: liblapzt.integer.u128 = BRANCH (q32) { liblapzt.integer.u128.subtract.wrapping(r191, other) } { r191 }
+        r193: liblapzt.integer.u128 = BRANCH (a31) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r192, r192), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r192, r192), mask) }
+        q31: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r193, other))
+        r194: liblapzt.integer.u128 = BRANCH (q31) { liblapzt.integer.u128.subtract.wrapping(r193, other) } { r193 }
+        r195: liblapzt.integer.u128 = BRANCH (a30) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r194, r194), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r194, r194), mask) }
+        q30: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r195, other))
+        r196: liblapzt.integer.u128 = BRANCH (q30) { liblapzt.integer.u128.subtract.wrapping(r195, other) } { r195 }
+        r197: liblapzt.integer.u128 = BRANCH (a29) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r196, r196), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r196, r196), mask) }
+        q29: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r197, other))
+        r198: liblapzt.integer.u128 = BRANCH (q29) { liblapzt.integer.u128.subtract.wrapping(r197, other) } { r197 }
+        r199: liblapzt.integer.u128 = BRANCH (a28) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r198, r198), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r198, r198), mask) }
+        q28: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r199, other))
+        r200: liblapzt.integer.u128 = BRANCH (q28) { liblapzt.integer.u128.subtract.wrapping(r199, other) } { r199 }
+        r201: liblapzt.integer.u128 = BRANCH (a27) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r200, r200), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r200, r200), mask) }
+        q27: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r201, other))
+        r202: liblapzt.integer.u128 = BRANCH (q27) { liblapzt.integer.u128.subtract.wrapping(r201, other) } { r201 }
+        r203: liblapzt.integer.u128 = BRANCH (a26) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r202, r202), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r202, r202), mask) }
+        q26: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r203, other))
+        r204: liblapzt.integer.u128 = BRANCH (q26) { liblapzt.integer.u128.subtract.wrapping(r203, other) } { r203 }
+        r205: liblapzt.integer.u128 = BRANCH (a25) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r204, r204), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r204, r204), mask) }
+        q25: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r205, other))
+        r206: liblapzt.integer.u128 = BRANCH (q25) { liblapzt.integer.u128.subtract.wrapping(r205, other) } { r205 }
+        r207: liblapzt.integer.u128 = BRANCH (a24) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r206, r206), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r206, r206), mask) }
+        q24: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r207, other))
+        r208: liblapzt.integer.u128 = BRANCH (q24) { liblapzt.integer.u128.subtract.wrapping(r207, other) } { r207 }
+        r209: liblapzt.integer.u128 = BRANCH (a23) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r208, r208), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r208, r208), mask) }
+        q23: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r209, other))
+        r210: liblapzt.integer.u128 = BRANCH (q23) { liblapzt.integer.u128.subtract.wrapping(r209, other) } { r209 }
+        r211: liblapzt.integer.u128 = BRANCH (a22) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r210, r210), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r210, r210), mask) }
+        q22: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r211, other))
+        r212: liblapzt.integer.u128 = BRANCH (q22) { liblapzt.integer.u128.subtract.wrapping(r211, other) } { r211 }
+        r213: liblapzt.integer.u128 = BRANCH (a21) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r212, r212), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r212, r212), mask) }
+        q21: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r213, other))
+        r214: liblapzt.integer.u128 = BRANCH (q21) { liblapzt.integer.u128.subtract.wrapping(r213, other) } { r213 }
+        r215: liblapzt.integer.u128 = BRANCH (a20) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r214, r214), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r214, r214), mask) }
+        q20: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r215, other))
+        r216: liblapzt.integer.u128 = BRANCH (q20) { liblapzt.integer.u128.subtract.wrapping(r215, other) } { r215 }
+        r217: liblapzt.integer.u128 = BRANCH (a19) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r216, r216), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r216, r216), mask) }
+        q19: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r217, other))
+        r218: liblapzt.integer.u128 = BRANCH (q19) { liblapzt.integer.u128.subtract.wrapping(r217, other) } { r217 }
+        r219: liblapzt.integer.u128 = BRANCH (a18) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r218, r218), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r218, r218), mask) }
+        q18: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r219, other))
+        r220: liblapzt.integer.u128 = BRANCH (q18) { liblapzt.integer.u128.subtract.wrapping(r219, other) } { r219 }
+        r221: liblapzt.integer.u128 = BRANCH (a17) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r220, r220), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r220, r220), mask) }
+        q17: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r221, other))
+        r222: liblapzt.integer.u128 = BRANCH (q17) { liblapzt.integer.u128.subtract.wrapping(r221, other) } { r221 }
+        r223: liblapzt.integer.u128 = BRANCH (a16) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r222, r222), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r222, r222), mask) }
+        q16: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r223, other))
+        r224: liblapzt.integer.u128 = BRANCH (q16) { liblapzt.integer.u128.subtract.wrapping(r223, other) } { r223 }
+        r225: liblapzt.integer.u128 = BRANCH (a15) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r224, r224), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r224, r224), mask) }
+        q15: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r225, other))
+        r226: liblapzt.integer.u128 = BRANCH (q15) { liblapzt.integer.u128.subtract.wrapping(r225, other) } { r225 }
+        r227: liblapzt.integer.u128 = BRANCH (a14) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r226, r226), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r226, r226), mask) }
+        q14: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r227, other))
+        r228: liblapzt.integer.u128 = BRANCH (q14) { liblapzt.integer.u128.subtract.wrapping(r227, other) } { r227 }
+        r229: liblapzt.integer.u128 = BRANCH (a13) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r228, r228), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r228, r228), mask) }
+        q13: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r229, other))
+        r230: liblapzt.integer.u128 = BRANCH (q13) { liblapzt.integer.u128.subtract.wrapping(r229, other) } { r229 }
+        r231: liblapzt.integer.u128 = BRANCH (a12) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r230, r230), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r230, r230), mask) }
+        q12: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r231, other))
+        r232: liblapzt.integer.u128 = BRANCH (q12) { liblapzt.integer.u128.subtract.wrapping(r231, other) } { r231 }
+        r233: liblapzt.integer.u128 = BRANCH (a11) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r232, r232), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r232, r232), mask) }
+        q11: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r233, other))
+        r234: liblapzt.integer.u128 = BRANCH (q11) { liblapzt.integer.u128.subtract.wrapping(r233, other) } { r233 }
+        r235: liblapzt.integer.u128 = BRANCH (a10) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r234, r234), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r234, r234), mask) }
+        q10: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r235, other))
+        r236: liblapzt.integer.u128 = BRANCH (q10) { liblapzt.integer.u128.subtract.wrapping(r235, other) } { r235 }
+        r237: liblapzt.integer.u128 = BRANCH (a9) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r236, r236), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r236, r236), mask) }
+        q9: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r237, other))
+        r238: liblapzt.integer.u128 = BRANCH (q9) { liblapzt.integer.u128.subtract.wrapping(r237, other) } { r237 }
+        r239: liblapzt.integer.u128 = BRANCH (a8) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r238, r238), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r238, r238), mask) }
+        q8: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r239, other))
+        r240: liblapzt.integer.u128 = BRANCH (q8) { liblapzt.integer.u128.subtract.wrapping(r239, other) } { r239 }
+        r241: liblapzt.integer.u128 = BRANCH (a7) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r240, r240), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r240, r240), mask) }
+        q7: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r241, other))
+        r242: liblapzt.integer.u128 = BRANCH (q7) { liblapzt.integer.u128.subtract.wrapping(r241, other) } { r241 }
+        r243: liblapzt.integer.u128 = BRANCH (a6) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r242, r242), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r242, r242), mask) }
+        q6: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r243, other))
+        r244: liblapzt.integer.u128 = BRANCH (q6) { liblapzt.integer.u128.subtract.wrapping(r243, other) } { r243 }
+        r245: liblapzt.integer.u128 = BRANCH (a5) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r244, r244), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r244, r244), mask) }
+        q5: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r245, other))
+        r246: liblapzt.integer.u128 = BRANCH (q5) { liblapzt.integer.u128.subtract.wrapping(r245, other) } { r245 }
+        r247: liblapzt.integer.u128 = BRANCH (a4) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r246, r246), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r246, r246), mask) }
+        q4: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r247, other))
+        r248: liblapzt.integer.u128 = BRANCH (q4) { liblapzt.integer.u128.subtract.wrapping(r247, other) } { r247 }
+        r249: liblapzt.integer.u128 = BRANCH (a3) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r248, r248), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r248, r248), mask) }
+        q3: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r249, other))
+        r250: liblapzt.integer.u128 = BRANCH (q3) { liblapzt.integer.u128.subtract.wrapping(r249, other) } { r249 }
+        r251: liblapzt.integer.u128 = BRANCH (a2) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r250, r250), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r250, r250), mask) }
+        q2: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r251, other))
+        r252: liblapzt.integer.u128 = BRANCH (q2) { liblapzt.integer.u128.subtract.wrapping(r251, other) } { r251 }
+        r253: liblapzt.integer.u128 = BRANCH (a1) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r252, r252), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r252, r252), mask) }
+        q1: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r253, other))
+        r254: liblapzt.integer.u128 = BRANCH (q1) { liblapzt.integer.u128.subtract.wrapping(r253, other) } { r253 }
+        r255: liblapzt.integer.u128 = BRANCH (a0) { liblapzt.integer.u128.or(liblapzt.integer.u128.add.wrapping(r254, r254), one) } { liblapzt.integer.u128.and(liblapzt.integer.u128.add.wrapping(r254, r254), mask) }
+        q0: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.less_than(r255, other))
+        r256: liblapzt.integer.u128 = BRANCH (q0) { liblapzt.integer.u128.subtract.wrapping(r255, other) } { r255 }
+        quotient: liblapzt.integer.u128 = [[[[[[[q0, q1], [q2, q3]], [[q4, q5], [q6, q7]]], [[[q8, q9], [q10, q11]], [[q12, q13], [q14, q15]]]], [[[[q16, q17], [q18, q19]], [[q20, q21], [q22, q23]]], [[[q24, q25], [q26, q27]], [[q28, q29], [q30, q31]]]]], [[[[[q32, q33], [q34, q35]], [[q36, q37], [q38, q39]]], [[[q40, q41], [q42, q43]], [[q44, q45], [q46, q47]]]], [[[[q48, q49], [q50, q51]], [[q52, q53], [q54, q55]]], [[[q56, q57], [q58, q59]], [[q60, q61], [q62, q63]]]]]], [[[[[[q64, q65], [q66, q67]], [[q68, q69], [q70, q71]]], [[[q72, q73], [q74, q75]], [[q76, q77], [q78, q79]]]], [[[[q80, q81], [q82, q83]], [[q84, q85], [q86, q87]]], [[[q88, q89], [q90, q91]], [[q92, q93], [q94, q95]]]]], [[[[[q96, q97], [q98, q99]], [[q100, q101], [q102, q103]]], [[[q104, q105], [q106, q107]], [[q108, q109], [q110, q111]]]], [[[[q112, q113], [q114, q115]], [[q116, q117], [q118, q119]]], [[[q120, q121], [q122, q123]], [[q124, q125], [q126, q127]]]]]]]
+        [quotient, r256]
     }
 }
 
-// Returns the quotient of a divided by b, rounding toward zero.
-// Returns zero when b is zero.
-liblapzt.u128.div = liblapzt.u128.div.erased
+// Returns self divided by other. Division cannot overflow, so this
+// matches saturating. Division by zero saturates to MAX.
+liblapzt.integer.u128.divide.wrapping = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [quotient, remainder] = liblapzt.integer.u128.divide.full(self, other)
+    quotient
+}
 
-liblapzt.u128.mod.erased = (a: liblapzt.u128, b: liblapzt.u128) liblapzt.u128 {
-    zero: liblapzt.bool = liblapzt.u128.is.zero(b)
+// Returns self divided by other, saturated at MAX.
+liblapzt.integer.u128.divide.saturating = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    [quotient, remainder] = liblapzt.integer.u128.divide.full(self, other)
+    quotient
+}
+
+// Returns [ok, quotient]. Ok is false when other is zero, and the
+// value is then MIN.
+liblapzt.integer.u128.divide.checked = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) [liblapzt.boolean, liblapzt.integer.u128] {
+    zero: liblapzt.boolean = liblapzt.integer.u128.equal(other, liblapzt.integer.u128.MIN)
     BRANCH (zero) {
-        liblapzt.u128.zero
+        [liblapzt.boolean.FALSE, liblapzt.integer.u128.MIN]
     } {
-        [[[[[[[a0, a1], [a2, a3]], [[a4, a5], [a6, a7]]], [[[a8, a9], [a10, a11]], [[a12, a13], [a14, a15]]]], [[[[a16, a17], [a18, a19]], [[a20, a21], [a22, a23]]], [[[a24, a25], [a26, a27]], [[a28, a29], [a30, a31]]]]], [[[[[a32, a33], [a34, a35]], [[a36, a37], [a38, a39]]], [[[a40, a41], [a42, a43]], [[a44, a45], [a46, a47]]]], [[[[a48, a49], [a50, a51]], [[a52, a53], [a54, a55]]], [[[a56, a57], [a58, a59]], [[a60, a61], [a62, a63]]]]]], [[[[[[a64, a65], [a66, a67]], [[a68, a69], [a70, a71]]], [[[a72, a73], [a74, a75]], [[a76, a77], [a78, a79]]]], [[[[a80, a81], [a82, a83]], [[a84, a85], [a86, a87]]], [[[a88, a89], [a90, a91]], [[a92, a93], [a94, a95]]]]], [[[[[a96, a97], [a98, a99]], [[a100, a101], [a102, a103]]], [[[a104, a105], [a106, a107]], [[a108, a109], [a110, a111]]]], [[[[a112, a113], [a114, a115]], [[a116, a117], [a118, a119]]], [[[a120, a121], [a122, a123]], [[a124, a125], [a126, a127]]]]]]] = a
-        r0: liblapzt.u128 = liblapzt.u128.zero
-        r1: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r0), a127)
-        q127: liblapzt.bool = liblapzt.u128.ge(r1, b)
-        r2: liblapzt.u128 = liblapzt.u128.select(q127, liblapzt.u128.sub(r1, b), r1)
-        r3: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r2), a126)
-        q126: liblapzt.bool = liblapzt.u128.ge(r3, b)
-        r4: liblapzt.u128 = liblapzt.u128.select(q126, liblapzt.u128.sub(r3, b), r3)
-        r5: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r4), a125)
-        q125: liblapzt.bool = liblapzt.u128.ge(r5, b)
-        r6: liblapzt.u128 = liblapzt.u128.select(q125, liblapzt.u128.sub(r5, b), r5)
-        r7: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r6), a124)
-        q124: liblapzt.bool = liblapzt.u128.ge(r7, b)
-        r8: liblapzt.u128 = liblapzt.u128.select(q124, liblapzt.u128.sub(r7, b), r7)
-        r9: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r8), a123)
-        q123: liblapzt.bool = liblapzt.u128.ge(r9, b)
-        r10: liblapzt.u128 = liblapzt.u128.select(q123, liblapzt.u128.sub(r9, b), r9)
-        r11: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r10), a122)
-        q122: liblapzt.bool = liblapzt.u128.ge(r11, b)
-        r12: liblapzt.u128 = liblapzt.u128.select(q122, liblapzt.u128.sub(r11, b), r11)
-        r13: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r12), a121)
-        q121: liblapzt.bool = liblapzt.u128.ge(r13, b)
-        r14: liblapzt.u128 = liblapzt.u128.select(q121, liblapzt.u128.sub(r13, b), r13)
-        r15: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r14), a120)
-        q120: liblapzt.bool = liblapzt.u128.ge(r15, b)
-        r16: liblapzt.u128 = liblapzt.u128.select(q120, liblapzt.u128.sub(r15, b), r15)
-        r17: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r16), a119)
-        q119: liblapzt.bool = liblapzt.u128.ge(r17, b)
-        r18: liblapzt.u128 = liblapzt.u128.select(q119, liblapzt.u128.sub(r17, b), r17)
-        r19: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r18), a118)
-        q118: liblapzt.bool = liblapzt.u128.ge(r19, b)
-        r20: liblapzt.u128 = liblapzt.u128.select(q118, liblapzt.u128.sub(r19, b), r19)
-        r21: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r20), a117)
-        q117: liblapzt.bool = liblapzt.u128.ge(r21, b)
-        r22: liblapzt.u128 = liblapzt.u128.select(q117, liblapzt.u128.sub(r21, b), r21)
-        r23: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r22), a116)
-        q116: liblapzt.bool = liblapzt.u128.ge(r23, b)
-        r24: liblapzt.u128 = liblapzt.u128.select(q116, liblapzt.u128.sub(r23, b), r23)
-        r25: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r24), a115)
-        q115: liblapzt.bool = liblapzt.u128.ge(r25, b)
-        r26: liblapzt.u128 = liblapzt.u128.select(q115, liblapzt.u128.sub(r25, b), r25)
-        r27: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r26), a114)
-        q114: liblapzt.bool = liblapzt.u128.ge(r27, b)
-        r28: liblapzt.u128 = liblapzt.u128.select(q114, liblapzt.u128.sub(r27, b), r27)
-        r29: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r28), a113)
-        q113: liblapzt.bool = liblapzt.u128.ge(r29, b)
-        r30: liblapzt.u128 = liblapzt.u128.select(q113, liblapzt.u128.sub(r29, b), r29)
-        r31: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r30), a112)
-        q112: liblapzt.bool = liblapzt.u128.ge(r31, b)
-        r32: liblapzt.u128 = liblapzt.u128.select(q112, liblapzt.u128.sub(r31, b), r31)
-        r33: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r32), a111)
-        q111: liblapzt.bool = liblapzt.u128.ge(r33, b)
-        r34: liblapzt.u128 = liblapzt.u128.select(q111, liblapzt.u128.sub(r33, b), r33)
-        r35: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r34), a110)
-        q110: liblapzt.bool = liblapzt.u128.ge(r35, b)
-        r36: liblapzt.u128 = liblapzt.u128.select(q110, liblapzt.u128.sub(r35, b), r35)
-        r37: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r36), a109)
-        q109: liblapzt.bool = liblapzt.u128.ge(r37, b)
-        r38: liblapzt.u128 = liblapzt.u128.select(q109, liblapzt.u128.sub(r37, b), r37)
-        r39: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r38), a108)
-        q108: liblapzt.bool = liblapzt.u128.ge(r39, b)
-        r40: liblapzt.u128 = liblapzt.u128.select(q108, liblapzt.u128.sub(r39, b), r39)
-        r41: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r40), a107)
-        q107: liblapzt.bool = liblapzt.u128.ge(r41, b)
-        r42: liblapzt.u128 = liblapzt.u128.select(q107, liblapzt.u128.sub(r41, b), r41)
-        r43: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r42), a106)
-        q106: liblapzt.bool = liblapzt.u128.ge(r43, b)
-        r44: liblapzt.u128 = liblapzt.u128.select(q106, liblapzt.u128.sub(r43, b), r43)
-        r45: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r44), a105)
-        q105: liblapzt.bool = liblapzt.u128.ge(r45, b)
-        r46: liblapzt.u128 = liblapzt.u128.select(q105, liblapzt.u128.sub(r45, b), r45)
-        r47: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r46), a104)
-        q104: liblapzt.bool = liblapzt.u128.ge(r47, b)
-        r48: liblapzt.u128 = liblapzt.u128.select(q104, liblapzt.u128.sub(r47, b), r47)
-        r49: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r48), a103)
-        q103: liblapzt.bool = liblapzt.u128.ge(r49, b)
-        r50: liblapzt.u128 = liblapzt.u128.select(q103, liblapzt.u128.sub(r49, b), r49)
-        r51: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r50), a102)
-        q102: liblapzt.bool = liblapzt.u128.ge(r51, b)
-        r52: liblapzt.u128 = liblapzt.u128.select(q102, liblapzt.u128.sub(r51, b), r51)
-        r53: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r52), a101)
-        q101: liblapzt.bool = liblapzt.u128.ge(r53, b)
-        r54: liblapzt.u128 = liblapzt.u128.select(q101, liblapzt.u128.sub(r53, b), r53)
-        r55: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r54), a100)
-        q100: liblapzt.bool = liblapzt.u128.ge(r55, b)
-        r56: liblapzt.u128 = liblapzt.u128.select(q100, liblapzt.u128.sub(r55, b), r55)
-        r57: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r56), a99)
-        q99: liblapzt.bool = liblapzt.u128.ge(r57, b)
-        r58: liblapzt.u128 = liblapzt.u128.select(q99, liblapzt.u128.sub(r57, b), r57)
-        r59: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r58), a98)
-        q98: liblapzt.bool = liblapzt.u128.ge(r59, b)
-        r60: liblapzt.u128 = liblapzt.u128.select(q98, liblapzt.u128.sub(r59, b), r59)
-        r61: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r60), a97)
-        q97: liblapzt.bool = liblapzt.u128.ge(r61, b)
-        r62: liblapzt.u128 = liblapzt.u128.select(q97, liblapzt.u128.sub(r61, b), r61)
-        r63: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r62), a96)
-        q96: liblapzt.bool = liblapzt.u128.ge(r63, b)
-        r64: liblapzt.u128 = liblapzt.u128.select(q96, liblapzt.u128.sub(r63, b), r63)
-        r65: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r64), a95)
-        q95: liblapzt.bool = liblapzt.u128.ge(r65, b)
-        r66: liblapzt.u128 = liblapzt.u128.select(q95, liblapzt.u128.sub(r65, b), r65)
-        r67: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r66), a94)
-        q94: liblapzt.bool = liblapzt.u128.ge(r67, b)
-        r68: liblapzt.u128 = liblapzt.u128.select(q94, liblapzt.u128.sub(r67, b), r67)
-        r69: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r68), a93)
-        q93: liblapzt.bool = liblapzt.u128.ge(r69, b)
-        r70: liblapzt.u128 = liblapzt.u128.select(q93, liblapzt.u128.sub(r69, b), r69)
-        r71: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r70), a92)
-        q92: liblapzt.bool = liblapzt.u128.ge(r71, b)
-        r72: liblapzt.u128 = liblapzt.u128.select(q92, liblapzt.u128.sub(r71, b), r71)
-        r73: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r72), a91)
-        q91: liblapzt.bool = liblapzt.u128.ge(r73, b)
-        r74: liblapzt.u128 = liblapzt.u128.select(q91, liblapzt.u128.sub(r73, b), r73)
-        r75: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r74), a90)
-        q90: liblapzt.bool = liblapzt.u128.ge(r75, b)
-        r76: liblapzt.u128 = liblapzt.u128.select(q90, liblapzt.u128.sub(r75, b), r75)
-        r77: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r76), a89)
-        q89: liblapzt.bool = liblapzt.u128.ge(r77, b)
-        r78: liblapzt.u128 = liblapzt.u128.select(q89, liblapzt.u128.sub(r77, b), r77)
-        r79: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r78), a88)
-        q88: liblapzt.bool = liblapzt.u128.ge(r79, b)
-        r80: liblapzt.u128 = liblapzt.u128.select(q88, liblapzt.u128.sub(r79, b), r79)
-        r81: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r80), a87)
-        q87: liblapzt.bool = liblapzt.u128.ge(r81, b)
-        r82: liblapzt.u128 = liblapzt.u128.select(q87, liblapzt.u128.sub(r81, b), r81)
-        r83: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r82), a86)
-        q86: liblapzt.bool = liblapzt.u128.ge(r83, b)
-        r84: liblapzt.u128 = liblapzt.u128.select(q86, liblapzt.u128.sub(r83, b), r83)
-        r85: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r84), a85)
-        q85: liblapzt.bool = liblapzt.u128.ge(r85, b)
-        r86: liblapzt.u128 = liblapzt.u128.select(q85, liblapzt.u128.sub(r85, b), r85)
-        r87: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r86), a84)
-        q84: liblapzt.bool = liblapzt.u128.ge(r87, b)
-        r88: liblapzt.u128 = liblapzt.u128.select(q84, liblapzt.u128.sub(r87, b), r87)
-        r89: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r88), a83)
-        q83: liblapzt.bool = liblapzt.u128.ge(r89, b)
-        r90: liblapzt.u128 = liblapzt.u128.select(q83, liblapzt.u128.sub(r89, b), r89)
-        r91: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r90), a82)
-        q82: liblapzt.bool = liblapzt.u128.ge(r91, b)
-        r92: liblapzt.u128 = liblapzt.u128.select(q82, liblapzt.u128.sub(r91, b), r91)
-        r93: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r92), a81)
-        q81: liblapzt.bool = liblapzt.u128.ge(r93, b)
-        r94: liblapzt.u128 = liblapzt.u128.select(q81, liblapzt.u128.sub(r93, b), r93)
-        r95: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r94), a80)
-        q80: liblapzt.bool = liblapzt.u128.ge(r95, b)
-        r96: liblapzt.u128 = liblapzt.u128.select(q80, liblapzt.u128.sub(r95, b), r95)
-        r97: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r96), a79)
-        q79: liblapzt.bool = liblapzt.u128.ge(r97, b)
-        r98: liblapzt.u128 = liblapzt.u128.select(q79, liblapzt.u128.sub(r97, b), r97)
-        r99: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r98), a78)
-        q78: liblapzt.bool = liblapzt.u128.ge(r99, b)
-        r100: liblapzt.u128 = liblapzt.u128.select(q78, liblapzt.u128.sub(r99, b), r99)
-        r101: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r100), a77)
-        q77: liblapzt.bool = liblapzt.u128.ge(r101, b)
-        r102: liblapzt.u128 = liblapzt.u128.select(q77, liblapzt.u128.sub(r101, b), r101)
-        r103: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r102), a76)
-        q76: liblapzt.bool = liblapzt.u128.ge(r103, b)
-        r104: liblapzt.u128 = liblapzt.u128.select(q76, liblapzt.u128.sub(r103, b), r103)
-        r105: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r104), a75)
-        q75: liblapzt.bool = liblapzt.u128.ge(r105, b)
-        r106: liblapzt.u128 = liblapzt.u128.select(q75, liblapzt.u128.sub(r105, b), r105)
-        r107: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r106), a74)
-        q74: liblapzt.bool = liblapzt.u128.ge(r107, b)
-        r108: liblapzt.u128 = liblapzt.u128.select(q74, liblapzt.u128.sub(r107, b), r107)
-        r109: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r108), a73)
-        q73: liblapzt.bool = liblapzt.u128.ge(r109, b)
-        r110: liblapzt.u128 = liblapzt.u128.select(q73, liblapzt.u128.sub(r109, b), r109)
-        r111: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r110), a72)
-        q72: liblapzt.bool = liblapzt.u128.ge(r111, b)
-        r112: liblapzt.u128 = liblapzt.u128.select(q72, liblapzt.u128.sub(r111, b), r111)
-        r113: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r112), a71)
-        q71: liblapzt.bool = liblapzt.u128.ge(r113, b)
-        r114: liblapzt.u128 = liblapzt.u128.select(q71, liblapzt.u128.sub(r113, b), r113)
-        r115: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r114), a70)
-        q70: liblapzt.bool = liblapzt.u128.ge(r115, b)
-        r116: liblapzt.u128 = liblapzt.u128.select(q70, liblapzt.u128.sub(r115, b), r115)
-        r117: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r116), a69)
-        q69: liblapzt.bool = liblapzt.u128.ge(r117, b)
-        r118: liblapzt.u128 = liblapzt.u128.select(q69, liblapzt.u128.sub(r117, b), r117)
-        r119: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r118), a68)
-        q68: liblapzt.bool = liblapzt.u128.ge(r119, b)
-        r120: liblapzt.u128 = liblapzt.u128.select(q68, liblapzt.u128.sub(r119, b), r119)
-        r121: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r120), a67)
-        q67: liblapzt.bool = liblapzt.u128.ge(r121, b)
-        r122: liblapzt.u128 = liblapzt.u128.select(q67, liblapzt.u128.sub(r121, b), r121)
-        r123: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r122), a66)
-        q66: liblapzt.bool = liblapzt.u128.ge(r123, b)
-        r124: liblapzt.u128 = liblapzt.u128.select(q66, liblapzt.u128.sub(r123, b), r123)
-        r125: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r124), a65)
-        q65: liblapzt.bool = liblapzt.u128.ge(r125, b)
-        r126: liblapzt.u128 = liblapzt.u128.select(q65, liblapzt.u128.sub(r125, b), r125)
-        r127: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r126), a64)
-        q64: liblapzt.bool = liblapzt.u128.ge(r127, b)
-        r128: liblapzt.u128 = liblapzt.u128.select(q64, liblapzt.u128.sub(r127, b), r127)
-        r129: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r128), a63)
-        q63: liblapzt.bool = liblapzt.u128.ge(r129, b)
-        r130: liblapzt.u128 = liblapzt.u128.select(q63, liblapzt.u128.sub(r129, b), r129)
-        r131: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r130), a62)
-        q62: liblapzt.bool = liblapzt.u128.ge(r131, b)
-        r132: liblapzt.u128 = liblapzt.u128.select(q62, liblapzt.u128.sub(r131, b), r131)
-        r133: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r132), a61)
-        q61: liblapzt.bool = liblapzt.u128.ge(r133, b)
-        r134: liblapzt.u128 = liblapzt.u128.select(q61, liblapzt.u128.sub(r133, b), r133)
-        r135: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r134), a60)
-        q60: liblapzt.bool = liblapzt.u128.ge(r135, b)
-        r136: liblapzt.u128 = liblapzt.u128.select(q60, liblapzt.u128.sub(r135, b), r135)
-        r137: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r136), a59)
-        q59: liblapzt.bool = liblapzt.u128.ge(r137, b)
-        r138: liblapzt.u128 = liblapzt.u128.select(q59, liblapzt.u128.sub(r137, b), r137)
-        r139: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r138), a58)
-        q58: liblapzt.bool = liblapzt.u128.ge(r139, b)
-        r140: liblapzt.u128 = liblapzt.u128.select(q58, liblapzt.u128.sub(r139, b), r139)
-        r141: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r140), a57)
-        q57: liblapzt.bool = liblapzt.u128.ge(r141, b)
-        r142: liblapzt.u128 = liblapzt.u128.select(q57, liblapzt.u128.sub(r141, b), r141)
-        r143: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r142), a56)
-        q56: liblapzt.bool = liblapzt.u128.ge(r143, b)
-        r144: liblapzt.u128 = liblapzt.u128.select(q56, liblapzt.u128.sub(r143, b), r143)
-        r145: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r144), a55)
-        q55: liblapzt.bool = liblapzt.u128.ge(r145, b)
-        r146: liblapzt.u128 = liblapzt.u128.select(q55, liblapzt.u128.sub(r145, b), r145)
-        r147: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r146), a54)
-        q54: liblapzt.bool = liblapzt.u128.ge(r147, b)
-        r148: liblapzt.u128 = liblapzt.u128.select(q54, liblapzt.u128.sub(r147, b), r147)
-        r149: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r148), a53)
-        q53: liblapzt.bool = liblapzt.u128.ge(r149, b)
-        r150: liblapzt.u128 = liblapzt.u128.select(q53, liblapzt.u128.sub(r149, b), r149)
-        r151: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r150), a52)
-        q52: liblapzt.bool = liblapzt.u128.ge(r151, b)
-        r152: liblapzt.u128 = liblapzt.u128.select(q52, liblapzt.u128.sub(r151, b), r151)
-        r153: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r152), a51)
-        q51: liblapzt.bool = liblapzt.u128.ge(r153, b)
-        r154: liblapzt.u128 = liblapzt.u128.select(q51, liblapzt.u128.sub(r153, b), r153)
-        r155: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r154), a50)
-        q50: liblapzt.bool = liblapzt.u128.ge(r155, b)
-        r156: liblapzt.u128 = liblapzt.u128.select(q50, liblapzt.u128.sub(r155, b), r155)
-        r157: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r156), a49)
-        q49: liblapzt.bool = liblapzt.u128.ge(r157, b)
-        r158: liblapzt.u128 = liblapzt.u128.select(q49, liblapzt.u128.sub(r157, b), r157)
-        r159: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r158), a48)
-        q48: liblapzt.bool = liblapzt.u128.ge(r159, b)
-        r160: liblapzt.u128 = liblapzt.u128.select(q48, liblapzt.u128.sub(r159, b), r159)
-        r161: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r160), a47)
-        q47: liblapzt.bool = liblapzt.u128.ge(r161, b)
-        r162: liblapzt.u128 = liblapzt.u128.select(q47, liblapzt.u128.sub(r161, b), r161)
-        r163: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r162), a46)
-        q46: liblapzt.bool = liblapzt.u128.ge(r163, b)
-        r164: liblapzt.u128 = liblapzt.u128.select(q46, liblapzt.u128.sub(r163, b), r163)
-        r165: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r164), a45)
-        q45: liblapzt.bool = liblapzt.u128.ge(r165, b)
-        r166: liblapzt.u128 = liblapzt.u128.select(q45, liblapzt.u128.sub(r165, b), r165)
-        r167: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r166), a44)
-        q44: liblapzt.bool = liblapzt.u128.ge(r167, b)
-        r168: liblapzt.u128 = liblapzt.u128.select(q44, liblapzt.u128.sub(r167, b), r167)
-        r169: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r168), a43)
-        q43: liblapzt.bool = liblapzt.u128.ge(r169, b)
-        r170: liblapzt.u128 = liblapzt.u128.select(q43, liblapzt.u128.sub(r169, b), r169)
-        r171: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r170), a42)
-        q42: liblapzt.bool = liblapzt.u128.ge(r171, b)
-        r172: liblapzt.u128 = liblapzt.u128.select(q42, liblapzt.u128.sub(r171, b), r171)
-        r173: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r172), a41)
-        q41: liblapzt.bool = liblapzt.u128.ge(r173, b)
-        r174: liblapzt.u128 = liblapzt.u128.select(q41, liblapzt.u128.sub(r173, b), r173)
-        r175: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r174), a40)
-        q40: liblapzt.bool = liblapzt.u128.ge(r175, b)
-        r176: liblapzt.u128 = liblapzt.u128.select(q40, liblapzt.u128.sub(r175, b), r175)
-        r177: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r176), a39)
-        q39: liblapzt.bool = liblapzt.u128.ge(r177, b)
-        r178: liblapzt.u128 = liblapzt.u128.select(q39, liblapzt.u128.sub(r177, b), r177)
-        r179: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r178), a38)
-        q38: liblapzt.bool = liblapzt.u128.ge(r179, b)
-        r180: liblapzt.u128 = liblapzt.u128.select(q38, liblapzt.u128.sub(r179, b), r179)
-        r181: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r180), a37)
-        q37: liblapzt.bool = liblapzt.u128.ge(r181, b)
-        r182: liblapzt.u128 = liblapzt.u128.select(q37, liblapzt.u128.sub(r181, b), r181)
-        r183: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r182), a36)
-        q36: liblapzt.bool = liblapzt.u128.ge(r183, b)
-        r184: liblapzt.u128 = liblapzt.u128.select(q36, liblapzt.u128.sub(r183, b), r183)
-        r185: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r184), a35)
-        q35: liblapzt.bool = liblapzt.u128.ge(r185, b)
-        r186: liblapzt.u128 = liblapzt.u128.select(q35, liblapzt.u128.sub(r185, b), r185)
-        r187: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r186), a34)
-        q34: liblapzt.bool = liblapzt.u128.ge(r187, b)
-        r188: liblapzt.u128 = liblapzt.u128.select(q34, liblapzt.u128.sub(r187, b), r187)
-        r189: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r188), a33)
-        q33: liblapzt.bool = liblapzt.u128.ge(r189, b)
-        r190: liblapzt.u128 = liblapzt.u128.select(q33, liblapzt.u128.sub(r189, b), r189)
-        r191: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r190), a32)
-        q32: liblapzt.bool = liblapzt.u128.ge(r191, b)
-        r192: liblapzt.u128 = liblapzt.u128.select(q32, liblapzt.u128.sub(r191, b), r191)
-        r193: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r192), a31)
-        q31: liblapzt.bool = liblapzt.u128.ge(r193, b)
-        r194: liblapzt.u128 = liblapzt.u128.select(q31, liblapzt.u128.sub(r193, b), r193)
-        r195: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r194), a30)
-        q30: liblapzt.bool = liblapzt.u128.ge(r195, b)
-        r196: liblapzt.u128 = liblapzt.u128.select(q30, liblapzt.u128.sub(r195, b), r195)
-        r197: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r196), a29)
-        q29: liblapzt.bool = liblapzt.u128.ge(r197, b)
-        r198: liblapzt.u128 = liblapzt.u128.select(q29, liblapzt.u128.sub(r197, b), r197)
-        r199: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r198), a28)
-        q28: liblapzt.bool = liblapzt.u128.ge(r199, b)
-        r200: liblapzt.u128 = liblapzt.u128.select(q28, liblapzt.u128.sub(r199, b), r199)
-        r201: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r200), a27)
-        q27: liblapzt.bool = liblapzt.u128.ge(r201, b)
-        r202: liblapzt.u128 = liblapzt.u128.select(q27, liblapzt.u128.sub(r201, b), r201)
-        r203: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r202), a26)
-        q26: liblapzt.bool = liblapzt.u128.ge(r203, b)
-        r204: liblapzt.u128 = liblapzt.u128.select(q26, liblapzt.u128.sub(r203, b), r203)
-        r205: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r204), a25)
-        q25: liblapzt.bool = liblapzt.u128.ge(r205, b)
-        r206: liblapzt.u128 = liblapzt.u128.select(q25, liblapzt.u128.sub(r205, b), r205)
-        r207: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r206), a24)
-        q24: liblapzt.bool = liblapzt.u128.ge(r207, b)
-        r208: liblapzt.u128 = liblapzt.u128.select(q24, liblapzt.u128.sub(r207, b), r207)
-        r209: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r208), a23)
-        q23: liblapzt.bool = liblapzt.u128.ge(r209, b)
-        r210: liblapzt.u128 = liblapzt.u128.select(q23, liblapzt.u128.sub(r209, b), r209)
-        r211: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r210), a22)
-        q22: liblapzt.bool = liblapzt.u128.ge(r211, b)
-        r212: liblapzt.u128 = liblapzt.u128.select(q22, liblapzt.u128.sub(r211, b), r211)
-        r213: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r212), a21)
-        q21: liblapzt.bool = liblapzt.u128.ge(r213, b)
-        r214: liblapzt.u128 = liblapzt.u128.select(q21, liblapzt.u128.sub(r213, b), r213)
-        r215: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r214), a20)
-        q20: liblapzt.bool = liblapzt.u128.ge(r215, b)
-        r216: liblapzt.u128 = liblapzt.u128.select(q20, liblapzt.u128.sub(r215, b), r215)
-        r217: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r216), a19)
-        q19: liblapzt.bool = liblapzt.u128.ge(r217, b)
-        r218: liblapzt.u128 = liblapzt.u128.select(q19, liblapzt.u128.sub(r217, b), r217)
-        r219: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r218), a18)
-        q18: liblapzt.bool = liblapzt.u128.ge(r219, b)
-        r220: liblapzt.u128 = liblapzt.u128.select(q18, liblapzt.u128.sub(r219, b), r219)
-        r221: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r220), a17)
-        q17: liblapzt.bool = liblapzt.u128.ge(r221, b)
-        r222: liblapzt.u128 = liblapzt.u128.select(q17, liblapzt.u128.sub(r221, b), r221)
-        r223: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r222), a16)
-        q16: liblapzt.bool = liblapzt.u128.ge(r223, b)
-        r224: liblapzt.u128 = liblapzt.u128.select(q16, liblapzt.u128.sub(r223, b), r223)
-        r225: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r224), a15)
-        q15: liblapzt.bool = liblapzt.u128.ge(r225, b)
-        r226: liblapzt.u128 = liblapzt.u128.select(q15, liblapzt.u128.sub(r225, b), r225)
-        r227: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r226), a14)
-        q14: liblapzt.bool = liblapzt.u128.ge(r227, b)
-        r228: liblapzt.u128 = liblapzt.u128.select(q14, liblapzt.u128.sub(r227, b), r227)
-        r229: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r228), a13)
-        q13: liblapzt.bool = liblapzt.u128.ge(r229, b)
-        r230: liblapzt.u128 = liblapzt.u128.select(q13, liblapzt.u128.sub(r229, b), r229)
-        r231: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r230), a12)
-        q12: liblapzt.bool = liblapzt.u128.ge(r231, b)
-        r232: liblapzt.u128 = liblapzt.u128.select(q12, liblapzt.u128.sub(r231, b), r231)
-        r233: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r232), a11)
-        q11: liblapzt.bool = liblapzt.u128.ge(r233, b)
-        r234: liblapzt.u128 = liblapzt.u128.select(q11, liblapzt.u128.sub(r233, b), r233)
-        r235: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r234), a10)
-        q10: liblapzt.bool = liblapzt.u128.ge(r235, b)
-        r236: liblapzt.u128 = liblapzt.u128.select(q10, liblapzt.u128.sub(r235, b), r235)
-        r237: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r236), a9)
-        q9: liblapzt.bool = liblapzt.u128.ge(r237, b)
-        r238: liblapzt.u128 = liblapzt.u128.select(q9, liblapzt.u128.sub(r237, b), r237)
-        r239: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r238), a8)
-        q8: liblapzt.bool = liblapzt.u128.ge(r239, b)
-        r240: liblapzt.u128 = liblapzt.u128.select(q8, liblapzt.u128.sub(r239, b), r239)
-        r241: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r240), a7)
-        q7: liblapzt.bool = liblapzt.u128.ge(r241, b)
-        r242: liblapzt.u128 = liblapzt.u128.select(q7, liblapzt.u128.sub(r241, b), r241)
-        r243: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r242), a6)
-        q6: liblapzt.bool = liblapzt.u128.ge(r243, b)
-        r244: liblapzt.u128 = liblapzt.u128.select(q6, liblapzt.u128.sub(r243, b), r243)
-        r245: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r244), a5)
-        q5: liblapzt.bool = liblapzt.u128.ge(r245, b)
-        r246: liblapzt.u128 = liblapzt.u128.select(q5, liblapzt.u128.sub(r245, b), r245)
-        r247: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r246), a4)
-        q4: liblapzt.bool = liblapzt.u128.ge(r247, b)
-        r248: liblapzt.u128 = liblapzt.u128.select(q4, liblapzt.u128.sub(r247, b), r247)
-        r249: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r248), a3)
-        q3: liblapzt.bool = liblapzt.u128.ge(r249, b)
-        r250: liblapzt.u128 = liblapzt.u128.select(q3, liblapzt.u128.sub(r249, b), r249)
-        r251: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r250), a2)
-        q2: liblapzt.bool = liblapzt.u128.ge(r251, b)
-        r252: liblapzt.u128 = liblapzt.u128.select(q2, liblapzt.u128.sub(r251, b), r251)
-        r253: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r252), a1)
-        q1: liblapzt.bool = liblapzt.u128.ge(r253, b)
-        r254: liblapzt.u128 = liblapzt.u128.select(q1, liblapzt.u128.sub(r253, b), r253)
-        r255: liblapzt.u128 = liblapzt.u128.with.lsb(liblapzt.u128.shl1(r254), a0)
-        q0: liblapzt.bool = liblapzt.u128.ge(r255, b)
-        r256: liblapzt.u128 = liblapzt.u128.select(q0, liblapzt.u128.sub(r255, b), r255)
-        r256
+        [quotient, remainder] = liblapzt.integer.u128.divide.full(self, other)
+        [liblapzt.boolean.TRUE, quotient]
     }
 }
 
-// Returns the remainder of a divided by b. Returns zero when b is
-// zero.
-liblapzt.u128.mod = liblapzt.u128.mod.erased
+// Returns the remainder of self divided by other. Division by zero
+// saturates to MAX.
+liblapzt.integer.u128.remainder.wrapping = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    zero: liblapzt.boolean = liblapzt.integer.u128.equal(other, liblapzt.integer.u128.MIN)
+    BRANCH (zero) {
+        liblapzt.integer.u128.MAX
+    } {
+        [quotient, remainder] = liblapzt.integer.u128.divide.full(self, other)
+        remainder
+    }
+}
+
+// Returns the remainder of self divided by other, saturated at MAX.
+liblapzt.integer.u128.remainder.saturating = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) liblapzt.integer.u128 {
+    zero: liblapzt.boolean = liblapzt.integer.u128.equal(other, liblapzt.integer.u128.MIN)
+    BRANCH (zero) {
+        liblapzt.integer.u128.MAX
+    } {
+        [quotient, remainder] = liblapzt.integer.u128.divide.full(self, other)
+        remainder
+    }
+}
+
+// Returns [ok, remainder]. Ok is false when other is zero, and the
+// value is then MIN.
+liblapzt.integer.u128.remainder.checked = (self: liblapzt.integer.u128, other: liblapzt.integer.u128) [liblapzt.boolean, liblapzt.integer.u128] {
+    zero: liblapzt.boolean = liblapzt.integer.u128.equal(other, liblapzt.integer.u128.MIN)
+    BRANCH (zero) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.u128.MIN]
+    } {
+        [quotient, remainder] = liblapzt.integer.u128.divide.full(self, other)
+        [liblapzt.boolean.TRUE, remainder]
+    }
+}
+
+// Converts self to void, truncating or zero extending.
+liblapzt.integer.u128.to.void = (self: liblapzt.integer.u128) liblapzt.integer.void {
+    []
+}
+
+// Converts a void to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.void = (value: liblapzt.integer.void) liblapzt.integer.u128 {
+    liblapzt.integer.u128.MIN
+}
+
+// Converts self to u1, truncating or zero extending.
+liblapzt.integer.u128.to.u1 = (self: liblapzt.integer.u128) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u1(low)
+}
+
+// Converts a u1 to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u1 = (value: liblapzt.integer.u1) liblapzt.integer.u128 {
+    [liblapzt.integer.u1.to.u64(value), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to u2, truncating or zero extending.
+liblapzt.integer.u128.to.u2 = (self: liblapzt.integer.u128) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u2(low)
+}
+
+// Converts a u2 to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u2 = (value: liblapzt.integer.u2) liblapzt.integer.u128 {
+    [liblapzt.integer.u2.to.u64(value), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to u4, truncating or zero extending.
+liblapzt.integer.u128.to.u4 = (self: liblapzt.integer.u128) liblapzt.integer.u4 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u4(low)
+}
+
+// Converts a u4 to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u4 = (value: liblapzt.integer.u4) liblapzt.integer.u128 {
+    [liblapzt.integer.u4.to.u64(value), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to u8, truncating or zero extending.
+liblapzt.integer.u128.to.u8 = (self: liblapzt.integer.u128) liblapzt.integer.u8 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u8(low)
+}
+
+// Converts a u8 to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u8 = (value: liblapzt.integer.u8) liblapzt.integer.u128 {
+    [liblapzt.integer.u8.to.u64(value), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to u16, truncating or zero extending.
+liblapzt.integer.u128.to.u16 = (self: liblapzt.integer.u128) liblapzt.integer.u16 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u16(low)
+}
+
+// Converts a u16 to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u16 = (value: liblapzt.integer.u16) liblapzt.integer.u128 {
+    [liblapzt.integer.u16.to.u64(value), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to u32, truncating or zero extending.
+liblapzt.integer.u128.to.u32 = (self: liblapzt.integer.u128) liblapzt.integer.u32 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u32(low)
+}
+
+// Converts a u32 to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u32 = (value: liblapzt.integer.u32) liblapzt.integer.u128 {
+    [liblapzt.integer.u32.to.u64(value), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to u64, truncating or zero extending.
+liblapzt.integer.u128.to.u64 = (self: liblapzt.integer.u128) liblapzt.integer.u64 {
+    [low, high] = self
+    low
+}
+
+// Converts a u64 to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u64 = (value: liblapzt.integer.u64) liblapzt.integer.u128 {
+    [liblapzt.integer.u64.to.u64(value), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to u128, truncating or zero extending.
+liblapzt.integer.u128.to.u128 = (self: liblapzt.integer.u128) liblapzt.integer.u128 {
+    self
+}
+
+// Converts a u128 to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u128 = (value: liblapzt.integer.u128) liblapzt.integer.u128 {
+    value
+}

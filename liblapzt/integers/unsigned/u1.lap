@@ -1,213 +1,298 @@
-liblapzt.u1.erased = BIT
-liblapzt.bool.erased = BIT
+//! 1-bit unsigned integer type
 
-// A one-bit unsigned integer, stored as a single bit.
-liblapzt.u1 = liblapzt.u1.erased
-liblapzt.bool = liblapzt.bool.erased
+// --- Erased ---
 
-liblapzt.u1.one.erased: liblapzt.u1.erased = NAND(BIT, NAND(BIT, BIT))
-liblapzt.u1.zero.erased: liblapzt.u1.erased = NAND(liblapzt.u1.one.erased, liblapzt.u1.one.erased)
-liblapzt.u1.maximum.erased: liblapzt.u1.erased = liblapzt.u1.one.erased
+__liblapzt.integer.u1.erased = BIT
+__liblapzt.integer.u1.MIN.erased = NAND(liblapzt.integer.u1, liblapzt.integer.u1)
+__liblapzt.integer.u1.MAX.erased = NAND(liblapzt.integer.u1, NAND(liblapzt.integer.u1, liblapzt.integer.u1))
 
-// The value one, with the bit set.
-liblapzt.u1.one: liblapzt.u1 = liblapzt.u1.one.erased
-// The additive identity, with the bit clear.
-liblapzt.u1.zero: liblapzt.u1 = liblapzt.u1.zero.erased
-// The largest representable value, which is one.
-liblapzt.u1.maximum: liblapzt.u1 = liblapzt.u1.maximum.erased
+// --- Types ---
 
-// Returns the bitwise complement of a, flipping the bit.
-liblapzt.u1.not = (a: liblapzt.u1) liblapzt.u1 {
-    NAND(a, a)
+liblapzt.integer.u1 = __liblapzt.integer.u1.erased
+liblapzt.integer.u1.MIN = __liblapzt.integer.u1.MIN.erased
+liblapzt.integer.u1.MAX = __liblapzt.integer.u1.MAX.erased
+
+// --- Functions ---
+
+// Returns one when boolean is true and zero when it is false.
+liblapzt.integer.u1.from.bool = (boolean: liblapzt.boolean) liblapzt.integer.u1 {
+    boolean
 }
 
-// Returns the bitwise AND of a and b.
-liblapzt.u1.and = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    n: liblapzt.u1 = NAND(a, b)
-    liblapzt.u1.not(n)
+// Returns true when self is one.
+liblapzt.integer.u1.to.bool = (self: liblapzt.integer.u1) liblapzt.boolean {
+    self
 }
 
-// Returns the bitwise OR of a and b.
-liblapzt.u1.or = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    na: liblapzt.u1 = NAND(a, a)
-    nb: liblapzt.u1 = NAND(b, b)
-    NAND(na, nb)
+// Returns the bitwise complement of self.
+liblapzt.integer.u1.not = (self: liblapzt.integer.u1) liblapzt.integer.u1 {
+    NAND(self, self)
 }
 
-// Returns the bitwise XOR of a and b.
-liblapzt.u1.xor = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    n: liblapzt.u1 = NAND(a, b)
-    na: liblapzt.u1 = NAND(a, n)
-    nb: liblapzt.u1 = NAND(b, n)
-    NAND(na, nb)
+// Returns the bitwise and of self and other.
+liblapzt.integer.u1.and = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.not(liblapzt.integer.u1.not.and(self, other))
 }
 
-// Returns the bitwise NAND of a and b.
-liblapzt.u1.nand = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    NAND(a, b)
+// Returns the bitwise or of self and other.
+liblapzt.integer.u1.or = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.not.and(liblapzt.integer.u1.not(self), liblapzt.integer.u1.not(other))
 }
 
-// Returns the bitwise NOR of a and b.
-liblapzt.u1.nor = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    na: liblapzt.u1 = NAND(a, a)
-    nb: liblapzt.u1 = NAND(b, b)
-    liblapzt.u1.and(na, nb)
+// Returns the bitwise not.and of self and other.
+liblapzt.integer.u1.not.and = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    NAND(self, other)
 }
 
-// Returns the bitwise XNOR of a and b.
-liblapzt.u1.xnor = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    liblapzt.u1.not(liblapzt.u1.xor(a, b))
+// Returns the bitwise not.or of self and other.
+liblapzt.integer.u1.not.or = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.not(liblapzt.integer.u1.or(self, other))
 }
 
-// Returns false only when a is one and b is zero.
-liblapzt.u1.implies = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    na: liblapzt.u1 = NAND(a, a)
-    liblapzt.u1.or(na, b)
+// Returns the bitwise exclusive.or of self and other.
+liblapzt.integer.u1.exclusive.or = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.not.and(liblapzt.integer.u1.not.and(self, other), liblapzt.integer.u1.or(self, other))
 }
 
-// Returns one when a is true and zero when a is false.
-liblapzt.u1.from.bool = (a: liblapzt.bool) liblapzt.u1 {
-    a
+// Returns true when self and other have the same value.
+liblapzt.integer.u1.equal = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.boolean {
+    liblapzt.integer.u1.not(liblapzt.integer.u1.exclusive.or(self, other))
 }
 
-// Returns the sum of a and b as a pair [sum, carry].
-liblapzt.u1.add.carry = (a: liblapzt.u1, b: liblapzt.u1) [liblapzt.u1, liblapzt.bool] {
-    [liblapzt.u1.xor(a, b), liblapzt.u1.and(a, b)]
+// Returns true when self and other differ.
+liblapzt.integer.u1.not.equal = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.boolean {
+    liblapzt.integer.u1.exclusive.or(self, other)
 }
 
-// Returns the sum of a and b modulo 2, discarding the carry.
-liblapzt.u1.add = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    [sum, carry] = liblapzt.u1.add.carry(a, b)
-    sum
+// Returns true when self is greater than other.
+liblapzt.integer.u1.greater_than = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.boolean {
+    liblapzt.integer.u1.and(self, liblapzt.integer.u1.not(other))
 }
 
-// Returns a - b as a pair [difference, borrow].
-liblapzt.u1.sub.borrow = (a: liblapzt.u1, b: liblapzt.u1) [liblapzt.u1, liblapzt.bool] {
-    na: liblapzt.u1 = liblapzt.u1.not(a)
-    [liblapzt.u1.xor(a, b), liblapzt.u1.and(na, b)]
+// Returns true when self is less than other.
+liblapzt.integer.u1.less_than = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.boolean {
+    liblapzt.integer.u1.and(liblapzt.integer.u1.not(self), other)
 }
 
-// Returns a - b modulo 2, discarding the borrow.
-liblapzt.u1.sub = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    [difference, borrow] = liblapzt.u1.sub.borrow(a, b)
-    difference
+// Returns the smaller of self and other.
+liblapzt.integer.u1.min = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.and(self, other)
 }
 
-// Returns the sum of a, b and c as a pair [sum, carry].
-liblapzt.u1.add3 = (a: liblapzt.u1, b: liblapzt.u1, c: liblapzt.u1) [liblapzt.u1, liblapzt.u1] {
-    [s1, c1] = liblapzt.u1.add.carry(a, b)
-    [s2, c2] = liblapzt.u1.add.carry(s1, c)
-    carry: liblapzt.u1 = liblapzt.u1.add(liblapzt.u1.from.bool(c1), liblapzt.u1.from.bool(c2))
-    [s2, carry]
+// Returns the larger of self and other.
+liblapzt.integer.u1.max = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.or(self, other)
 }
 
-// Returns the product of a and b as a pair [low, high].
-liblapzt.u1.mul.full = (a: liblapzt.u1, b: liblapzt.u1) [liblapzt.u1, liblapzt.u1] {
-    [liblapzt.u1.and(a, b), liblapzt.u1.zero]
+// Returns the sum of self and other modulo 2.
+liblapzt.integer.u1.add.wrapping = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.exclusive.or(self, other)
 }
 
-// Returns the product of a and b modulo 2.
-liblapzt.u1.mul = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    [low, high] = liblapzt.u1.mul.full(a, b)
+// Returns [ok, sum]. Ok is false when the sum overflows, and
+// the value is then MIN.
+liblapzt.integer.u1.add.checked = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) [liblapzt.boolean, liblapzt.integer.u1] {
+    overflow: liblapzt.integer.u1 = liblapzt.integer.u1.and(self, other)
+    BRANCH (overflow) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.u1.MIN]
+    } {
+        [liblapzt.boolean.TRUE, liblapzt.integer.u1.exclusive.or(self, other)]
+    }
+}
+
+// Returns the sum of self and other, saturated at MAX.
+liblapzt.integer.u1.add.saturating = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    [ok, sum] = liblapzt.integer.u1.add.checked(self, other)
+    BRANCH (ok) { sum } { liblapzt.integer.u1.MAX }
+}
+
+// Returns the difference of self and other modulo 2.
+liblapzt.integer.u1.subtract.wrapping = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.exclusive.or(self, other)
+}
+
+// Returns [ok, difference]. Ok is false when the difference
+// underflows, and the value is then MIN.
+liblapzt.integer.u1.subtract.checked = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) [liblapzt.boolean, liblapzt.integer.u1] {
+    underflow: liblapzt.boolean = liblapzt.integer.u1.less_than(self, other)
+    BRANCH (underflow) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.u1.MIN]
+    } {
+        [liblapzt.boolean.TRUE, liblapzt.integer.u1.exclusive.or(self, other)]
+    }
+}
+
+// Returns the difference of self and other, saturated at MIN.
+liblapzt.integer.u1.subtract.saturating = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    [ok, difference] = liblapzt.integer.u1.subtract.checked(self, other)
+    BRANCH (ok) { difference } { liblapzt.integer.u1.MIN }
+}
+
+// Returns the product of self and other modulo 2.
+liblapzt.integer.u1.multiply.wrapping = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.and(self, other)
+}
+
+// Returns the product of self and other, saturated at MAX.
+liblapzt.integer.u1.multiply.saturating = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.and(self, other)
+}
+
+// Returns [ok, product]. The product of two one-bit values is
+// at most one, so it never overflows.
+liblapzt.integer.u1.multiply.checked = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) [liblapzt.boolean, liblapzt.integer.u1] {
+    [liblapzt.boolean.TRUE, liblapzt.integer.u1.and(self, other)]
+}
+
+// Returns the full two-bit product of self and other as a pair
+// [low, high].
+liblapzt.integer.u1.multiply.full = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) [liblapzt.integer.u1, liblapzt.integer.u1] {
+    [liblapzt.integer.u1.and(self, other), liblapzt.integer.u1.MIN]
+}
+
+// Returns self divided by other. Division by zero saturates to
+// MAX.
+liblapzt.integer.u1.divide.wrapping = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.or(self, liblapzt.integer.u1.not(other))
+}
+
+// Returns self divided by other, saturated at MAX.
+liblapzt.integer.u1.divide.saturating = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.or(self, liblapzt.integer.u1.not(other))
+}
+
+// Returns [ok, quotient]. Ok is false when other is zero, and
+// the value is then MIN.
+liblapzt.integer.u1.divide.checked = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) [liblapzt.boolean, liblapzt.integer.u1] {
+    BRANCH (other) {
+        [liblapzt.boolean.TRUE, self]
+    } {
+        [liblapzt.boolean.FALSE, liblapzt.integer.u1.MIN]
+    }
+}
+
+// Returns [quotient, remainder] of self divided by other.
+// Returns [MAX, MIN] when other is zero.
+liblapzt.integer.u1.divide.full = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) [liblapzt.integer.u1, liblapzt.integer.u1] {
+    BRANCH (other) {
+        [self, liblapzt.integer.u1.MIN]
+    } {
+        [liblapzt.integer.u1.MAX, liblapzt.integer.u1.MIN]
+    }
+}
+
+// Returns the remainder of self divided by other. The remainder
+// of a one-bit value is always zero. Division by zero saturates
+// to MAX.
+liblapzt.integer.u1.remainder.wrapping = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.not(other)
+}
+
+// Returns the remainder of self divided by other, saturated at
+// MAX.
+liblapzt.integer.u1.remainder.saturating = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) liblapzt.integer.u1 {
+    liblapzt.integer.u1.not(other)
+}
+
+// Returns [ok, remainder]. Ok is false when other is zero, and
+// the value is then MIN.
+liblapzt.integer.u1.remainder.checked = (self: liblapzt.integer.u1, other: liblapzt.integer.u1) [liblapzt.boolean, liblapzt.integer.u1] {
+    [liblapzt.integer.u1.to.bool(other), liblapzt.integer.u1.MIN]
+}
+
+// Converts self to void, truncating or zero extending.
+liblapzt.integer.u1.to.void = (self: liblapzt.integer.u1) liblapzt.integer.void {
+    []
+}
+
+// Converts a void to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.void = (value: liblapzt.integer.void) liblapzt.integer.u1 {
+    liblapzt.integer.u1.MIN
+}
+
+// Converts self to u1, truncating or zero extending.
+liblapzt.integer.u1.to.u1 = (self: liblapzt.integer.u1) liblapzt.integer.u1 {
+    self
+}
+
+// Converts a u1 to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u1 = (value: liblapzt.integer.u1) liblapzt.integer.u1 {
+    value
+}
+
+// Converts self to u2, truncating or zero extending.
+liblapzt.integer.u1.to.u2 = (self: liblapzt.integer.u1) liblapzt.integer.u2 {
+    [self, liblapzt.integer.u1.MIN]
+}
+
+// Converts a u2 to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u2 = (value: liblapzt.integer.u2) liblapzt.integer.u1 {
+    [low, high] = value
     low
 }
 
-// Returns a when b is one, and zero when b is zero.
-liblapzt.u1.div = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    liblapzt.u1.and(a, b)
+// Converts self to u4, truncating or zero extending.
+liblapzt.integer.u1.to.u4 = (self: liblapzt.integer.u1) liblapzt.integer.u4 {
+    [liblapzt.integer.u1.to.u2(self), liblapzt.integer.u2.MIN]
 }
 
-// Returns the remainder of a divided by b, always zero for
-// one-bit values.
-liblapzt.u1.mod = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    liblapzt.u1.zero
+// Converts a u4 to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u4 = (value: liblapzt.integer.u4) liblapzt.integer.u1 {
+    [low, high] = value
+    liblapzt.integer.u2.to.u1(low)
 }
 
-// Returns true when a and b have the same value.
-liblapzt.u1.eq = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
-    liblapzt.u1.not(liblapzt.u1.xor(a, b))
+// Converts self to u8, truncating or zero extending.
+liblapzt.integer.u1.to.u8 = (self: liblapzt.integer.u1) liblapzt.integer.u8 {
+    [liblapzt.integer.u1.to.u4(self), liblapzt.integer.u4.MIN]
 }
 
-// Returns true when a and b differ.
-liblapzt.u1.ne = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
-    liblapzt.u1.xor(a, b)
+// Converts a u8 to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u8 = (value: liblapzt.integer.u8) liblapzt.integer.u1 {
+    [low, high] = value
+    liblapzt.integer.u4.to.u1(low)
 }
 
-// Returns true when a is less than b.
-liblapzt.u1.lt = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
-    na: liblapzt.u1 = liblapzt.u1.not(a)
-    liblapzt.u1.and(na, b)
+// Converts self to u16, truncating or zero extending.
+liblapzt.integer.u1.to.u16 = (self: liblapzt.integer.u1) liblapzt.integer.u16 {
+    [liblapzt.integer.u1.to.u8(self), liblapzt.integer.u8.MIN]
 }
 
-// Returns true when a is less than or equal to b.
-liblapzt.u1.le = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
-    na: liblapzt.u1 = liblapzt.u1.not(a)
-    liblapzt.u1.or(na, b)
+// Converts a u16 to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u16 = (value: liblapzt.integer.u16) liblapzt.integer.u1 {
+    [low, high] = value
+    liblapzt.integer.u8.to.u1(low)
 }
 
-// Returns true when a is greater than b.
-liblapzt.u1.gt = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
-    nb: liblapzt.u1 = liblapzt.u1.not(b)
-    liblapzt.u1.and(a, nb)
+// Converts self to u32, truncating or zero extending.
+liblapzt.integer.u1.to.u32 = (self: liblapzt.integer.u1) liblapzt.integer.u32 {
+    [liblapzt.integer.u1.to.u16(self), liblapzt.integer.u16.MIN]
 }
 
-// Returns true when a is greater than or equal to b.
-liblapzt.u1.ge = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.bool {
-    nb: liblapzt.u1 = liblapzt.u1.not(b)
-    liblapzt.u1.or(a, nb)
+// Converts a u32 to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u32 = (value: liblapzt.integer.u32) liblapzt.integer.u1 {
+    [low, high] = value
+    liblapzt.integer.u16.to.u1(low)
 }
 
-// Returns the smaller of a and b.
-liblapzt.u1.min = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    liblapzt.u1.and(a, b)
+// Converts self to u64, truncating or zero extending.
+liblapzt.integer.u1.to.u64 = (self: liblapzt.integer.u1) liblapzt.integer.u64 {
+    [liblapzt.integer.u1.to.u32(self), liblapzt.integer.u32.MIN]
 }
 
-// Returns the larger of a and b.
-liblapzt.u1.max = (a: liblapzt.u1, b: liblapzt.u1) liblapzt.u1 {
-    liblapzt.u1.or(a, b)
+// Converts a u64 to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u64 = (value: liblapzt.integer.u64) liblapzt.integer.u1 {
+    [low, high] = value
+    liblapzt.integer.u32.to.u1(low)
 }
 
-// Returns a plus one modulo 2, which flips the bit.
-liblapzt.u1.inc = (a: liblapzt.u1) liblapzt.u1 {
-    liblapzt.u1.not(a)
+// Converts self to u128, truncating or zero extending.
+liblapzt.integer.u1.to.u128 = (self: liblapzt.integer.u1) liblapzt.integer.u128 {
+    [liblapzt.integer.u1.to.u64(self), liblapzt.integer.u64.MIN]
 }
 
-// Returns a minus one modulo 2, which flips the bit.
-liblapzt.u1.dec = (a: liblapzt.u1) liblapzt.u1 {
-    liblapzt.u1.not(a)
-}
-
-// Returns when.one when flag is true, otherwise when.zero.
-liblapzt.u1.select = (flag: liblapzt.bool, when.one: liblapzt.u1, when.zero: liblapzt.u1) liblapzt.u1 {
-    BRANCH (flag) { when.one } { when.zero }
-}
-
-// Returns true when a is zero.
-liblapzt.u1.is.zero = (a: liblapzt.u1) liblapzt.bool {
-    liblapzt.u1.not(a)
-}
-
-// Returns true when a is one.
-liblapzt.u1.is.one = (a: liblapzt.u1) liblapzt.bool {
-    a
-}
-
-// Returns a as a bool.
-liblapzt.u1.to.bool = (a: liblapzt.u1) liblapzt.bool {
-    a
-}
-
-// Returns a shifted left by one bit, which is always zero.
-liblapzt.u1.shl1 = (a: liblapzt.u1) liblapzt.u1 {
-    liblapzt.u1.zero
-}
-
-// Returns a with its only bit replaced by bit.
-liblapzt.u1.with.lsb = (a: liblapzt.u1, bit: liblapzt.bool) liblapzt.u1 {
-    bit
-}
-
-// Returns a, since the most significant bit is the only bit.
-liblapzt.u1.msb = (a: liblapzt.u1) liblapzt.u1 {
-    a
+// Converts a u128 to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u128 = (value: liblapzt.integer.u128) liblapzt.integer.u1 {
+    [low, high] = value
+    liblapzt.integer.u64.to.u1(low)
 }

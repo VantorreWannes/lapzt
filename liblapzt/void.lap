@@ -1,0 +1,11 @@
+//! void type
+
+// --- Erased ---
+
+__liblapzt.void.erased = []
+
+// --- Types ---
+
+liblapzt.integer.void = __liblapzt.void.erased
+
+// --- Functions ---

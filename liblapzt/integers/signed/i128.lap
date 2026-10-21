@@ -1,335 +1,405 @@
-liblapzt.i128.erased = [liblapzt.i64.erased, liblapzt.i64.erased]
+//! 128-bit signed integer type, stored in two's complement form
 
-// A signed 128-bit integer stored in two's complement form.
-liblapzt.i128 = liblapzt.i128.erased
+// --- Erased ---
 
-liblapzt.i128.zero.erased: liblapzt.i128.erased = [liblapzt.i64.zero.erased, liblapzt.i64.zero.erased]
-liblapzt.i128.one.erased: liblapzt.i128.erased = [liblapzt.i64.one.erased, liblapzt.i64.zero.erased]
-liblapzt.i128.minimum.erased: liblapzt.i128.erased = [liblapzt.i64.zero.erased, liblapzt.i64.minimum.erased]
-liblapzt.i128.maximum.erased: liblapzt.i128.erased = [liblapzt.u64.maximum.erased, liblapzt.i64.maximum.erased]
+__liblapzt.integer.i128.erased = [liblapzt.integer.u64, liblapzt.integer.u64]
+__liblapzt.integer.i128.MIN.erased = [liblapzt.integer.u64.MIN, liblapzt.integer.i64.MIN]
+__liblapzt.integer.i128.MAX.erased = [liblapzt.integer.u64.MAX, liblapzt.integer.i64.MAX]
+__liblapzt.integer.i128.ZERO.erased = [liblapzt.integer.u64.MIN, liblapzt.integer.u64.MIN]
 
-// The value 0.
-liblapzt.i128.zero: liblapzt.i128 = liblapzt.i128.zero.erased
-// The value 1.
-liblapzt.i128.one: liblapzt.i128 = liblapzt.i128.one.erased
-// The most negative value, -2^(N-1).
-liblapzt.i128.minimum: liblapzt.i128 = liblapzt.i128.minimum.erased
-// The largest positive value, 2^(N-1) - 1.
-liblapzt.i128.maximum: liblapzt.i128 = liblapzt.i128.maximum.erased
+// --- Types ---
 
-// Reinterprets the bit pattern as unsigned; negative values map to
-// values at or above 2^(N-1).
-liblapzt.i128.to.u128 = (a: liblapzt.i128) liblapzt.u128 {
-    [low, high] = a
-    [liblapzt.i64.to.u64(low), liblapzt.i64.to.u64(high)]
+liblapzt.integer.i128 = __liblapzt.integer.i128.erased
+liblapzt.integer.i128.MIN = __liblapzt.integer.i128.MIN.erased
+liblapzt.integer.i128.MAX = __liblapzt.integer.i128.MAX.erased
+liblapzt.integer.i128.ZERO = __liblapzt.integer.i128.ZERO.erased
+
+// --- Functions ---
+
+// Returns the bitwise complement of self.
+liblapzt.integer.i128.not = (self: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [self_low, self_high] = self
+    [liblapzt.integer.u64.not(self_low), liblapzt.integer.u64.not(self_high)]
 }
 
-// Reinterprets an unsigned bit pattern as signed; values at or above
-// 2^(N-1) become negative.
-liblapzt.i128.from.u128 = (a: liblapzt.u128) liblapzt.i128 {
-    [low, high] = a
-    [liblapzt.i64.from.u64(low), liblapzt.i64.from.u64(high)]
+// Returns the bitwise and of self and other.
+liblapzt.integer.i128.and = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u64.and(self_low, other_low), liblapzt.integer.u64.and(self_high, other_high)]
 }
 
-liblapzt.i128.from.bool.erased = (a: liblapzt.bool) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.from.bool(a))
+// Returns the bitwise or of self and other.
+liblapzt.integer.i128.or = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u64.or(self_low, other_low), liblapzt.integer.u64.or(self_high, other_high)]
 }
 
-// Returns one when a is true and zero otherwise.
-liblapzt.i128.from.bool = liblapzt.i128.from.bool.erased
-
-liblapzt.i128.not.erased = (a: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.not(liblapzt.i128.to.u128(a)))
+// Returns the bitwise not.and of self and other.
+liblapzt.integer.i128.not.and = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u64.not.and(self_low, other_low), liblapzt.integer.u64.not.and(self_high, other_high)]
 }
 
-// Returns the bitwise complement of a; equals -a - 1.
-liblapzt.i128.not = liblapzt.i128.not.erased
-
-liblapzt.i128.and.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.and(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+// Returns the bitwise not.or of self and other.
+liblapzt.integer.i128.not.or = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u64.not.or(self_low, other_low), liblapzt.integer.u64.not.or(self_high, other_high)]
 }
 
-// Returns the bitwise AND of a and b.
-liblapzt.i128.and = liblapzt.i128.and.erased
-
-liblapzt.i128.or.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.or(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+// Returns the bitwise exclusive.or of self and other.
+liblapzt.integer.i128.exclusive.or = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    [liblapzt.integer.u64.exclusive.or(self_low, other_low), liblapzt.integer.u64.exclusive.or(self_high, other_high)]
 }
 
-// Returns the bitwise OR of a and b.
-liblapzt.i128.or = liblapzt.i128.or.erased
-
-liblapzt.i128.xor.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.xor(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+// Returns true when self and other have the same value.
+liblapzt.integer.i128.equal = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.boolean {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    low_equal: liblapzt.boolean = liblapzt.integer.u64.equal(self_low, other_low)
+    high_equal: liblapzt.boolean = liblapzt.integer.u64.equal(self_high, other_high)
+    liblapzt.boolean.and(low_equal, high_equal)
 }
 
-// Returns the bitwise XOR of a and b.
-liblapzt.i128.xor = liblapzt.i128.xor.erased
-
-liblapzt.i128.nand.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.nand(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+// Returns true when self and other differ.
+liblapzt.integer.i128.not.equal = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.boolean {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    low_differ: liblapzt.boolean = liblapzt.integer.u64.not.equal(self_low, other_low)
+    high_differ: liblapzt.boolean = liblapzt.integer.u64.not.equal(self_high, other_high)
+    liblapzt.boolean.or(low_differ, high_differ)
 }
 
-// Returns the bitwise complement of a AND b.
-liblapzt.i128.nand = liblapzt.i128.nand.erased
-
-liblapzt.i128.nor.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.nor(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+// Returns true when self is less than other under signed ordering.
+liblapzt.integer.i128.less_than = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.boolean {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    high_less: liblapzt.boolean = liblapzt.integer.i64.less_than(self_high, other_high)
+    high_equal: liblapzt.boolean = liblapzt.integer.i64.equal(self_high, other_high)
+    low_less: liblapzt.boolean = liblapzt.integer.u64.less_than(self_low, other_low)
+    liblapzt.boolean.or(high_less, liblapzt.boolean.and(high_equal, low_less))
 }
 
-// Returns the bitwise complement of a OR b.
-liblapzt.i128.nor = liblapzt.i128.nor.erased
-
-liblapzt.i128.xnor.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.xnor(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+// Returns true when self is greater than other under signed ordering.
+liblapzt.integer.i128.greater_than = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.boolean {
+    liblapzt.integer.i128.less_than(other, self)
 }
 
-// Returns the bitwise complement of a XOR b; true per bit where equal.
-liblapzt.i128.xnor = liblapzt.i128.xnor.erased
-
-liblapzt.i128.add.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.add(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+// Returns the smaller of self and other under signed ordering.
+liblapzt.integer.i128.min = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    less: liblapzt.boolean = liblapzt.integer.i128.less_than(self, other)
+    BRANCH (less) { self } { other }
 }
 
-// Returns a + b, wrapping modulo 2^N on overflow.
-liblapzt.i128.add = liblapzt.i128.add.erased
-
-liblapzt.i128.sub.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.sub(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+// Returns the larger of self and other under signed ordering.
+liblapzt.integer.i128.max = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    greater: liblapzt.boolean = liblapzt.integer.i128.greater_than(self, other)
+    BRANCH (greater) { self } { other }
 }
 
-// Returns a - b, wrapping modulo 2^N on underflow.
-liblapzt.i128.sub = liblapzt.i128.sub.erased
-
-liblapzt.i128.mul.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.mul(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b)))
+// Returns the sum of self and other modulo 2^128.
+liblapzt.integer.i128.add.wrapping = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    sum_low: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(self_low, other_low)
+    carry_low: liblapzt.integer.u64 = liblapzt.integer.u64.and(self_low, other_low)
+    xor_high: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(self_high, other_high)
+    sum_high: liblapzt.integer.u64 = liblapzt.integer.u64.add.wrapping(xor_high, carry_low)
+    [sum_low, sum_high]
 }
 
-// Returns the low N bits of a * b, wrapping modulo 2^N.
-liblapzt.i128.mul = liblapzt.i128.mul.erased
-
-// Returns [a + b, carry] where carry is the carry out of the top bit.
-liblapzt.i128.add.carry = (a: liblapzt.i128, b: liblapzt.i128) [liblapzt.i128, liblapzt.bool] {
-    [sum, carry] = liblapzt.u128.add.carry(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
-    [liblapzt.i128.from.u128(sum), carry]
-}
-
-// Returns [a - b, borrow], where borrow is the borrow out of the
-// top bit.
-liblapzt.i128.sub.borrow = (a: liblapzt.i128, b: liblapzt.i128) [liblapzt.i128, liblapzt.bool] {
-    [difference, borrow] = liblapzt.u128.sub.borrow(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
-    [liblapzt.i128.from.u128(difference), borrow]
-}
-
-// Returns [a + b + c mod 2^N, carry] where carry is 0, 1, or 2.
-liblapzt.i128.add3 = (a: liblapzt.i128, b: liblapzt.i128, c: liblapzt.i128) [liblapzt.i128, liblapzt.i128] {
-    [s1, c1] = liblapzt.i128.add.carry(a, b)
-    [s2, c2] = liblapzt.i128.add.carry(s1, c)
-    carry: liblapzt.i128 = liblapzt.i128.add(liblapzt.i128.from.bool(c1), liblapzt.i128.from.bool(c2))
-    [s2, carry]
-}
-
-// Returns the full double-width product as [low, high] halves.
-liblapzt.i128.mul.full = (a: liblapzt.i128, b: liblapzt.i128) [liblapzt.i128, liblapzt.i128] {
-    [low, high] = liblapzt.u128.mul.full(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
-    [liblapzt.i128.from.u128(low), liblapzt.i128.from.u128(high)]
-}
-
-// Returns a shifted left by one bit, filling the low bit with zero.
-liblapzt.i128.shl1 = (a: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.shl1(liblapzt.i128.to.u128(a)))
-}
-
-// Returns a with its least significant bit replaced by bit.
-liblapzt.i128.with.lsb = (a: liblapzt.i128, bit: liblapzt.bool) liblapzt.i128 {
-    liblapzt.i128.from.u128(liblapzt.u128.with.lsb(liblapzt.i128.to.u128(a), bit))
-}
-
-// Returns the most significant bit of a as a one-bit value.
-liblapzt.i128.msb = (a: liblapzt.i128) liblapzt.u1 {
-    [low, high] = a
-    liblapzt.i64.msb(high)
-}
-
-liblapzt.i128.sign.erased = (a: liblapzt.i128) liblapzt.bool {
-    [low, high] = a
-    liblapzt.i64.sign(high)
-}
-
-// Returns true when the sign bit is set, meaning a is negative.
-liblapzt.i128.sign = liblapzt.i128.sign.erased
-
-liblapzt.i128.is.negative.erased = (a: liblapzt.i128) liblapzt.bool {
-    liblapzt.i128.sign(a)
-}
-
-// Returns true when a is less than zero.
-liblapzt.i128.is.negative = liblapzt.i128.is.negative.erased
-
-liblapzt.i128.eq.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
-    liblapzt.u128.eq(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
-}
-
-// Returns true when a and b have the same bit pattern.
-liblapzt.i128.eq = liblapzt.i128.eq.erased
-
-liblapzt.i128.ne.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
-    liblapzt.bool.not(liblapzt.i128.eq(a, b))
-}
-
-// Returns true when a and b differ.
-liblapzt.i128.ne = liblapzt.i128.ne.erased
-
-liblapzt.i128.lt.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
-    a.negative: liblapzt.bool = liblapzt.i128.sign(a)
-    b.negative: liblapzt.bool = liblapzt.i128.sign(b)
-    differ: liblapzt.bool = liblapzt.bool.xor(a.negative, b.negative)
-    BRANCH (differ) {
-        a.negative
+// Returns [ok, sum]. Ok is false when the sum overflows, and the
+// value is then MIN.
+liblapzt.integer.i128.add.checked = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) [liblapzt.boolean, liblapzt.integer.i128] {
+    sum: liblapzt.integer.i128 = liblapzt.integer.i128.add.wrapping(self, other)
+    self_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(self, liblapzt.integer.i128.ZERO)
+    other_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(other, liblapzt.integer.i128.ZERO)
+    sum_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(sum, liblapzt.integer.i128.ZERO)
+    same_sign: liblapzt.boolean = liblapzt.boolean.equal(self_negative, other_negative)
+    changed: liblapzt.boolean = liblapzt.boolean.not.equal(self_negative, sum_negative)
+    overflow: liblapzt.boolean = liblapzt.boolean.and(same_sign, changed)
+    BRANCH (overflow) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.i128.MIN]
     } {
-        liblapzt.u128.lt(liblapzt.i128.to.u128(a), liblapzt.i128.to.u128(b))
+        [liblapzt.boolean.TRUE, sum]
     }
 }
 
-// Returns true when a is less than b under signed ordering.
-liblapzt.i128.lt = liblapzt.i128.lt.erased
-
-liblapzt.i128.le.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
-    liblapzt.bool.or(liblapzt.i128.lt(a, b), liblapzt.i128.eq(a, b))
-}
-
-// Returns true when a is less than or equal to b.
-liblapzt.i128.le = liblapzt.i128.le.erased
-
-liblapzt.i128.gt.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
-    liblapzt.i128.lt(b, a)
-}
-
-// Returns true when a is greater than b.
-liblapzt.i128.gt = liblapzt.i128.gt.erased
-
-liblapzt.i128.ge.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.bool {
-    liblapzt.i128.le(b, a)
-}
-
-// Returns true when a is greater than or equal to b.
-liblapzt.i128.ge = liblapzt.i128.ge.erased
-
-liblapzt.i128.select.erased = (flag: liblapzt.bool, when.true: liblapzt.i128, when.false: liblapzt.i128) liblapzt.i128 {
-    [tl, th] = when.true
-    [fl, fh] = when.false
-    [liblapzt.i64.select(flag, tl, fl), liblapzt.i64.select(flag, th, fh)]
-}
-
-// Returns when.true when flag is true, otherwise when.false.
-liblapzt.i128.select = liblapzt.i128.select.erased
-
-liblapzt.i128.min.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.select(liblapzt.i128.lt(a, b), a, b)
-}
-
-// Returns the smaller of a and b under signed ordering.
-liblapzt.i128.min = liblapzt.i128.min.erased
-
-liblapzt.i128.max.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.select(liblapzt.i128.gt(a, b), a, b)
-}
-
-// Returns the larger of a and b under signed ordering.
-liblapzt.i128.max = liblapzt.i128.max.erased
-
-liblapzt.i128.inc.erased = (a: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.add(a, liblapzt.i128.one)
-}
-
-// Returns a + 1, wrapping from maximum to minimum.
-liblapzt.i128.inc = liblapzt.i128.inc.erased
-
-liblapzt.i128.dec.erased = (a: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.sub(a, liblapzt.i128.one)
-}
-
-// Returns a - 1, wrapping from minimum to maximum.
-liblapzt.i128.dec = liblapzt.i128.dec.erased
-
-liblapzt.i128.is.zero.erased = (a: liblapzt.i128) liblapzt.bool {
-    liblapzt.u128.is.zero(liblapzt.i128.to.u128(a))
-}
-
-// Returns true when a is zero.
-liblapzt.i128.is.zero = liblapzt.i128.is.zero.erased
-
-liblapzt.i128.is.one.erased = (a: liblapzt.i128) liblapzt.bool {
-    liblapzt.u128.is.one(liblapzt.i128.to.u128(a))
-}
-
-// Returns true when a equals one.
-liblapzt.i128.is.one = liblapzt.i128.is.one.erased
-
-liblapzt.i128.to.bool.erased = (a: liblapzt.i128) liblapzt.bool {
-    liblapzt.bool.not(liblapzt.i128.is.zero(a))
-}
-
-// Returns false when a is zero and true otherwise.
-liblapzt.i128.to.bool = liblapzt.i128.to.bool.erased
-
-liblapzt.i128.neg.erased = (a: liblapzt.i128) liblapzt.i128 {
-    liblapzt.i128.inc(liblapzt.i128.not(a))
-}
-
-// Returns the two's complement negation of a, wrapping so that
-// negating minimum yields minimum.
-liblapzt.i128.neg = liblapzt.i128.neg.erased
-
-liblapzt.i128.abs.erased = (a: liblapzt.i128) liblapzt.i128 {
-    negative: liblapzt.bool = liblapzt.i128.sign(a)
-    BRANCH (negative) {
-        liblapzt.i128.neg(a)
+// Returns the sum of self and other, saturated at MAX or MIN.
+liblapzt.integer.i128.add.saturating = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [ok, sum] = liblapzt.integer.i128.add.checked(self, other)
+    BRANCH (ok) {
+        sum
     } {
-        a
+        self_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(self, liblapzt.integer.i128.ZERO)
+        BRANCH (self_negative) { liblapzt.integer.i128.MIN } { liblapzt.integer.i128.MAX }
     }
 }
 
-// Returns the absolute value of a; the absolute value of minimum
-// wraps back to minimum.
-liblapzt.i128.abs = liblapzt.i128.abs.erased
+// Returns the difference of self and other modulo 2^128.
+liblapzt.integer.i128.subtract.wrapping = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [self_low, self_high] = self
+    [other_low, other_high] = other
+    diff_low: liblapzt.integer.u64 = liblapzt.integer.u64.subtract.wrapping(self_low, other_low)
+    borrow_low: liblapzt.boolean = liblapzt.integer.u64.less_than(self_low, other_low)
+    xor_high: liblapzt.integer.u64 = liblapzt.integer.u64.subtract.wrapping(self_high, other_high)
+    diff_high: liblapzt.integer.u64 = liblapzt.integer.u64.subtract.wrapping(xor_high, borrow_low)
+    [diff_low, diff_high]
+}
 
-liblapzt.i128.div.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    zero: liblapzt.bool = liblapzt.i128.is.zero(b)
+// Returns [ok, difference]. Ok is false when the difference
+// overflows, and the value is then MIN.
+liblapzt.integer.i128.subtract.checked = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) [liblapzt.boolean, liblapzt.integer.i128] {
+    difference: liblapzt.integer.i128 = liblapzt.integer.i128.subtract.wrapping(self, other)
+    self_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(self, liblapzt.integer.i128.ZERO)
+    other_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(other, liblapzt.integer.i128.ZERO)
+    difference_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(difference, liblapzt.integer.i128.ZERO)
+    differ: liblapzt.boolean = liblapzt.boolean.not.equal(self_negative, other_negative)
+    changed: liblapzt.boolean = liblapzt.boolean.not.equal(self_negative, difference_negative)
+    overflow: liblapzt.boolean = liblapzt.boolean.and(differ, changed)
+    BRANCH (overflow) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.i128.MIN]
+    } {
+        [liblapzt.boolean.TRUE, difference]
+    }
+}
+
+// Returns the difference of self and other, saturated at MAX or MIN.
+liblapzt.integer.i128.subtract.saturating = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [ok, difference] = liblapzt.integer.i128.subtract.checked(self, other)
+    BRANCH (ok) {
+        difference
+    } {
+        self_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(self, liblapzt.integer.i128.ZERO)
+        BRANCH (self_negative) { liblapzt.integer.i128.MIN } { liblapzt.integer.i128.MAX }
+    }
+}
+
+// Returns the full 2*128-bit product of self and other as a pair
+// [low, high].
+liblapzt.integer.i128.multiply.full = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) [liblapzt.integer.i128, liblapzt.integer.i128] {
+    [low, high] = liblapzt.integer.u128.multiply.full(self, other)
+    self_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(self, liblapzt.integer.i128.ZERO)
+    other_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(other, liblapzt.integer.i128.ZERO)
+    high_1: liblapzt.integer.u128 = BRANCH (self_negative) {
+        liblapzt.integer.u128.subtract.wrapping(high, other)
+    } {
+        high
+    }
+    high_2: liblapzt.integer.u128 = BRANCH (other_negative) {
+        liblapzt.integer.u128.subtract.wrapping(high_1, self)
+    } {
+        high_1
+    }
+    [low, high_2]
+}
+
+// Returns the low 128 bits of the product of self and other.
+liblapzt.integer.i128.multiply.wrapping = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [low, high] = liblapzt.integer.i128.multiply.full(self, other)
+    low
+}
+
+// Returns [ok, product]. Ok is false when the product overflows,
+// and the value is then MIN.
+liblapzt.integer.i128.multiply.checked = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) [liblapzt.boolean, liblapzt.integer.i128] {
+    [low, high] = liblapzt.integer.i128.multiply.full(self, other)
+    sign: liblapzt.boolean = liblapzt.integer.i128.less_than(low, liblapzt.integer.i128.ZERO)
+    fill: liblapzt.integer.u128 = BRANCH (sign) { liblapzt.integer.u128.MAX } { liblapzt.integer.u128.MIN }
+    [liblapzt.integer.u128.equal(high, fill), low]
+}
+
+// Returns the product of self and other, saturated at MAX or MIN.
+liblapzt.integer.i128.multiply.saturating = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [ok, low] = liblapzt.integer.i128.multiply.checked(self, other)
+    BRANCH (ok) {
+        low
+    } {
+        negative: liblapzt.boolean = liblapzt.integer.i128.less_than(self, liblapzt.integer.i128.ZERO)
+        other_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(other, liblapzt.integer.i128.ZERO)
+        differ: liblapzt.boolean = liblapzt.boolean.not.equal(negative, other_negative)
+        BRANCH (differ) { liblapzt.integer.i128.MIN } { liblapzt.integer.i128.MAX }
+    }
+}
+
+// Returns [quotient, remainder] of self divided by other, truncating
+// toward zero. Returns [MAX, MIN] when other is zero.
+liblapzt.integer.i128.divide.full = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) [liblapzt.integer.i128, liblapzt.integer.i128] {
+    zero: liblapzt.boolean = liblapzt.integer.i128.equal(other, liblapzt.integer.i128.ZERO)
     BRANCH (zero) {
-        liblapzt.i128.zero
+        [liblapzt.integer.i128.MAX, liblapzt.integer.i128.MIN]
     } {
-        negative: liblapzt.bool = liblapzt.bool.xor(liblapzt.i128.sign(a), liblapzt.i128.sign(b))
-        magnitude: liblapzt.u128 = liblapzt.u128.div(liblapzt.i128.to.u128(liblapzt.i128.abs(a)), liblapzt.i128.to.u128(liblapzt.i128.abs(b)))
-        quotient: liblapzt.i128 = liblapzt.i128.from.u128(magnitude)
-        BRANCH (negative) {
-            liblapzt.i128.neg(quotient)
+        self_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(self, liblapzt.integer.i128.ZERO)
+        other_negative: liblapzt.boolean = liblapzt.integer.i128.less_than(other, liblapzt.integer.i128.ZERO)
+        self_magnitude: liblapzt.integer.i128 = BRANCH (self_negative) { liblapzt.integer.u128.subtract.wrapping(liblapzt.integer.u128.MIN, self) } { self }
+        other_magnitude: liblapzt.integer.i128 = BRANCH (other_negative) { liblapzt.integer.u128.subtract.wrapping(liblapzt.integer.u128.MIN, other) } { other }
+        [quotient_u, remainder_u] = liblapzt.integer.u128.divide.full(self_magnitude, other_magnitude)
+        quotient_negative: liblapzt.boolean = liblapzt.boolean.not.equal(self_negative, other_negative)
+        quotient: liblapzt.integer.i128 = BRANCH (quotient_negative) { liblapzt.integer.u128.subtract.wrapping(liblapzt.integer.u128.MIN, quotient_u) } { quotient_u }
+        remainder: liblapzt.integer.i128 = BRANCH (self_negative) { liblapzt.integer.u128.subtract.wrapping(liblapzt.integer.u128.MIN, remainder_u) } { remainder_u }
+        [quotient, remainder]
+    }
+}
+
+// Returns self divided by other, truncating toward zero. Division by
+// zero saturates to MAX; MIN divided by -1 wraps to MIN.
+liblapzt.integer.i128.divide.wrapping = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [quotient, remainder] = liblapzt.integer.i128.divide.full(self, other)
+    quotient
+}
+
+// Returns self divided by other, saturated at MAX or MIN.
+liblapzt.integer.i128.divide.saturating = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    [ok, quotient] = liblapzt.integer.i128.divide.checked(self, other)
+    BRANCH (ok) {
+        quotient
+    } {
+        negative: liblapzt.boolean = liblapzt.integer.i128.less_than(self, liblapzt.integer.i128.ZERO)
+        BRANCH (negative) { liblapzt.integer.i128.MIN } { liblapzt.integer.i128.MAX }
+    }
+}
+
+// Returns [ok, quotient]. Ok is false when other is zero or the
+// quotient overflows, and the value is then MIN.
+liblapzt.integer.i128.divide.checked = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) [liblapzt.boolean, liblapzt.integer.i128] {
+    zero: liblapzt.boolean = liblapzt.integer.i128.equal(other, liblapzt.integer.i128.ZERO)
+    BRANCH (zero) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.i128.MIN]
+    } {
+        overflow: liblapzt.boolean = liblapzt.boolean.and(liblapzt.integer.i128.equal(self, liblapzt.integer.i128.MIN), liblapzt.integer.u128.equal(other, liblapzt.integer.u128.MAX))
+        BRANCH (overflow) {
+            [liblapzt.boolean.FALSE, liblapzt.integer.i128.MIN]
         } {
-            quotient
+            [quotient, remainder] = liblapzt.integer.i128.divide.full(self, other)
+            [liblapzt.boolean.TRUE, quotient]
         }
     }
 }
 
-// Returns a divided by b, truncating toward zero. Returns zero when b
-// is zero; minimum divided by -1 wraps to minimum.
-liblapzt.i128.div = liblapzt.i128.div.erased
-
-liblapzt.i128.mod.erased = (a: liblapzt.i128, b: liblapzt.i128) liblapzt.i128 {
-    zero: liblapzt.bool = liblapzt.i128.is.zero(b)
+// Returns the remainder of self divided by other, with the sign of
+// self. Division by zero saturates to MAX.
+liblapzt.integer.i128.remainder.wrapping = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    zero: liblapzt.boolean = liblapzt.integer.i128.equal(other, liblapzt.integer.i128.ZERO)
     BRANCH (zero) {
-        liblapzt.i128.zero
+        liblapzt.integer.i128.MAX
     } {
-        negative: liblapzt.bool = liblapzt.i128.sign(a)
-        magnitude: liblapzt.u128 = liblapzt.u128.mod(liblapzt.i128.to.u128(liblapzt.i128.abs(a)), liblapzt.i128.to.u128(liblapzt.i128.abs(b)))
-        remainder: liblapzt.i128 = liblapzt.i128.from.u128(magnitude)
-        BRANCH (negative) {
-            liblapzt.i128.neg(remainder)
-        } {
-            remainder
-        }
+        [quotient, remainder] = liblapzt.integer.i128.divide.full(self, other)
+        remainder
     }
 }
 
-// Returns the remainder of a divided by b, with the sign of a.
-// Returns zero when b is zero.
-liblapzt.i128.mod = liblapzt.i128.mod.erased
+// Returns the remainder of self divided by other, saturated at MAX.
+liblapzt.integer.i128.remainder.saturating = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) liblapzt.integer.i128 {
+    zero: liblapzt.boolean = liblapzt.integer.i128.equal(other, liblapzt.integer.i128.ZERO)
+    BRANCH (zero) {
+        liblapzt.integer.i128.MAX
+    } {
+        [quotient, remainder] = liblapzt.integer.i128.divide.full(self, other)
+        remainder
+    }
+}
+
+// Returns [ok, remainder]. Ok is false when other is zero, and the
+// value is then MIN.
+liblapzt.integer.i128.remainder.checked = (self: liblapzt.integer.i128, other: liblapzt.integer.i128) [liblapzt.boolean, liblapzt.integer.i128] {
+    zero: liblapzt.boolean = liblapzt.integer.i128.equal(other, liblapzt.integer.i128.ZERO)
+    BRANCH (zero) {
+        [liblapzt.boolean.FALSE, liblapzt.integer.i128.MIN]
+    } {
+        [quotient, remainder] = liblapzt.integer.i128.divide.full(self, other)
+        [liblapzt.boolean.TRUE, remainder]
+    }
+}
+
+// Converts self to i2, truncating or sign extending.
+liblapzt.integer.i128.to.i2 = (self: liblapzt.integer.i128) liblapzt.integer.i2 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i2(low)
+}
+
+// Converts an i2 to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i2 = (value: liblapzt.integer.i2) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(value, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i2.to.i64(value), fill]
+}
+
+// Converts self to i4, truncating or sign extending.
+liblapzt.integer.i128.to.i4 = (self: liblapzt.integer.i128) liblapzt.integer.i4 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i4(low)
+}
+
+// Converts an i4 to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i4 = (value: liblapzt.integer.i4) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(value, liblapzt.integer.i4.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i4.to.i64(value), fill]
+}
+
+// Converts self to i8, truncating or sign extending.
+liblapzt.integer.i128.to.i8 = (self: liblapzt.integer.i128) liblapzt.integer.i8 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i8(low)
+}
+
+// Converts an i8 to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i8 = (value: liblapzt.integer.i8) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i8.less_than(value, liblapzt.integer.i8.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i8.to.i64(value), fill]
+}
+
+// Converts self to i16, truncating or sign extending.
+liblapzt.integer.i128.to.i16 = (self: liblapzt.integer.i128) liblapzt.integer.i16 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i16(low)
+}
+
+// Converts an i16 to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i16 = (value: liblapzt.integer.i16) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i16.less_than(value, liblapzt.integer.i16.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i16.to.i64(value), fill]
+}
+
+// Converts self to i32, truncating or sign extending.
+liblapzt.integer.i128.to.i32 = (self: liblapzt.integer.i128) liblapzt.integer.i32 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i32(low)
+}
+
+// Converts an i32 to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i32 = (value: liblapzt.integer.i32) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i32.less_than(value, liblapzt.integer.i32.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i32.to.i64(value), fill]
+}
+
+// Converts self to i64, truncating or sign extending.
+liblapzt.integer.i128.to.i64 = (self: liblapzt.integer.i128) liblapzt.integer.i64 {
+    [low, high] = self
+    low
+}
+
+// Converts an i64 to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i64 = (value: liblapzt.integer.i64) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i64.less_than(value, liblapzt.integer.i64.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [value, fill]
+}
+
+// Converts self to i128, truncating or sign extending.
+liblapzt.integer.i128.to.i128 = (self: liblapzt.integer.i128) liblapzt.integer.i128 {
+    self
+}
+
+// Converts an i128 to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i128 = (value: liblapzt.integer.i128) liblapzt.integer.i128 {
+    value
+}
