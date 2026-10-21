@@ -3,8 +3,8 @@
 // --- Erased ---
 
 __liblapzt.boolean.erased = BIT
-__liblapzt.boolean.TRUE.erased = NAND(liblapzt.boolean, NAND(liblapzt.boolean, liblapzt.boolean))
-__liblapzt.boolean.FALSE.erased = NAND(liblapzt.boolean.TRUE, liblapzt.boolean.TRUE)
+__liblapzt.boolean.TRUE.erased = NAND(__liblapzt.boolean.erased, NAND(__liblapzt.boolean.erased, __liblapzt.boolean.erased))
+__liblapzt.boolean.FALSE.erased = NAND(__liblapzt.boolean.TRUE.erased, __liblapzt.boolean.TRUE.erased)
 
 // --- Types ---
 
@@ -15,50 +15,50 @@ liblapzt.boolean.FALSE = __liblapzt.boolean.FALSE.erased
 
 // --- Functions ---
 
-// Returns the logical conjunction of self and b.
-liblapzt.boolean.and = (self: liblapzt.bool, other: liblapzt.bool) liblapzt.boolean {
-    nand: liblapzt.boolean = NAND(self, other)
-    liblapzt.boolean.not(n)
+// Returns the logical negation of self.
+liblapzt.boolean.not = (self: liblapzt.boolean) liblapzt.boolean {
+    NAND(self, self)
 }
 
-// Returns the logical disjunction of self and b.
-liblapzt.boolean.or = (self: liblapzt.bool, other: liblapzt.bool) liblapzt.boolean {
+// Returns the negation of the conjunction of self and other.
+liblapzt.boolean.not.and = (self: liblapzt.boolean, other: liblapzt.boolean) liblapzt.boolean {
+    NAND(self, other)
+}
+
+// Returns the logical conjunction of self and other.
+liblapzt.boolean.and = (self: liblapzt.boolean, other: liblapzt.boolean) liblapzt.boolean {
+    nand: liblapzt.boolean = NAND(self, other)
+    liblapzt.boolean.not(nand)
+}
+
+// Returns true when neither self nor other is true.
+liblapzt.boolean.not.or = (self: liblapzt.boolean, other: liblapzt.boolean) liblapzt.boolean {
+    nand_self: liblapzt.boolean = NAND(self, self)
+    nand_other: liblapzt.boolean = NAND(other, other)
+    liblapzt.boolean.and(nand_self, nand_other)
+}
+
+// Returns the logical disjunction of self and other.
+liblapzt.boolean.or = (self: liblapzt.boolean, other: liblapzt.boolean) liblapzt.boolean {
     not_self: liblapzt.boolean = liblapzt.boolean.not(self)
     not_other: liblapzt.boolean = liblapzt.boolean.not(other)
     NAND(not_self, not_other)
 }
 
-// Returns the logical negation of a.
-liblapzt.boolean.not = (self: liblapzt.bool) liblapzt.boolean {
-    NAND(self, self)
-}
-
-// Returns the negation of the conjunction of self and b.
-liblapzt.boolean.not.and = (self: liblapzt.bool, other: liblapzt.bool) liblapzt.boolean {
-    NAND(self, other)
-}
-
-// Returns true when neither self nor other is true.
-liblapzt.boolean.not.or = (self: liblapzt.bool, other: liblapzt.bool) liblapzt.boolean {
-    nand_self: liblapzt.boolean = liblapzt.boolean.not(self, self)
-    nand_other: liblapzt.boolean = liblapzt.boolean.not(other, other)
-    liblapzt.boolean.and(nand_self, nand_other)
-}
-
 // Returns true when exactly one of self and other is true.
-liblapzt.boolean.exclusive.or = (self: liblapzt.bool, other: liblapzt.bool) liblapzt.boolean {
+liblapzt.boolean.exclusive.or = (self: liblapzt.boolean, other: liblapzt.boolean) liblapzt.boolean {
     nand: liblapzt.boolean = NAND(self, other)
     nand_self: liblapzt.boolean = NAND(self, nand)
     nand_other: liblapzt.boolean = NAND(other, nand)
     NAND(nand_self, nand_other)
 }
 
-// Returns true when self and other are equal.
-liblapzt.boolean.equal = (self: liblapzt.boolean, other: liblapzt.boolean) liblapzt.boolean {
-    liblapzt.boolean.not(liblapzt.boolean.ne(self, other))
-}
-
 // Returns true when self and other differ.
 liblapzt.boolean.not.equal = (self: liblapzt.boolean, other: liblapzt.boolean) liblapzt.boolean {
     liblapzt.boolean.exclusive.or(self, other)
+}
+
+// Returns true when self and other are equal.
+liblapzt.boolean.equal = (self: liblapzt.boolean, other: liblapzt.boolean) liblapzt.boolean {
+    liblapzt.boolean.not(liblapzt.boolean.not.equal(self, other))
 }

@@ -1,4 +1,0 @@
-// Terminates the process with code.
-liblapzt.process.exit = (code: liblapzt.u64) [] {
-    EXTERN(OP.EXIT, code)
-}

@@ -293,7 +293,7 @@ liblapzt.f128.eq.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.boolean 
     a.nan: liblapzt.boolean = liblapzt.f128.is.nan(a)
     b.nan: liblapzt.boolean = liblapzt.f128.is.nan(b)
     BRANCH (liblapzt.boolean.or(a.nan, b.nan)) {
-        liblapzt.boolean.false
+        liblapzt.boolean.FALSE
     } {
         liblapzt.boolean.or(liblapzt.integer.u128.equal(liblapzt.f128.to.bits(a), liblapzt.f128.to.bits(b)), liblapzt.boolean.and(liblapzt.f128.is.zero(a), liblapzt.f128.is.zero(b)))
     }
@@ -314,11 +314,11 @@ liblapzt.f128.lt.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.boolean 
     a.nan: liblapzt.boolean = liblapzt.f128.is.nan(a)
     b.nan: liblapzt.boolean = liblapzt.f128.is.nan(b)
     BRANCH (liblapzt.boolean.or(a.nan, b.nan)) {
-        liblapzt.boolean.false
+        liblapzt.boolean.FALSE
     } {
         a.sign: liblapzt.boolean = liblapzt.f128.sign(a)
         b.sign: liblapzt.boolean = liblapzt.f128.sign(b)
-        differ: liblapzt.boolean = liblapzt.boolean.xor(a.sign, b.sign)
+        differ: liblapzt.boolean = liblapzt.boolean.exclusive.or(a.sign, b.sign)
         BRANCH (differ) {
             a.sign
         } {
@@ -402,18 +402,18 @@ liblapzt.f128.add.finite = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
     small.man: liblapzt.integer.u128 = BRANCH (a.bigger) { b.man.eff } { a.man.eff }
     big.exp: liblapzt.integer.u128 = BRANCH (a.bigger) { a.exp.eff } { b.exp.eff }
     small.exp: liblapzt.integer.u128 = BRANCH (a.bigger) { b.exp.eff } { a.exp.eff }
-    big.sign: liblapzt.boolean = liblapzt.boolean.select(a.bigger, a.sign, b.sign)
-    small.sign: liblapzt.boolean = liblapzt.boolean.select(a.bigger, b.sign, a.sign)
+    big.sign: liblapzt.boolean = BRANCH (a.bigger) { a.sign } { b.sign }
+    small.sign: liblapzt.boolean = BRANCH (a.bigger) { b.sign } { a.sign }
     d: liblapzt.integer.u128 = liblapzt.integer.u128.subtract.wrapping(big.exp, small.exp)
     d.clamped: liblapzt.integer.u128 = liblapzt.integer.u128.min(d, _liblapzt.f128.SHIFT_LIMIT)
     small.shifted: liblapzt.integer.u128 = liblapzt.f128.shr(small.man, d.clamped)
     shifted.out: liblapzt.integer.u128 = liblapzt.integer.u128.subtract.wrapping(small.man, liblapzt.f128.shl(small.shifted, d.clamped))
     sticky: liblapzt.boolean = liblapzt.boolean.not(liblapzt.integer.u128.equal(shifted.out, liblapzt.integer.u128.MIN))
-    same.sign: liblapzt.boolean = liblapzt.boolean.eq(big.sign, small.sign)
+    same.sign: liblapzt.boolean = liblapzt.boolean.equal(big.sign, small.sign)
     difference: liblapzt.integer.u128 = liblapzt.integer.u128.subtract.wrapping(big.man, small.shifted)
     borrow: liblapzt.boolean = liblapzt.boolean.and(liblapzt.boolean.not(same.sign), liblapzt.integer.u128.less_than(big.man, small.shifted))
     sum: liblapzt.integer.u128 = BRANCH (same.sign) { liblapzt.integer.u128.add.wrapping(big.man, small.shifted) } { BRANCH (borrow) { liblapzt.integer.u128.subtract.wrapping(small.shifted, big.man) } { difference } }
-    sign: liblapzt.boolean = liblapzt.boolean.select(borrow, small.sign, big.sign)
+    sign: liblapzt.boolean = BRANCH (borrow) { small.sign } { big.sign }
     carry: liblapzt.boolean = liblapzt.integer.u128.equal(liblapzt.integer.u128.remainder.wrapping(liblapzt.integer.u128.divide.wrapping(sum, _liblapzt.f128.TWO_POW_MANTISSA_PLUS_ONE), _liblapzt.f128.DIVISOR_1), _liblapzt.f128.BIT_0)
     s0: liblapzt.integer.u128 = BRANCH (carry) { liblapzt.integer.u128.divide.wrapping(sum, _liblapzt.f128.DIVISOR_1) } { sum }
     e0: liblapzt.integer.u128 = BRANCH (carry) { liblapzt.integer.u128.add.wrapping(big.exp, _liblapzt.f128.BIT_0) } { big.exp }
@@ -786,7 +786,7 @@ liblapzt.f128.add.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
         a.inf: liblapzt.boolean = liblapzt.f128.is.infinite(a)
         b.inf: liblapzt.boolean = liblapzt.f128.is.infinite(b)
         BRANCH (liblapzt.boolean.and(a.inf, b.inf)) {
-            BRANCH (liblapzt.boolean.xor(liblapzt.f128.sign(a), liblapzt.f128.sign(b))) {
+            BRANCH (liblapzt.boolean.exclusive.or(liblapzt.f128.sign(a), liblapzt.f128.sign(b))) {
                 liblapzt.f128.NAN
             } {
                 a
@@ -801,7 +801,7 @@ liblapzt.f128.add.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
                     a.zero: liblapzt.boolean = liblapzt.f128.is.zero(a)
                     b.zero: liblapzt.boolean = liblapzt.f128.is.zero(b)
                     BRANCH (liblapzt.boolean.and(a.zero, b.zero)) {
-                        BRANCH (liblapzt.boolean.xor(liblapzt.f128.sign(a), liblapzt.f128.sign(b))) {
+                        BRANCH (liblapzt.boolean.exclusive.or(liblapzt.f128.sign(a), liblapzt.f128.sign(b))) {
                             liblapzt.f128.ZERO
                         } {
                             a
@@ -849,7 +849,7 @@ liblapzt.f128.mul.finite = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
     b.man.eff: liblapzt.integer.u128 = BRANCH (b.normal) { liblapzt.integer.u128.or(b.man, _liblapzt.f128.HIDDEN) } { b.man }
     a.exp.eff: liblapzt.integer.u128 = BRANCH (a.normal) { a.exp } { _liblapzt.f128.BIT_0 }
     b.exp.eff: liblapzt.integer.u128 = BRANCH (b.normal) { b.exp } { _liblapzt.f128.BIT_0 }
-    sign: liblapzt.boolean = liblapzt.boolean.xor(liblapzt.f128.sign(a), liblapzt.f128.sign(b))
+    sign: liblapzt.boolean = liblapzt.boolean.exclusive.or(liblapzt.f128.sign(a), liblapzt.f128.sign(b))
     exp: liblapzt.integer.u128 = liblapzt.integer.u128.subtract.wrapping(liblapzt.integer.u128.add.wrapping(a.exp.eff, b.exp.eff), _liblapzt.f128.BIAS)
     [low, high] = liblapzt.integer.u128.multiply.full(a.man.eff, b.man.eff)
     extra: liblapzt.boolean = liblapzt.integer.u128.equal(liblapzt.integer.u128.remainder.wrapping(liblapzt.integer.u128.divide.wrapping(high, _liblapzt.f128.MUL_EXTRA_BIT), _liblapzt.f128.DIVISOR_1), _liblapzt.f128.BIT_0)
@@ -881,10 +881,10 @@ liblapzt.f128.mul.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
             liblapzt.f128.NAN
         } {
             BRANCH (liblapzt.boolean.or(a.inf, b.inf)) {
-                liblapzt.f128.pack(liblapzt.boolean.xor(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), _liblapzt.f128.EXPONENT_MAX, liblapzt.integer.u128.MIN)
+                liblapzt.f128.pack(liblapzt.boolean.exclusive.or(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), _liblapzt.f128.EXPONENT_MAX, liblapzt.integer.u128.MIN)
             } {
                 BRANCH (liblapzt.boolean.or(a.zero, b.zero)) {
-                    liblapzt.f128.pack(liblapzt.boolean.xor(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), liblapzt.integer.u128.MIN, liblapzt.integer.u128.MIN)
+                    liblapzt.f128.pack(liblapzt.boolean.exclusive.or(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), liblapzt.integer.u128.MIN, liblapzt.integer.u128.MIN)
                 } {
                     liblapzt.f128.mul.finite(a, b)
                 }
@@ -910,7 +910,7 @@ liblapzt.f128.div.finite = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
     b.man.eff: liblapzt.integer.u128 = BRANCH (b.normal) { liblapzt.integer.u128.or(b.man, _liblapzt.f128.HIDDEN) } { b.man }
     a.exp.eff: liblapzt.integer.u128 = BRANCH (a.normal) { a.exp } { _liblapzt.f128.BIT_0 }
     b.exp.eff: liblapzt.integer.u128 = BRANCH (b.normal) { b.exp } { _liblapzt.f128.BIT_0 }
-    sign: liblapzt.boolean = liblapzt.boolean.xor(liblapzt.f128.sign(a), liblapzt.f128.sign(b))
+    sign: liblapzt.boolean = liblapzt.boolean.exclusive.or(liblapzt.f128.sign(a), liblapzt.f128.sign(b))
     exp: liblapzt.integer.u128 = liblapzt.integer.u128.add.wrapping(liblapzt.integer.u128.subtract.wrapping(a.exp.eff, b.exp.eff), _liblapzt.f128.BIAS)
     less: liblapzt.boolean = liblapzt.integer.u128.less_than(a.man.eff, b.man.eff)
     numerator: liblapzt.integer.u128 = BRANCH (less) { liblapzt.integer.u128.multiply.wrapping(a.man.eff, _liblapzt.f128.DIVISOR_1) } { a.man.eff }
@@ -1393,16 +1393,16 @@ liblapzt.f128.div.erased = (a: liblapzt.f128, b: liblapzt.f128) liblapzt.f128 {
             liblapzt.f128.NAN
         } {
             BRANCH (a.inf) {
-                liblapzt.f128.pack(liblapzt.boolean.xor(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), _liblapzt.f128.EXPONENT_MAX, liblapzt.integer.u128.MIN)
+                liblapzt.f128.pack(liblapzt.boolean.exclusive.or(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), _liblapzt.f128.EXPONENT_MAX, liblapzt.integer.u128.MIN)
             } {
                 BRANCH (b.inf) {
-                    liblapzt.f128.pack(liblapzt.boolean.xor(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), liblapzt.integer.u128.MIN, liblapzt.integer.u128.MIN)
+                    liblapzt.f128.pack(liblapzt.boolean.exclusive.or(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), liblapzt.integer.u128.MIN, liblapzt.integer.u128.MIN)
                 } {
                     BRANCH (a.zero) {
-                        liblapzt.f128.pack(liblapzt.boolean.xor(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), liblapzt.integer.u128.MIN, liblapzt.integer.u128.MIN)
+                        liblapzt.f128.pack(liblapzt.boolean.exclusive.or(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), liblapzt.integer.u128.MIN, liblapzt.integer.u128.MIN)
                     } {
                         BRANCH (b.zero) {
-                            liblapzt.f128.pack(liblapzt.boolean.xor(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), _liblapzt.f128.EXPONENT_MAX, liblapzt.integer.u128.MIN)
+                            liblapzt.f128.pack(liblapzt.boolean.exclusive.or(liblapzt.f128.sign(a), liblapzt.f128.sign(b)), _liblapzt.f128.EXPONENT_MAX, liblapzt.integer.u128.MIN)
                         } {
                             liblapzt.f128.div.finite(a, b)
                         }
@@ -2254,7 +2254,7 @@ liblapzt.f128.from.u128.erased = (a: liblapzt.integer.u128) liblapzt.f128 {
         w128: liblapzt.integer.u128 = BRANCH (low127) { liblapzt.integer.u128.multiply.wrapping(w127, _liblapzt.f128.DIVISOR_1) } { w127 }
         d128: liblapzt.integer.u128 = BRANCH (low127) { liblapzt.integer.u128.subtract.wrapping(d127, _liblapzt.f128.BIT_0) } { d127 }
         man.final: liblapzt.integer.u128 = liblapzt.integer.u128.subtract.wrapping(w128, _liblapzt.f128.HIDDEN)
-        liblapzt.f128.pack(liblapzt.boolean.false, d128, man.final)
+        liblapzt.f128.pack(liblapzt.boolean.FALSE, d128, man.final)
     }
 }
 
@@ -2262,11 +2262,11 @@ liblapzt.f128.from.u128.erased = (a: liblapzt.integer.u128) liblapzt.f128 {
 // when the integer needs more than 113 significant bits.
 liblapzt.f128.from.u128 = liblapzt.f128.from.u128.erased
 
-liblapzt.f128.to.i128.erased = (a: liblapzt.f128) liblapzt.i128 {
+liblapzt.f128.to.i128.erased = (a: liblapzt.f128) liblapzt.integer.i128 {
     magnitude: liblapzt.integer.u128 = liblapzt.f128.to.u128(liblapzt.f128.abs(a))
-    positive: liblapzt.i128 = liblapzt.i128.from.u128(magnitude)
+    positive: liblapzt.integer.i128 = magnitude
     BRANCH (liblapzt.f128.sign(a)) {
-        liblapzt.i128.neg(positive)
+        liblapzt.integer.u128.subtract.wrapping(liblapzt.integer.u128.MIN, positive)
     } {
         positive
     }
@@ -2277,10 +2277,10 @@ liblapzt.f128.to.i128.erased = (a: liblapzt.f128) liblapzt.i128 {
 // i128 range wrap rather than saturate.
 liblapzt.f128.to.i128 = liblapzt.f128.to.i128.erased
 
-liblapzt.f128.from.i128.erased = (a: liblapzt.i128) liblapzt.f128 {
-    magnitude: liblapzt.integer.u128 = liblapzt.i128.to.u128(liblapzt.i128.abs(a))
+liblapzt.f128.from.i128.erased = (a: liblapzt.integer.i128) liblapzt.f128 {
+    magnitude: liblapzt.integer.u128 = BRANCH (liblapzt.integer.i128.less_than(a, liblapzt.integer.i128.ZERO)) { liblapzt.integer.u128.subtract.wrapping(liblapzt.integer.u128.MIN, a) } { a }
     positive: liblapzt.f128 = liblapzt.f128.from.u128(magnitude)
-    BRANCH (liblapzt.i128.sign(a)) {
+    BRANCH (liblapzt.integer.i128.less_than(a, liblapzt.integer.i128.ZERO)) {
         liblapzt.f128.neg(positive)
     } {
         positive

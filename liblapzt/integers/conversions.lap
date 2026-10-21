@@ -1,0 +1,1243 @@
+//! Size conversions between the integer types.
+
+// Converts self to liblapzt.integer.void, truncating or zero extending.
+liblapzt.integer.u1.to.void = (self: liblapzt.integer.u1) liblapzt.integer.void {
+    []
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.void = (self: liblapzt.integer.void) liblapzt.integer.u1 {
+    liblapzt.integer.u1.MIN
+}
+
+// Converts self to liblapzt.integer.void, truncating or zero extending.
+liblapzt.integer.u2.to.void = (self: liblapzt.integer.u2) liblapzt.integer.void {
+    []
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u2.from.void = (self: liblapzt.integer.void) liblapzt.integer.u2 {
+    liblapzt.integer.u2.MIN
+}
+
+// Converts self to liblapzt.integer.void, truncating or zero extending.
+liblapzt.integer.u4.to.void = (self: liblapzt.integer.u4) liblapzt.integer.void {
+    []
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u4.from.void = (self: liblapzt.integer.void) liblapzt.integer.u4 {
+    liblapzt.integer.u4.MIN
+}
+
+// Converts self to liblapzt.integer.void, truncating or zero extending.
+liblapzt.integer.u8.to.void = (self: liblapzt.integer.u8) liblapzt.integer.void {
+    []
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u8.from.void = (self: liblapzt.integer.void) liblapzt.integer.u8 {
+    liblapzt.integer.u8.MIN
+}
+
+// Converts self to liblapzt.integer.void, truncating or zero extending.
+liblapzt.integer.u16.to.void = (self: liblapzt.integer.u16) liblapzt.integer.void {
+    []
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.void = (self: liblapzt.integer.void) liblapzt.integer.u16 {
+    liblapzt.integer.u16.MIN
+}
+
+// Converts self to liblapzt.integer.void, truncating or zero extending.
+liblapzt.integer.u32.to.void = (self: liblapzt.integer.u32) liblapzt.integer.void {
+    []
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u32.from.void = (self: liblapzt.integer.void) liblapzt.integer.u32 {
+    liblapzt.integer.u32.MIN
+}
+
+// Converts self to liblapzt.integer.void, truncating or zero extending.
+liblapzt.integer.u64.to.void = (self: liblapzt.integer.u64) liblapzt.integer.void {
+    []
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u64.from.void = (self: liblapzt.integer.void) liblapzt.integer.u64 {
+    liblapzt.integer.u64.MIN
+}
+
+// Converts self to liblapzt.integer.void, truncating or zero extending.
+liblapzt.integer.u128.to.void = (self: liblapzt.integer.u128) liblapzt.integer.void {
+    []
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.void = (self: liblapzt.integer.void) liblapzt.integer.u128 {
+    liblapzt.integer.u128.MIN
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u2.to.u1 = (self: liblapzt.integer.u2) liblapzt.integer.u1 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u4.to.u1 = (self: liblapzt.integer.u4) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u2.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u4.to.u2 = (self: liblapzt.integer.u4) liblapzt.integer.u2 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u8.to.u1 = (self: liblapzt.integer.u8) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u4.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u8.to.u2 = (self: liblapzt.integer.u8) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u4.to.u2(low)
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u8.to.u4 = (self: liblapzt.integer.u8) liblapzt.integer.u4 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u16.to.u1 = (self: liblapzt.integer.u16) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u8.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u16.to.u2 = (self: liblapzt.integer.u16) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u8.to.u2(low)
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u16.to.u4 = (self: liblapzt.integer.u16) liblapzt.integer.u4 {
+    [low, high] = self
+    liblapzt.integer.u8.to.u4(low)
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u16.to.u8 = (self: liblapzt.integer.u16) liblapzt.integer.u8 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u32.to.u1 = (self: liblapzt.integer.u32) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u16.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u32.to.u2 = (self: liblapzt.integer.u32) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u16.to.u2(low)
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u32.to.u4 = (self: liblapzt.integer.u32) liblapzt.integer.u4 {
+    [low, high] = self
+    liblapzt.integer.u16.to.u4(low)
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u32.to.u8 = (self: liblapzt.integer.u32) liblapzt.integer.u8 {
+    [low, high] = self
+    liblapzt.integer.u16.to.u8(low)
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u32.to.u16 = (self: liblapzt.integer.u32) liblapzt.integer.u16 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u64.to.u1 = (self: liblapzt.integer.u64) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u32.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u64.to.u2 = (self: liblapzt.integer.u64) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u32.to.u2(low)
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u64.to.u4 = (self: liblapzt.integer.u64) liblapzt.integer.u4 {
+    [low, high] = self
+    liblapzt.integer.u32.to.u4(low)
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u64.to.u8 = (self: liblapzt.integer.u64) liblapzt.integer.u8 {
+    [low, high] = self
+    liblapzt.integer.u32.to.u8(low)
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u64.to.u16 = (self: liblapzt.integer.u64) liblapzt.integer.u16 {
+    [low, high] = self
+    liblapzt.integer.u32.to.u16(low)
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u64.to.u32 = (self: liblapzt.integer.u64) liblapzt.integer.u32 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u128.to.u1 = (self: liblapzt.integer.u128) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u128.to.u2 = (self: liblapzt.integer.u128) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u2(low)
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u128.to.u4 = (self: liblapzt.integer.u128) liblapzt.integer.u4 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u4(low)
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u128.to.u8 = (self: liblapzt.integer.u128) liblapzt.integer.u8 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u8(low)
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u128.to.u16 = (self: liblapzt.integer.u128) liblapzt.integer.u16 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u16(low)
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u128.to.u32 = (self: liblapzt.integer.u128) liblapzt.integer.u32 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u32(low)
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u128.to.u64 = (self: liblapzt.integer.u128) liblapzt.integer.u64 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u1.to.u2 = (self: liblapzt.integer.u1) liblapzt.integer.u2 {
+    [self, liblapzt.integer.u1.MIN]
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u1.to.u4 = (self: liblapzt.integer.u1) liblapzt.integer.u4 {
+    [liblapzt.integer.u1.to.u2(self), liblapzt.integer.u2.MIN]
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u1.to.u8 = (self: liblapzt.integer.u1) liblapzt.integer.u8 {
+    [liblapzt.integer.u1.to.u4(self), liblapzt.integer.u4.MIN]
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u1.to.u16 = (self: liblapzt.integer.u1) liblapzt.integer.u16 {
+    [liblapzt.integer.u1.to.u8(self), liblapzt.integer.u8.MIN]
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u1.to.u32 = (self: liblapzt.integer.u1) liblapzt.integer.u32 {
+    [liblapzt.integer.u1.to.u16(self), liblapzt.integer.u16.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u1.to.u64 = (self: liblapzt.integer.u1) liblapzt.integer.u64 {
+    [liblapzt.integer.u1.to.u32(self), liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u1.to.u128 = (self: liblapzt.integer.u1) liblapzt.integer.u128 {
+    [liblapzt.integer.u1.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u2.to.u4 = (self: liblapzt.integer.u2) liblapzt.integer.u4 {
+    [self, liblapzt.integer.u2.MIN]
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u2.to.u8 = (self: liblapzt.integer.u2) liblapzt.integer.u8 {
+    [liblapzt.integer.u2.to.u4(self), liblapzt.integer.u4.MIN]
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u2.to.u16 = (self: liblapzt.integer.u2) liblapzt.integer.u16 {
+    [liblapzt.integer.u2.to.u8(self), liblapzt.integer.u8.MIN]
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u2.to.u32 = (self: liblapzt.integer.u2) liblapzt.integer.u32 {
+    [liblapzt.integer.u2.to.u16(self), liblapzt.integer.u16.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u2.to.u64 = (self: liblapzt.integer.u2) liblapzt.integer.u64 {
+    [liblapzt.integer.u2.to.u32(self), liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u2.to.u128 = (self: liblapzt.integer.u2) liblapzt.integer.u128 {
+    [liblapzt.integer.u2.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u4.to.u8 = (self: liblapzt.integer.u4) liblapzt.integer.u8 {
+    [self, liblapzt.integer.u4.MIN]
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u4.to.u16 = (self: liblapzt.integer.u4) liblapzt.integer.u16 {
+    [liblapzt.integer.u4.to.u8(self), liblapzt.integer.u8.MIN]
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u4.to.u32 = (self: liblapzt.integer.u4) liblapzt.integer.u32 {
+    [liblapzt.integer.u4.to.u16(self), liblapzt.integer.u16.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u4.to.u64 = (self: liblapzt.integer.u4) liblapzt.integer.u64 {
+    [liblapzt.integer.u4.to.u32(self), liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u4.to.u128 = (self: liblapzt.integer.u4) liblapzt.integer.u128 {
+    [liblapzt.integer.u4.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u8.to.u16 = (self: liblapzt.integer.u8) liblapzt.integer.u16 {
+    [self, liblapzt.integer.u8.MIN]
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u8.to.u32 = (self: liblapzt.integer.u8) liblapzt.integer.u32 {
+    [liblapzt.integer.u8.to.u16(self), liblapzt.integer.u16.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u8.to.u64 = (self: liblapzt.integer.u8) liblapzt.integer.u64 {
+    [liblapzt.integer.u8.to.u32(self), liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u8.to.u128 = (self: liblapzt.integer.u8) liblapzt.integer.u128 {
+    [liblapzt.integer.u8.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u16.to.u32 = (self: liblapzt.integer.u16) liblapzt.integer.u32 {
+    [self, liblapzt.integer.u16.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u16.to.u64 = (self: liblapzt.integer.u16) liblapzt.integer.u64 {
+    [liblapzt.integer.u16.to.u32(self), liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u16.to.u128 = (self: liblapzt.integer.u16) liblapzt.integer.u128 {
+    [liblapzt.integer.u16.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u32.to.u64 = (self: liblapzt.integer.u32) liblapzt.integer.u64 {
+    [self, liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u32.to.u128 = (self: liblapzt.integer.u32) liblapzt.integer.u128 {
+    [liblapzt.integer.u32.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u64.to.u128 = (self: liblapzt.integer.u64) liblapzt.integer.u128 {
+    [self, liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u2.from.u1 = (self: liblapzt.integer.u1) liblapzt.integer.u2 {
+    [self, liblapzt.integer.u1.MIN]
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u4.from.u1 = (self: liblapzt.integer.u1) liblapzt.integer.u4 {
+    [liblapzt.integer.u1.to.u2(self), liblapzt.integer.u2.MIN]
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u4.from.u2 = (self: liblapzt.integer.u2) liblapzt.integer.u4 {
+    [self, liblapzt.integer.u2.MIN]
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u8.from.u1 = (self: liblapzt.integer.u1) liblapzt.integer.u8 {
+    [liblapzt.integer.u1.to.u4(self), liblapzt.integer.u4.MIN]
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u8.from.u2 = (self: liblapzt.integer.u2) liblapzt.integer.u8 {
+    [liblapzt.integer.u2.to.u4(self), liblapzt.integer.u4.MIN]
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u8.from.u4 = (self: liblapzt.integer.u4) liblapzt.integer.u8 {
+    [self, liblapzt.integer.u4.MIN]
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u1 = (self: liblapzt.integer.u1) liblapzt.integer.u16 {
+    [liblapzt.integer.u1.to.u8(self), liblapzt.integer.u8.MIN]
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u2 = (self: liblapzt.integer.u2) liblapzt.integer.u16 {
+    [liblapzt.integer.u2.to.u8(self), liblapzt.integer.u8.MIN]
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u4 = (self: liblapzt.integer.u4) liblapzt.integer.u16 {
+    [liblapzt.integer.u4.to.u8(self), liblapzt.integer.u8.MIN]
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u8 = (self: liblapzt.integer.u8) liblapzt.integer.u16 {
+    [self, liblapzt.integer.u8.MIN]
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u32.from.u1 = (self: liblapzt.integer.u1) liblapzt.integer.u32 {
+    [liblapzt.integer.u1.to.u16(self), liblapzt.integer.u16.MIN]
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u32.from.u2 = (self: liblapzt.integer.u2) liblapzt.integer.u32 {
+    [liblapzt.integer.u2.to.u16(self), liblapzt.integer.u16.MIN]
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u32.from.u4 = (self: liblapzt.integer.u4) liblapzt.integer.u32 {
+    [liblapzt.integer.u4.to.u16(self), liblapzt.integer.u16.MIN]
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u32.from.u8 = (self: liblapzt.integer.u8) liblapzt.integer.u32 {
+    [liblapzt.integer.u8.to.u16(self), liblapzt.integer.u16.MIN]
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u32.from.u16 = (self: liblapzt.integer.u16) liblapzt.integer.u32 {
+    [self, liblapzt.integer.u16.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u64.from.u1 = (self: liblapzt.integer.u1) liblapzt.integer.u64 {
+    [liblapzt.integer.u1.to.u32(self), liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u64.from.u2 = (self: liblapzt.integer.u2) liblapzt.integer.u64 {
+    [liblapzt.integer.u2.to.u32(self), liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u64.from.u4 = (self: liblapzt.integer.u4) liblapzt.integer.u64 {
+    [liblapzt.integer.u4.to.u32(self), liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u64.from.u8 = (self: liblapzt.integer.u8) liblapzt.integer.u64 {
+    [liblapzt.integer.u8.to.u32(self), liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u64.from.u16 = (self: liblapzt.integer.u16) liblapzt.integer.u64 {
+    [liblapzt.integer.u16.to.u32(self), liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u64.from.u32 = (self: liblapzt.integer.u32) liblapzt.integer.u64 {
+    [self, liblapzt.integer.u32.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u1 = (self: liblapzt.integer.u1) liblapzt.integer.u128 {
+    [liblapzt.integer.u1.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u2 = (self: liblapzt.integer.u2) liblapzt.integer.u128 {
+    [liblapzt.integer.u2.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u4 = (self: liblapzt.integer.u4) liblapzt.integer.u128 {
+    [liblapzt.integer.u4.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u8 = (self: liblapzt.integer.u8) liblapzt.integer.u128 {
+    [liblapzt.integer.u8.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u16 = (self: liblapzt.integer.u16) liblapzt.integer.u128 {
+    [liblapzt.integer.u16.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u32 = (self: liblapzt.integer.u32) liblapzt.integer.u128 {
+    [liblapzt.integer.u32.to.u64(self), liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u128, truncating or zero extending.
+liblapzt.integer.u128.from.u64 = (self: liblapzt.integer.u64) liblapzt.integer.u128 {
+    [self, liblapzt.integer.u64.MIN]
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u2 = (self: liblapzt.integer.u2) liblapzt.integer.u1 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u4 = (self: liblapzt.integer.u4) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u2.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u8 = (self: liblapzt.integer.u8) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u4.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u16 = (self: liblapzt.integer.u16) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u8.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u32 = (self: liblapzt.integer.u32) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u16.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u64 = (self: liblapzt.integer.u64) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u32.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u1, truncating or zero extending.
+liblapzt.integer.u1.from.u128 = (self: liblapzt.integer.u128) liblapzt.integer.u1 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u1(low)
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u2.from.u4 = (self: liblapzt.integer.u4) liblapzt.integer.u2 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u2.from.u8 = (self: liblapzt.integer.u8) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u4.to.u2(low)
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u2.from.u16 = (self: liblapzt.integer.u16) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u8.to.u2(low)
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u2.from.u32 = (self: liblapzt.integer.u32) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u16.to.u2(low)
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u2.from.u64 = (self: liblapzt.integer.u64) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u32.to.u2(low)
+}
+
+// Converts self to liblapzt.integer.u2, truncating or zero extending.
+liblapzt.integer.u2.from.u128 = (self: liblapzt.integer.u128) liblapzt.integer.u2 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u2(low)
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u4.from.u8 = (self: liblapzt.integer.u8) liblapzt.integer.u4 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u4.from.u16 = (self: liblapzt.integer.u16) liblapzt.integer.u4 {
+    [low, high] = self
+    liblapzt.integer.u8.to.u4(low)
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u4.from.u32 = (self: liblapzt.integer.u32) liblapzt.integer.u4 {
+    [low, high] = self
+    liblapzt.integer.u16.to.u4(low)
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u4.from.u64 = (self: liblapzt.integer.u64) liblapzt.integer.u4 {
+    [low, high] = self
+    liblapzt.integer.u32.to.u4(low)
+}
+
+// Converts self to liblapzt.integer.u4, truncating or zero extending.
+liblapzt.integer.u4.from.u128 = (self: liblapzt.integer.u128) liblapzt.integer.u4 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u4(low)
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u8.from.u16 = (self: liblapzt.integer.u16) liblapzt.integer.u8 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u8.from.u32 = (self: liblapzt.integer.u32) liblapzt.integer.u8 {
+    [low, high] = self
+    liblapzt.integer.u16.to.u8(low)
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u8.from.u64 = (self: liblapzt.integer.u64) liblapzt.integer.u8 {
+    [low, high] = self
+    liblapzt.integer.u32.to.u8(low)
+}
+
+// Converts self to liblapzt.integer.u8, truncating or zero extending.
+liblapzt.integer.u8.from.u128 = (self: liblapzt.integer.u128) liblapzt.integer.u8 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u8(low)
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u32 = (self: liblapzt.integer.u32) liblapzt.integer.u16 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u64 = (self: liblapzt.integer.u64) liblapzt.integer.u16 {
+    [low, high] = self
+    liblapzt.integer.u32.to.u16(low)
+}
+
+// Converts self to liblapzt.integer.u16, truncating or zero extending.
+liblapzt.integer.u16.from.u128 = (self: liblapzt.integer.u128) liblapzt.integer.u16 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u16(low)
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u32.from.u64 = (self: liblapzt.integer.u64) liblapzt.integer.u32 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.u32, truncating or zero extending.
+liblapzt.integer.u32.from.u128 = (self: liblapzt.integer.u128) liblapzt.integer.u32 {
+    [low, high] = self
+    liblapzt.integer.u64.to.u32(low)
+}
+
+// Converts self to liblapzt.integer.u64, truncating or zero extending.
+liblapzt.integer.u64.from.u128 = (self: liblapzt.integer.u128) liblapzt.integer.u64 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i4.to.i2 = (self: liblapzt.integer.i4) liblapzt.integer.i2 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i8.to.i2 = (self: liblapzt.integer.i8) liblapzt.integer.i2 {
+    [low, high] = self
+    liblapzt.integer.i4.to.i2(low)
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i8.to.i4 = (self: liblapzt.integer.i8) liblapzt.integer.i4 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i16.to.i2 = (self: liblapzt.integer.i16) liblapzt.integer.i2 {
+    [low, high] = self
+    liblapzt.integer.i8.to.i2(low)
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i16.to.i4 = (self: liblapzt.integer.i16) liblapzt.integer.i4 {
+    [low, high] = self
+    liblapzt.integer.i8.to.i4(low)
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i16.to.i8 = (self: liblapzt.integer.i16) liblapzt.integer.i8 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i32.to.i2 = (self: liblapzt.integer.i32) liblapzt.integer.i2 {
+    [low, high] = self
+    liblapzt.integer.i16.to.i2(low)
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i32.to.i4 = (self: liblapzt.integer.i32) liblapzt.integer.i4 {
+    [low, high] = self
+    liblapzt.integer.i16.to.i4(low)
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i32.to.i8 = (self: liblapzt.integer.i32) liblapzt.integer.i8 {
+    [low, high] = self
+    liblapzt.integer.i16.to.i8(low)
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i32.to.i16 = (self: liblapzt.integer.i32) liblapzt.integer.i16 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i64.to.i2 = (self: liblapzt.integer.i64) liblapzt.integer.i2 {
+    [low, high] = self
+    liblapzt.integer.i32.to.i2(low)
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i64.to.i4 = (self: liblapzt.integer.i64) liblapzt.integer.i4 {
+    [low, high] = self
+    liblapzt.integer.i32.to.i4(low)
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i64.to.i8 = (self: liblapzt.integer.i64) liblapzt.integer.i8 {
+    [low, high] = self
+    liblapzt.integer.i32.to.i8(low)
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i64.to.i16 = (self: liblapzt.integer.i64) liblapzt.integer.i16 {
+    [low, high] = self
+    liblapzt.integer.i32.to.i16(low)
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i64.to.i32 = (self: liblapzt.integer.i64) liblapzt.integer.i32 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i128.to.i2 = (self: liblapzt.integer.i128) liblapzt.integer.i2 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i2(low)
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i128.to.i4 = (self: liblapzt.integer.i128) liblapzt.integer.i4 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i4(low)
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i128.to.i8 = (self: liblapzt.integer.i128) liblapzt.integer.i8 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i8(low)
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i128.to.i16 = (self: liblapzt.integer.i128) liblapzt.integer.i16 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i16(low)
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i128.to.i32 = (self: liblapzt.integer.i128) liblapzt.integer.i32 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i32(low)
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i128.to.i64 = (self: liblapzt.integer.i128) liblapzt.integer.i64 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i2.to.i4 = (self: liblapzt.integer.i2) liblapzt.integer.i4 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u2 = BRANCH (sign) { liblapzt.integer.u2.MAX } { liblapzt.integer.u2.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i2.to.i8 = (self: liblapzt.integer.i2) liblapzt.integer.i8 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u4 = BRANCH (sign) { liblapzt.integer.u4.MAX } { liblapzt.integer.u4.MIN }
+    [liblapzt.integer.i2.to.i4(self), fill]
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i2.to.i16 = (self: liblapzt.integer.i2) liblapzt.integer.i16 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u8 = BRANCH (sign) { liblapzt.integer.u8.MAX } { liblapzt.integer.u8.MIN }
+    [liblapzt.integer.i2.to.i8(self), fill]
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i2.to.i32 = (self: liblapzt.integer.i2) liblapzt.integer.i32 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u16 = BRANCH (sign) { liblapzt.integer.u16.MAX } { liblapzt.integer.u16.MIN }
+    [liblapzt.integer.i2.to.i16(self), fill]
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i2.to.i64 = (self: liblapzt.integer.i2) liblapzt.integer.i64 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u32 = BRANCH (sign) { liblapzt.integer.u32.MAX } { liblapzt.integer.u32.MIN }
+    [liblapzt.integer.i2.to.i32(self), fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i2.to.i128 = (self: liblapzt.integer.i2) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i2.to.i64(self), fill]
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i4.to.i8 = (self: liblapzt.integer.i4) liblapzt.integer.i8 {
+    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
+    fill: liblapzt.integer.u4 = BRANCH (sign) { liblapzt.integer.u4.MAX } { liblapzt.integer.u4.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i4.to.i16 = (self: liblapzt.integer.i4) liblapzt.integer.i16 {
+    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
+    fill: liblapzt.integer.u8 = BRANCH (sign) { liblapzt.integer.u8.MAX } { liblapzt.integer.u8.MIN }
+    [liblapzt.integer.i4.to.i8(self), fill]
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i4.to.i32 = (self: liblapzt.integer.i4) liblapzt.integer.i32 {
+    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
+    fill: liblapzt.integer.u16 = BRANCH (sign) { liblapzt.integer.u16.MAX } { liblapzt.integer.u16.MIN }
+    [liblapzt.integer.i4.to.i16(self), fill]
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i4.to.i64 = (self: liblapzt.integer.i4) liblapzt.integer.i64 {
+    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
+    fill: liblapzt.integer.u32 = BRANCH (sign) { liblapzt.integer.u32.MAX } { liblapzt.integer.u32.MIN }
+    [liblapzt.integer.i4.to.i32(self), fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i4.to.i128 = (self: liblapzt.integer.i4) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i4.to.i64(self), fill]
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i8.to.i16 = (self: liblapzt.integer.i8) liblapzt.integer.i16 {
+    sign: liblapzt.boolean = liblapzt.integer.i8.less_than(self, liblapzt.integer.i8.ZERO)
+    fill: liblapzt.integer.u8 = BRANCH (sign) { liblapzt.integer.u8.MAX } { liblapzt.integer.u8.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i8.to.i32 = (self: liblapzt.integer.i8) liblapzt.integer.i32 {
+    sign: liblapzt.boolean = liblapzt.integer.i8.less_than(self, liblapzt.integer.i8.ZERO)
+    fill: liblapzt.integer.u16 = BRANCH (sign) { liblapzt.integer.u16.MAX } { liblapzt.integer.u16.MIN }
+    [liblapzt.integer.i8.to.i16(self), fill]
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i8.to.i64 = (self: liblapzt.integer.i8) liblapzt.integer.i64 {
+    sign: liblapzt.boolean = liblapzt.integer.i8.less_than(self, liblapzt.integer.i8.ZERO)
+    fill: liblapzt.integer.u32 = BRANCH (sign) { liblapzt.integer.u32.MAX } { liblapzt.integer.u32.MIN }
+    [liblapzt.integer.i8.to.i32(self), fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i8.to.i128 = (self: liblapzt.integer.i8) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i8.less_than(self, liblapzt.integer.i8.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i8.to.i64(self), fill]
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i16.to.i32 = (self: liblapzt.integer.i16) liblapzt.integer.i32 {
+    sign: liblapzt.boolean = liblapzt.integer.i16.less_than(self, liblapzt.integer.i16.ZERO)
+    fill: liblapzt.integer.u16 = BRANCH (sign) { liblapzt.integer.u16.MAX } { liblapzt.integer.u16.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i16.to.i64 = (self: liblapzt.integer.i16) liblapzt.integer.i64 {
+    sign: liblapzt.boolean = liblapzt.integer.i16.less_than(self, liblapzt.integer.i16.ZERO)
+    fill: liblapzt.integer.u32 = BRANCH (sign) { liblapzt.integer.u32.MAX } { liblapzt.integer.u32.MIN }
+    [liblapzt.integer.i16.to.i32(self), fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i16.to.i128 = (self: liblapzt.integer.i16) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i16.less_than(self, liblapzt.integer.i16.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i16.to.i64(self), fill]
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i32.to.i64 = (self: liblapzt.integer.i32) liblapzt.integer.i64 {
+    sign: liblapzt.boolean = liblapzt.integer.i32.less_than(self, liblapzt.integer.i32.ZERO)
+    fill: liblapzt.integer.u32 = BRANCH (sign) { liblapzt.integer.u32.MAX } { liblapzt.integer.u32.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i32.to.i128 = (self: liblapzt.integer.i32) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i32.less_than(self, liblapzt.integer.i32.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i32.to.i64(self), fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i64.to.i128 = (self: liblapzt.integer.i64) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i64.less_than(self, liblapzt.integer.i64.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i4.from.i2 = (self: liblapzt.integer.i2) liblapzt.integer.i4 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u2 = BRANCH (sign) { liblapzt.integer.u2.MAX } { liblapzt.integer.u2.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i8.from.i2 = (self: liblapzt.integer.i2) liblapzt.integer.i8 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u4 = BRANCH (sign) { liblapzt.integer.u4.MAX } { liblapzt.integer.u4.MIN }
+    [liblapzt.integer.i2.to.i4(self), fill]
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i8.from.i4 = (self: liblapzt.integer.i4) liblapzt.integer.i8 {
+    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
+    fill: liblapzt.integer.u4 = BRANCH (sign) { liblapzt.integer.u4.MAX } { liblapzt.integer.u4.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i16.from.i2 = (self: liblapzt.integer.i2) liblapzt.integer.i16 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u8 = BRANCH (sign) { liblapzt.integer.u8.MAX } { liblapzt.integer.u8.MIN }
+    [liblapzt.integer.i2.to.i8(self), fill]
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i16.from.i4 = (self: liblapzt.integer.i4) liblapzt.integer.i16 {
+    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
+    fill: liblapzt.integer.u8 = BRANCH (sign) { liblapzt.integer.u8.MAX } { liblapzt.integer.u8.MIN }
+    [liblapzt.integer.i4.to.i8(self), fill]
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i16.from.i8 = (self: liblapzt.integer.i8) liblapzt.integer.i16 {
+    sign: liblapzt.boolean = liblapzt.integer.i8.less_than(self, liblapzt.integer.i8.ZERO)
+    fill: liblapzt.integer.u8 = BRANCH (sign) { liblapzt.integer.u8.MAX } { liblapzt.integer.u8.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i32.from.i2 = (self: liblapzt.integer.i2) liblapzt.integer.i32 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u16 = BRANCH (sign) { liblapzt.integer.u16.MAX } { liblapzt.integer.u16.MIN }
+    [liblapzt.integer.i2.to.i16(self), fill]
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i32.from.i4 = (self: liblapzt.integer.i4) liblapzt.integer.i32 {
+    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
+    fill: liblapzt.integer.u16 = BRANCH (sign) { liblapzt.integer.u16.MAX } { liblapzt.integer.u16.MIN }
+    [liblapzt.integer.i4.to.i16(self), fill]
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i32.from.i8 = (self: liblapzt.integer.i8) liblapzt.integer.i32 {
+    sign: liblapzt.boolean = liblapzt.integer.i8.less_than(self, liblapzt.integer.i8.ZERO)
+    fill: liblapzt.integer.u16 = BRANCH (sign) { liblapzt.integer.u16.MAX } { liblapzt.integer.u16.MIN }
+    [liblapzt.integer.i8.to.i16(self), fill]
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i32.from.i16 = (self: liblapzt.integer.i16) liblapzt.integer.i32 {
+    sign: liblapzt.boolean = liblapzt.integer.i16.less_than(self, liblapzt.integer.i16.ZERO)
+    fill: liblapzt.integer.u16 = BRANCH (sign) { liblapzt.integer.u16.MAX } { liblapzt.integer.u16.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i64.from.i2 = (self: liblapzt.integer.i2) liblapzt.integer.i64 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u32 = BRANCH (sign) { liblapzt.integer.u32.MAX } { liblapzt.integer.u32.MIN }
+    [liblapzt.integer.i2.to.i32(self), fill]
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i64.from.i4 = (self: liblapzt.integer.i4) liblapzt.integer.i64 {
+    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
+    fill: liblapzt.integer.u32 = BRANCH (sign) { liblapzt.integer.u32.MAX } { liblapzt.integer.u32.MIN }
+    [liblapzt.integer.i4.to.i32(self), fill]
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i64.from.i8 = (self: liblapzt.integer.i8) liblapzt.integer.i64 {
+    sign: liblapzt.boolean = liblapzt.integer.i8.less_than(self, liblapzt.integer.i8.ZERO)
+    fill: liblapzt.integer.u32 = BRANCH (sign) { liblapzt.integer.u32.MAX } { liblapzt.integer.u32.MIN }
+    [liblapzt.integer.i8.to.i32(self), fill]
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i64.from.i16 = (self: liblapzt.integer.i16) liblapzt.integer.i64 {
+    sign: liblapzt.boolean = liblapzt.integer.i16.less_than(self, liblapzt.integer.i16.ZERO)
+    fill: liblapzt.integer.u32 = BRANCH (sign) { liblapzt.integer.u32.MAX } { liblapzt.integer.u32.MIN }
+    [liblapzt.integer.i16.to.i32(self), fill]
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i64.from.i32 = (self: liblapzt.integer.i32) liblapzt.integer.i64 {
+    sign: liblapzt.boolean = liblapzt.integer.i32.less_than(self, liblapzt.integer.i32.ZERO)
+    fill: liblapzt.integer.u32 = BRANCH (sign) { liblapzt.integer.u32.MAX } { liblapzt.integer.u32.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i2 = (self: liblapzt.integer.i2) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(self, liblapzt.integer.i2.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i2.to.i64(self), fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i4 = (self: liblapzt.integer.i4) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i4.to.i64(self), fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i8 = (self: liblapzt.integer.i8) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i8.less_than(self, liblapzt.integer.i8.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i8.to.i64(self), fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i16 = (self: liblapzt.integer.i16) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i16.less_than(self, liblapzt.integer.i16.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i16.to.i64(self), fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i32 = (self: liblapzt.integer.i32) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i32.less_than(self, liblapzt.integer.i32.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [liblapzt.integer.i32.to.i64(self), fill]
+}
+
+// Converts self to liblapzt.integer.i128, truncating or sign extending.
+liblapzt.integer.i128.from.i64 = (self: liblapzt.integer.i64) liblapzt.integer.i128 {
+    sign: liblapzt.boolean = liblapzt.integer.i64.less_than(self, liblapzt.integer.i64.ZERO)
+    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
+    [self, fill]
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i2.from.i4 = (self: liblapzt.integer.i4) liblapzt.integer.i2 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i2.from.i8 = (self: liblapzt.integer.i8) liblapzt.integer.i2 {
+    [low, high] = self
+    liblapzt.integer.i4.to.i2(low)
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i2.from.i16 = (self: liblapzt.integer.i16) liblapzt.integer.i2 {
+    [low, high] = self
+    liblapzt.integer.i8.to.i2(low)
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i2.from.i32 = (self: liblapzt.integer.i32) liblapzt.integer.i2 {
+    [low, high] = self
+    liblapzt.integer.i16.to.i2(low)
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i2.from.i64 = (self: liblapzt.integer.i64) liblapzt.integer.i2 {
+    [low, high] = self
+    liblapzt.integer.i32.to.i2(low)
+}
+
+// Converts self to liblapzt.integer.i2, truncating or sign extending.
+liblapzt.integer.i2.from.i128 = (self: liblapzt.integer.i128) liblapzt.integer.i2 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i2(low)
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i4.from.i8 = (self: liblapzt.integer.i8) liblapzt.integer.i4 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i4.from.i16 = (self: liblapzt.integer.i16) liblapzt.integer.i4 {
+    [low, high] = self
+    liblapzt.integer.i8.to.i4(low)
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i4.from.i32 = (self: liblapzt.integer.i32) liblapzt.integer.i4 {
+    [low, high] = self
+    liblapzt.integer.i16.to.i4(low)
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i4.from.i64 = (self: liblapzt.integer.i64) liblapzt.integer.i4 {
+    [low, high] = self
+    liblapzt.integer.i32.to.i4(low)
+}
+
+// Converts self to liblapzt.integer.i4, truncating or sign extending.
+liblapzt.integer.i4.from.i128 = (self: liblapzt.integer.i128) liblapzt.integer.i4 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i4(low)
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i8.from.i16 = (self: liblapzt.integer.i16) liblapzt.integer.i8 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i8.from.i32 = (self: liblapzt.integer.i32) liblapzt.integer.i8 {
+    [low, high] = self
+    liblapzt.integer.i16.to.i8(low)
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i8.from.i64 = (self: liblapzt.integer.i64) liblapzt.integer.i8 {
+    [low, high] = self
+    liblapzt.integer.i32.to.i8(low)
+}
+
+// Converts self to liblapzt.integer.i8, truncating or sign extending.
+liblapzt.integer.i8.from.i128 = (self: liblapzt.integer.i128) liblapzt.integer.i8 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i8(low)
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i16.from.i32 = (self: liblapzt.integer.i32) liblapzt.integer.i16 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i16.from.i64 = (self: liblapzt.integer.i64) liblapzt.integer.i16 {
+    [low, high] = self
+    liblapzt.integer.i32.to.i16(low)
+}
+
+// Converts self to liblapzt.integer.i16, truncating or sign extending.
+liblapzt.integer.i16.from.i128 = (self: liblapzt.integer.i128) liblapzt.integer.i16 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i16(low)
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i32.from.i64 = (self: liblapzt.integer.i64) liblapzt.integer.i32 {
+    [low, high] = self
+    low
+}
+
+// Converts self to liblapzt.integer.i32, truncating or sign extending.
+liblapzt.integer.i32.from.i128 = (self: liblapzt.integer.i128) liblapzt.integer.i32 {
+    [low, high] = self
+    liblapzt.integer.i64.to.i32(low)
+}
+
+// Converts self to liblapzt.integer.i64, truncating or sign extending.
+liblapzt.integer.i64.from.i128 = (self: liblapzt.integer.i128) liblapzt.integer.i64 {
+    [low, high] = self
+    low
+}

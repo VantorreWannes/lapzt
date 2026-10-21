@@ -253,17 +253,6 @@ liblapzt.integer.i4.divide.wrapping = (self: liblapzt.integer.i4, other: liblapz
     quotient
 }
 
-// Returns self divided by other, saturated at MAX or MIN.
-liblapzt.integer.i4.divide.saturating = (self: liblapzt.integer.i4, other: liblapzt.integer.i4) liblapzt.integer.i4 {
-    [ok, quotient] = liblapzt.integer.i4.divide.checked(self, other)
-    BRANCH (ok) {
-        quotient
-    } {
-        negative: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
-        BRANCH (negative) { liblapzt.integer.i4.MIN } { liblapzt.integer.i4.MAX }
-    }
-}
-
 // Returns [ok, quotient]. Ok is false when other is zero or the
 // quotient overflows, and the value is then MIN.
 liblapzt.integer.i4.divide.checked = (self: liblapzt.integer.i4, other: liblapzt.integer.i4) [liblapzt.boolean, liblapzt.integer.i4] {
@@ -278,6 +267,17 @@ liblapzt.integer.i4.divide.checked = (self: liblapzt.integer.i4, other: liblapzt
             [quotient, remainder] = liblapzt.integer.i4.divide.full(self, other)
             [liblapzt.boolean.TRUE, quotient]
         }
+    }
+}
+
+// Returns self divided by other, saturated at MAX or MIN.
+liblapzt.integer.i4.divide.saturating = (self: liblapzt.integer.i4, other: liblapzt.integer.i4) liblapzt.integer.i4 {
+    [ok, quotient] = liblapzt.integer.i4.divide.checked(self, other)
+    BRANCH (ok) {
+        quotient
+    } {
+        negative: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
+        BRANCH (negative) { liblapzt.integer.i4.MIN } { liblapzt.integer.i4.MAX }
     }
 }
 
@@ -314,92 +314,4 @@ liblapzt.integer.i4.remainder.checked = (self: liblapzt.integer.i4, other: libla
         [quotient, remainder] = liblapzt.integer.i4.divide.full(self, other)
         [liblapzt.boolean.TRUE, remainder]
     }
-}
-
-// Converts self to i2, truncating or sign extending.
-liblapzt.integer.i4.to.i2 = (self: liblapzt.integer.i4) liblapzt.integer.i2 {
-    [low, high] = self
-    low
-}
-
-// Converts an i2 to liblapzt.integer.i4, truncating or sign extending.
-liblapzt.integer.i4.from.i2 = (value: liblapzt.integer.i2) liblapzt.integer.i4 {
-    sign: liblapzt.boolean = liblapzt.integer.i2.less_than(value, liblapzt.integer.i2.ZERO)
-    fill: liblapzt.integer.u2 = BRANCH (sign) { liblapzt.integer.u2.MAX } { liblapzt.integer.u2.MIN }
-    [value, fill]
-}
-
-// Converts self to i4, truncating or sign extending.
-liblapzt.integer.i4.to.i4 = (self: liblapzt.integer.i4) liblapzt.integer.i4 {
-    self
-}
-
-// Converts an i4 to liblapzt.integer.i4, truncating or sign extending.
-liblapzt.integer.i4.from.i4 = (value: liblapzt.integer.i4) liblapzt.integer.i4 {
-    value
-}
-
-// Converts self to i8, truncating or sign extending.
-liblapzt.integer.i4.to.i8 = (self: liblapzt.integer.i4) liblapzt.integer.i8 {
-    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
-    fill: liblapzt.integer.u4 = BRANCH (sign) { liblapzt.integer.u4.MAX } { liblapzt.integer.u4.MIN }
-    [self, fill]
-}
-
-// Converts an i8 to liblapzt.integer.i4, truncating or sign extending.
-liblapzt.integer.i4.from.i8 = (value: liblapzt.integer.i8) liblapzt.integer.i4 {
-    [low, high] = value
-    low
-}
-
-// Converts self to i16, truncating or sign extending.
-liblapzt.integer.i4.to.i16 = (self: liblapzt.integer.i4) liblapzt.integer.i16 {
-    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
-    fill: liblapzt.integer.u8 = BRANCH (sign) { liblapzt.integer.u8.MAX } { liblapzt.integer.u8.MIN }
-    [liblapzt.integer.i4.to.i8(self), fill]
-}
-
-// Converts an i16 to liblapzt.integer.i4, truncating or sign extending.
-liblapzt.integer.i4.from.i16 = (value: liblapzt.integer.i16) liblapzt.integer.i4 {
-    [low, high] = value
-    liblapzt.integer.i8.to.i4(low)
-}
-
-// Converts self to i32, truncating or sign extending.
-liblapzt.integer.i4.to.i32 = (self: liblapzt.integer.i4) liblapzt.integer.i32 {
-    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
-    fill: liblapzt.integer.u16 = BRANCH (sign) { liblapzt.integer.u16.MAX } { liblapzt.integer.u16.MIN }
-    [liblapzt.integer.i4.to.i16(self), fill]
-}
-
-// Converts an i32 to liblapzt.integer.i4, truncating or sign extending.
-liblapzt.integer.i4.from.i32 = (value: liblapzt.integer.i32) liblapzt.integer.i4 {
-    [low, high] = value
-    liblapzt.integer.i16.to.i4(low)
-}
-
-// Converts self to i64, truncating or sign extending.
-liblapzt.integer.i4.to.i64 = (self: liblapzt.integer.i4) liblapzt.integer.i64 {
-    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
-    fill: liblapzt.integer.u32 = BRANCH (sign) { liblapzt.integer.u32.MAX } { liblapzt.integer.u32.MIN }
-    [liblapzt.integer.i4.to.i32(self), fill]
-}
-
-// Converts an i64 to liblapzt.integer.i4, truncating or sign extending.
-liblapzt.integer.i4.from.i64 = (value: liblapzt.integer.i64) liblapzt.integer.i4 {
-    [low, high] = value
-    liblapzt.integer.i32.to.i4(low)
-}
-
-// Converts self to i128, truncating or sign extending.
-liblapzt.integer.i4.to.i128 = (self: liblapzt.integer.i4) liblapzt.integer.i128 {
-    sign: liblapzt.boolean = liblapzt.integer.i4.less_than(self, liblapzt.integer.i4.ZERO)
-    fill: liblapzt.integer.u64 = BRANCH (sign) { liblapzt.integer.u64.MAX } { liblapzt.integer.u64.MIN }
-    [liblapzt.integer.i4.to.i64(self), fill]
-}
-
-// Converts an i128 to liblapzt.integer.i4, truncating or sign extending.
-liblapzt.integer.i4.from.i128 = (value: liblapzt.integer.i128) liblapzt.integer.i4 {
-    [low, high] = value
-    liblapzt.integer.i64.to.i4(low)
 }
