@@ -1,4 +1,4 @@
-(comment) @string.special
+(comment) @comment
 
 (bit) @constant.builtin @constant
 (bit_type) @type.builtin @type
@@ -14,6 +14,11 @@
 ; Simple labels, such as choice and buffer.
 ((label) @variable
  (#match? @variable "^[a-zA-Z0-9_]+$"))
+
+; Binding targets are definitions, so they stand out from uses.
+(binding target: (typed_identifier name: (label) @property))
+(reference_target (typed_identifier name: (label) @property))
+(collection_target (typed_identifier name: (label) @property))
 
 ; Parameters override the generic variable capture.
 (parameter name: (label) @variable.parameter)
@@ -46,9 +51,10 @@
 ":" @punctuation.delimiter
 "," @punctuation.delimiter
 
+"[" @keyword
+"]" @keyword
+
 "(" @punctuation.bracket
 ")" @punctuation.bracket
-"[" @punctuation.bracket
-"]" @punctuation.bracket
 "{" @punctuation.bracket
 "}" @punctuation.bracket
