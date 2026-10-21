@@ -1,0 +1,22 @@
+{
+  "name": "tree-sitter-lap",
+  "version": "0.1.0",
+  "description": "Tree-sitter grammar for Labels and Primitives (Lap)",
+  "keywords": [
+    "tree-sitter",
+    "lap"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "tree-sitter-cli": "^0.25.0"
+  },
+  "tree-sitter": [
+    {
+      "scope": "source.lap",
+      "file-types": [
+        "lap"
+      ],
+      "highlights": "queries/highlights.scm"
+    }
+  ]
+}

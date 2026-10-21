@@ -1,0 +1,63 @@
+BIT.ONE = NAND(BIT, NAND(BIT, BIT))
+BIT.ZERO = NAND(BIT.ONE, BIT.ONE)
+
+U2 = [BIT, BIT]
+PAIR = [BIT, BIT]
+TUPLE = [BIT, U2, PAIR]
+
+bit.not = (a: BIT) BIT {
+    NAND(a, a)
+}
+
+bit.toggle = (target: *BIT) [] {
+    target = bit.not(target)
+}
+
+bit.toggle.twice = (target: *BIT) [] {
+    bit.toggle(*target)
+    bit.toggle(*target)
+}
+
+u2.select = (flag: BIT, when.one: U2, when.zero: U2) U2 {
+    BRANCH (flag) {
+        when.one
+    } {
+        unused: BIT = BIT.ZERO
+        when.zero
+    }
+}
+
+heap.alloc = () [BIT, U64] {
+    EXTERN(OP.MEMORY.ACQUIRE)
+}
+
+heap.free = (handle: *U64) [] {
+    [released] = EXTERN(OP.MEMORY.RELEASE, handle)
+    handle = U64.ZERO
+}
+
+main = () BIT {
+    state: BIT = BIT.ZERO
+
+    alias: *BIT = *state
+    alias = BIT.ONE
+
+    bit.toggle.twice(*state)
+
+    low: U2 = [BIT.ZERO, BIT.ONE]
+    high: U2 = [BIT.ONE, BIT.ONE]
+    chosen: U2 = u2.select(state, low, high)
+    paired: PAIR = chosen
+
+    bundle: TUPLE = [state, chosen, paired]
+    [head, *middle, last] = bundle
+
+    [acquired, handle] = heap.alloc()
+    BRANCH (acquired) {
+        heap.free(*handle)
+    } {
+        []
+    }
+
+    head
+}

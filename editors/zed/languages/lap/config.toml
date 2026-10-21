@@ -1,0 +1,5 @@
+name = "Lap"
+grammar = "lap"
+path_suffixes = ["lap"]
+line_comments = ["//"]
+word_characters = ["."]
