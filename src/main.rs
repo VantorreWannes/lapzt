@@ -33,6 +33,8 @@ enum Command {
     },
     #[command(about = "Print the liblapzt standard library")]
     Std,
+    #[command(about = "Run the Lap language server")]
+    Lsp,
 }
 
 fn main() -> ExitCode {
@@ -44,6 +46,13 @@ fn main() -> ExitCode {
             print!("{}", lapzt::std());
             ExitCode::SUCCESS
         }
+        Command::Lsp => match lapzt::lsp::run() {
+            Ok(()) => ExitCode::SUCCESS,
+            Err(error) => {
+                eprintln!("{error}");
+                ExitCode::FAILURE
+            }
+        },
     }
 }
 

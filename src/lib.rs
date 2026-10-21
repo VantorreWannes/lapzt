@@ -1,6 +1,8 @@
 use std::collections::{HashMap, HashSet};
 use thiserror::Error;
 
+pub mod lsp;
+
 fn group_lines(text: &str) -> Vec<String> {
     let mut groups = Vec::new();
     let mut current = String::new();

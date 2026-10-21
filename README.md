@@ -17,7 +17,7 @@ zig build-exe main.zig -O ReleaseFast
 ./main
 ```
 
-`lapzt compile` concatenates its inputs in order and writes Zig to stdout. `lapzt check` reports errors without emitting. `lapzt std` prints the standard library. `lapzt compile --no-erasure` emits the Lap implementations instead of the erased scalar operations.
+`lapzt compile` concatenates its inputs in order and writes Zig to stdout. `lapzt check` reports errors without emitting. `lapzt std` prints the standard library. `lapzt compile --no-erasure` emits the Lap implementations instead of the erased scalar operations. `lapzt lsp` runs the language server used by the Zed extension.
 
 ## Example
 

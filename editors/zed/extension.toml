@@ -10,3 +10,7 @@ repository = "https://github.com/VantorreWannes/lapzt"
 repository = "https://github.com/VantorreWannes/lapzt"
 rev = "main"
 path = "tree-sitter-lap"
+
+[language_servers.lap]
+name = "Lap LSP"
+languages = ["Lap"]

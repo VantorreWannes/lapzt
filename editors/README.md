@@ -3,7 +3,7 @@
 ## Layout
 
 - `tree-sitter-lap` at the repository root: the grammar and its queries.
-- `editor-support/zed`: the Zed extension.
+- `editors/zed`: the Zed extension.
 
 ## Grammar
 
@@ -24,7 +24,9 @@ The extension references the grammar through `path = "tree-sitter-lap"`, so the 
 Install it as a dev extension:
 
 1. Run `zed: install dev extension` from the command palette.
-2. Select `editor-support/zed`.
+2. Select `editors/zed`.
+
+Reinstall the dev extension after changing `editors/zed/src` or `extension.toml`.
 
 Zed clones the grammar repository at `rev`. Uncommitted grammar changes are not visible until you commit them. Pin `rev` to a commit SHA before publishing. To test a local checkout, point `repository` at the checkout and set `rev` to the current commit:
 
@@ -35,6 +37,20 @@ rev = "<commit>"
 path = "tree-sitter-lap"
 ```
 
+## Language server
+
+`lapzt lsp` provides hover and go-to-definition. The extension launches it from `PATH`.
+
+Install it once:
+
+```sh
+cargo install --path .
+```
+
+Hover shows the full binding body and the comment block immediately above the binding. Go to definition works on labels.
+
+The server indexes every `.lap` file under the workspace root. It skips `target`, `.git`, `node_modules`, `grammars`, and `tree-sitter-lap`.
+
 ## Grammar notes
 
 - Keywords match exactly. `BIT.ONE` is a label because the label token is longer than the keyword token.
@@ -43,8 +59,12 @@ path = "tree-sitter-lap"
 
 ## Queries
 
+Zed loads query files from the language directory, not from the grammar's `queries` directory. `editors/zed/languages/lap` holds the copies that Zed uses:
+
 - `highlights.scm` maps grammar nodes to Zed captures.
 - `brackets.scm`, `indents.scm`, and `outline.scm` provide bracket matching, indentation, and the outline.
+
+Keep `tree-sitter-lap/queries` and `editors/zed/languages/lap` in sync. The grammar copies serve other tree-sitter consumers.
 
 ## Other editors
 

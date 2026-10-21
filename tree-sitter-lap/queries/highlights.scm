@@ -1,4 +1,4 @@
-(comment) @comment
+(comment) @string.special
 
 (bit) @constant.builtin @constant
 (bit_type) @type.builtin @type
@@ -11,10 +11,23 @@
 
 (parameter name: (label) @variable.parameter)
 
-(typed_identifier name: (label) @variable)
+(typed_identifier name: (label) @property)
 
-(primary (label) @variable)
-(reference (label) @variable)
+(primary (label) @property)
+(reference (label) @property)
+
+; Uppercase labels are constants, such as IO.STDIN and OP.READ.
+((label) @constant
+ (#match? @constant "^[A-Z0-9_.]+$"))
+
+; Library booleans.
+((label) @boolean
+ (#match? @boolean "[.](true|false)$"))
+
+; Function definitions override the generic property capture.
+(binding
+  target: (typed_identifier name: (label) @function)
+  value: (function_definition))
 
 (parameter type: (label) @type)
 (typed_identifier type: (label) @type)
@@ -25,12 +38,12 @@
 "=" @operator
 "*" @operator
 
-":" @punctuation.delimiter
-"," @punctuation.delimiter
+":" @operator
+"," @operator
 
-"(" @punctuation.bracket
-")" @punctuation.bracket
-"[" @punctuation.bracket
-"]" @punctuation.bracket
-"{" @punctuation.bracket
-"}" @punctuation.bracket
+"(" @operator
+")" @operator
+"[" @operator
+"]" @operator
+"{" @operator
+"}" @operator
