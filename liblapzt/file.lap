@@ -1,0 +1,36 @@
+liblapzt.file.mode.read: liblapzt.u64 = liblapzt.constants.n0
+liblapzt.file.mode.write: liblapzt.u64 = liblapzt.constants.n1
+liblapzt.file.mode.append: liblapzt.u64 = liblapzt.constants.n2
+liblapzt.file.mode.read.write: liblapzt.u64 = liblapzt.constants.n3
+
+liblapzt.file.whence.start: liblapzt.u64 = liblapzt.constants.n0
+liblapzt.file.whence.current: liblapzt.u64 = liblapzt.constants.n1
+liblapzt.file.whence.end: liblapzt.u64 = liblapzt.constants.n2
+
+liblapzt.file.open = (path: liblapzt.string, mode: liblapzt.u64) [BIT, liblapzt.u64] {
+    EXTERN(OP.FILE.OPEN, liblapzt.string.handle(path), liblapzt.string.offset(path), liblapzt.string.length(path), mode)
+}
+
+liblapzt.file.open.at = (handle: liblapzt.u64, offset: liblapzt.u64, length: liblapzt.u64, mode: liblapzt.u64) [BIT, liblapzt.u64] {
+    EXTERN(OP.FILE.OPEN, handle, offset, length, mode)
+}
+
+liblapzt.file.close = (handle: liblapzt.u64) [BIT] {
+    EXTERN(OP.FILE.CLOSE, handle)
+}
+
+liblapzt.file.seek = (handle: liblapzt.u64, offset: liblapzt.u64, whence: liblapzt.u64) [BIT] {
+    EXTERN(OP.FILE.SEEK, handle, offset, whence)
+}
+
+liblapzt.file.read = (handle: liblapzt.u64) [BIT, liblapzt.u64] {
+    liblapzt.io.read.word(handle)
+}
+
+liblapzt.file.write = (handle: liblapzt.u64, value: liblapzt.u64) [BIT] {
+    liblapzt.io.write.word(handle, value)
+}
+
+liblapzt.file.write.string = (handle: liblapzt.u64, string: liblapzt.string) [BIT] {
+    liblapzt.string.write(handle, string)
+}

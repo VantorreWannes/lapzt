@@ -4,6 +4,10 @@ liblapzt.random.seed = (value: liblapzt.u64) liblapzt.u64 {
     liblapzt.hash.mix.u64(value)
 }
 
+liblapzt.random.seed.os = () liblapzt.u64 {
+    EXTERN(OP.RANDOM)
+}
+
 liblapzt.random.next = (state: *liblapzt.u64) liblapzt.u64 {
     x0: liblapzt.u64 = state
     x1: liblapzt.u64 = liblapzt.u64.xor(x0, liblapzt.math.shl.u64(x0, liblapzt.constants.n13))

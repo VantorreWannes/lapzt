@@ -1113,8 +1113,11 @@ const @"$lapzt" = struct {
 
     const first_memory_handle: u64 = 5;
     const max_blocks: usize = 1024;
+    const first_file_handle: u64 = first_memory_handle + @as(u64, max_blocks);
+    const max_files: usize = 64;
 
     var blocks: [max_blocks]?[]u8 = @splat(null);
+    var files: [max_files]?runtime.Io.File = @splat(null);
     var args: ?runtime.process.Args = null;
     var args_buffer: ?[]u8 = null;
 
@@ -1154,6 +1157,10 @@ const @"$lapzt" = struct {
         if (handle == @"IO.ARGS") {
             return read_args(offset);
         }
+        if (file_index(handle)) |index| {
+            const file = files[index] orelse return .{ false, 0 };
+            return read_stream(file, offset);
+        }
         const index = memory_index(handle) orelse return .{ false, 0 };
         if (blocks[index]) |memory| {
             const start = runtime.math.cast(usize, offset) orelse return .{ false, 0 };
@@ -1176,6 +1183,10 @@ const @"$lapzt" = struct {
         if (handle == @"IO.STDERR") {
             return write_stream(runtime.Io.File.stderr(), value);
         }
+        if (file_index(handle)) |index| {
+            const file = files[index] orelse return .{false};
+            return write_stream(file, value);
+        }
         const index = memory_index(handle) orelse return .{false};
         if (blocks[index]) |memory| {
             const start = runtime.math.cast(usize, offset) orelse return .{false};
@@ -1192,6 +1203,115 @@ const @"$lapzt" = struct {
 
     pub fn @"OP.EXIT"(code: u64) struct {} {
         runtime.process.exit(@truncate(code));
+    }
+
+    pub fn @"OP.FILE.OPEN"(path: u64, offset: u64, length: u64, mode: u64) struct { bool, u64 } {
+        const bytes = memory_slice(path, offset, length) orelse return .{ false, 0 };
+        const io = runtime.Io.Threaded.global_single_threaded.io();
+        const directory = runtime.Io.Dir.cwd();
+        const file = switch (mode) {
+            0 => directory.openFile(io, bytes, .{ .mode = .read_only }) catch return .{ false, 0 },
+            1 => directory.createFile(io, bytes, .{ .truncate = true }) catch return .{ false, 0 },
+            2 => blk: {
+                const created = directory.createFile(io, bytes, .{ .truncate = false }) catch return .{ false, 0 };
+                const end = created.length(io) catch {
+                    created.close(io);
+                    return .{ false, 0 };
+                };
+                io.vtable.fileSeekTo(io.userdata, created, end) catch {
+                    created.close(io);
+                    return .{ false, 0 };
+                };
+                break :blk created;
+            },
+            3 => directory.openFile(io, bytes, .{ .mode = .read_write }) catch return .{ false, 0 },
+            else => return .{ false, 0 },
+        };
+        for (&files, 0..) |*slot, index| {
+            if (slot.* == null) {
+                slot.* = file;
+                return .{ true, first_file_handle + @as(u64, @intCast(index)) };
+            }
+        }
+        file.close(io);
+        return .{ false, 0 };
+    }
+
+    pub fn @"OP.FILE.CLOSE"(handle: u64) struct { bool } {
+        const index = file_index(handle) orelse return .{false};
+        if (files[index]) |file| {
+            file.close(runtime.Io.Threaded.global_single_threaded.io());
+            files[index] = null;
+            return .{true};
+        }
+        return .{false};
+    }
+
+    pub fn @"OP.FILE.SEEK"(handle: u64, offset: u64, whence: u64) struct { bool } {
+        const index = file_index(handle) orelse return .{false};
+        const file = files[index] orelse return .{false};
+        const io = runtime.Io.Threaded.global_single_threaded.io();
+        switch (whence) {
+            0 => io.vtable.fileSeekTo(io.userdata, file, offset) catch return .{false},
+            1 => io.vtable.fileSeekBy(io.userdata, file, @bitCast(offset)) catch return .{false},
+            2 => {
+                const length = file.length(io) catch return .{false};
+                const base = runtime.math.cast(i64, length) orelse return .{false};
+                const target = base +% @as(i64, @bitCast(offset));
+                if (target < 0) {
+                    return .{false};
+                }
+                io.vtable.fileSeekTo(io.userdata, file, @intCast(target)) catch return .{false};
+            },
+            else => return .{false},
+        }
+        return .{true};
+    }
+
+    pub fn @"OP.TIME.NOW"() u64 {
+        const io = runtime.Io.Threaded.global_single_threaded.io();
+        const nanoseconds = runtime.Io.Clock.real.now(io).toNanoseconds();
+        return runtime.math.cast(u64, nanoseconds) orelse 0;
+    }
+
+    pub fn @"OP.TIME.SLEEP"(nanoseconds: u64) @"unit" {
+        const io = runtime.Io.Threaded.global_single_threaded.io();
+        const duration = runtime.Io.Duration.fromNanoseconds(@intCast(nanoseconds));
+        runtime.Io.sleep(io, duration, .awake) catch {};
+        return .{};
+    }
+
+    pub fn @"OP.RANDOM"() u64 {
+        const io = runtime.Io.Threaded.global_single_threaded.io();
+        var buffer: [8]u8 = undefined;
+        runtime.Io.random(io, &buffer);
+        var word: u64 = 0;
+        for (0..8) |byte| {
+            word |= @as(u64, buffer[byte]) << @intCast(byte * 8);
+        }
+        return word;
+    }
+
+    fn memory_slice(handle: u64, offset: u64, length: u64) ?[]u8 {
+        const index = memory_index(handle) orelse return null;
+        const memory = blocks[index] orelse return null;
+        const start = runtime.math.cast(usize, offset) orelse return null;
+        const count = runtime.math.cast(usize, length) orelse return null;
+        if (start > memory.len or count > memory.len - start) {
+            return null;
+        }
+        return memory[start..][0..count];
+    }
+
+    fn file_index(handle: u64) ?usize {
+        if (handle < first_file_handle) {
+            return null;
+        }
+        const index = runtime.math.cast(usize, handle - first_file_handle) orelse return null;
+        if (index >= max_files) {
+            return null;
+        }
+        return index;
     }
 
     fn memory_index(handle: u64) ?usize {
@@ -1327,6 +1447,7 @@ pub fn std() -> String {
         include_str!("../liblapzt/integers/float/f64.lap"),
         include_str!("../liblapzt/integers/float/f128.lap"),
         include_str!("../liblapzt/constants.lap"),
+        include_str!("../liblapzt/time.lap"),
         include_str!("../liblapzt/casts.lap"),
         include_str!("../liblapzt/compare.lap"),
         include_str!("../liblapzt/math.lap"),
@@ -1345,6 +1466,7 @@ pub fn std() -> String {
         include_str!("../liblapzt/saturating.lap"),
         include_str!("../liblapzt/format.lap"),
         include_str!("../liblapzt/string.lap"),
+        include_str!("../liblapzt/file.lap"),
         include_str!("../liblapzt/parse.lap"),
         include_str!("../liblapzt/alloc.lap"),
         include_str!("../liblapzt/args.lap"),
@@ -1619,6 +1741,12 @@ fn is_runtime_label(label: &Label) -> bool {
             | "OP.READ"
             | "OP.WRITE"
             | "OP.EXIT"
+            | "OP.FILE.OPEN"
+            | "OP.FILE.CLOSE"
+            | "OP.FILE.SEEK"
+            | "OP.TIME.NOW"
+            | "OP.TIME.SLEEP"
+            | "OP.RANDOM"
             | "IO.STDIN"
             | "IO.STDOUT"
             | "IO.STDERR"
@@ -2139,6 +2267,12 @@ impl Checker {
             "OP.READ" => 2,
             "OP.WRITE" => 3,
             "OP.EXIT" => 1,
+            "OP.FILE.OPEN" => 4,
+            "OP.FILE.CLOSE" => 1,
+            "OP.FILE.SEEK" => 3,
+            "OP.TIME.NOW" => 0,
+            "OP.TIME.SLEEP" => 1,
+            "OP.RANDOM" => 0,
             _ => {
                 self.errors.push(ProgramError::InvalidExtern(format!(
                     "unknown operation: {operation}"
@@ -3622,7 +3756,7 @@ impl Emitter {
 
     fn emit_extern_result(&mut self, label: &Label, call: &str) -> String {
         match label.text().as_str() {
-            "OP.MEMORY.ACQUIRE" | "OP.READ" => {
+            "OP.MEMORY.ACQUIRE" | "OP.READ" | "OP.FILE.OPEN" => {
                 let temporary = self.temporary();
                 let word = Type::Label(Label::parse("liblapzt.u64").unwrap());
                 let unpacked = self.emit_unpack_runtime(&format!("{temporary}[1]"), &word);
@@ -3630,7 +3764,15 @@ impl Emitter {
                     "blk: {{ const {temporary} = {call}; break :blk .{{ {temporary}[0], {unpacked} }}; }}"
                 )
             }
-            "OP.MEMORY.RELEASE" | "OP.WRITE" => format!(".{{ {call}[0] }}"),
+            "OP.MEMORY.RELEASE" | "OP.WRITE" | "OP.FILE.CLOSE" | "OP.FILE.SEEK" => {
+                format!(".{{ {call}[0] }}")
+            }
+            "OP.TIME.NOW" | "OP.RANDOM" => {
+                let temporary = self.temporary();
+                let word = Type::Label(Label::parse("liblapzt.u64").unwrap());
+                let unpacked = self.emit_unpack_runtime(&temporary, &word);
+                format!("blk: {{ const {temporary} = {call}; break :blk {unpacked}; }}")
+            }
             _ => call.to_string(),
         }
     }
@@ -4083,6 +4225,17 @@ mod tests {
         program
             .emit()
             .map(|output| output.strip_prefix(RUNTIME).unwrap().to_string())
+    }
+
+    fn emitted_without_erasure(program: &Program) -> Result<String, Vec<ProgramError>> {
+        program
+            .emit_without_erasure()
+            .map(|output| output.strip_prefix(RUNTIME).unwrap().to_string())
+    }
+
+    fn word_program(definition: &str) -> String {
+        let bits = vec!["BIT"; 64].join(", ");
+        format!("liblapzt.u64.erased = [{bits}]\nliblapzt.u64 = liblapzt.u64.erased\n{definition}")
     }
 
     #[test]
@@ -5002,6 +5155,18 @@ mod tests {
             with_one("EXTERN()").errors()
         );
         assert_eq!(
+            vec![ProgramError::InvalidExtern(
+                "OP.TIME.NOW takes 0 arguments".to_string()
+            )],
+            with_one("EXTERN(OP.TIME.NOW, ONE)").errors()
+        );
+        assert_eq!(
+            vec![ProgramError::InvalidExtern(
+                "OP.FILE.OPEN takes 4 arguments".to_string()
+            )],
+            with_one("EXTERN(OP.FILE.OPEN, ONE)").errors()
+        );
+        assert_eq!(
             vec![ProgramError::DuplicateLabel("a".to_string())],
             with_one("a: BIT = ONE\na: BIT = ONE").errors()
         );
@@ -5197,6 +5362,73 @@ mod tests {
             Ok("pub fn @\"heap.alloc\"(@\"size\": u64) struct { bool, u64 } {\n    return @\"$lapzt\".@\"OP.MEMORY.ACQUIRE\"(@\"size\");\n}\n".to_string()),
             emitted(&Program::parse("heap.alloc = (size: U64) [BIT, U64] { EXTERN(OP.MEMORY.ACQUIRE, size) }").unwrap())
         );
+    }
+
+    #[test]
+    pub fn test_program_emit_extern_file_open() {
+        let output = emitted_without_erasure(&Program::parse(&word_program(
+            "f = (path: liblapzt.u64, mode: liblapzt.u64) [BIT, liblapzt.u64] { EXTERN(OP.FILE.OPEN, path, path, path, mode) }",
+        ))
+        .unwrap())
+        .unwrap();
+        assert!(output.contains("@\"$lapzt\".@\"OP.FILE.OPEN\""));
+        assert!(output.contains("break :blk .{ @\"$0\"[0], .{"));
+    }
+
+    #[test]
+    pub fn test_program_emit_extern_file_close() {
+        let output = emitted_without_erasure(
+            &Program::parse(&word_program(
+                "f = (handle: liblapzt.u64) [BIT] { EXTERN(OP.FILE.CLOSE, handle) }",
+            ))
+            .unwrap(),
+        )
+        .unwrap();
+        assert!(output.contains("@\"$lapzt\".@\"OP.FILE.CLOSE\"("));
+        assert!(output.contains(")[0] };"));
+    }
+
+    #[test]
+    pub fn test_program_emit_extern_file_seek() {
+        let output = emitted_without_erasure(&Program::parse(&word_program(
+            "f = (handle: liblapzt.u64, offset: liblapzt.u64, whence: liblapzt.u64) [BIT] { EXTERN(OP.FILE.SEEK, handle, offset, whence) }",
+        ))
+        .unwrap())
+        .unwrap();
+        assert!(output.contains("@\"$lapzt\".@\"OP.FILE.SEEK\"("));
+        assert!(output.contains(")[0] };"));
+    }
+
+    #[test]
+    pub fn test_program_emit_extern_time_now() {
+        let output = emitted_without_erasure(
+            &Program::parse(&word_program("f = () liblapzt.u64 { EXTERN(OP.TIME.NOW) }")).unwrap(),
+        )
+        .unwrap();
+        assert!(output.contains("const @\"$0\" = @\"$lapzt\".@\"OP.TIME.NOW\"();"));
+        assert!(output.contains("break :blk .{"));
+    }
+
+    #[test]
+    pub fn test_program_emit_extern_time_sleep() {
+        let output = emitted_without_erasure(
+            &Program::parse(&word_program(
+                "f = (nanoseconds: liblapzt.u64) [] { EXTERN(OP.TIME.SLEEP, nanoseconds) }",
+            ))
+            .unwrap(),
+        )
+        .unwrap();
+        assert!(output.contains("return @\"$lapzt\".@\"OP.TIME.SLEEP\"("));
+    }
+
+    #[test]
+    pub fn test_program_emit_extern_random() {
+        let output = emitted_without_erasure(
+            &Program::parse(&word_program("f = () liblapzt.u64 { EXTERN(OP.RANDOM) }")).unwrap(),
+        )
+        .unwrap();
+        assert!(output.contains("const @\"$0\" = @\"$lapzt\".@\"OP.RANDOM\"();"));
+        assert!(output.contains("break :blk .{"));
     }
 
     #[test]

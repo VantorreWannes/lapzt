@@ -1,0 +1,15 @@
+liblapzt.time.now = () liblapzt.u64 {
+    EXTERN(OP.TIME.NOW)
+}
+
+liblapzt.time.sleep = (nanoseconds: liblapzt.u64) [] {
+    EXTERN(OP.TIME.SLEEP, nanoseconds)
+}
+
+liblapzt.time.millis = (milliseconds: liblapzt.u64) [] {
+    liblapzt.time.sleep(liblapzt.u64.mul(milliseconds, liblapzt.constants.one.million))
+}
+
+liblapzt.time.seconds = (seconds: liblapzt.u64) [] {
+    liblapzt.time.sleep(liblapzt.u64.mul(seconds, liblapzt.constants.one.billion))
+}
