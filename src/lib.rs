@@ -1116,13 +1116,31 @@ const @"$lapzt" = struct {
     const first_file_handle: u64 = first_memory_handle + @as(u64, max_blocks);
     const max_files: usize = 64;
 
+    const buffer_capacity: usize = 8192;
+    const max_streams: usize = 4 + max_files;
+
     var blocks: [max_blocks]?[]u8 = @splat(null);
     var files: [max_files]?runtime.Io.File = @splat(null);
     var args: ?runtime.process.Args = null;
     var args_buffer: ?[]u8 = null;
+    var args_position: usize = 0;
+
+    var output: [max_streams][buffer_capacity]u8 = undefined;
+    var output_bytes: [max_streams]usize = @splat(0);
+    var output_bits: [max_streams]u3 = @splat(0);
+
+    var input: [max_streams][buffer_capacity]u8 = undefined;
+    var input_bytes: [max_streams]usize = @splat(0);
+    var input_bits: [max_streams]usize = @splat(0);
 
     pub fn initialize(init: runtime.process.Init.Minimal) void {
         args = init.args;
+    }
+
+    pub fn @"OP.FLUSH.ALL"() void {
+        for (0..max_streams) |index| {
+            _ = commit(index);
+        }
     }
 
     pub fn @"OP.MEMORY.ACQUIRE"(size: u64) struct { bool, u64 } {
@@ -1150,87 +1168,80 @@ const @"$lapzt" = struct {
         return .{false};
     }
 
-    pub fn @"OP.READ"(handle: u64, offset: u64) struct { bool, u64 } {
-        if (handle == @"IO.STDIN") {
-            return read_stream(runtime.Io.File.stdin(), offset);
-        }
-        if (handle == @"IO.ARGS") {
-            return read_args(offset);
-        }
-        if (file_index(handle)) |index| {
-            const file = files[index] orelse return .{ false, 0 };
-            return read_stream(file, offset);
-        }
+    pub fn @"OP.MEMORY.READ"(handle: u64, offset: u64) struct { bool, u64 } {
         const index = memory_index(handle) orelse return .{ false, 0 };
-        if (blocks[index]) |memory| {
-            const start = runtime.math.cast(usize, offset) orelse return .{ false, 0 };
-            if (start + 8 > memory.len) {
-                return .{ false, 0 };
-            }
-            var word: u64 = 0;
-            for (0..8) |byte| {
-                word |= @as(u64, memory[start + byte]) << @intCast(byte * 8);
-            }
-            return .{ true, word };
+        const memory = blocks[index] orelse return .{ false, 0 };
+        const start = runtime.math.cast(usize, offset) orelse return .{ false, 0 };
+        if (start + 8 > memory.len) {
+            return .{ false, 0 };
         }
-        return .{ false, 0 };
+        var word: u64 = 0;
+        for (0..8) |byte| {
+            word |= @as(u64, memory[start + byte]) << @intCast(byte * 8);
+        }
+        return .{ true, word };
     }
 
-    pub fn @"OP.WRITE"(handle: u64, offset: u64, value: u64) struct { bool } {
-        if (handle == @"IO.STDOUT") {
-            return write_stream(runtime.Io.File.stdout(), value);
-        }
-        if (handle == @"IO.STDERR") {
-            return write_stream(runtime.Io.File.stderr(), value);
-        }
-        if (file_index(handle)) |index| {
-            const file = files[index] orelse return .{false};
-            return write_stream(file, value);
-        }
+    pub fn @"OP.MEMORY.WRITE"(handle: u64, offset: u64, value: u64) struct { bool } {
         const index = memory_index(handle) orelse return .{false};
-        if (blocks[index]) |memory| {
-            const start = runtime.math.cast(usize, offset) orelse return .{false};
-            if (start + 8 > memory.len) {
-                return .{false};
-            }
-            for (0..8) |byte| {
-                memory[start + byte] = @truncate(value >> @intCast(byte * 8));
-            }
-            return .{true};
-        }
-        return .{false};
-    }
-
-    pub fn @"OP.WRITE.BYTES"(handle: u64, offset: u64, value: u64, count: u64) struct { bool } {
-        const length = runtime.math.cast(usize, count) orelse return .{false};
-        if (length > 8) {
+        const memory = blocks[index] orelse return .{false};
+        const start = runtime.math.cast(usize, offset) orelse return .{false};
+        if (start + 8 > memory.len) {
             return .{false};
         }
-        if (handle == @"IO.STDOUT") {
-            return write_stream_bytes(runtime.Io.File.stdout(), value, length);
+        for (0..8) |byte| {
+            memory[start + byte] = @truncate(value >> @intCast(byte * 8));
         }
-        if (handle == @"IO.STDERR") {
-            return write_stream_bytes(runtime.Io.File.stderr(), value, length);
+        return .{true};
+    }
+
+    pub fn @"OP.READ"(handle: u64) struct { bool, bool } {
+        const index = stream_index(handle) orelse return .{ false, false };
+        if (index == 1 or index == 2) {
+            return .{ false, false };
         }
-        if (file_index(handle)) |index| {
-            const file = files[index] orelse return .{false};
-            return write_stream_bytes(file, value, length);
-        }
-        const index = memory_index(handle) orelse return .{false};
-        if (blocks[index]) |memory| {
-            const start = runtime.math.cast(usize, offset) orelse return .{false};
-            if (start + length > memory.len) {
-                return .{false};
+        if (input_bits[index] >= input_bytes[index] * 8) {
+            if (!refill(index)) {
+                return .{ false, false };
             }
-            for (0..length) |byte| {
-                memory[start + byte] = @truncate(value >> @intCast(byte * 8));
-            }
-            return .{true};
         }
-        return .{false};
+        const position = input_bits[index];
+        const byte = input[index][position / 8];
+        const bit = (byte >> @intCast(position % 8)) & 1;
+        input_bits[index] += 1;
+        return .{ true, bit == 1 };
+    }
+
+    pub fn @"OP.WRITE"(handle: u64, bit: bool) struct { bool } {
+        const index = stream_index(handle) orelse return .{false};
+        if (index == 0 or index == 3) {
+            return .{false};
+        }
+        if (output_bits[index] == 0) {
+            output[index][output_bytes[index]] = 0;
+        }
+        if (bit) {
+            output[index][output_bytes[index]] |= @as(u8, 1) << output_bits[index];
+        }
+        if (output_bits[index] == 7) {
+            output_bits[index] = 0;
+            output_bytes[index] += 1;
+            if (output_bytes[index] == buffer_capacity) {
+                return .{ commit(index) };
+            }
+        } else {
+            output_bits[index] += 1;
+        }
+        return .{true};
+    }
+
+    pub fn @"OP.FLUSH"(handle: u64) struct { bool } {
+        const index = stream_index(handle) orelse return .{false};
+        return .{ commit(index) };
     }
 
     pub fn @"OP.EXIT"(code: u64) struct {} {
+        @"OP.FLUSH.ALL"();
         runtime.process.exit(@truncate(code));
     }
 
@@ -1269,6 +1280,7 @@ const @"$lapzt" = struct {
     pub fn @"OP.FILE.CLOSE"(handle: u64) struct { bool } {
         const index = file_index(handle) orelse return .{false};
         if (files[index]) |file| {
+            _ = commit(4 + index);
             file.close(runtime.Io.Threaded.global_single_threaded.io());
             files[index] = null;
             return .{true};
@@ -1279,6 +1291,9 @@ const @"$lapzt" = struct {
     pub fn @"OP.FILE.SEEK"(handle: u64, offset: u64, whence: u64) struct { bool } {
         const index = file_index(handle) orelse return .{false};
         const file = files[index] orelse return .{false};
+        _ = commit(4 + index);
+        input_bytes[4 + index] = 0;
+        input_bits[4 + index] = 0;
         const io = runtime.Io.Threaded.global_single_threaded.io();
         switch (whence) {
             0 => io.vtable.fileSeekTo(io.userdata, file, offset) catch return .{false},
@@ -1329,6 +1344,74 @@ const @"$lapzt" = struct {
         return .{ true, @intCast(buffer.len) };
     }
 
+    fn stream_index(handle: u64) ?usize {
+        if (handle == @"IO.STDIN") {
+            return 0;
+        }
+        if (handle == @"IO.STDOUT") {
+            return 1;
+        }
+        if (handle == @"IO.STDERR") {
+            return 2;
+        }
+        if (handle == @"IO.ARGS") {
+            return 3;
+        }
+        if (file_index(handle)) |index| {
+            return 4 + index;
+        }
+        return null;
+    }
+
+    fn stream_file(index: usize) ?runtime.Io.File {
+        return switch (index) {
+            0 => runtime.Io.File.stdin(),
+            1 => runtime.Io.File.stdout(),
+            2 => runtime.Io.File.stderr(),
+            else => if (index >= 4) files[index - 4] else null,
+        };
+    }
+
+    fn commit(index: usize) bool {
+        var length = output_bytes[index];
+        if (output_bits[index] != 0) {
+            length += 1;
+        }
+        if (length == 0) {
+            return true;
+        }
+        const file = stream_file(index) orelse return false;
+        const io = runtime.Io.Threaded.global_single_threaded.io();
+        file.writeStreamingAll(io, output[index][0..length]) catch return false;
+        output_bytes[index] = 0;
+        output_bits[index] = 0;
+        return true;
+    }
+
+    fn refill(index: usize) bool {
+        if (index == 3) {
+            if (args_buffer == null) {
+                args_buffer = build_args() catch return false;
+            }
+            const buffer = args_buffer.?;
+            if (args_position >= buffer.len) {
+                return false;
+            }
+            const count = @min(buffer.len - args_position, buffer_capacity);
+            @memcpy(input[index][0..count], buffer[args_position..][0..count]);
+            args_position += count;
+            input_bytes[index] = count;
+            input_bits[index] = 0;
+            return true;
+        }
+        const file = stream_file(index) orelse return false;
+        const io = runtime.Io.Threaded.global_single_threaded.io();
+        const count = file.readStreaming(io, &.{&input[index]}) catch return false;
+        input_bytes[index] = count;
+        input_bits[index] = 0;
+        return count != 0;
+    }
+
     fn memory_slice(handle: u64, offset: u64, length: u64) ?[]u8 {
         const index = memory_index(handle) orelse return null;
         const memory = blocks[index] orelse return null;
@@ -1362,52 +1445,6 @@ const @"$lapzt" = struct {
         return index;
     }
 
-    fn read_stream(file: runtime.Io.File, offset: u64) struct { bool, u64 } {
-        _ = offset;
-        const io = runtime.Io.Threaded.global_single_threaded.io();
-        var buffer: [8]u8 = @splat(0);
-        const count = file.readStreaming(io, &.{&buffer}) catch return .{ false, 0 };
-        if (count == 0) {
-            return .{ false, 0 };
-        }
-        var word: u64 = 0;
-        for (0..8) |byte| {
-            word |= @as(u64, buffer[byte]) << @intCast(byte * 8);
-        }
-        return .{ true, word };
-    }
-
-    fn write_stream(file: runtime.Io.File, value: u64) struct { bool } {
-        return write_stream_bytes(file, value, 8);
-    }
-
-    fn write_stream_bytes(file: runtime.Io.File, value: u64, count: usize) struct { bool } {
-        const io = runtime.Io.Threaded.global_single_threaded.io();
-        var buffer: [8]u8 = undefined;
-        for (0..count) |byte| {
-            buffer[byte] = @truncate(value >> @intCast(byte * 8));
-        }
-        file.writeStreamingAll(io, buffer[0..count]) catch return .{false};
-        return .{true};
-    }
-
-    fn read_args(offset: u64) struct { bool, u64 } {
-        if (args_buffer == null) {
-            args_buffer = build_args() catch return .{ false, 0 };
-        }
-        const buffer = args_buffer.?;
-        const start = runtime.math.cast(usize, offset) orelse return .{ false, 0 };
-        if (start >= buffer.len) {
-            return .{ false, 0 };
-        }
-        var word: u64 = 0;
-        for (0..8) |byte| {
-            if (start + byte < buffer.len) {
-                word |= @as(u64, buffer[start + byte]) << @intCast(byte * 8);
-            }
-        }
-        return .{ true, word };
-    }
 
     fn build_args() ![]u8 {
         const allocator = runtime.heap.page_allocator;
@@ -1466,9 +1503,9 @@ impl Program {
 
 pub fn std() -> String {
     let mut source = [
+        include_str!("../liblapzt/void.lap"),
+        include_str!("../liblapzt/boolean.lap"),
         include_str!("../liblapzt/integers/unsigned/u1.lap"),
-        include_str!("../liblapzt/bool.lap"),
-        include_str!("../liblapzt/integers/unsigned/u0.lap"),
         include_str!("../liblapzt/integers/unsigned/u2.lap"),
         include_str!("../liblapzt/integers/unsigned/u4.lap"),
         include_str!("../liblapzt/integers/unsigned/u8.lap"),
@@ -1483,39 +1520,11 @@ pub fn std() -> String {
         include_str!("../liblapzt/integers/signed/i32.lap"),
         include_str!("../liblapzt/integers/signed/i64.lap"),
         include_str!("../liblapzt/integers/signed/i128.lap"),
+        include_str!("../liblapzt/integers/conversions.lap"),
         include_str!("../liblapzt/integers/float/f16.lap"),
         include_str!("../liblapzt/integers/float/f32.lap"),
         include_str!("../liblapzt/integers/float/f64.lap"),
         include_str!("../liblapzt/integers/float/f128.lap"),
-        include_str!("../liblapzt/constants.lap"),
-        include_str!("../liblapzt/time.lap"),
-        include_str!("../liblapzt/casts.lap"),
-        include_str!("../liblapzt/compare.lap"),
-        include_str!("../liblapzt/math.lap"),
-        include_str!("../liblapzt/float_casts.lap"),
-        include_str!("../liblapzt/io.lap"),
-        include_str!("../liblapzt/stream.lap"),
-        include_str!("../liblapzt/memory.lap"),
-        include_str!("../liblapzt/process.lap"),
-        include_str!("../liblapzt/option.lap"),
-        include_str!("../liblapzt/assert.lap"),
-        include_str!("../liblapzt/result.lap"),
-        include_str!("../liblapzt/print.lap"),
-        include_str!("../liblapzt/hash.lap"),
-        include_str!("../liblapzt/random.lap"),
-        include_str!("../liblapzt/checked.lap"),
-        include_str!("../liblapzt/saturating.lap"),
-        include_str!("../liblapzt/format.lap"),
-        include_str!("../liblapzt/string.lap"),
-        include_str!("../liblapzt/file.lap"),
-        include_str!("../liblapzt/parse.lap"),
-        include_str!("../liblapzt/alloc.lap"),
-        include_str!("../liblapzt/args.lap"),
-        include_str!("../liblapzt/vec.lap"),
-        include_str!("../liblapzt/map.lap"),
-        include_str!("../liblapzt/set.lap"),
-        include_str!("../liblapzt/sort.lap"),
-        include_str!("../liblapzt/search.lap"),
     ]
     .join("\n");
     source.push('\n');
@@ -1525,7 +1534,7 @@ pub fn std() -> String {
 #[derive(Debug, Clone, PartialEq, Eq)]
 enum Meaning {
     Type(Type),
-    Constant(Value),
+    Constant(Value, Option<Type>),
     Reference,
     Alias(Label),
     Runtime(Option<Type>),
@@ -1694,7 +1703,7 @@ impl Scope {
                 None => Symbolic::Bit([false, true]),
             },
             Primary::Label(label) => match self.lookup(label) {
-                Some(Meaning::Constant(value)) => Symbolic::from_value(value),
+                Some(Meaning::Constant(value, _)) => Symbolic::from_value(value),
                 _ => Symbolic::Runtime,
             },
             Primary::Reference(_) => Symbolic::Runtime,
@@ -1705,7 +1714,9 @@ impl Scope {
         match expression {
             Expression::Primary(Primary::Bit(bit)) => Some(Type::Bit(bit.clone())),
             Expression::Primary(Primary::Label(label)) => match self.lookup(label) {
-                Some(Meaning::Constant(value)) => Some(value_type(value)),
+                Some(Meaning::Constant(value, r#type)) => {
+                    r#type.clone().or_else(|| Some(value_type(value)))
+                }
                 Some(Meaning::Runtime(r#type)) => r#type.clone(),
                 _ => None,
             },
@@ -1816,25 +1827,26 @@ fn word_name(width: usize) -> Option<&'static str> {
 
 fn erased_label(label: &Label) -> Option<&'static str> {
     match label.text().as_str() {
-        "liblapzt.u1.erased" => Some("bool"),
-        "liblapzt.u2.erased" => Some("u2"),
-        "liblapzt.u4.erased" => Some("u4"),
-        "liblapzt.u8.erased" => Some("u8"),
-        "liblapzt.u16.erased" => Some("u16"),
-        "liblapzt.u32.erased" => Some("u32"),
-        "liblapzt.u64.erased" => Some("u64"),
-        "liblapzt.u128.erased" => Some("u128"),
-        "liblapzt.i2.erased" => Some("i2"),
-        "liblapzt.i4.erased" => Some("i4"),
-        "liblapzt.i8.erased" => Some("i8"),
-        "liblapzt.i16.erased" => Some("i16"),
-        "liblapzt.i32.erased" => Some("i32"),
-        "liblapzt.i64.erased" => Some("i64"),
-        "liblapzt.i128.erased" => Some("i128"),
-        "liblapzt.f16.erased" => Some("f16"),
-        "liblapzt.f32.erased" => Some("f32"),
-        "liblapzt.f64.erased" => Some("f64"),
-        "liblapzt.f128.erased" => Some("f128"),
+        "__liblapzt.boolean.erased" => Some("bool"),
+        "__liblapzt.integer.u1.erased" => Some("bool"),
+        "__liblapzt.integer.u2.erased" => Some("u2"),
+        "__liblapzt.integer.u4.erased" => Some("u4"),
+        "__liblapzt.integer.u8.erased" => Some("u8"),
+        "__liblapzt.integer.u16.erased" => Some("u16"),
+        "__liblapzt.integer.u32.erased" => Some("u32"),
+        "__liblapzt.integer.u64.erased" => Some("u64"),
+        "__liblapzt.integer.u128.erased" => Some("u128"),
+        "__liblapzt.integer.i2.erased" => Some("i2"),
+        "__liblapzt.integer.i4.erased" => Some("i4"),
+        "__liblapzt.integer.i8.erased" => Some("i8"),
+        "__liblapzt.integer.i16.erased" => Some("i16"),
+        "__liblapzt.integer.i32.erased" => Some("i32"),
+        "__liblapzt.integer.i64.erased" => Some("i64"),
+        "__liblapzt.integer.i128.erased" => Some("i128"),
+        "__liblapzt.f16.erased" => Some("f16"),
+        "__liblapzt.f32.erased" => Some("f32"),
+        "__liblapzt.f64.erased" => Some("f64"),
+        "__liblapzt.f128.erased" => Some("f128"),
         _ => None,
     }
 }
@@ -1889,79 +1901,60 @@ enum FloatOperation {
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 enum IntegerOperation {
-    Add,
-    Sub,
-    Mul,
-    Div,
-    Mod,
+    AddWrapping,
+    AddSaturating,
+    AddChecked,
+    SubWrapping,
+    SubSaturating,
+    SubChecked,
+    MulWrapping,
+    MulSaturating,
+    MulChecked,
     And,
     Or,
     Xor,
     Not,
     Nand,
     Nor,
-    Xnor,
     Eq,
     Ne,
     Lt,
-    Le,
     Gt,
-    Ge,
     Min,
     Max,
-    Select,
-    Inc,
-    Dec,
-    IsZero,
-    IsOne,
-    ToBool,
-    FromBool,
-    Neg,
-    Abs,
-    Sign,
 }
 
 fn erased_integer_operation(label: &Label) -> Option<(IntegerOperation, bool)> {
     let text = label.text();
-    let rest = text.strip_prefix("liblapzt.")?;
-    let rest = rest.strip_suffix(".erased")?;
+    let rest = text.strip_prefix("liblapzt.integer.")?;
     let (r#type, operation) = rest.split_once('.')?;
     let signed = match r#type {
-        "u2" | "u4" | "u8" | "u16" | "u32" | "u64" | "u128" => false,
+        "u1" | "u2" | "u4" | "u8" | "u16" | "u32" | "u64" | "u128" => false,
         "i2" | "i4" | "i8" | "i16" | "i32" | "i64" | "i128" => true,
         _ => return None,
     };
     let operation = match operation {
-        "add" => IntegerOperation::Add,
-        "sub" => IntegerOperation::Sub,
-        "mul" => IntegerOperation::Mul,
-        "div" => IntegerOperation::Div,
-        "mod" => IntegerOperation::Mod,
         "and" => IntegerOperation::And,
         "or" => IntegerOperation::Or,
-        "xor" => IntegerOperation::Xor,
         "not" => IntegerOperation::Not,
-        "nand" => IntegerOperation::Nand,
-        "nor" => IntegerOperation::Nor,
-        "xnor" => IntegerOperation::Xnor,
-        "eq" => IntegerOperation::Eq,
-        "ne" => IntegerOperation::Ne,
-        "lt" => IntegerOperation::Lt,
-        "le" => IntegerOperation::Le,
-        "gt" => IntegerOperation::Gt,
-        "ge" => IntegerOperation::Ge,
+        "not.and" => IntegerOperation::Nand,
+        "not.or" => IntegerOperation::Nor,
+        "exclusive.or" => IntegerOperation::Xor,
+        "equal" => IntegerOperation::Eq,
+        "not.equal" => IntegerOperation::Ne,
+        "greater_than" => IntegerOperation::Gt,
+        "less_than" => IntegerOperation::Lt,
         "min" => IntegerOperation::Min,
         "max" => IntegerOperation::Max,
-        "select" => IntegerOperation::Select,
-        "inc" => IntegerOperation::Inc,
-        "dec" => IntegerOperation::Dec,
-        "is.zero" => IntegerOperation::IsZero,
-        "is.one" => IntegerOperation::IsOne,
-        "to.bool" => IntegerOperation::ToBool,
-        "from.bool" => IntegerOperation::FromBool,
-        "neg" => IntegerOperation::Neg,
-        "abs" => IntegerOperation::Abs,
-        "sign" | "is.negative" => IntegerOperation::Sign,
+        "add.wrapping" => IntegerOperation::AddWrapping,
+        "add.saturating" => IntegerOperation::AddSaturating,
+        "add.checked" => IntegerOperation::AddChecked,
+        "subtract.wrapping" => IntegerOperation::SubWrapping,
+        "subtract.saturating" => IntegerOperation::SubSaturating,
+        "subtract.checked" => IntegerOperation::SubChecked,
+        "multiply.wrapping" => IntegerOperation::MulWrapping,
+        "multiply.saturating" => IntegerOperation::MulSaturating,
+        "multiply.checked" => IntegerOperation::MulChecked,
         _ => return None,
     };
     Some((operation, signed))
@@ -2168,7 +2161,15 @@ impl Checker {
                     return Meaning::Runtime(self.scope.infer_type(expression));
                 }
                 match self.scope.evaluate(expression).into_value() {
-                    Some(value) => Meaning::Constant(value),
+                    Some(value) => Meaning::Constant(
+                        value,
+                        match &binding.target {
+                            Target::TypedIdentifier(typed_identifier) => {
+                                typed_identifier.r#type.clone()
+                            }
+                            _ => None,
+                        },
+                    ),
                     None => Meaning::Runtime(self.scope.infer_type(expression)),
                 }
             }
@@ -2307,9 +2308,11 @@ impl Checker {
         let arity = match operation.as_str() {
             "OP.MEMORY.ACQUIRE" => 1,
             "OP.MEMORY.RELEASE" => 1,
-            "OP.READ" => 2,
-            "OP.WRITE" => 3,
-            "OP.WRITE.BYTES" => 4,
+            "OP.MEMORY.READ" => 2,
+            "OP.MEMORY.WRITE" => 3,
+            "OP.READ" => 1,
+            "OP.WRITE" => 2,
+            "OP.FLUSH" => 1,
             "OP.EXIT" => 1,
             "OP.FILE.OPEN" => 4,
             "OP.FILE.CLOSE" => 1,
@@ -2757,7 +2760,7 @@ impl Emitter {
             Meaning::Reference
         } else {
             match self.scope.evaluate(expression).into_value() {
-                Some(value) => Meaning::Constant(value),
+                Some(value) => Meaning::Constant(value, typed_identifier.r#type.clone()),
                 None => Meaning::Runtime(self.scope.infer_type(expression)),
             }
         };
@@ -2820,6 +2823,7 @@ impl Emitter {
         };
         if is_main {
             self.line("@\"$lapzt\".initialize(init);");
+            self.line("defer @\"$lapzt\".@\"OP.FLUSH.ALL\"();");
         }
         if self_tail_recursive {
             if let Some(parameter_list) = &function_definition.parameters {
@@ -3377,6 +3381,11 @@ impl Emitter {
     fn emit_expression(&mut self, expression: &Expression) -> String {
         let symbolic = self.scope.evaluate(expression);
         if let Some(value) = symbolic.into_value() {
+            if let Expression::Primary(Primary::Label(label)) = expression {
+                if let Some(Meaning::Constant(_, Some(r#type))) = self.scope.lookup(label) {
+                    return self.emit_value_typed(&value, r#type);
+                }
+            }
             return self.emit_value(&value);
         }
         if symbolic.is_indeterminate() {
@@ -3531,7 +3540,7 @@ impl Emitter {
     fn emit_integer_operation(
         &mut self,
         operation: IntegerOperation,
-        signed: bool,
+        _signed: bool,
         expressions: &[Expression],
         parameters: &[Type],
     ) -> String {
@@ -3544,44 +3553,44 @@ impl Emitter {
             })
             .collect::<Vec<String>>();
         match operation {
-            IntegerOperation::Add => format!("({} + {})", arguments[0], arguments[1]),
-            IntegerOperation::Sub => format!("({} - {})", arguments[0], arguments[1]),
-            IntegerOperation::Mul => format!("({} * {})", arguments[0], arguments[1]),
-            IntegerOperation::Div => format!("({} / {})", arguments[0], arguments[1]),
-            IntegerOperation::Mod => format!("@rem({}, {})", arguments[0], arguments[1]),
             IntegerOperation::And => format!("({} & {})", arguments[0], arguments[1]),
             IntegerOperation::Or => format!("({} | {})", arguments[0], arguments[1]),
             IntegerOperation::Xor => format!("({} ^ {})", arguments[0], arguments[1]),
             IntegerOperation::Not => format!("(~{})", arguments[0]),
             IntegerOperation::Nand => format!("(~({} & {}))", arguments[0], arguments[1]),
             IntegerOperation::Nor => format!("(~({} | {}))", arguments[0], arguments[1]),
-            IntegerOperation::Xnor => format!("(~({} ^ {}))", arguments[0], arguments[1]),
             IntegerOperation::Eq => format!("({} == {})", arguments[0], arguments[1]),
             IntegerOperation::Ne => format!("({} != {})", arguments[0], arguments[1]),
             IntegerOperation::Lt => format!("({} < {})", arguments[0], arguments[1]),
-            IntegerOperation::Le => format!("({} <= {})", arguments[0], arguments[1]),
             IntegerOperation::Gt => format!("({} > {})", arguments[0], arguments[1]),
-            IntegerOperation::Ge => format!("({} >= {})", arguments[0], arguments[1]),
             IntegerOperation::Min => format!("@min({}, {})", arguments[0], arguments[1]),
             IntegerOperation::Max => format!("@max({}, {})", arguments[0], arguments[1]),
-            IntegerOperation::Select => format!(
-                "(if ({}) {} else {})",
-                arguments[0], arguments[1], arguments[2]
-            ),
-            IntegerOperation::Inc => format!("({} + 1)", arguments[0]),
-            IntegerOperation::Dec => format!("({} - 1)", arguments[0]),
-            IntegerOperation::IsZero => format!("({} == 0)", arguments[0]),
-            IntegerOperation::IsOne => format!("({} == 1)", arguments[0]),
-            IntegerOperation::ToBool => format!("({} != 0)", arguments[0]),
-            IntegerOperation::FromBool => format!("@intFromBool({})", arguments[0]),
-            IntegerOperation::Neg => format!("(-{})", arguments[0]),
-            IntegerOperation::Abs => format!("@abs({})", arguments[0]),
-            IntegerOperation::Sign => {
-                if signed {
-                    format!("({} < 0)", arguments[0])
-                } else {
-                    "false".to_string()
-                }
+            IntegerOperation::AddWrapping => format!("({} +% {})", arguments[0], arguments[1]),
+            IntegerOperation::AddSaturating => format!("({} +| {})", arguments[0], arguments[1]),
+            IntegerOperation::AddChecked => {
+                let temporary = self.temporary();
+                format!(
+                    "blk: {{ const {temporary} = @addWithOverflow({}, {}); break :blk .{{ {temporary}[1] == 0, {temporary}[0] }}; }}",
+                    arguments[0], arguments[1]
+                )
+            }
+            IntegerOperation::SubWrapping => format!("({} -% {})", arguments[0], arguments[1]),
+            IntegerOperation::SubSaturating => format!("({} -| {})", arguments[0], arguments[1]),
+            IntegerOperation::SubChecked => {
+                let temporary = self.temporary();
+                format!(
+                    "blk: {{ const {temporary} = @subWithOverflow({}, {}); break :blk .{{ {temporary}[1] == 0, {temporary}[0] }}; }}",
+                    arguments[0], arguments[1]
+                )
+            }
+            IntegerOperation::MulWrapping => format!("({} *% {})", arguments[0], arguments[1]),
+            IntegerOperation::MulSaturating => format!("({} *| {})", arguments[0], arguments[1]),
+            IntegerOperation::MulChecked => {
+                let temporary = self.temporary();
+                format!(
+                    "blk: {{ const {temporary} = @mulWithOverflow({}, {}); break :blk .{{ {temporary}[1] == 0, {temporary}[0] }}; }}",
+                    arguments[0], arguments[1]
+                )
             }
         }
     }
@@ -3801,21 +3810,27 @@ impl Emitter {
 
     fn emit_extern_result(&mut self, label: &Label, call: &str) -> String {
         match label.text().as_str() {
-            "OP.MEMORY.ACQUIRE" | "OP.READ" | "OP.FILE.OPEN" | "OP.ARGS.LENGTH" => {
+            "OP.MEMORY.ACQUIRE" | "OP.MEMORY.READ" | "OP.FILE.OPEN" | "OP.ARGS.LENGTH" => {
                 let temporary = self.temporary();
-                let word = Type::Label(Label::parse("liblapzt.u64").unwrap());
+                let word = Type::Label(Label::parse("liblapzt.integer.u64").unwrap());
                 let unpacked = self.emit_unpack_runtime(&format!("{temporary}[1]"), &word);
                 format!(
                     "blk: {{ const {temporary} = {call}; break :blk .{{ {temporary}[0], {unpacked} }}; }}"
                 )
             }
-            "OP.MEMORY.RELEASE" | "OP.WRITE" | "OP.WRITE.BYTES" | "OP.FILE.CLOSE"
+            "OP.READ" => {
+                let temporary = self.temporary();
+                format!(
+                    "blk: {{ const {temporary} = {call}; break :blk .{{ {temporary}[0], {temporary}[1] }}; }}"
+                )
+            }
+            "OP.MEMORY.RELEASE" | "OP.MEMORY.WRITE" | "OP.WRITE" | "OP.FLUSH" | "OP.FILE.CLOSE"
             | "OP.FILE.SEEK" => {
                 format!(".{{ {call}[0] }}")
             }
             "OP.TIME.NOW" | "OP.RANDOM" => {
                 let temporary = self.temporary();
-                let word = Type::Label(Label::parse("liblapzt.u64").unwrap());
+                let word = Type::Label(Label::parse("liblapzt.integer.u64").unwrap());
                 let unpacked = self.emit_unpack_runtime(&temporary, &word);
                 format!("blk: {{ const {temporary} = {call}; break :blk {unpacked}; }}")
             }
@@ -4281,7 +4296,9 @@ mod tests {
 
     fn word_program(definition: &str) -> String {
         let bits = vec!["BIT"; 64].join(", ");
-        format!("liblapzt.u64.erased = [{bits}]\nliblapzt.u64 = liblapzt.u64.erased\n{definition}")
+        format!(
+            "__liblapzt.integer.u64.erased = [{bits}]\nliblapzt.integer.u64 = __liblapzt.integer.u64.erased\n{definition}"
+        )
     }
 
     #[test]
@@ -5413,7 +5430,7 @@ mod tests {
     #[test]
     pub fn test_program_emit_extern_file_open() {
         let output = emitted_without_erasure(&Program::parse(&word_program(
-            "f = (path: liblapzt.u64, mode: liblapzt.u64) [BIT, liblapzt.u64] { EXTERN(OP.FILE.OPEN, path, path, path, mode) }",
+            "f = (path: liblapzt.integer.u64, mode: liblapzt.integer.u64) [BIT, liblapzt.integer.u64] { EXTERN(OP.FILE.OPEN, path, path, path, mode) }",
         ))
         .unwrap())
         .unwrap();
@@ -5425,7 +5442,7 @@ mod tests {
     pub fn test_program_emit_extern_file_close() {
         let output = emitted_without_erasure(
             &Program::parse(&word_program(
-                "f = (handle: liblapzt.u64) [BIT] { EXTERN(OP.FILE.CLOSE, handle) }",
+                "f = (handle: liblapzt.integer.u64) [BIT] { EXTERN(OP.FILE.CLOSE, handle) }",
             ))
             .unwrap(),
         )
@@ -5437,7 +5454,7 @@ mod tests {
     #[test]
     pub fn test_program_emit_extern_file_seek() {
         let output = emitted_without_erasure(&Program::parse(&word_program(
-            "f = (handle: liblapzt.u64, offset: liblapzt.u64, whence: liblapzt.u64) [BIT] { EXTERN(OP.FILE.SEEK, handle, offset, whence) }",
+            "f = (handle: liblapzt.integer.u64, offset: liblapzt.integer.u64, whence: liblapzt.integer.u64) [BIT] { EXTERN(OP.FILE.SEEK, handle, offset, whence) }",
         ))
         .unwrap())
         .unwrap();
@@ -5448,7 +5465,10 @@ mod tests {
     #[test]
     pub fn test_program_emit_extern_time_now() {
         let output = emitted_without_erasure(
-            &Program::parse(&word_program("f = () liblapzt.u64 { EXTERN(OP.TIME.NOW) }")).unwrap(),
+            &Program::parse(&word_program(
+                "f = () liblapzt.integer.u64 { EXTERN(OP.TIME.NOW) }",
+            ))
+            .unwrap(),
         )
         .unwrap();
         assert!(output.contains("const @\"$0\" = @\"$lapzt\".@\"OP.TIME.NOW\"();"));
@@ -5459,7 +5479,7 @@ mod tests {
     pub fn test_program_emit_extern_time_sleep() {
         let output = emitted_without_erasure(
             &Program::parse(&word_program(
-                "f = (nanoseconds: liblapzt.u64) [] { EXTERN(OP.TIME.SLEEP, nanoseconds) }",
+                "f = (nanoseconds: liblapzt.integer.u64) [] { EXTERN(OP.TIME.SLEEP, nanoseconds) }",
             ))
             .unwrap(),
         )
@@ -5470,7 +5490,10 @@ mod tests {
     #[test]
     pub fn test_program_emit_extern_random() {
         let output = emitted_without_erasure(
-            &Program::parse(&word_program("f = () liblapzt.u64 { EXTERN(OP.RANDOM) }")).unwrap(),
+            &Program::parse(&word_program(
+                "f = () liblapzt.integer.u64 { EXTERN(OP.RANDOM) }",
+            ))
+            .unwrap(),
         )
         .unwrap();
         assert!(output.contains("const @\"$0\" = @\"$lapzt\".@\"OP.RANDOM\"();"));
@@ -5478,31 +5501,70 @@ mod tests {
     }
 
     #[test]
+    pub fn test_program_emit_extern_read_bit() {
+        let output = emitted_without_erasure(
+            &Program::parse(&word_program(
+                "f = (handle: liblapzt.integer.u64) [BIT, BIT] { EXTERN(OP.READ, handle) }",
+            ))
+            .unwrap(),
+        )
+        .unwrap();
+        assert!(output.contains("@\"$lapzt\".@\"OP.READ\"("));
+        assert!(output.contains("break :blk .{ @\"$0\"[0], @\"$0\"[1] };"));
+    }
+
+    #[test]
+    pub fn test_program_emit_extern_write_bit() {
+        let output = emitted_without_erasure(
+            &Program::parse(&word_program(
+                "f = (handle: liblapzt.integer.u64, bit: BIT) [BIT] { EXTERN(OP.WRITE, handle, bit) }",
+            ))
+            .unwrap(),
+        )
+        .unwrap();
+        assert!(output.contains("@\"$lapzt\".@\"OP.WRITE\"("));
+        assert!(output.contains(")[0] };"));
+    }
+
+    #[test]
+    pub fn test_program_emit_extern_flush() {
+        let output = emitted_without_erasure(
+            &Program::parse(&word_program(
+                "f = (handle: liblapzt.integer.u64) [BIT] { EXTERN(OP.FLUSH, handle) }",
+            ))
+            .unwrap(),
+        )
+        .unwrap();
+        assert!(output.contains("@\"$lapzt\".@\"OP.FLUSH\"("));
+        assert!(output.contains(")[0] };"));
+    }
+
+    #[test]
     pub fn test_program_emit_erased_word() {
         let bits = vec!["BIT"; 64].join(", ");
         let source = format!(
-            "liblapzt.u64.erased = [{bits}]\nliblapzt.u64 = liblapzt.u64.erased\nf = (word: liblapzt.u64) [BIT, liblapzt.u64] {{ EXTERN(OP.READ, word, word) }}"
+            "__liblapzt.integer.u64.erased = [{bits}]\nliblapzt.integer.u64 = __liblapzt.integer.u64.erased\nf = (word: liblapzt.integer.u64) [BIT, liblapzt.integer.u64] {{ EXTERN(OP.MEMORY.READ, word, word) }}"
         );
         assert_eq!(
-            Ok("pub const @\"liblapzt.u64.erased\" = u64;\npub const @\"liblapzt.u64\" = u64;\npub fn @\"f\"(@\"word\": u64) struct { bool, u64 } {\n    return @\"$lapzt\".@\"OP.READ\"(@\"word\", @\"word\");\n}\n".to_string()),
+            Ok("pub const @\"__liblapzt.integer.u64.erased\" = u64;\npub const @\"liblapzt.integer.u64\" = u64;\npub fn @\"f\"(@\"word\": u64) struct { bool, u64 } {\n    return @\"$lapzt\".@\"OP.MEMORY.READ\"(@\"word\", @\"word\");\n}\n".to_string()),
             emitted(&Program::parse(&source).unwrap())
         );
     }
 
     #[test]
     pub fn test_program_emit_signed_erasure() {
-        let source = "ONE: BIT = NAND(BIT, NAND(BIT, BIT))\nliblapzt.u1.erased = BIT\nliblapzt.u1 = liblapzt.u1.erased\nliblapzt.u1.zero.erased = NAND(ONE, ONE)\nliblapzt.u1.one.erased = NAND(BIT, NAND(BIT, BIT))\nliblapzt.u1.zero = liblapzt.u1.zero.erased\nliblapzt.u1.one = liblapzt.u1.one.erased\nliblapzt.i2.erased = [liblapzt.u1.erased, liblapzt.u1.erased]\nliblapzt.i2 = liblapzt.i2.erased\nliblapzt.i2.zero.erased: liblapzt.i2.erased = [liblapzt.u1.zero.erased, liblapzt.u1.zero.erased]\nliblapzt.i2.zero: liblapzt.i2 = liblapzt.i2.zero.erased\nmy.int = liblapzt.i2\nf = (a: my.int) my.int {\n    [low, high] = a\n    [low, high]\n}";
+        let source = "ONE: BIT = NAND(BIT, NAND(BIT, BIT))\n__liblapzt.integer.u1.erased = BIT\nliblapzt.integer.u1 = __liblapzt.integer.u1.erased\n__liblapzt.integer.u1.MAX.erased = NAND(BIT, NAND(BIT, BIT))\n__liblapzt.integer.u1.MIN.erased = NAND(__liblapzt.integer.u1.MAX.erased, __liblapzt.integer.u1.MAX.erased)\nliblapzt.integer.u1.MAX = __liblapzt.integer.u1.MAX.erased\nliblapzt.integer.u1.MIN = __liblapzt.integer.u1.MIN.erased\n__liblapzt.integer.i2.erased = [__liblapzt.integer.u1.erased, __liblapzt.integer.u1.erased]\nliblapzt.integer.i2 = __liblapzt.integer.i2.erased\n__liblapzt.integer.i2.ZERO.erased: __liblapzt.integer.i2.erased = [__liblapzt.integer.u1.MIN.erased, __liblapzt.integer.u1.MIN.erased]\nliblapzt.integer.i2.ZERO: liblapzt.integer.i2 = __liblapzt.integer.i2.ZERO.erased\nmy.int = liblapzt.integer.i2\nf = (a: my.int) my.int {\n    [low, high] = a\n    [low, high]\n}";
         assert_eq!(
-            Ok("pub const @\"ONE\": bool = true;\npub const @\"liblapzt.u1.erased\" = bool;\npub const @\"liblapzt.u1\" = bool;\npub const @\"liblapzt.u1.zero.erased\" = false;\npub const @\"liblapzt.u1.one.erased\" = true;\npub const @\"liblapzt.u1.zero\" = false;\npub const @\"liblapzt.u1.one\" = true;\npub const @\"liblapzt.i2.erased\" = i2;\npub const @\"liblapzt.i2\" = i2;\npub const @\"liblapzt.i2.zero.erased\": i2 = @as(i2, @bitCast(@as(u2, 0)));\npub const @\"liblapzt.i2.zero\": i2 = @as(i2, @bitCast(@as(u2, 0)));\npub const @\"my.int\" = i2;\npub fn @\"f\"(@\"a\": i2) i2 {\n    const @\"$0\" = @\"a\"; const @\"low\" = @as(bool, @bitCast(@as(u1, @truncate(@as(u2, @bitCast(@\"$0\")) >> 0)))); const @\"high\" = @as(bool, @bitCast(@as(u1, @truncate(@as(u2, @bitCast(@\"$0\")) >> 1))));\n    return @as(i2, @bitCast((@as(u2, @intFromBool(@\"low\")) << 0) | (@as(u2, @intFromBool(@\"high\")) << 1)));\n}\n".to_string()),
+            Ok("pub const @\"ONE\": bool = true;\npub const @\"__liblapzt.integer.u1.erased\" = bool;\npub const @\"liblapzt.integer.u1\" = bool;\npub const @\"__liblapzt.integer.u1.MAX.erased\" = true;\npub const @\"__liblapzt.integer.u1.MIN.erased\" = false;\npub const @\"liblapzt.integer.u1.MAX\" = true;\npub const @\"liblapzt.integer.u1.MIN\" = false;\npub const @\"__liblapzt.integer.i2.erased\" = i2;\npub const @\"liblapzt.integer.i2\" = i2;\npub const @\"__liblapzt.integer.i2.ZERO.erased\": i2 = @as(i2, @bitCast(@as(u2, 0)));\npub const @\"liblapzt.integer.i2.ZERO\": i2 = @as(i2, @bitCast(@as(u2, 0)));\npub const @\"my.int\" = i2;\npub fn @\"f\"(@\"a\": i2) i2 {\n    const @\"$0\" = @\"a\"; const @\"low\" = @as(bool, @bitCast(@as(u1, @truncate(@as(u2, @bitCast(@\"$0\")) >> 0)))); const @\"high\" = @as(bool, @bitCast(@as(u1, @truncate(@as(u2, @bitCast(@\"$0\")) >> 1))));\n    return @as(i2, @bitCast((@as(u2, @intFromBool(@\"low\")) << 0) | (@as(u2, @intFromBool(@\"high\")) << 1)));\n}\n".to_string()),
             emitted(&Program::parse(source).unwrap())
         );
     }
 
     #[test]
     pub fn test_program_emit_float_erasure() {
-        let source = "ONE: BIT = NAND(BIT, NAND(BIT, BIT))\nZERO: BIT = NAND(ONE, ONE)\nliblapzt.bool.erased = BIT\nliblapzt.bool = liblapzt.bool.erased\nliblapzt.bool.false = ZERO\nliblapzt.u8.erased = [BIT, BIT, BIT, BIT, BIT, BIT, BIT, BIT]\nliblapzt.u8 = liblapzt.u8.erased\nliblapzt.f16.erased = [liblapzt.u8.erased, liblapzt.u8.erased]\nliblapzt.f16 = liblapzt.f16.erased\nliblapzt.f16.one.erased: liblapzt.f16.erased = [ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ONE, ONE, ONE, ONE, ZERO, ZERO]\nliblapzt.f16.one: liblapzt.f16 = liblapzt.f16.one.erased\nliblapzt.f16.add.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {\n    liblapzt.f16.one\n}\nliblapzt.f16.add = liblapzt.f16.add.erased\nliblapzt.f16.eq.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.bool {\n    liblapzt.bool.false\n}\nliblapzt.f16.eq = liblapzt.f16.eq.erased\nf = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.bool {\n    liblapzt.f16.eq(liblapzt.f16.add(a, b), liblapzt.f16.one)\n}";
+        let source = "ONE: BIT = NAND(BIT, NAND(BIT, BIT))\nZERO: BIT = NAND(ONE, ONE)\n__liblapzt.boolean.erased = BIT\nliblapzt.boolean = __liblapzt.boolean.erased\nliblapzt.boolean.FALSE = ZERO\n__liblapzt.integer.u8.erased = [BIT, BIT, BIT, BIT, BIT, BIT, BIT, BIT]\nliblapzt.integer.u8 = __liblapzt.integer.u8.erased\n__liblapzt.f16.erased = [__liblapzt.integer.u8.erased, __liblapzt.integer.u8.erased]\nliblapzt.f16 = __liblapzt.f16.erased\n__liblapzt.f16.ONE.erased: __liblapzt.f16.erased = [ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ZERO, ONE, ONE, ONE, ONE, ZERO, ZERO]\nliblapzt.f16.ONE: liblapzt.f16 = __liblapzt.f16.ONE.erased\nliblapzt.f16.add.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.f16 {\n    liblapzt.f16.ONE\n}\nliblapzt.f16.add = liblapzt.f16.add.erased\nliblapzt.f16.eq.erased = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.boolean {\n    liblapzt.boolean.FALSE\n}\nliblapzt.f16.eq = liblapzt.f16.eq.erased\nf = (a: liblapzt.f16, b: liblapzt.f16) liblapzt.boolean {\n    liblapzt.f16.eq(liblapzt.f16.add(a, b), liblapzt.f16.ONE)\n}";
         assert_eq!(
-            Ok("pub const @\"ONE\": bool = true;\npub const @\"ZERO\": bool = false;\npub const @\"liblapzt.bool.erased\" = bool;\npub const @\"liblapzt.bool\" = bool;\npub const @\"liblapzt.bool.false\" = false;\npub const @\"liblapzt.u8.erased\" = u8;\npub const @\"liblapzt.u8\" = u8;\npub const @\"liblapzt.f16.erased\" = f16;\npub const @\"liblapzt.f16\" = f16;\npub const @\"liblapzt.f16.one.erased\": f16 = @as(f16, @bitCast(@as(u16, 15360)));\npub const @\"liblapzt.f16.one\": f16 = @as(f16, @bitCast(@as(u16, 15360)));\npub fn @\"f\"(@\"a\": f16, @\"b\": f16) bool {\n    return ((@\"a\" + @\"b\") == @as(f16, @bitCast(@as(u16, 15360))));\n}\n".to_string()),
+            Ok("pub const @\"ONE\": bool = true;\npub const @\"ZERO\": bool = false;\npub const @\"__liblapzt.boolean.erased\" = bool;\npub const @\"liblapzt.boolean\" = bool;\npub const @\"liblapzt.boolean.FALSE\" = false;\npub const @\"__liblapzt.integer.u8.erased\" = u8;\npub const @\"liblapzt.integer.u8\" = u8;\npub const @\"__liblapzt.f16.erased\" = f16;\npub const @\"liblapzt.f16\" = f16;\npub const @\"__liblapzt.f16.ONE.erased\": f16 = @as(f16, @bitCast(@as(u16, 15360)));\npub const @\"liblapzt.f16.ONE\": f16 = @as(f16, @bitCast(@as(u16, 15360)));\npub fn @\"f\"(@\"a\": f16, @\"b\": f16) bool {\n    return ((@\"a\" + @\"b\") == @as(f16, @bitCast(@as(u16, 15360))));\n}\n".to_string()),
             emitted(&Program::parse(source).unwrap())
         );
     }
@@ -5548,11 +5610,11 @@ mod tests {
     #[test]
     pub fn test_program_emit_main() {
         assert_eq!(
-            Ok("pub fn main(init: std.process.Init.Minimal) void {\n    @\"$lapzt\".initialize(init);\n    return;\n}\n".to_string()),
+            Ok("pub fn main(init: std.process.Init.Minimal) void {\n    @\"$lapzt\".initialize(init);\n    defer @\"$lapzt\".@\"OP.FLUSH.ALL\"();\n    return;\n}\n".to_string()),
             emitted(&Program::parse("main = () [] { [] }").unwrap())
         );
         assert_eq!(
-            Ok("pub const @\"ONE\": bool = true;\npub fn @\"bit.not\"(@\"a\": bool) bool {\n    return !(@\"a\" and @\"a\");\n}\npub fn main(init: std.process.Init.Minimal) void {\n    @\"$lapzt\".initialize(init);\n    _ = @\"bit.not\"(true);\n    return;\n}\n".to_string()),
+            Ok("pub const @\"ONE\": bool = true;\npub fn @\"bit.not\"(@\"a\": bool) bool {\n    return !(@\"a\" and @\"a\");\n}\npub fn main(init: std.process.Init.Minimal) void {\n    @\"$lapzt\".initialize(init);\n    defer @\"$lapzt\".@\"OP.FLUSH.ALL\"();\n    _ = @\"bit.not\"(true);\n    return;\n}\n".to_string()),
             emitted(&with_one("bit.not = (a: BIT) BIT { NAND(a, a) }\nmain = () [] {\n bit.not(ONE)\n []\n}"))
         );
     }
@@ -5568,7 +5630,7 @@ mod tests {
         let source = format!(
             "{}\n{}",
             std(),
-            "main = () [] {\n    a: liblapzt.f64 = liblapzt.f64.from.u64(liblapzt.constants.one)\n    b: liblapzt.f32 = liblapzt.f64.to.f32(a)\n    c: liblapzt.f64 = liblapzt.f32.to.f64(b)\n    liblapzt.print.f64(c)\n    liblapzt.print.newline()\n    o: liblapzt.ordering = liblapzt.compare.f64(a, c)\n    liblapzt.print.bool(liblapzt.ordering.is.equal(o))\n    liblapzt.print.newline()\n    []\n}\n"
+            "main = () [] {\n    a: liblapzt.f64 = liblapzt.f64.from.u64(liblapzt.integer.u64.MAX)\n    b: liblapzt.integer.u64 = liblapzt.f64.to.u64(a)\n    c: liblapzt.boolean = liblapzt.f64.eq(a, liblapzt.f64.ONE)\n    d: liblapzt.f64 = liblapzt.f64.add(a, a)\n    e: liblapzt.f64 = liblapzt.f64.mul(d, a)\n    f: liblapzt.f64 = liblapzt.f64.div(e, a)\n    g: liblapzt.f64 = liblapzt.f64.mod(f, a)\n    h: liblapzt.boolean = liblapzt.f64.lt(a, d)\n    i: liblapzt.f64 = liblapzt.f64.min(a, d)\n    j: liblapzt.f64 = liblapzt.f64.max(a, d)\n    k: liblapzt.f64 = liblapzt.f64.neg(a)\n    l: liblapzt.f64 = liblapzt.f64.abs(a)\n    []\n}\n"
         );
         let program = Program::parse(&source).unwrap();
         assert_eq!(Vec::<ProgramError>::new(), program.errors());

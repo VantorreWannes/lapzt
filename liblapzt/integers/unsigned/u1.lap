@@ -3,14 +3,14 @@
 // --- Erased ---
 
 __liblapzt.integer.u1.erased = BIT
-__liblapzt.integer.u1.MIN.erased = NAND(__liblapzt.integer.u1.erased, __liblapzt.integer.u1.erased)
-__liblapzt.integer.u1.MAX.erased = NAND(__liblapzt.integer.u1.erased, NAND(__liblapzt.integer.u1.erased, __liblapzt.integer.u1.erased))
+__liblapzt.integer.u1.MAX.erased: __liblapzt.integer.u1.erased = NAND(BIT, NAND(BIT, BIT))
+__liblapzt.integer.u1.MIN.erased: __liblapzt.integer.u1.erased = NAND(__liblapzt.integer.u1.MAX.erased, __liblapzt.integer.u1.MAX.erased)
 
 // --- Types ---
 
 liblapzt.integer.u1 = __liblapzt.integer.u1.erased
-liblapzt.integer.u1.MIN = __liblapzt.integer.u1.MIN.erased
-liblapzt.integer.u1.MAX = __liblapzt.integer.u1.MAX.erased
+liblapzt.integer.u1.MIN: liblapzt.integer.u1 = __liblapzt.integer.u1.MIN.erased
+liblapzt.integer.u1.MAX: liblapzt.integer.u1 = __liblapzt.integer.u1.MAX.erased
 
 // --- Functions ---
 

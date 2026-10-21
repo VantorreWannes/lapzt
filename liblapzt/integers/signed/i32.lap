@@ -3,16 +3,16 @@
 // --- Erased ---
 
 __liblapzt.integer.i32.erased = [liblapzt.integer.u16, liblapzt.integer.u16]
-__liblapzt.integer.i32.MIN.erased = [liblapzt.integer.u16.MIN, liblapzt.integer.i16.MIN]
-__liblapzt.integer.i32.MAX.erased = [liblapzt.integer.u16.MAX, liblapzt.integer.i16.MAX]
-__liblapzt.integer.i32.ZERO.erased = [liblapzt.integer.u16.MIN, liblapzt.integer.u16.MIN]
+__liblapzt.integer.i32.MIN.erased: __liblapzt.integer.i32.erased = [liblapzt.integer.u16.MIN, liblapzt.integer.i16.MIN]
+__liblapzt.integer.i32.MAX.erased: __liblapzt.integer.i32.erased = [liblapzt.integer.u16.MAX, liblapzt.integer.i16.MAX]
+__liblapzt.integer.i32.ZERO.erased: __liblapzt.integer.i32.erased = [liblapzt.integer.u16.MIN, liblapzt.integer.u16.MIN]
 
 // --- Types ---
 
 liblapzt.integer.i32 = __liblapzt.integer.i32.erased
-liblapzt.integer.i32.MIN = __liblapzt.integer.i32.MIN.erased
-liblapzt.integer.i32.MAX = __liblapzt.integer.i32.MAX.erased
-liblapzt.integer.i32.ZERO = __liblapzt.integer.i32.ZERO.erased
+liblapzt.integer.i32.MIN: liblapzt.integer.i32 = __liblapzt.integer.i32.MIN.erased
+liblapzt.integer.i32.MAX: liblapzt.integer.i32 = __liblapzt.integer.i32.MAX.erased
+liblapzt.integer.i32.ZERO: liblapzt.integer.i32 = __liblapzt.integer.i32.ZERO.erased
 
 // --- Functions ---
 

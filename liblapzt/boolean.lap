@@ -3,7 +3,7 @@
 // --- Erased ---
 
 __liblapzt.boolean.erased = BIT
-__liblapzt.boolean.TRUE.erased = NAND(__liblapzt.boolean.erased, NAND(__liblapzt.boolean.erased, __liblapzt.boolean.erased))
+__liblapzt.boolean.TRUE.erased = NAND(BIT, NAND(BIT, BIT))
 __liblapzt.boolean.FALSE.erased = NAND(__liblapzt.boolean.TRUE.erased, __liblapzt.boolean.TRUE.erased)
 
 // --- Types ---
