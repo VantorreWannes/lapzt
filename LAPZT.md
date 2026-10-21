@@ -75,23 +75,23 @@ Memory is word addressed. `OP.MEMORY.READ` and `OP.MEMORY.WRITE` move one word a
 
 ### Operations
 
-| Operation           | Signature                                              | Result                            |
-| ------------------- | ------------------------------------------------------ | --------------------------------- |
-| `OP.MEMORY.ACQUIRE` | `(size: word)`                                         | `[BIT, word]`: status and handle  |
-| `OP.MEMORY.RELEASE` | `(handle: word)`                                       | `[BIT]`: status                   |
-| `OP.MEMORY.READ`    | `(handle: word, offset: word)`                         | `[BIT, word]`: status and word    |
-| `OP.MEMORY.WRITE`   | `(handle: word, offset: word, value: word)`            | `[BIT]`: status                   |
-| `OP.READ`           | `(handle: word)`                                       | `[BIT, BIT]`: status and bit      |
-| `OP.WRITE`          | `(handle: word, bit: BIT)`                             | `[BIT]`: status                   |
-| `OP.FLUSH`          | `(handle: word)`                                       | `[BIT]`: status                   |
-| `OP.EXIT`           | `(code: word)`                                         | `[]`, never returns               |
-| `OP.FILE.OPEN`      | `(path: word, offset: word, length: word, mode: word)` | `[BIT, word]`: status and handle  |
-| `OP.FILE.CLOSE`     | `(handle: word)`                                       | `[BIT]`: status                   |
-| `OP.FILE.SEEK`      | `(handle: word, offset: word, whence: word)`           | `[BIT]`: status                   |
-| `OP.TIME.NOW`       | `()`                                                   | `word`: nanoseconds since epoch   |
-| `OP.TIME.SLEEP`     | `(nanoseconds: word)`                                  | `[]`                              |
-| `OP.RANDOM`         | `()`                                                   | `word`                            |
-| `OP.ARGS.LENGTH`    | `()`                                                   | `[BIT, word]`: status and length  |
+| Operation           | Signature                                              | Result                           |
+| ------------------- | ------------------------------------------------------ | -------------------------------- |
+| `OP.MEMORY.ACQUIRE` | `(size: word)`                                         | `[BIT, word]`: status and handle |
+| `OP.MEMORY.RELEASE` | `(handle: word)`                                       | `[BIT]`: status                  |
+| `OP.MEMORY.READ`    | `(handle: word, offset: word)`                         | `[BIT, word]`: status and word   |
+| `OP.MEMORY.WRITE`   | `(handle: word, offset: word, value: word)`            | `[BIT]`: status                  |
+| `OP.READ`           | `(handle: word)`                                       | `[BIT, BIT]`: status and bit     |
+| `OP.WRITE`          | `(handle: word, bit: BIT)`                             | `[BIT]`: status                  |
+| `OP.FLUSH`          | `(handle: word)`                                       | `[BIT]`: status                  |
+| `OP.EXIT`           | `(code: word)`                                         | `[]`, never returns              |
+| `OP.FILE.OPEN`      | `(path: word, offset: word, length: word, mode: word)` | `[BIT, word]`: status and handle |
+| `OP.FILE.CLOSE`     | `(handle: word)`                                       | `[BIT]`: status                  |
+| `OP.FILE.SEEK`      | `(handle: word, offset: word, whence: word)`           | `[BIT]`: status                  |
+| `OP.TIME.NOW`       | `()`                                                   | `word`: nanoseconds since epoch  |
+| `OP.TIME.SLEEP`     | `(nanoseconds: word)`                                  | `[]`                             |
+| `OP.RANDOM`         | `()`                                                   | `word`                           |
+| `OP.ARGS.LENGTH`    | `()`                                                   | `[BIT, word]`: status and length |
 
 - `OP.MEMORY.ACQUIRE` returns a handle to a zeroed block of `size` bytes.
 - `OP.MEMORY.RELEASE` invalidates a memory handle.
