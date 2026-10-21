@@ -281,15 +281,16 @@ liblapzt.string.print.helper = (string: liblapzt.string, index: liblapzt.u64) []
         []
     } {
         word: liblapzt.u64 = liblapzt.string.print.word(string, index)
-        [ok] = liblapzt.io.write(liblapzt.io.stdout, liblapzt.u64.zero, word)
+        remaining: liblapzt.u64 = liblapzt.u64.sub(length, index)
+        count: liblapzt.u64 = liblapzt.u64.min(remaining, liblapzt.constants.eight)
+        [ok] = liblapzt.io.write.bytes(liblapzt.io.stdout, liblapzt.u64.zero, word, count)
         liblapzt.assert.true(ok)
         liblapzt.string.print.helper(string, liblapzt.u64.add(index, liblapzt.constants.eight))
     }
 }
 
-// Writes the view to standard output in eight byte words. The final
-// word is zero padded, so the byte count is length rounded up to a
-// multiple of eight.
+// Writes the view to standard output. The final word is written with
+// only the bytes that remain, so the byte count is length.
 liblapzt.string.print = (string: liblapzt.string) [] {
     liblapzt.string.print.helper(string, liblapzt.u64.zero)
 }
@@ -303,7 +304,9 @@ liblapzt.string.write.helper = (handle: liblapzt.u64, string: liblapzt.string, i
         [liblapzt.bool.true]
     } {
         word: liblapzt.u64 = liblapzt.string.print.word(string, index)
-        [ok] = liblapzt.io.write(handle, liblapzt.u64.zero, word)
+        remaining: liblapzt.u64 = liblapzt.u64.sub(string.length, index)
+        count: liblapzt.u64 = liblapzt.u64.min(remaining, liblapzt.constants.eight)
+        [ok] = liblapzt.io.write.bytes(handle, liblapzt.u64.zero, word, count)
         BRANCH (ok) {
             liblapzt.string.write.helper(handle, string, liblapzt.u64.add(index, liblapzt.constants.eight))
         } {
@@ -312,8 +315,8 @@ liblapzt.string.write.helper = (handle: liblapzt.u64, string: liblapzt.string, i
     }
 }
 
-// Writes the view to handle in eight byte words. Returns [ok], false
-// when a write fails. The final word is zero padded.
+// Writes the view to handle. Returns [ok], false when a write fails.
+// The final word is written with only the bytes that remain.
 liblapzt.string.write = (handle: liblapzt.u64, string: liblapzt.string) [BIT] {
     liblapzt.string.write.helper(handle, string, liblapzt.u64.zero)
 }

@@ -10,7 +10,7 @@ liblapzt.print.ten.u128: liblapzt.u128 = [[[[[[[liblapzt.bool.false, liblapzt.bo
 // Writes one decimal digit for a value below ten to standard output.
 liblapzt.print.digit = (digit: liblapzt.u64) [] {
     ascii: liblapzt.u64 = liblapzt.u64.add(digit, liblapzt.print.forty.eight)
-    [ok] = liblapzt.io.write(liblapzt.io.stdout, liblapzt.u64.zero, ascii)
+    [ok] = liblapzt.io.write.bytes(liblapzt.io.stdout, liblapzt.u64.zero, ascii, liblapzt.constants.one)
     liblapzt.assert.true(ok)
     []
 }
@@ -51,7 +51,7 @@ liblapzt.print.u128 = (value: liblapzt.u128) [] {
 
 // Writes a newline to standard output.
 liblapzt.print.newline = () [] {
-    [ok] = liblapzt.io.write(liblapzt.io.stdout, liblapzt.u64.zero, liblapzt.print.newline.word)
+    [ok] = liblapzt.io.write.bytes(liblapzt.io.stdout, liblapzt.u64.zero, liblapzt.print.newline.word, liblapzt.constants.one)
     liblapzt.assert.true(ok)
     []
 }
@@ -59,7 +59,7 @@ liblapzt.print.newline = () [] {
 // Writes the byte ascii to standard output. The value is not checked
 // against the ASCII range.
 liblapzt.print.char = (ascii: liblapzt.u64) [] {
-    [ok] = liblapzt.io.write(liblapzt.io.stdout, liblapzt.u64.zero, ascii)
+    [ok] = liblapzt.io.write.bytes(liblapzt.io.stdout, liblapzt.u64.zero, ascii, liblapzt.constants.one)
     liblapzt.assert.true(ok)
     []
 }

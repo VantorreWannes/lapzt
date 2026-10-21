@@ -1201,6 +1201,35 @@ const @"$lapzt" = struct {
         return .{false};
     }
 
+    pub fn @"OP.WRITE.BYTES"(handle: u64, offset: u64, value: u64, count: u64) struct { bool } {
+        const length = runtime.math.cast(usize, count) orelse return .{false};
+        if (length > 8) {
+            return .{false};
+        }
+        if (handle == @"IO.STDOUT") {
+            return write_stream_bytes(runtime.Io.File.stdout(), value, length);
+        }
+        if (handle == @"IO.STDERR") {
+            return write_stream_bytes(runtime.Io.File.stderr(), value, length);
+        }
+        if (file_index(handle)) |index| {
+            const file = files[index] orelse return .{false};
+            return write_stream_bytes(file, value, length);
+        }
+        const index = memory_index(handle) orelse return .{false};
+        if (blocks[index]) |memory| {
+            const start = runtime.math.cast(usize, offset) orelse return .{false};
+            if (start + length > memory.len) {
+                return .{false};
+            }
+            for (0..length) |byte| {
+                memory[start + byte] = @truncate(value >> @intCast(byte * 8));
+            }
+            return .{true};
+        }
+        return .{false};
+    }
+
     pub fn @"OP.EXIT"(code: u64) struct {} {
         runtime.process.exit(@truncate(code));
     }
@@ -1341,12 +1370,16 @@ const @"$lapzt" = struct {
     }
 
     fn write_stream(file: runtime.Io.File, value: u64) struct { bool } {
+        return write_stream_bytes(file, value, 8);
+    }
+
+    fn write_stream_bytes(file: runtime.Io.File, value: u64, count: usize) struct { bool } {
         const io = runtime.Io.Threaded.global_single_threaded.io();
         var buffer: [8]u8 = undefined;
-        for (0..8) |byte| {
+        for (0..count) |byte| {
             buffer[byte] = @truncate(value >> @intCast(byte * 8));
         }
-        file.writeStreamingAll(io, &buffer) catch return .{false};
+        file.writeStreamingAll(io, buffer[0..count]) catch return .{false};
         return .{true};
     }
 
@@ -1740,6 +1773,7 @@ fn is_runtime_label(label: &Label) -> bool {
             | "OP.MEMORY.RELEASE"
             | "OP.READ"
             | "OP.WRITE"
+            | "OP.WRITE.BYTES"
             | "OP.EXIT"
             | "OP.FILE.OPEN"
             | "OP.FILE.CLOSE"
@@ -2266,6 +2300,7 @@ impl Checker {
             "OP.MEMORY.RELEASE" => 1,
             "OP.READ" => 2,
             "OP.WRITE" => 3,
+            "OP.WRITE.BYTES" => 4,
             "OP.EXIT" => 1,
             "OP.FILE.OPEN" => 4,
             "OP.FILE.CLOSE" => 1,
@@ -3764,7 +3799,8 @@ impl Emitter {
                     "blk: {{ const {temporary} = {call}; break :blk .{{ {temporary}[0], {unpacked} }}; }}"
                 )
             }
-            "OP.MEMORY.RELEASE" | "OP.WRITE" | "OP.FILE.CLOSE" | "OP.FILE.SEEK" => {
+            "OP.MEMORY.RELEASE" | "OP.WRITE" | "OP.WRITE.BYTES" | "OP.FILE.CLOSE"
+            | "OP.FILE.SEEK" => {
                 format!(".{{ {call}[0] }}")
             }
             "OP.TIME.NOW" | "OP.RANDOM" => {

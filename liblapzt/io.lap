@@ -34,3 +34,10 @@ liblapzt.io.read.word = (handle: liblapzt.u64) [BIT, liblapzt.u64] {
 liblapzt.io.write.word = (handle: liblapzt.u64, value: liblapzt.u64) [BIT] {
     liblapzt.io.write(handle, liblapzt.u64.zero, value)
 }
+
+// Writes count bytes of value to a memory handle at offset, or the next
+// count bytes to a stream handle. Count must not exceed eight. Returns
+// true on success.
+liblapzt.io.write.bytes = (handle: liblapzt.u64, offset: liblapzt.u64, value: liblapzt.u64, count: liblapzt.u64) [BIT] {
+    EXTERN(OP.WRITE.BYTES, handle, offset, value, count)
+}
